@@ -16,6 +16,7 @@ EasMail _easmail = new EasMail();
 EasReCaptcha _easrecaptcha = new EasReCaptcha();
 ```
 
+---
 # EasQL
  EasQL helps you with basic SQL commands. Execute queries, get tables, shrink and backup database features.
 
@@ -64,9 +65,9 @@ _easql.ShrinkDatabase("YOUR-CONNECTION-STRING","DATABASE-NAME","DATABASE-LOG-NAM
 
 ### TruncateTable, DropTable, DropDatabase Usage
 ```c#
-_easql.TruncateTable("YOUR-CONNECTION-STRING","Users");
+_easql.TruncateTable("YOUR-CONNECTION-STRING","TABLE-NAME");
 
-_easql.DropTable("YOUR-CONNECTION-STRING","Users");
+_easql.DropTable("YOUR-CONNECTION-STRING","TABLE-NAME");
 
 _easql.DropDatabase("YOUR-CONNECTION-STRING", "DATABASE-NAME");
 ```
@@ -76,6 +77,7 @@ _easql.DropDatabase("YOUR-CONNECTION-STRING", "DATABASE-NAME");
 List<string> TableList = _easql.GetAllTableName("YOUR-CONNECTION-STRING");
 ```
 
+---
 # EasBox
  EasBox helps you with message boxes. Show easy and simple Message Boxes with your WinForm project.
 
@@ -93,11 +95,12 @@ _easbox.Error("An interal error occured");
 _easbox.Stop("This action is not allowed");
 ```
 
+---
 # EasINI
  EasINI helps you with reading and writing .ini files.
  
 ### Set ini file path
-```
+```c#
 //If you don't specify path it will take current directory and find service.ini
 EasINI _easini = new EasINI("FILE-PATH");
 ```
@@ -118,9 +121,28 @@ string url = _easini.Read("SETTINGS","APIURL");
 _easini.Write("SETTINGS","APIURL","www.google.com");
 ```
 
+---
 # EasLog
  EasLog helps you with creating logs with your application with interval options.
- 
+  
+### Set log file path
+```c#
+//If you don't specify path it will take current directory and create Logs folder
+EasLog _easlog = new EasLog("FILE-PATH");
+```
+
+ ### Create Log Usage
+```c#
+//Default interval is daily
+_easlog.Create("LOG-CONTENT");
+
+//In order so set interval give another parameter
+//0 (Default) => Daily
+//1 => Hourly
+//2 => Minutely
+_easlog.Create("LOG-CONTENT",1);
+```
+
 # EasDel
  EasDel helps you with deleting files, directories and sub directories with logging feature.
 
