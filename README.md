@@ -3,6 +3,14 @@
 
 # EasQL
  EasQL helps you with basic SQL commands. Execute queries, get tables, shrink and backup database features.
+ 
+**Implementation and Usage**
+```
+using Easme;
+EaSQL _easql = new EasQL();
+var cmd = new SqlCommand("SELECT * FROM Users");
+var dt = _easql.GetTable(*YOUR-CONNECTION-STRING*,cmd)
+```
 
 # EasBox
  EasBox helps you with message boxes. Show easy and simple Message Boxes with your WinForm project.
