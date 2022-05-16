@@ -75,6 +75,12 @@ _easql.DropTable("YOUR-CONNECTION-STRING","Users");
 _easql.DropDatabase("YOUR-CONNECTION-STRING", "DATABASE-NAME");
 ```
 
+### GetAllTableName Usage
+```c#
+//GetAllTableName will get all table names into List string
+List<string> TableList = _easql.GetAllTableName("YOUR-CONNECTION-STRING");
+```
+
 # EasBox
  EasBox helps you with message boxes. Show easy and simple Message Boxes with your WinForm project.
 
