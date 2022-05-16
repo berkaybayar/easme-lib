@@ -1,15 +1,47 @@
 # Introduction
  Collection of classes that will save you time and help you avoid repetitive code in CSharp. 
+ 
+## Implementation
+```
+Add reference to your project
+Add library reference in the class you want to use
+using EasMe;
+```
 
 # EasQL
  EasQL helps you with basic SQL commands. Execute queries, get tables, shrink and backup database features.
  
 ## Implementation and Usage
 ```
-using Easme;
+Add reference to EasQL
 EaSQL _easql = new EasQL();
-var cmd = new SqlCommand("SELECT * FROM Users");
-var dt = _easql.GetTable(*YOUR-CONNECTION-STRING*,cmd)
+```
+
+### GetTable Usage
+```
+SqlCommand cmd = new SqlCommand("SELECT * FROM Users");
+DataTable dt = _easql.GetTable(*YOUR-CONNECTION-STRING*,cmd)
+
+SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE Id = @id");
+cmd.Parameters.AddWithValue("@id",1);
+DataTable dt = _easql.GetTable(*YOUR-CONNECTION-STRING*,cmd)
+```
+
+### ExecNonQuery, ExecScalar, ExecStoredProcedure Usage
+```
+SqlCommand cmd = new SqlCommand("UPDATE Users SET Email = @email WHERE Id = @id");
+cmd.Parameters.AddWithValue("@email","example@mail.com");
+cmd.Parameters.AddWithValue("@id",1);
+int affectedRows = _easql.ExecNonQuery(*YOUR-CONNECTION-STRING*,cmd)
+
+SqlCommand cmd = new SqlCommand("SELECT Email FROM Users WHERE Id = @id");
+cmd.Parameters.AddWithValue("@id",1);
+object obj = _easql.ExecScalar(*YOUR-CONNECTION-STRING*,cmd)
+
+SqlCommand cmd = new SqlCommand("sendMail");
+cmd.CommandType = CommandType.StoredProcedure;
+cmd.Parameters.AddWithValue("@Username", "exampleusername");
+int result = _sql.ExecStoredProcedure(*YOUR-CONNECTION-STRING*, cmd);
 ```
 
 # EasBox
