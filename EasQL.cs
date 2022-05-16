@@ -93,15 +93,17 @@ namespace EasMe
         }
         public void ShrinkDBandLogs(string connection, string dbname, string dblogname)
         {
-            string query = $@"ALTER DATABASE [{dbname}] SET RECOVERY SIMPLE WITH NO_WAIT
-                            DBCC SHRINKFILE(N'{dblogname}', 1)
-                            ALTER DATABASE [{dbname}] SET RECOVERY FULL WITH NO_WAIT";
+            string query = $@"BEGIN
+                                ALTER DATABASE [{dbname}] SET RECOVERY SIMPLE WITH NO_WAIT
+                                DBCC SHRINKFILE(N'{dblogname}', 1)
+                                ALTER DATABASE [{dbname}] SET RECOVERY FULL WITH NO_WAIT
+                            END
+                            BEGIN
+                                ALTER DATABASE [{dbname}] SET RECOVERY SIMPLE WITH NO_WAIT
+                                DBCC SHRINKFILE(N'{dbname}', 1)
+                                ALTER DATABASE [{dbname}] SET RECOVERY FULL WITH NO_WAIT
+                            END";    
             var cmd = new SqlCommand(query);
-            ExecNonQuery(connection, cmd);
-            query = $@"ALTER DATABASE [{dbname}] SET RECOVERY SIMPLE WITH NO_WAIT
-                            DBCC SHRINKFILE(N'{dbname}', 1)
-                            ALTER DATABASE [{dbname}] SET RECOVERY FULL WITH NO_WAIT";
-            cmd = new SqlCommand(query);
             ExecNonQuery(connection, cmd);
         }
        

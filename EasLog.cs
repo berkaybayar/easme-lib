@@ -43,6 +43,18 @@ namespace EasMe
             File.AppendAllText(LogPath, LogContent);
 
         }
+        EasAdvancedLog _log = new EasAdvancedLog();
+        
+    }
+    public class EasAdvancedLog : EasLog
+    {
+        public void Create(string log,string controller, string action, int interval = 0)
+        {
+            Create($"[{controller}] [{action}] {log}", interval);
+            
+        }
+
+
     }
 
 }
