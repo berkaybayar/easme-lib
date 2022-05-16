@@ -1,11 +1,19 @@
 # Introduction
  Collection of classes that will save you time and help you avoid repetitive code in CSharp. 
  
-## Implementation
-```
-Add reference to your project
-Add library reference in the class you want to use
+## Getting Started
+```c#
+//Add reference to your project
+//Add library reference in the class you want to use and define EasMe classes
 using EasMe;
+EaSQL _easql = new EasQL();
+EasBox _easbox = new EasBox();
+EasINI _easini = new EasINI();
+EasLog _easlog = new EasLog();
+EasDel _easdel = new EasDel();
+EasAPI _easapi = new EasAPI();
+EasMail _easmail = new EasMail();
+EasReCaptcha _eascaptcha = new EasReCaptcha();
 ```
 
 # EasQL
@@ -14,34 +22,37 @@ using EasMe;
 ## Implementation and Usage
 ```
 Add reference to EasQL
-EaSQL _easql = new EasQL();
+
 ```
 
 ### GetTable Usage
 ```c#
 SqlCommand cmd = new SqlCommand("SELECT * FROM Users");
-DataTable dt = _easql.GetTable(*YOUR-CONNECTION-STRING*,cmd)
+DataTable dt = _easql.GetTable("YOUR-CONNECTION-STRING",cmd)
 
 SqlCommand cmd = new SqlCommand("SELECT * FROM Users WHERE Id = @id");
 cmd.Parameters.AddWithValue("@id",1);
-DataTable dt = _easql.GetTable(*YOUR-CONNECTION-STRING*,cmd)
+DataTable dt = _easql.GetTable("YOUR-CONNECTION-STRING",cmd)
 ```
 
 ### ExecNonQuery, ExecScalar, ExecStoredProcedure Usage
 ```c#
+//ExecNonQuery executes query and returnes affected rows as int value
 SqlCommand cmd = new SqlCommand("UPDATE Users SET Email = @email WHERE Id = @id");
 cmd.Parameters.AddWithValue("@email","example@mail.com");
 cmd.Parameters.AddWithValue("@id",1);
-int affectedRows = _easql.ExecNonQuery(*YOUR-CONNECTION-STRING*,cmd)
+int affectedRows = _easql.ExecNonQuery("YOUR-CONNECTION-STRING",cmd)
 
+//ExecScalar will return an object, convert it depending on what value you are expecting from query
 SqlCommand cmd = new SqlCommand("SELECT Email FROM Users WHERE Id = @id");
 cmd.Parameters.AddWithValue("@id",1);
-object obj = _easql.ExecScalar(*YOUR-CONNECTION-STRING*,cmd)
+object obj = _easql.ExecScalar("YOUR-CONNECTION-STRING",cmd)
 
+//ExecStoredProcedure will return int value which will depends on the procedure
 SqlCommand cmd = new SqlCommand("sendMail");
 cmd.CommandType = CommandType.StoredProcedure;
 cmd.Parameters.AddWithValue("@Username", "exampleusername");
-int result = _sql.ExecStoredProcedure(*YOUR-CONNECTION-STRING*, cmd);
+int result = _sql.ExecStoredProcedure("YOUR-CONNECTION-STRING", cmd);
 ```
 
 # EasBox
