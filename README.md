@@ -64,28 +64,59 @@ _easql.ShrinkDatabase("YOUR-CONNECTION-STRING","DATABASE-NAME","DATABASE-LOG-NAM
 
 ### TruncateTable, DropTable, DropDatabase Usage
 ```c#
-//TruncateTable will clear all rows in a table but table it self will remain
 _easql.TruncateTable("YOUR-CONNECTION-STRING","Users");
 
-//DropTable will directly delete the table from database
 _easql.DropTable("YOUR-CONNECTION-STRING","Users");
 
-//DropDatabase will directly delete the database
-//This action can not be undone be careful when using this
 _easql.DropDatabase("YOUR-CONNECTION-STRING", "DATABASE-NAME");
 ```
 
 ### GetAllTableName Usage
 ```c#
-//GetAllTableName will get all table names into List string
 List<string> TableList = _easql.GetAllTableName("YOUR-CONNECTION-STRING");
 ```
 
 # EasBox
  EasBox helps you with message boxes. Show easy and simple Message Boxes with your WinForm project.
 
+### Usage
+```c#
+if(_easbox.Confirm("Are you sure you want to do this ?"))
+{
+ //ACTION
+}
+
+_easbox.Show("Are you sure you want to do this ?");
+_easbox.Warn("You should run this app on administrator mode");
+_easbox.Info("Successfully updated list");
+_easbox.Error("An interal error occured");
+_easbox.Stop("This action is not allowed");
+```
+
 # EasINI
  EasINI helps you with reading and writing .ini files.
+ 
+### Set ini file path
+```
+//If you don't specify path it will take current directory and find service.ini
+EasINI _easini = new EasINI("FILE-PATH");
+```
+
+### .ini file structure
+```
+[SETTINGS]
+URL="www.github.com"
+```
+
+### Read Usage
+```c#
+string url = _easini.Read("SETTINGS","APIURL");
+```
+
+### Write Usage
+```c#
+_easini.Write("SETTINGS","APIURL","www.google.com");
+```
 
 # EasLog
  EasLog helps you with creating logs with your application with interval options.
