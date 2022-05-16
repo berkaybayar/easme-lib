@@ -18,7 +18,7 @@ EaSQL _easql = new EasQL();
 ```
 
 ### GetTable Usage
-```
+```c#
 SqlCommand cmd = new SqlCommand("SELECT * FROM Users");
 DataTable dt = _easql.GetTable(*YOUR-CONNECTION-STRING*,cmd)
 
@@ -28,7 +28,7 @@ DataTable dt = _easql.GetTable(*YOUR-CONNECTION-STRING*,cmd)
 ```
 
 ### ExecNonQuery, ExecScalar, ExecStoredProcedure Usage
-```
+```c#
 SqlCommand cmd = new SqlCommand("UPDATE Users SET Email = @email WHERE Id = @id");
 cmd.Parameters.AddWithValue("@email","example@mail.com");
 cmd.Parameters.AddWithValue("@id",1);
