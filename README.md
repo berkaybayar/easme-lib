@@ -20,7 +20,6 @@ EaSQL _easql = new EasQL();
 
 ### GetTable Usage
 ```c#
-//Definition
 //Timeout set to 0 by default meaning there is no timeout
 public DataTable GetTable(string Connection, SqlCommand cmd, int Timeout = 0){};
 
@@ -37,7 +36,6 @@ DataTable dt = _easql.GetTable("YOUR-CONNECTION-STRING",cmd);
 
 ### ExecNonQuery, ExecScalar, ExecStoredProcedure Usage
 ```c#
-//Definitions
 //Timeout set to 0 by default meaning there is no timeout
 public int ExecNonQuery(string Connection, SqlCommand cmd, int Timeout = 0){};
 public object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0){};
@@ -63,13 +61,12 @@ int result = _sql.ExecStoredProcedure("YOUR-CONNECTION-STRING", cmd);
 
 ### BackupDatabase and ShrinkDatabase Usage
 ```c#
-//Definition
 //Timeout set to 0 by default meaning there is no timeout
 public void BackupDatabase(string Connection, string DatabaseName, string BackupPath, int Timeout = 0){};
 public void ShrinkDatabase(string Connection, string DatabaseName, string DatabaseLogName = "_log"){};
 
 //BackupDatabase will create a backup of your database in the given path and will add date in file name
-//Backup Path must be a folder
+//Backup Path must be a folder also if database is big you might want to consider running this on another thread
 _easql.BackupDatabase("YOUR-CONNECTION-STRING","DATABASE-NAME","BACKUP-PATH");
 
 //ShrinkDatabase will shrink your database and logs, this will not delete your data only will reduce the disk space of SQL logs
@@ -82,7 +79,6 @@ _easql.ShrinkDatabase("YOUR-CONNECTION-STRING","DATABASE-NAME","DATABASE-LOG-NAM
 
 ### TruncateTable, DropTable, DropDatabase Usage
 ```c#
-//Definitions
 public void TruncateTable(string Connection, string TableName){};
 public void DropTable(string Connection, string TableName){};
 public void DropDatabase(string Connection, string DatabaseName){};
@@ -94,7 +90,6 @@ _easql.DropDatabase("YOUR-CONNECTION-STRING", "DATABASE-NAME");
 
 ### GetAllTableName Usage
 ```c#
-//Definition
 public List<string> GetAllTableName(string Connection){};
 
 List<string> TableList = _easql.GetAllTableName("YOUR-CONNECTION-STRING");
@@ -138,7 +133,6 @@ URL="www.github.com"
 
 ### Read Usage
 ```c#
-//Definition
 public string Read(string Section, string Key){};
 
 string url = _easini.Read("SETTINGS","APIURL");
@@ -146,7 +140,6 @@ string url = _easini.Read("SETTINGS","APIURL");
 
 ### Write Usage
 ```c#
-//Definition
 public void Write(string Section, string Key, string Value){};
 
 _easini.Write("SETTINGS","APIURL","www.google.com");
@@ -158,26 +151,32 @@ _easini.Write("SETTINGS","APIURL","www.google.com");
   
 ### Set log file path
 ```c#
+public EasLog(int Interval = 0){};
+public EasLog(string FilePath, int Interval = 0){};
+
+//If you don't specify path it will take current directory and create Logs folder
 EasLog _easlog = new EasLog();
 
 //To specify logging file path
-//If you don't specify path it will take current directory and create Logs folder
 EasLog _easlog = new EasLog("FILE-PATH");
+
+//Intervals
+//0 (Default) => Daily
+//1 => Hourly
+//2 => Minutely
+
+//Interval with file path
+EasLog _easlog = new EasLog("FILE-PATH",2);
+
+//Interval without file path, logs will be created in current directory
+EasLog _easlog = new EasLog(2);
 ```
 
 ### Create Log Usage
 ```c#
-//Definition
-public void Create(string LogContent, int Interval = 0){};
+public void Create(string LogContent){};
 
-//Default interval is daily
 _easlog.Create("LOG-CONTENT");
-
-//In order so set interval give another parameter
-//0 (Default) => Daily
-//1 => Hourly
-//2 => Minutely
-_easlog.Create("LOG-CONTENT",1);
 ```
 
 ---
@@ -186,9 +185,12 @@ _easlog.Create("LOG-CONTENT",1);
  
 ### Enabling logging and setting file path
 ```c#
+public EasDel(string LogPath){};
+public EasDel(bool isEnableLogging = false){};
+
 EasDel _easdel = new EasDel();
 
-//Logging is disabled by default so enable it like this
+//Logging is disabled by default so enable it like this, will create logs in current directory
 EasDel _easdel = new EasDel(true);
 
 //If you specify log file path, logging automaticly will be enabled
@@ -197,7 +199,6 @@ EasDel _easdel = new EasDel("FILE-PATH");
 
 ### Usage
 ```c#
-//Definition
 public void DeleteAllFiles(string FilePath){};
 
 //You can give file path as one one file or a folder it will work either way
@@ -220,7 +221,6 @@ public class APIResponse
 ```
 ### Get Usage 
 ```c#
-//Definition
 public APIResponse Get(string URL, string TOKEN = null){};
 
 //Request without authentication header
@@ -232,7 +232,6 @@ APIResponse Response = _easapi.Get("API-URL","AUTHENTICATION-HEADER-TOKEN");
 
 ### PostAsJson Usage
 ```c#
-//Definition
 public APIResponse PostAsJson(string URL, object Data, string TOKEN = null){};
 
 //Request without authentication header
@@ -246,7 +245,6 @@ APIResponse Response = _easapi.PostAsJson("API-URL",obj,"AUTHENTICATION-HEADER-T
 
 ### ParsefromAPIResponse Usage
 ```c#
-//Definition
 public string ParsefromAPIResponse(string Response, string Parse,bool isThrow = false){};
 
 //This will parse JObject string and return the value from API response 
@@ -269,7 +267,6 @@ EasMail _easmail = new EasMail(string Host, string MailAddress, string Password,
 
 ### MailSend Usage
 ```c#
-//Definition
 public void SendMail(string Body, string SendTo, string Subject){};
 
 _easmail.MailSend("YOUR-BODY-CONTENT","TO-EMAIL-ADDRESS","SUBJECT");
@@ -296,12 +293,12 @@ Newtonsoft.Json
 System.Net
 ```
 
-### Program.cs Example
+### Program.cs
 ```c#
 builder.Services.AddReCaptcha(builder.Configuration);
 ```
 
-### appsettings.json Example
+### appsettings.json
 ```json
 "ReCaptcha": {
   "SiteKey": "YOUR-SITE-KEY",
@@ -310,7 +307,7 @@ builder.Services.AddReCaptcha(builder.Configuration);
 }
 ```
 
-### View Example
+### View
 ```html
 <div class="g-recaptcha" data-sitekey="YOUR-SITE-KEY"></div>		
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
