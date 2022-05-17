@@ -10,34 +10,34 @@ namespace EasMe
     {
 
         /*
-            -Requirements
-            Newtonsoft.Json
-            System.Net
+        -Requirements
+        Newtonsoft.Json
+        System.Net
         
-            -appsettings.json
-              "ReCaptcha": {
-              "SiteKey": "YOUR-SITE-KEY",
-              "SecretKey": "YOUR-SECRET-KEY",
-              "Version": "v2"
-            }
-            -Program.cs
-            builder.Services.AddReCaptcha(builder.Configuration);
+        -appsettings.json
+          "ReCaptcha": {
+          "SiteKey": "YOUR-SITE-KEY",
+          "SecretKey": "YOUR-SECRET-KEY",
+          "Version": "v2"
+        }
+        -Program.cs
+        builder.Services.AddReCaptcha(builder.Configuration);
 
-            -View
-            <div class="g-recaptcha" data-sitekey="YOUR-SITE-KEY"></div>		
-            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        -View
+        <div class="g-recaptcha" data-sitekey="YOUR-SITE-KEY"></div>		
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-            -Controller
-            var CaptchaResponse = HttpContext.Request.Form["g-recaptcha-response"];
-            string Secret = "your-secret-key";       
-            var Captcha = _recaptcha.Validate(Secret, CaptchaResponse);
-         */
+        -Controller
+        var CaptchaResponse = HttpContext.Request.Form["g-recaptcha-response"];
+        string Secret = "your-secret-key";       
+        var Captcha = _recaptcha.Validate(Secret, CaptchaResponse);
+        */
 
         public class CaptchaResponse
         {
             public bool Success { get; set; }
-            public DateTime ChallengeTS { get; set; } //Challenge_ts
-            public string ApkPackageName { get; set; } //apk_package_name
+            public DateTime ChallengeTS { get; set; } 
+            public string ApkPackageName { get; set; }
             public string ErrorCodes { get; set; }
         }
         public CaptchaResponse Validate(string Secret, string CaptchaResponse)

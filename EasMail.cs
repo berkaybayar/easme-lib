@@ -21,12 +21,12 @@ namespace EasMe.dll
             _isSSL = isSSL;
 
         }
-        public void MailSender(string body, string sendto, string subject)
+        public void SendMail(string Body, string SendTo, string Subject)
         {
             try
             {
                 var fromAddress = new MailAddress(_mailaddress);
-                var toAddress = new MailAddress(sendto);
+                var toAddress = new MailAddress(SendTo);
                 using (var smtp = new SmtpClient
                 {
                     Host = _host,
@@ -37,7 +37,7 @@ namespace EasMe.dll
                     Credentials = new NetworkCredential(fromAddress.Address, _password)
 
                 })
-                using (var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body })
+                using (var message = new MailMessage(fromAddress, toAddress) { Subject = Subject, Body = Body })
                 {
                     message.IsBodyHtml = true;
                     smtp.Send(message);

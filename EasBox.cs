@@ -4,32 +4,32 @@ namespace EasMe
 {
     public class EasBox
     {
-        public bool Confirm(string message, string header = "Confirm") //Shows a confirmation box and returns the result taken from user
+        public bool Confirm(string Message) //Shows a confirmation box and returns the result taken from user
         {
-            if (DialogResult.Yes == MessageBox.Show(message, header, MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            if (DialogResult.Yes == MessageBox.Show(Message, "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 return true;
             return false;
 
         }
-        public void Show(string message) //Shows simple message box 
+        public void Show(string Message) //Shows simple message box 
         {
-            MessageBox.Show(message);
+            MessageBox.Show(Message);
         }
-        public void Warn(string message) //Shows a warning message box with only OK button
+        public void Warn(string Message) //Shows a warning message box with only OK button
         {
-            MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(Message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-        public void Info(string message) //Shows an information message box with only OK buttong
+        public void Info(string Message) //Shows an information message box with only OK buttong
         {
-            MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(Message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        public void Error(string message) //Shows an Error message box with only OK buttong
+        public void Error(string Message) //Shows an Error message box with only OK buttong
         {
-            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-        public void Stop(string message) //Shows an Stop message box with only OK buttong
+        public void Stop(string Message) //Shows an Stop message box with only OK buttong
         {
-            MessageBox.Show(message, "Stop", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            MessageBox.Show(Message, "Stop", MessageBoxButtons.OK, MessageBoxIcon.Stop);
         }
 
     }

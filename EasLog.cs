@@ -1,32 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasMe
 {
     public class EasLog
     {
-        public static string DirCurrent = Directory.GetCurrentDirectory();//gets current directory 
-        public static string DirLog = DirCurrent + "\\Logs\\"; //log file directory
+        private static string DirLog;
 
+        public EasLog(string FilePath)
+        {
+            DirLog = FilePath;
+        }
+
+        public EasLog()
+        {
+            DirLog = Directory.GetCurrentDirectory() + "\\Logs\\";
+        }
+        
         /*
         Interval value        
         0 => Daily (Default)
         1 => Hourly 
         2 => Every Minute
         */
-        public void Create(string log, int interval = 0)
+        public void Create(string LogContent, int Interval = 0)
         {
             string IntervalFormat = "";
-            string LogContent = $"[{DateTime.Now}] {log}\n";
+            LogContent = $"[{DateTime.Now}] {LogContent}\n";
 
             //Creates log file in current directory
             if (!Directory.Exists(DirLog)) Directory.CreateDirectory(DirLog);
 
-            switch (interval)
+            switch (Interval)
             {
                 case 0:
                     IntervalFormat = "MM.dd.yyyy";
@@ -43,18 +48,8 @@ namespace EasMe
             File.AppendAllText(LogPath, LogContent);
 
         }
-        EasAdvancedLog _log = new EasAdvancedLog();
-        
-    }
-    public class EasAdvancedLog : EasLog
-    {
-        public void Create(string log,string controller, string action, int interval = 0)
-        {
-            Create($"[{controller}] [{action}] {log}", interval);
-            
-        }
-
 
     }
+
 
 }

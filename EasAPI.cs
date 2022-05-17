@@ -8,7 +8,7 @@ namespace EasMe
     public class EasAPI
     {
         
-        ////Install-Package Microsoft.AspNet.WebApi.Client -Version 5.2.8
+        //Install-Package Microsoft.AspNet.WebApi.Client -Version 5.2.8
         public class APIResponse 
         {
             public bool Status { get; set; }
@@ -16,11 +16,11 @@ namespace EasMe
         }
         //API response must be anon class 
         //Parsing will only return one of the items as string
-        public string ParsefromAPIResponse(object obj, string parse,bool isThrow = true)
+        public string ParsefromAPIResponse(string Response, string Parse,bool isThrow = false)
         {
             try
             {
-                var rMessage = JObject.Parse(obj.ToString())[parse];
+                var rMessage = JObject.Parse(Response.ToString())[Parse];
                 return rMessage.ToString();
             }
             catch (Exception ex)
@@ -29,12 +29,12 @@ namespace EasMe
                 {
                     throw ex;
                 }
-                return "";
+                return string.Empty;
             }
             
             
         }
-        public APIResponse SendGetRequest(string URL, string TOKEN = null)
+        public APIResponse Get(string URL, string TOKEN = null)
         {
             var Response = new APIResponse();
             try
@@ -61,8 +61,8 @@ namespace EasMe
             }
             return Response;
         }
-
-        public APIResponse SendPostRequest(string URL, string ActionName, object Data, string TOKEN = null)
+        
+        public APIResponse PostAsJson(string URL, object Data, string TOKEN = null)
         {
             var Response = new APIResponse();
             try
@@ -74,7 +74,7 @@ namespace EasMe
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
                     }
                     client.BaseAddress = new Uri(URL);
-                    var postTask = client.PostAsJsonAsync(ActionName, Data);
+                    var postTask = client.PostAsJsonAsync(URL, Data);
                     postTask.Wait();
                     var r = postTask.Result;
                     Response.Status = r.IsSuccessStatusCode;
