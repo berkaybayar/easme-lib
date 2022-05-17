@@ -244,33 +244,35 @@ public class CaptchaResponse
 }
 ```
 
-### Requirements and Usage
+### Requirements
+```
+Newtonsoft.Json
+System.Net
+```
+
+### Program.cs Example
 ```c#
-//-Requirements
-//Newtonsoft.Json
-//System.Net
-
-//-appsettings.json
-//  "ReCaptcha": {
-//  "SiteKey": "YOUR-SITE-KEY",
-//  "SecretKey": "YOUR-SECRET-KEY",
-//  "Version": "v2"
-//}
-
-//-Program.cs
 builder.Services.AddReCaptcha(builder.Configuration);
 ```
 
+### appsettings.json Example
+```json
+"ReCaptcha": {
+  "SiteKey": "YOUR-SITE-KEY",
+  "SecretKey": "YOUR-SECRET-KEY",
+  "Version": "v2"
+}
+```
+
+### View Example
 ```html
-//-View
 <div class="g-recaptcha" data-sitekey="YOUR-SITE-KEY"></div>		
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 ```
 
+### Validating ReCaptcha Response from View
 ```c#
--Controller
 var CaptchaResponse = HttpContext.Request.Form["g-recaptcha-response"];
 string Secret = "your-secret-key";       
 var Captcha = _easrecaptcha.Validate(Secret, CaptchaResponse);
 ```
-
