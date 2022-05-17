@@ -5,16 +5,19 @@ namespace EasMe
 {
     public class EasLog
     {
-        private static string DirLog;
+        private static string _DirLog;
+        private static int _Interval;
 
-        public EasLog(string FilePath)
+        public EasLog(string FilePath, int Interval = 0)
         {
-            DirLog = FilePath;
+            _DirLog = FilePath;
+            _Interval = Interval;
         }
 
-        public EasLog()
+        public EasLog(int Interval = 0)
         {
-            DirLog = Directory.GetCurrentDirectory() + "\\Logs\\";
+            _DirLog = Directory.GetCurrentDirectory() + "\\Logs\\";
+            _Interval = Interval;
         }
         
         /*
@@ -23,15 +26,15 @@ namespace EasMe
         1 => Hourly 
         2 => Every Minute
         */
-        public void Create(string LogContent, int Interval = 0)
+        public void Create(string LogContent)
         {
             string IntervalFormat = "";
             LogContent = $"[{DateTime.Now}] {LogContent}\n";
 
             //Creates log file in current directory
-            if (!Directory.Exists(DirLog)) Directory.CreateDirectory(DirLog);
+            if (!Directory.Exists(_DirLog)) Directory.CreateDirectory(_DirLog);
 
-            switch (Interval)
+            switch (_Interval)
             {
                 case 0:
                     IntervalFormat = "MM.dd.yyyy";
@@ -44,7 +47,7 @@ namespace EasMe
                     break;
             }
 
-            string LogPath = DirLog + DateTime.Now.ToString(IntervalFormat) + " -log.txt";
+            string LogPath = _DirLog + DateTime.Now.ToString(IntervalFormat) + " -log.txt";
             File.AppendAllText(LogPath, LogContent);
 
         }

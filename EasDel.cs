@@ -19,17 +19,17 @@ namespace EasMe
         //public static string DirSystem = Environment.GetFolderPath(Environment.SpecialFolder.System);//gets system32 directory C:\Windows\System32
         //public static string DirLog = DirCurrent + "\\Logs\\"; //log file directory
 
-        public static bool isEnableLogging = true;
+        public static bool _isEnableLogging = true;
 
         //When calling the class give bool value to determine to enable or disable logging         
-        public EasDel(bool _isEnableLogging = false)
+        public EasDel(bool isEnableLogging = false)
         {
-            isEnableLogging = _isEnableLogging;
+            isEnableLogging = isEnableLogging;
         }
 
         public EasDel(string LogPath)
         {
-            isEnableLogging = true;
+            _isEnableLogging = true;
             _easlog = new EasLog(LogPath);
         }
         
@@ -44,11 +44,11 @@ namespace EasMe
                     try
                     {
                         File.Delete(file);
-                        if (isEnableLogging) _easlog.Create("[FILE] [DELETED]: " + file);
+                        if (_isEnableLogging) _easlog.Create("[FILE] [DELETED]: " + file);
                     }
                     catch
                     {
-                        if (isEnableLogging) _easlog.Create("[FILE] [DELETION_FAILED]: " + file);
+                        if (_isEnableLogging) _easlog.Create("[FILE] [DELETION_FAILED]: " + file);
                     }
 
                 }
@@ -59,11 +59,11 @@ namespace EasMe
                 try
                 {
                     Directory.Delete(FilePath);
-                    if (isEnableLogging) _easlog.Create("[FOLDER] [DELETED]: " + FilePath);
+                    if (_isEnableLogging) _easlog.Create("[FOLDER] [DELETED]: " + FilePath);
                 }
                 catch
                 {
-                    if (isEnableLogging) _easlog.Create("[FOLDER] [DELETION_FAILED]: " + FilePath);
+                    if (_isEnableLogging) _easlog.Create("[FOLDER] [DELETION_FAILED]: " + FilePath);
                 }
             }
             else
@@ -71,11 +71,11 @@ namespace EasMe
                 try
                 {
                     File.Delete(FilePath);
-                    if (isEnableLogging) _easlog.Create("[FILE] [DELETED]: " + FilePath);
+                    if (_isEnableLogging) _easlog.Create("[FILE] [DELETED]: " + FilePath);
                 }
                 catch
                 {
-                    if (isEnableLogging) _easlog.Create("[FILE] [DELETION_FAILED]: " + FilePath);
+                    if (_isEnableLogging) _easlog.Create("[FILE] [DELETION_FAILED]: " + FilePath);
                 }
 
             }
