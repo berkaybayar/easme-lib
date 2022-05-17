@@ -6,19 +6,17 @@
 //Add reference to your project
 //Add library reference in the class you want to use and define EasMe classes
 using EasMe;
-EaSQL _easql = new EasQL();
-EasBox _easbox = new EasBox();
-EasINI _easini = new EasINI();
-EasLog _easlog = new EasLog();
-EasDel _easdel = new EasDel();
-EasAPI _easapi = new EasAPI();
-EasMail _easmail = new EasMail();
-EasReCaptcha _easrecaptcha = new EasReCaptcha();
+
 ```
 
 ---
 # EasQL
  EasQL helps you with basic SQL commands. Execute queries, get tables, shrink and backup database features.
+ 
+### Setting up
+```c#
+EaSQL _easql = new EasQL();
+```
 
 ### GetTable Usage
 ```c#
@@ -101,7 +99,9 @@ _easbox.Stop("This action is not allowed");
  
 ### Set ini file path
 ```c#
-//If you don't specify path it will take current directory and find service.ini
+EasINI _easini = new EasINI();
+
+//To specify ini file path
 EasINI _easini = new EasINI("FILE-PATH");
 ```
 
@@ -127,11 +127,14 @@ _easini.Write("SETTINGS","APIURL","www.google.com");
   
 ### Set log file path
 ```c#
+EasLog _easlog = new EasLog();
+
+//To specify logging file path
 //If you don't specify path it will take current directory and create Logs folder
 EasLog _easlog = new EasLog("FILE-PATH");
 ```
 
- ### Create Log Usage
+### Create Log Usage
 ```c#
 //Default interval is daily
 _easlog.Create("LOG-CONTENT");
@@ -143,15 +146,131 @@ _easlog.Create("LOG-CONTENT");
 _easlog.Create("LOG-CONTENT",1);
 ```
 
+---
 # EasDel
  EasDel helps you with deleting files, directories and sub directories with logging feature.
+ 
+### Enabling logging and setting file path
+```c#
+EasDel _easdel = new EasDel();
 
+//Logging is disabled by default so enable it like this
+EasDel _easdel = new EasDel(true);
+
+//If you specify log file path, logging automaticly will be enabled
+EasDel _easdel = new EasDel("FILE-PATH");
+```
+
+### Usage
+```c#
+//You can give file path as one one file or a folder it will work either way
+_easdel.DeleteAllFiles("FILE-PATH");
+```
+
+---
 # EasAPI
  EasAPI helps you with send get and post requests to APIs.
 
+### APIResponse Class
+```c#
+//Status is true when response is 200 (OK)
+//Content is Json string
+public class APIResponse 
+{
+    public bool Status { get; set; }
+    public string Content { get; set; }
+}
+```
+### Get Usage
+```c#
+//Request without authentication header
+APIResponse Response = _easapi.Get("API-URL");
+
+//Request with authentication header
+APIResponse Response = _easapi.Get("API-URL","AUTHENTICATION-HEADER-TOKEN");
+```
+
+### PostAsJson Usage
+```c#
+//Request without authentication header
+//obj can be anonymous abject or a class
+var obj = new { message = "EasMe makes this so much easier!"};
+APIResponse Response = _easapi.PostAsJson("API-URL",obj);
+
+//Request with authentication header
+APIResponse Response = _easapi.PostAsJson("API-URL",obj,"AUTHENTICATION-HEADER-TOKEN");
+```
+
+### ParsefromAPIResponse Usage
+```c#
+//This will parse JObject string and return the value from API response 
+//If can't find value it will return empty string
+string ParsedResponse = _easapi.ParsefromAPIResponse(Response.Content,"message");
+
+
+//If you want function to throw error if can't find the value, give another parameter as true
+string ParsedResponse = _easapi.ParsefromAPIResponse(Response.Content,"message",true);
+```
+
+---
 # EasMail
  EasMail helps you with SMTP, it makes sending mails a lot faster.
+ 
+### Setting up
+```c#
+EasMail _easmail = new EasMail(string Host, string MailAddress, string Password, int Port, bool isSSL = false);
+```
 
+### MailSend Usage
+```c#
+//Definition
+EasMail(string Host, string MailAddress, string Password, int Port, bool isSSL = false){};
+
+_easmail.MailSend("YOUR-BODY-CONTENT","TO-EMAIL-ADDRESS","SUBJECT");
+```
+
+---
 # EasReCaptcha
  EasReCaptcha helps you with validating Google ReCaptcha with your web app.
+
+### CaptchaResponse Class
+```c#
+public class CaptchaResponse
+{
+    public bool Success { get; set; }
+    public DateTime ChallengeTS { get; set; }
+    public string ApkPackageName { get; set; }
+    public string ErrorCodes { get; set; }
+}
+```
+
+### Requirements and Usage
+```c#
+//-Requirements
+//Newtonsoft.Json
+//System.Net
+
+//-appsettings.json
+//  "ReCaptcha": {
+//  "SiteKey": "YOUR-SITE-KEY",
+//  "SecretKey": "YOUR-SECRET-KEY",
+//  "Version": "v2"
+//}
+
+//-Program.cs
+builder.Services.AddReCaptcha(builder.Configuration);
+```
+
+```html
+//-View
+<div class="g-recaptcha" data-sitekey="YOUR-SITE-KEY"></div>		
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+```
+
+```c#
+-Controller
+var CaptchaResponse = HttpContext.Request.Form["g-recaptcha-response"];
+string Secret = "your-secret-key";       
+var Captcha = _easrecaptcha.Validate(Secret, CaptchaResponse);
+```
 
