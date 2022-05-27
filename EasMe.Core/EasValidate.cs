@@ -67,7 +67,7 @@ namespace EasMe.Core
             return false;
         }
 
-        public bool IsStrongPassword(string password, string allowedChars, int minLength, int maxLength, bool allowSpace)
+        public bool IsStrongPassword(string password, string allowedChars, int minLength, int maxLength, bool allowSpace = false)
         {
             if (password.Length < minLength || password.Length > maxLength)
             {
