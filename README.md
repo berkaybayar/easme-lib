@@ -1,6 +1,11 @@
 # Introduction
  Collection of classes that will save you time and help you avoid repetitive code in CSharp. 
- 
+
+## Setting Up
+```
+Install-Package EasMe.Core -Version 1.0.0
+```
+
 ## Getting Started
 ```c#
 //Add reference to your project
