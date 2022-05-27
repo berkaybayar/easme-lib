@@ -1,6 +1,11 @@
 # Introduction
  Collection of classes that will save you time and help you avoid repetitive code in CSharp. 
- 
+
+## Setting Up
+```
+Install-Package EasMe.Core -Version 1.0.0
+```
+
 ## Getting Started
 ```c#
 //Add reference to your project
@@ -11,7 +16,7 @@ using EasMe;
 
 ---
 # EasQL
- EasQL helps you with basic SQL commands. Execute queries, get tables, shrink and backup database features.
+EasQL helps you with basic SQL commands. Execute queries, get tables, shrink and backup database features.
  
 ### Setting up
 ```c#
@@ -97,7 +102,7 @@ List<string> TableList = _easql.GetAllTableName("YOUR-CONNECTION-STRING");
 
 ---
 # EasBox
- EasBox helps you with message boxes. Show easy and simple Message Boxes with your WinForm project.
+EasBox helps you with message boxes. Show easy and simple Message Boxes with your WinForm project.
 
 ### Usage
 ```c#
@@ -115,7 +120,7 @@ _easbox.Stop("This action is not allowed");
 
 ---
 # EasINI
- EasINI helps you with reading and writing .ini files.
+EasINI helps you with reading and writing .ini files.
  
 ### Set ini file path
 ```c#
@@ -147,7 +152,7 @@ _easini.Write("SETTINGS","APIURL","www.google.com");
 
 ---
 # EasLog
- EasLog helps you with creating logs with your application with interval options.
+EasLog helps you with creating logs with your application with interval options.
   
 ### Set log file path
 ```c#
@@ -181,7 +186,7 @@ _easlog.Create("LOG-CONTENT");
 
 ---
 # EasDel
- EasDel helps you with deleting files, directories and sub directories with logging feature.
+EasDel helps you with deleting files, directories and sub directories with logging feature.
  
 ### Enabling logging and setting file path
 ```c#
@@ -207,7 +212,7 @@ _easdel.DeleteAllFiles("FILE-PATH");
 
 ---
 # EasAPI
- EasAPI helps you with send get and post requests to APIs.
+EasAPI helps you with send get and post requests to APIs.
 
 ### APIResponse Class
 ```c#
@@ -258,7 +263,7 @@ string ParsedResponse = _easapi.ParsefromAPIResponse(Response.Content,"message",
 
 ---
 # EasMail
- EasMail helps you with SMTP, it makes sending mails a lot faster.
+EasMail helps you with SMTP, it makes sending mails a lot faster.
  
 ### Setting up
 ```c#
@@ -318,4 +323,103 @@ builder.Services.AddReCaptcha(builder.Configuration);
 var CaptchaResponse = HttpContext.Request.Form["g-recaptcha-response"];
 string Secret = "your-secret-key";       
 var Captcha = _easrecaptcha.Validate(Secret, CaptchaResponse);
+```
+
+---
+## EasValidate
+EasValidate helps you with validating strings. Email, IP address etc.
+
+### Define Class 
+```c#
+EasValidate _easvalidate = new EasValidate();
+```
+
+### IsValid Usage
+```c#
+//Definitions
+public bool IsValidEmail(string email){};
+public bool IsValidIPAddress(string ipAddress){};
+public bool IsValidMACAddress(string macAddress){};
+public bool IsValidPort(string port){};
+
+//Usage
+if(_easvalidate.IsValidEmail("example@mail.com"))
+{
+  //DO SOMETHING
+}
+```
+ 
+### HasSpecialChars and IsStrongPassword Usage
+```c#
+//Definitions
+//Letters and digits is allowed by default
+public bool HasSpecialChars(string yourString, string allowedChars){};
+public bool IsStrongPassword(string password, string allowedChars, int minLength, int maxLength, bool allowSpace = false){};
+
+
+//Usage
+if(_easvalidate.HasSpecialChars("exampleUsername","_"))
+{  
+  //STRING HAS SPECIAL CHARACTERS THAT IS NOT ALLOWED
+}
+
+if(_easvalidate.IsStrongPassword("exampleUsername","+-*/^%&()",6,32))
+{  
+  //PASSWORD IS STRONG
+}
+```
+ 
+---
+## EasJWT
+EasJWT helps you with generating and validating JWT Tokens.
+
+### Define Class 
+```c#
+//Definition
+public EasJWT(string secret, string issuer = "", string audience = "")
+
+//Defining
+EasJWT _easJWT = new EasJWT("YOUR-SECRET-KEY");
+```
+
+### Generating Token
+```c#
+//Definition
+public string GenerateJWTToken(ClaimsIdentity claimsIdentity, int expireMinutes){};
+
+//Usage
+Claim[] claims = new Claim[] 
+{
+    new Claim(ClaimTypes.Name, "John"),
+    new Claim(ClaimTypes.Role, "user")
+};
+string token = GenerateJWTToken(new ClaimsIdentity(claims), 10);
+```
+
+### Validating Token
+```c#
+//Definition
+public ClaimsPrincipal ValidateJWTToken(string token,bool validateIssuer = false, bool validateAudience = false){};
+
+//Usage
+var claimsPrincipal = ValidateJWTToken(token);
+string name = claims.Identity.Name;
+```
+
+---
+## EasGenerate
+EasGenerate helps you with generating random string with several options.
+
+### Define Class
+```c#
+EasGenerate _easgenerate = new EasGenerate();
+```
+
+### Usage
+```c#
+//Definition
+public string GenerateRandomString(int length, string allowedChars = "", bool onlyLetter = false){};
+
+//Usage
+var password = _easgenerate.GenerateRandomString(16,"[]{}()'^+*");
 ```
