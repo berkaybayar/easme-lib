@@ -7,8 +7,8 @@
     <ProjectGuid>{5FC4798A-9899-4F7B-A622-72EBBAA8BB8C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EasMe</RootNamespace>
-    <AssemblyName>EasMe</AssemblyName>
+    <RootNamespace>EasMe.NET</RootNamespace>
+    <AssemblyName>EasMe.NET</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
