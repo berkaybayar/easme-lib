@@ -14,22 +14,18 @@ namespace EasMe
             public bool Status { get; set; }
             public string Content { get; set; }
         }
-        //API response must be anon class 
+        //API response is json
         //Parsing will only return one of the items as string
-        public string ParsefromAPIResponse(string Response, string Parse, bool isThrow = false)
+        public string ParsefromAPIResponse(string response, string parse)
         {
             try
             {
-                var rMessage = JObject.Parse(Response.ToString())[Parse];
+                var rMessage = JObject.Parse(response.ToString())[parse];
                 return rMessage.ToString();
             }
             catch (Exception ex)
             {
-                if (isThrow)
-                {
-                    throw ex;
-                }
-                return string.Empty;
+                throw ex;
             }
 
 
