@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace EasMe
 {
@@ -32,7 +27,7 @@ namespace EasMe
             _isEnableLogging = true;
             _easlog = new EasLog(LogPath);
         }
-        
+
         public void DeleteAllFiles(string FilePath)
         {
             if (Directory.Exists(FilePath))

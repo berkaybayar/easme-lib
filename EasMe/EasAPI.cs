@@ -7,16 +7,16 @@ namespace EasMe
 {
     public class EasAPI
     {
-        
+
         //Install-Package Microsoft.AspNet.WebApi.Client -Version 5.2.8
-        public class APIResponse 
+        public class APIResponse
         {
             public bool Status { get; set; }
             public string Content { get; set; }
         }
         //API response must be anon class 
         //Parsing will only return one of the items as string
-        public string ParsefromAPIResponse(string Response, string Parse,bool isThrow = false)
+        public string ParsefromAPIResponse(string Response, string Parse, bool isThrow = false)
         {
             try
             {
@@ -31,8 +31,8 @@ namespace EasMe
                 }
                 return string.Empty;
             }
-            
-            
+
+
         }
         public APIResponse Get(string URL, string TOKEN = null)
         {
@@ -61,7 +61,7 @@ namespace EasMe
             }
             return Response;
         }
-        
+
         public APIResponse PostAsJson(string URL, object Data, string TOKEN = null)
         {
             var Response = new APIResponse();

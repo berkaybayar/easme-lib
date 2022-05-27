@@ -19,7 +19,7 @@ namespace EasMe
             _DirLog = Directory.GetCurrentDirectory() + "\\Logs\\";
             _Interval = Interval;
         }
-        
+
         /*
         Interval value        
         0 => Daily (Default)

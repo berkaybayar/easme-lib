@@ -5,7 +5,7 @@ using System.Net;
 
 namespace EasMe
 {
-    
+
     public class EasReCaptcha
     {
 
@@ -36,7 +36,7 @@ namespace EasMe
         public class CaptchaResponse
         {
             public bool Success { get; set; }
-            public DateTime ChallengeTS { get; set; } 
+            public DateTime ChallengeTS { get; set; }
             public string ApkPackageName { get; set; }
             public string ErrorCodes { get; set; }
         }

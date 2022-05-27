@@ -19,7 +19,7 @@ namespace EasMe
                     conn.Open();
                     cmd.Connection = conn;
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    da.SelectCommand.CommandTimeout = Timeout; 
+                    da.SelectCommand.CommandTimeout = Timeout;
                     da.Fill(dt);
                     conn.Close();
                     conn.Dispose();
@@ -41,7 +41,7 @@ namespace EasMe
                 try
                 {
                     cmd.Connection = conn;
-                    cmd.CommandTimeout = Timeout; 
+                    cmd.CommandTimeout = Timeout;
                     conn.Open();
                     rowsEffected = cmd.ExecuteNonQuery();
                     conn.Close();
@@ -85,7 +85,7 @@ namespace EasMe
             return ExecNonQuery(Connection, cmd, Timeout);
         }
 
-        public void BackupDatabase(string Connection, string DatabaseName, string BackupPath, int Timeout = 0) 
+        public void BackupDatabase(string Connection, string DatabaseName, string BackupPath, int Timeout = 0)
         {
             string query = $@"BACKUP DATABASE {DatabaseName} TO DISK = '{BackupPath}\{DatabaseName}-{DateTime.Now.ToString(" H-mm-ss dd-MM-yyyy")}.bak'";
             var cmd = new SqlCommand(query);
@@ -103,23 +103,23 @@ namespace EasMe
                                 ALTER DATABASE [{DatabaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
                                 DBCC SHRINKFILE(N'{DatabaseName}', 1)
                                 ALTER DATABASE [{DatabaseName}] SET RECOVERY FULL WITH NO_WAIT
-                            END";    
+                            END";
             var cmd = new SqlCommand(query);
             ExecNonQuery(Connection, cmd);
         }
-       
+
 
         public void TruncateTable(string Connection, string TableName)
         {
             string query = $@"TRUNCATE TABLE {TableName}";
-            var cmd = new SqlCommand(query);            
+            var cmd = new SqlCommand(query);
             ExecNonQuery(Connection, cmd);
         }
 
         public void DropTable(string Connection, string TableName)
         {
             string query = $@"DROP TABLE {TableName}";
-            var cmd = new SqlCommand(query);            
+            var cmd = new SqlCommand(query);
             ExecNonQuery(Connection, cmd);
         }
         public void DropDatabase(string Connection, string DatabaseName)
@@ -128,7 +128,7 @@ namespace EasMe
             var cmd = new SqlCommand(query);
             ExecNonQuery(Connection, cmd);
         }
-        
+
         public List<string> GetAllTableName(string Connection)
         {
             string query = $@"SELECT '['+SCHEMA_NAME(schema_id)+'].['+name+']' FROM sys.tables";

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace EasMe.dll
+namespace EasMe
 {
 
     public class EasMail

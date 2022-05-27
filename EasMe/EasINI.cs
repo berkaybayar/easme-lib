@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EasMe
 {
@@ -19,7 +16,7 @@ namespace EasMe
         [DllImport("kernel32.dll")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-        
+
         public EasINI(string INIFilePath)
         {
             Path = INIFilePath;
