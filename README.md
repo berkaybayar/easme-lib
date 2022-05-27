@@ -336,12 +336,13 @@ EasValidate _easvalidate = new EasValidate();
 
 ### IsValid Usage
 ```c#
-
+//Definitions
 public bool IsValidEmail(string email){};
 public bool IsValidIPAddress(string ipAddress){};
 public bool IsValidMACAddress(string macAddress){};
 public bool IsValidPort(string port){};
 
+//Usage
 if(_easvalidate.IsValidEmail("example@mail.com"))
 {
   //DO SOMETHING
@@ -350,11 +351,13 @@ if(_easvalidate.IsValidEmail("example@mail.com"))
  
 ### HasSpecialChars and IsStrongPassword Usage
 ```c#
+//Definitions
 //Letters and digits is allowed by default
 public bool HasSpecialChars(string yourString, string allowedChars){};
 public bool IsStrongPassword(string password, string allowedChars, int minLength, int maxLength, bool allowSpace = false){};
 
 
+//Usage
 if(_easvalidate.HasSpecialChars("exampleUsername","_"))
 {  
   //STRING HAS SPECIAL CHARACTERS THAT IS NOT ALLOWED
@@ -384,6 +387,7 @@ EasJWT _easJWT = new EasJWT("YOUR-SECRET-KEY");
 //Definition
 public string GenerateJWTToken(ClaimsIdentity claimsIdentity, int expireMinutes){};
 
+//Usage
 Claim[] claims = new Claim[] 
 {
     new Claim(ClaimTypes.Name, "John"),
@@ -397,7 +401,7 @@ string token = GenerateJWTToken(new ClaimsIdentity(claims), 10);
 //Definition
 public ClaimsPrincipal ValidateJWTToken(string token,bool validateIssuer = false, bool validateAudience = false){};
 
-
+//Usage
 var claimsPrincipal = ValidateJWTToken(token);
 string name = claims.Identity.Name;
 ```
@@ -416,5 +420,6 @@ EasGenerate _easgenerate = new EasGenerate();
 //Definition
 public string GenerateRandomString(int length, string allowedChars = "", bool onlyLetter = false){};
 
+//Usage
 var password = _easgenerate.GenerateRandomString(16,"[]{}()'^+*");
 ```
