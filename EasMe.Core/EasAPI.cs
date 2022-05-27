@@ -22,7 +22,7 @@ namespace EasMe.Core
             try
             {
                 var rMessage = JObject.Parse(response.ToString())[parse];
-                return rMessage.ToString();
+                return  rMessage.ToString();
             }
             catch (Exception ex)
             {
@@ -31,7 +31,7 @@ namespace EasMe.Core
 
 
         }
-        public APIResponse Get(string URL, string TOKEN = null)
+        public APIResponse Get(string URL, string? TOKEN = null)
         {
             var Response = new APIResponse();
             try

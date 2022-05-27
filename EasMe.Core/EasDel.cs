@@ -19,7 +19,7 @@ namespace EasMe.Core
         //When calling the class give bool value to determine to enable or disable logging         
         public EasDel(bool isEnableLogging = false)
         {
-            isEnableLogging = isEnableLogging;
+            _isEnableLogging = isEnableLogging;
         }
 
         public EasDel(string LogPath)
