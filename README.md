@@ -39,12 +39,11 @@ cmd.Parameters.AddWithValue("@id",1);
 DataTable dt = _easql.GetTable("YOUR-CONNECTION-STRING",cmd);
 ```
 
-### ExecNonQuery, ExecScalar, ExecStoredProcedure Usage
+### ExecNonQuery, ExecScalar Usage
 ```c#
 //Timeout set to 0 by default meaning there is no timeout
 public int ExecNonQuery(string Connection, SqlCommand cmd, int Timeout = 0){};
 public object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0){};
-public int ExecStoredProcedure(string Connection, SqlCommand cmd, int Timeout = 0){};
 
 //ExecNonQuery executes query and returnes affected rows as int value
 SqlCommand cmd = new SqlCommand("UPDATE Users SET Email = @email WHERE Id = @id");
@@ -56,12 +55,6 @@ int affectedRows = _easql.ExecNonQuery("YOUR-CONNECTION-STRING",cmd);
 SqlCommand cmd = new SqlCommand("SELECT Email FROM Users WHERE Id = @id");
 cmd.Parameters.AddWithValue("@id",1);
 object obj = _easql.ExecScalar("YOUR-CONNECTION-STRING",cmd);
-
-//ExecStoredProcedure will return int value which will depends on the procedure
-SqlCommand cmd = new SqlCommand("sendMail");
-cmd.CommandType = CommandType.StoredProcedure;
-cmd.Parameters.AddWithValue("@Username", "exampleusername");
-int result = _sql.ExecStoredProcedure("YOUR-CONNECTION-STRING", cmd);
 ```
 
 ### BackupDatabase and ShrinkDatabase Usage
