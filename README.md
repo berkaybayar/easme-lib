@@ -133,14 +133,14 @@ URL="www.github.com"
 ```c#
 public string Read(string Section, string Key){};
 
-string url = _easini.Read("SETTINGS","APIURL");
+string url = _easini.Read("SETTINGS","URL");
 ```
 
 ### Write Usage
 ```c#
 public void Write(string Section, string Key, string Value){};
 
-_easini.Write("SETTINGS","APIURL","www.google.com");
+_easini.Write("SETTINGS","URL","www.google.com");
 ```
 
 ---
