@@ -24,10 +24,7 @@ namespace EasMe.Core
                     conn.Close();
                     conn.Dispose();
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                catch (Exception) { throw; }
 
             }
             return dt;
@@ -47,10 +44,7 @@ namespace EasMe.Core
                     conn.Close();
                     conn.Dispose();
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                catch (Exception) { throw; }
 
             }
             return rowsEffected;
@@ -70,19 +64,11 @@ namespace EasMe.Core
                     conn.Close();
                     conn.Dispose();
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                catch (Exception) { throw; }
+
 
             }
             return obj;
-        }
-
-        public int ExecStoredProcedure(string Connection, SqlCommand cmd, int Timeout = 0)
-        {
-            cmd.CommandType = CommandType.StoredProcedure;
-            return ExecNonQuery(Connection, cmd, Timeout);
         }
 
         public void BackupDatabase(string Connection, string DatabaseName, string BackupPath, int Timeout = 0)

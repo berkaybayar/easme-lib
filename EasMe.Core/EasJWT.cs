@@ -36,9 +36,9 @@ namespace EasMe.Core
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return tokenHandler.WriteToken(token);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
         }
@@ -61,11 +61,11 @@ namespace EasMe.Core
                 {
                     return claims;
                 }
-                return null;
+                return new ClaimsPrincipal();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

@@ -42,11 +42,8 @@ namespace EasMe.Core
                 smtp.Send(message);
 
             }
-            catch (Exception ex)
-            {
-                throw ex;
+            catch (Exception) { throw; }
 
-            }
 
         }
     }
