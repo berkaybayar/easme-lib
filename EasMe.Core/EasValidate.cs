@@ -1,9 +1,10 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace EasMe.Core
 {
-    internal class EasValidate
+    public class EasValidate
     {
 
         public bool IsValidEmail(string email)
@@ -23,14 +24,25 @@ namespace EasMe.Core
                 return false;
             }
         }
-        public bool IsValidIPAddress(string ipAddress)
+        public bool IsValidIPAddress(string ipAddress, out string version)
         {
-            string IPRegex = @"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-            if (!Regex.IsMatch(ipAddress, IPRegex))
+            IPAddress address;
+            version = "";
+            if (IPAddress.TryParse(ipAddress, out address))
             {
-                return false;
+                switch (address.AddressFamily)
+                {
+                    case System.Net.Sockets.AddressFamily.InterNetwork:
+                        version = "IPv4";
+                        return true;
+                    case System.Net.Sockets.AddressFamily.InterNetworkV6:
+                        version = "IPv6";
+                        return true;
+                    default:
+                        return false;
+                }
             }
-            return true;
+            return false;
         }
         public bool IsValidMACAddress(string macAddress)
         {

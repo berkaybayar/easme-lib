@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace EasMe.Core
 {
-    internal class EasGenerate
+    public class EasGenerate
     {
 
         public string GenerateRandomString(int length, string allowedChars = "", bool onlyLetter = false)
