@@ -316,6 +316,12 @@ builder.Services.AddReCaptcha(builder.Configuration);
 var CaptchaResponse = HttpContext.Request.Form["g-recaptcha-response"];
 string Secret = "your-secret-key";       
 var Captcha = _easrecaptcha.Validate(Secret, CaptchaResponse);
+
+if (!Captcha.Success)
+{
+    ModelState.AddModelError("", "Captcha is not valid");
+    return View();
+}
 ```
 
 ---
