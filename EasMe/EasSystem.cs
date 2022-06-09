@@ -5,7 +5,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Management;
-namespace EasMe.Core
+namespace EasMe
 {
     public class EasSystem
     {
@@ -23,9 +23,6 @@ namespace EasMe.Core
         {
             return motherboardSearcher.Get().OfType<ManagementObject>().FirstOrDefault()?.GetPropertyValue("SerialNumber").ToString();
         }
-        public string GetHWID()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

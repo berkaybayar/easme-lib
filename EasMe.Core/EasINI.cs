@@ -25,7 +25,8 @@ namespace EasMe.Core
         {
             Path = Directory.GetCurrentDirectory() + @"\service.ini";
         }
-
+        
+        
         public void Write(string Section, string Key, string Value)
         {
             WritePrivateProfileString(Section, Key, Value, this.Path);

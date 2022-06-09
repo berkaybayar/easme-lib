@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace EasMe
@@ -49,10 +50,48 @@ namespace EasMe
 
             string LogPath = _DirLog + DateTime.Now.ToString(IntervalFormat) + " -log.txt";
             File.AppendAllText(LogPath, LogContent);
-
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }
+    public class EasLogger
+    {
+
+    }
+
+    public class LogMessageModel
+    {
+        public DateTime Date { get; set; } = DateTime.Now;
+        public string HttpMethod { get; set; }
+        public string RequestUrl { get; set; }
+        public Dictionary<string, string> Headers { get; set; }
+        public string HWID { get; set; }
+        public string Ip { get; set; }
+        public string Status { get; set; }
+        public string Action { get; set; }
+
+        public object LogMessage { get; set; }
+
+        public string LogException { get; set; }
+        public Exception Exception { get; set; }
+
+        public int ErrorNo { get; set; }
+
+        public string ErrorMsg { get; set; }
+
+        public string ProjectName { get; set; }
+
+        public string ServiceType { get; set; }
+
+        public string PlatformIndex { get; set; }
 
 
+    }
 }

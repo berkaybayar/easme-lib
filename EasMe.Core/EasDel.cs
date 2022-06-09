@@ -39,11 +39,11 @@ namespace EasMe.Core
                     try
                     {
                         File.Delete(file);
-                        if (_isEnableLogging) _easlog.Create("[FILE] [DELETED]: " + file);
+                        if (_isEnableLogging) _easlog.CreateJustString("[FILE] [DELETED]: " + file);
                     }
                     catch
                     {
-                        if (_isEnableLogging) _easlog.Create("[FILE] [DELETION_FAILED]: " + file);
+                        if (_isEnableLogging) _easlog.CreateJustString("[FILE] [DELETION_FAILED]: " + file);
                     }
 
                 }
@@ -54,11 +54,11 @@ namespace EasMe.Core
                 try
                 {
                     Directory.Delete(FilePath);
-                    if (_isEnableLogging) _easlog.Create("[FOLDER] [DELETED]: " + FilePath);
+                    if (_isEnableLogging) _easlog.CreateJustString("[FOLDER] [DELETED]: " + FilePath);
                 }
                 catch
                 {
-                    if (_isEnableLogging) _easlog.Create("[FOLDER] [DELETION_FAILED]: " + FilePath);
+                    if (_isEnableLogging) _easlog.CreateJustString("[FOLDER] [DELETION_FAILED]: " + FilePath);
                 }
             }
             else
@@ -66,11 +66,11 @@ namespace EasMe.Core
                 try
                 {
                     File.Delete(FilePath);
-                    if (_isEnableLogging) _easlog.Create("[FILE] [DELETED]: " + FilePath);
+                    if (_isEnableLogging) _easlog.CreateJustString("[FILE] [DELETED]: " + FilePath);
                 }
                 catch
                 {
-                    if (_isEnableLogging) _easlog.Create("[FILE] [DELETION_FAILED]: " + FilePath);
+                    if (_isEnableLogging) _easlog.CreateJustString("[FILE] [DELETION_FAILED]: " + FilePath);
                 }
 
             }

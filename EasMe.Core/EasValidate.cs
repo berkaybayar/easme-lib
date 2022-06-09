@@ -44,6 +44,26 @@ namespace EasMe.Core
             }
             return false;
         }
+        //It's not quite possible make %100 sure it is correct but this will do for most cases
+        public bool isValidFilePath(string path)
+        {
+            bool isValid = path.IndexOfAny(Path.GetInvalidPathChars()) == -1;
+            if (!isValid)
+            {
+                return false;
+            }
+            isValid = path.Contains(@"\");
+            if (!isValid)
+            {
+                return false;
+            }
+            isValid = path.Contains(":");
+            if (!isValid)
+            {
+                return false;
+            }
+            return true;
+        }
         public bool IsValidMACAddress(string macAddress)
         {
             var MACRegex = "^[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}$";

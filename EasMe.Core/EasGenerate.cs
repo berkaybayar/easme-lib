@@ -28,6 +28,5 @@ namespace EasMe.Core
             return resultToken;
         }
 
-
     }
 }
