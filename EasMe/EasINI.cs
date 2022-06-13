@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
 
 namespace EasMe
@@ -25,12 +23,13 @@ namespace EasMe
         {
             Path = Directory.GetCurrentDirectory() + @"\service.ini";
         }
-
+        
+        
         public void Write(string Section, string Key, string Value)
         {
             WritePrivateProfileString(Section, Key, Value, this.Path);
         }
-        public string Read(string Section, string Key)
+        public string? Read(string Section, string Key)
         {
             StringBuilder buffer = new StringBuilder(255);
             GetPrivateProfileString(Section, Key, "", buffer, 255, this.Path);

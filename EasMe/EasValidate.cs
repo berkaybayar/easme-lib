@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
 
-namespace EasMe
+namespace EasMe 
 {
     public class EasValidate
     {
@@ -24,7 +24,7 @@ namespace EasMe
                 return false;
             }
         }
-        public bool IsValidIPAddress( string ipAddress, out string version)
+        public bool IsValidIPAddress(string ipAddress, out string version)
         {
             IPAddress address;
             version = "";
@@ -43,6 +43,26 @@ namespace EasMe
                 }
             }
             return false;
+        }
+        //It's not quite possible make %100 sure it is correct but this will do for most cases
+        public bool isValidFilePath(string path)
+        {
+            bool isValid = path.IndexOfAny(Path.GetInvalidPathChars()) == -1;
+            if (!isValid)
+            {
+                return false;
+            }
+            isValid = path.Contains(@"\");
+            if (!isValid)
+            {
+                return false;
+            }
+            isValid = path.Contains(":");
+            if (!isValid)
+            {
+                return false;
+            }
+            return true;
         }
         public bool IsValidMACAddress(string macAddress)
         {
@@ -79,13 +99,9 @@ namespace EasMe
             return false;
         }
 
-        public bool IsStrongPassword(string password, string allowedChars, int minLength, int maxLength, bool allowSpace)
+        public bool IsStrongPassword(string password, string allowedChars, int minLength = 6, int maxLength = 16, int minUpperCaseCount = 1, int minLowerCaseCount = 1, int minNumberCount = 1, int minSpecialCharCount = 1)
         {
             if (password.Length < minLength || password.Length > maxLength)
-            {
-                return false;
-            }
-            if (allowSpace && password.Contains(' '))
             {
                 return false;
             }
@@ -93,8 +109,65 @@ namespace EasMe
             {
                 return false;
             }
+            if (password.Count(char.IsUpper) < minUpperCaseCount)
+            {
+                return false;
+            }
+            if (password.Count(char.IsLower) < minLowerCaseCount)
+            {
+                return false;
+            }
+            if (password.Count(char.IsNumber) < minNumberCount)
+            {
+                return false;
+            }
+            if ((password.Length - password.Count(char.IsLetterOrDigit)) < minSpecialCharCount)
+            {
+                return false;
+            }
 
             return true;
+        }
+        
+        public bool IsUrlImage(string URL)
+        {
+            var result = false;
+            var req = (HttpWebRequest)HttpWebRequest.Create(URL);
+            req.Method = "HEAD";
+            using (var resp = req.GetResponse())
+            {
+                result =  resp.ContentType.ToLower(CultureInfo.InvariantCulture)
+                           .StartsWith("image/");
+            }
+            if (result) return true;
+            if (URL.Contains(".jpg") || URL.Contains(".png") || URL.Contains(".gif") || URL.Contains(".jpeg"))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsUrlVideo(string URL)
+        {
+            var result = false;
+            var req = (HttpWebRequest)HttpWebRequest.Create(URL);
+            req.Method = "HEAD";
+            using (var resp = req.GetResponse())
+            {
+                result = resp.ContentType.ToLower(CultureInfo.InvariantCulture)
+                           .StartsWith("video/");
+            }
+            if (result) return true;
+            if (URL.Contains(".mp4") || URL.Contains(".avi") || URL.Contains(".mkv") || URL.Contains(".wmv") || URL.Contains(".flv") || URL.Contains(".mov") || URL.Contains(".mpeg") || URL.Contains(".mpg") || URL.Contains(".webm"))
+            {
+                return true;
+            }
+            return false;
+        }
+        
+        public bool IsURL(string url)
+        {
+            return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }
     }
 }

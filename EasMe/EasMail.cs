@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 
 namespace EasMe
@@ -12,7 +11,7 @@ namespace EasMe
         readonly string _password;
         readonly int _port;
         readonly bool _isSSL;
-        EasMail(string Host, string MailAddress, string Password, int Port, bool isSSL = false)
+        public EasMail(string Host, string MailAddress, string Password, int Port, bool isSSL = false)
         {
             _host = Host;
             _mailaddress = MailAddress;
@@ -27,7 +26,7 @@ namespace EasMe
             {
                 var fromAddress = new MailAddress(_mailaddress);
                 var toAddress = new MailAddress(SendTo);
-                using (var smtp = new SmtpClient
+                using var smtp = new SmtpClient
                 {
                     Host = _host,
                     Port = _port,
@@ -36,19 +35,14 @@ namespace EasMe
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(fromAddress.Address, _password)
 
-                })
-                using (var message = new MailMessage(fromAddress, toAddress) { Subject = Subject, Body = Body })
-                {
-                    message.IsBodyHtml = true;
-                    smtp.Send(message);
-                }
+                };
+                using var message = new MailMessage(fromAddress, toAddress) { Subject = Subject, Body = Body };
+                message.IsBodyHtml = true;
+                smtp.Send(message);
 
             }
-            catch (Exception ex)
-            {
-                throw ex;
+            catch (Exception) { throw; }
 
-            }
 
         }
     }
