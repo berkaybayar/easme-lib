@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace EasMe.Core
+namespace EasMe
 {
     public class EasGenerate
     {

@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Net;
 
 
-namespace EasMe.Core
+namespace EasMe
 {
 
     public class EasReCaptcha

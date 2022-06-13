@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace EasMe.Core
+namespace EasMe
 {
     public class EasDel
     {
@@ -27,7 +27,6 @@ namespace EasMe.Core
             _isEnableLogging = true;
             _easlog = new EasLog(LogPath);
         }
-
         public void DeleteAllFiles(string FilePath)
         {
             if (Directory.Exists(FilePath))
@@ -76,10 +75,6 @@ namespace EasMe.Core
             }
 
         }
-
-
-
-
     }
 
 }
