@@ -11,6 +11,14 @@ namespace EasMe
         readonly string _password;
         readonly int _port;
         readonly bool _isSSL;
+        /// <summary>
+        /// Mail sender helper, uses SMTP protocol.
+        /// </summary>
+        /// <param name="Host"></param>
+        /// <param name="MailAddress"></param>
+        /// <param name="Password"></param>
+        /// <param name="Port"></param>
+        /// <param name="isSSL"></param>
         public EasMail(string Host, string MailAddress, string Password, int Port, bool isSSL = false)
         {
             _host = Host;
@@ -20,6 +28,12 @@ namespace EasMe
             _isSSL = isSSL;
 
         }
+        /// <summary>
+        /// Sends mail
+        /// </summary>
+        /// <param name="Body"></param>
+        /// <param name="SendTo"></param>
+        /// <param name="Subject"></param>
         public void SendMail(string Body, string SendTo, string Subject)
         {
             try

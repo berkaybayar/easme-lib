@@ -2,7 +2,10 @@
 
 namespace EasMe
 {
-    public class EasProxy
+    /// <summary>
+    /// Web helper
+    /// </summary>
+    public static class EasProxy
     {
         public static string[] _HeaderList = new string[23]
         {
@@ -30,28 +33,60 @@ namespace EasMe
               "CF-Connecting-IP",
               "X-Real-IP",
         };
-        public Dictionary<string, string> GetHeaderValues(HttpContext ctx)
+        /// <summary>
+        /// Gets header values by httpContext
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetHeaderValues(HttpContext httpContext)
         {
             Dictionary<string, string> headerValues = new Dictionary<string, string>();
             foreach (string header in _HeaderList)
             {
-                headerValues.Add(header, ctx.Request.Headers[header]);
+                headerValues.Add(header, httpContext.Request.Headers[header]);
             }
             return headerValues;
         }
-        public Dictionary<string, string> GetHeaderValues(HttpRequest req)
+        /// <summary>
+        /// Converts all headers to string
+        /// </summary>
+        /// <param name="Headers"></param>
+        /// <returns>Format: "HEADER:VALUE|HEADER2:VALUE2"</returns>       
+        public static string ConvertHeadersToString(Dictionary<string, string>? Headers)
+        {
+            var val = "";
+            if (Headers == null) return "";
+            foreach (var item in Headers)
+            {
+                val += $"{item.Key}:{item.Value}|";
+            }
+            return val.Substring(0, val.Length - 1);
+
+        }
+        /// <summary>
+        /// Gets header values by HttpRequest
+        /// </summary>
+        /// <param name="httpRequest"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetHeaderValues(HttpRequest httpRequest)
         {
             Dictionary<string, string> headerValues = new Dictionary<string, string>();
             foreach (string header in _HeaderList)
             {
-                headerValues.Add(header, req.Headers[header]);
+                headerValues.Add(header, httpRequest.Headers[header]);
             }
             return headerValues;
-        }        
-        public List<string> GetIP(HttpContext ctx)
+        }
+
+        /// <summary>
+        /// Gets IP's in http request headers by httpContext.
+        /// </summary>
+        /// <param name="httpRequest"></param>
+        /// <returns></returns>
+        public static List<string> GetIP(HttpContext httpContext)
         {
             var list = new List<string>();
-            var headers = GetHeaderValues(ctx);
+            var headers = GetHeaderValues(httpContext);
             foreach (var item in headers)
             {
                 if (item.Key == "X-FORWARDED-FOR" || item.Key == "X-ORIGINAL-HOST" || item.Key == "PC-Real-IP" || item.Key == "X-Real-IP" || item.Key == "CF-Connecting-IP")
@@ -59,13 +94,19 @@ namespace EasMe
                     list.Add(item.Value);
                 }
             }
-            list.Add(ctx.Connection.RemoteIpAddress.ToString());
+            list.Add(httpContext.Connection.RemoteIpAddress.ToString());
             return list;
         }
-        public List<string> GetIP(HttpRequest req)
+
+        /// <summary>
+        /// Gets IP's in http request headers by HttpRequest.
+        /// </summary>
+        /// <param name="httpRequest"></param>
+        /// <returns></returns>
+        public static List<string> GetIP(HttpRequest httpRequest)
         {
             var list = new List<string>();
-            var headers = GetHeaderValues(req);
+            var headers = GetHeaderValues(httpRequest);
             foreach (var item in headers)
             {
                 if (item.Key == "X-FORWARDED-FOR" || item.Key == "X-ORIGINAL-HOST" || item.Key == "PC-Real-IP" || item.Key == "X-Real-IP" || item.Key == "CF-Connecting-IP")
@@ -73,32 +114,48 @@ namespace EasMe
                     list.Add(item.Value);
                 }
             }
-            list.Add(req.HttpContext.Connection.RemoteIpAddress.ToString());
+            list.Add(httpRequest.HttpContext.Connection.RemoteIpAddress.ToString());
             return list;
         }
-        public string GetRemoteIpAddress(HttpContext ctx)
+        /// <summary>
+        /// Get Remote IP Address by HttpContext.
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
+        public static string GetRemoteIpAddress(HttpContext httpContext)
         {
-            return ctx.Connection.RemoteIpAddress.ToString();
+            return httpContext.Connection.RemoteIpAddress.ToString();
         }
-        public string GetRemoteIpAddress(HttpRequest req)
+        /// <summary>
+        /// Get Remote IP Address by HttpRequest.
+        /// </summary>
+        /// <param name="httpRequest"></param>
+        /// <returns></returns>
+        public static string GetRemoteIpAddress(HttpRequest httpRequest)
         {
-            return req.HttpContext.Connection.RemoteIpAddress.ToString();
+            return httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
         }
-        public string GetRequestQuery(HttpContext ctx)
+
+        /// <summary>
+        ///     Gets request URL by HttpContext.
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
+        public static string GetRequestQuery(HttpContext httpContext)
         {
-            return ctx.Request.Path.ToUriComponent();
+            return httpContext.Request.Path.ToUriComponent();
         }
-        public string GetRequestQuery(HttpRequest req)
+
+        /// <summary>
+        ///     Gets request URL by HttpRequest.
+        /// </summary>
+        /// <param name="httpRequest"></param>
+        /// <returns></returns>
+        public static string GetRequestQuery(HttpRequest httpRequest)
         {
-            return req.Path.ToUriComponent();
+            return httpRequest.Path.ToUriComponent();
         }
-        //This will only work if current working app is downloadable client example: winform
-        //If you use it on your website you will get your hosting IP Address
-        public string GetClientRemoteIPAddress()
-        {
-            var httpClient = new HttpClient();
-            var response = httpClient.GetAsync("https://api.ipify.org/").Result;
-            return response.Content.ReadAsStringAsync().Result;
-        }
+
+
     }
 }

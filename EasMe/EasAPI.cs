@@ -10,9 +10,13 @@ namespace EasMe
 
         //Install-Package Microsoft.AspNet.WebApi.Client -Version 5.2.8
 
-        //Parsing will only return one of the items as string
-        private static readonly HttpClient client = new HttpClient();
-        public  string ParsefromJsonResponse(string response, string parse)
+        /// <summary>
+        /// Gets one of the values from Json API response.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="parse"></param>
+        /// <returns></returns>
+        public string ParsefromJsonResponse(string response, string parse)
         {
             try
             {
@@ -26,12 +30,21 @@ namespace EasMe
 
 
         }
-        public  APIResponseModel Get(string URL, string? TOKEN = null)
+
+        /// <summary>
+        /// Sends get request
+        /// </summary>
+        /// <param name="URL"></param>
+        /// <param name="TOKEN"></param>
+        /// <returns></returns>
+        public APIResponseModel Get(string URL, string? TOKEN = null)
         {
+            HttpClient client = new HttpClient();
             var Response = new APIResponseModel();
             try
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+                if(!string.IsNullOrEmpty(TOKEN))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
                 
                 client.BaseAddress = new Uri(URL);
                 var postTask = client.GetAsync(client.BaseAddress);
@@ -47,13 +60,21 @@ namespace EasMe
             }
             return Response;
         }
-
-        public  APIResponseModel PostAsJson(string URL, object Data, string? TOKEN = null)
+        /// <summary>
+        /// Sends post request
+        /// </summary>
+        /// <param name="URL"></param>
+        /// <param name="Data"></param>
+        /// <param name="TOKEN"></param>
+        /// <returns></returns>
+        public APIResponseModel PostAsJson(string URL, object Data, string? TOKEN = null)
         {
+            HttpClient client = new HttpClient();            
             var Response = new APIResponseModel();
             try
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+                if (!string.IsNullOrEmpty(TOKEN))
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
                 
                 client.BaseAddress = new Uri(URL);
                 var postTask = client.PostAsJsonAsync(URL, Data);

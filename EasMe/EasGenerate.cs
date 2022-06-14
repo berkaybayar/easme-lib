@@ -5,7 +5,13 @@ namespace EasMe
 {
     public class EasGenerate
     {
-
+        /// <summary>
+        /// Generate a random string with a given length and allowed characters
+        /// </summary>
+        /// <param name="length"></param>
+        /// <param name="allowedChars"></param>
+        /// <param name="onlyLetter"></param>
+        /// <returns></returns>
         public string GenerateRandomString(int length, string allowedChars = "", bool onlyLetter = false)
         {
             string lowerAll = "abcdefghijklmnoprstuvwxyz";

@@ -1,15 +1,19 @@
 ﻿using EasMe.Models;
+using EasMe.Models.LogModels;
 using System.Diagnostics;
 using System.Text.Json;
 
 namespace EasMe
 {
+    /// <summary>
+    /// Simple logging helper with few useful options.
+    /// </summary>
     public class EasLog
     {
         private static string _DirLog;
         private static int _Interval;
         private static bool _EnableConsoleLogging;
-
+        private static bool _SeperateLogTypes;
         public static Dictionary<int, string> CustomErrorNoList;
         /*
         Interval value        
@@ -17,134 +21,274 @@ namespace EasMe
         1 => Hourly 
         2 => Every Minute
         */
-        public EasLog(string FilePath, bool EnableConsoleLogging = true,int Interval = 0)
+        /*
+        Log Model Num      
+        0 => BaseLogModel
+        1 => WebLogModel 
+        2 => Every Minute
+        */
+
+        public EasLog(string FilePath, bool SeperateLogTypes = true, bool EnableConsoleLogging = true, int Interval = 0)
         {
-            
+            _SeperateLogTypes = SeperateLogTypes;
             _DirLog = FilePath;
             _Interval = Interval;
             _EnableConsoleLogging = EnableConsoleLogging;
         }
 
-        public EasLog(bool EnableConsoleLogging = true,int Interval = 0)
+        public EasLog(bool SeperateLogTypes = true, bool EnableConsoleLogging = true, int Interval = 0)
         {
+            _SeperateLogTypes = SeperateLogTypes;
             _DirLog = Directory.GetCurrentDirectory() + "\\Logs\\";
             _Interval = Interval;
             _EnableConsoleLogging = EnableConsoleLogging;
         }
-        
-        
-        public string Log(string Severity, string LogMessage, string Status, string? Ip = null, string? HWID = null, string? HttpMethod = null, string? RequestUrl = null, int? ErrorNo = null, Exception? ex = null, Dictionary<string, string>? Headers = null)
+
+        /// <summary>
+        /// Creates log with Info severity and success status.
+        /// </summary>
+        /// <param name="LogMessage"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+        public string Info(string LogMessage)
         {
-            string serialized = "";
+            string serialized;
             try
             {
-                var log = CreateModel(Severity, LogMessage, Status, Ip, HWID, HttpMethod, RequestUrl, ErrorNo, ex, Headers);
+                var log = BaseModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS);
                 serialized = Serialize(log);
-                CreateJustString(serialized, false);
-            }
-            catch (Exception)
-            {
-                
-            }
-            return serialized;
-        }
-        public string Info(string LogMessage, string Status = "SUCCESS", string? Ip = null, string? HWID = null, string? HttpMethod = null, string? RequestUrl = null, int? ErrorNo = null, Dictionary<string, string>? Headers = null)
-        {
-            string serialized = "";
-            try
-            {
-                var log = CreateModel("INFO", LogMessage, Status, Ip, HWID, HttpMethod, RequestUrl, ErrorNo, null, Headers);
-                serialized = Serialize(log);
-                CreateJustString(serialized, false);
+                Log(serialized, false);
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
             }
             return serialized;
 
         }
-
-        public string Error(string LogMessage, string Status = "FAILED", int ErrorNo = 3, Exception? ex = null, string? Ip = null, string? HWID = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public string InfoWeb(string LogMessage, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized = "";
+            string serialized;
             try
             {
-                var log = CreateModel("ERROR", LogMessage, Status, Ip, HWID, HttpMethod, RequestUrl, ErrorNo, ex, Headers);
+                var log = WebModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS, Ip, HttpMethod, RequestUrl, Headers, null);
                 serialized = Serialize(log);
-                CreateJustString(serialized, false);
+                Log(serialized, false);
+
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
             }
             return serialized;
         }
-
-        public string Exception(Exception ex, string? Ip = null, string? HWID = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public string InfoClient(string LogMessage)
         {
-            string serialized = "";
+            string serialized;
             try
             {
-                var log = CreateModel("EXCEPTION", "An exception occured", "FAILED", Ip, HWID, HttpMethod, RequestUrl, 6, ex, Headers);
+                var log = ClientModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS);
                 serialized = Serialize(log);
-                CreateJustString(serialized, false);
-            }
-            catch (Exception)
-            {
-            }
-            return serialized;
-        }
+                Log(serialized, false);
 
-        public string Warn(string LogMessage, string Status, string Ip = "", string HWID = "", string HttpMethod = "", string RequestUrl = "", int? ErrorNo = 2, Dictionary<string, string>? Headers = null)
-        {
-            string serialized = "";
-            try
-            {
-                var log = CreateModel("WARN", LogMessage, Status, Ip, HWID, HttpMethod, RequestUrl, ErrorNo, null, Headers);
-                serialized = Serialize(log);
-                CreateJustString(serialized, false);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
             }
             return serialized;
 
         }
 
+        /// <summary>
+        /// Creates log with Error severity and failed status.
+        /// </summary>
+        /// <param name="LogMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+        public string Error(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR)
+        {
+            string serialized;
+            try
+            {
+                var log = BaseModelCreate("ERROR", LogMessage, ErrorNo);
+                serialized = Serialize(log);
+                Log(serialized, false);
+            }
+            catch (Exception e)
+            {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
+            }
+            return serialized;
+        }
+        public string ErrorWeb(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        {
+            string serialized;
+            try
+            {
+                var log = WebModelCreate("ERROR", LogMessage, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
+                serialized = Serialize(log);
+                Log(serialized, false);
+            }
+            catch (Exception e)
+            {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
+            }
+            return serialized;
+        }
+        public string ErrorClient(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR)
+        {
+            string serialized;
+            try
+            {
+                var log = ClientModelCreate("ERROR", LogMessage, ErrorNo);
+                serialized = Serialize(log);
+                Log(serialized, false);
+            }
+            catch (Exception e)
+            {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
+            }
+            return serialized;
+        }
+
+        /// <summary>
+        /// Creates log with Exception severity and failed status. ErrorLogModel is used
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+        public string Exception(Exception ex, ErrorType.TypeList Error = ErrorType.TypeList.EXCEPTION_OCCURED)
+        {
+            string serialized;
+            try
+            {
+                serialized = Serialize(ErrorModelCreate(ex, "ERROR", Error));
+                Log(serialized, false);
+            }
+            catch (Exception e)
+            {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
+            }
+            return serialized;
+        }
+
+        /// <summary>
+        /// Creates log with Warning severity and warn status.
+        /// </summary>
+        /// <param name="LogMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+        public string Warn(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.WARN)
+        {
+            string serialized;
+            try
+            {
+                var log = BaseModelCreate("WARN", LogMessage, ErrorNo);
+                serialized = Serialize(log);
+                Log(serialized, false);
+            }
+            catch (Exception e)
+            {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
+            }
+            return serialized;
+
+        }
+        public string WarnWeb(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.WARN, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        {
+            string serialized;
+            try
+            {
+                var log = WebModelCreate("WARN", LogMessage, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
+                serialized = Serialize(log);
+                Log(serialized, false);
+            }
+            catch (Exception e)
+            {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
+            }
+            return serialized;
+
+        }
+        public string WarnClient(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.WARN)
+        {
+            string serialized;
+            try
+            {
+                var log = ClientModelCreate("WARN", LogMessage, ErrorNo);
+                serialized = Serialize(log);
+                Log(serialized, false);
+            }
+            catch (Exception e)
+            {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
+            }
+            return serialized;
+
+        }
+
+
+        /// <summary>
+        /// Creates log with given custom class, serializes the custom log model.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public string Custom(object obj)
         {
-            string serialized = "";
+            string serialized;
             try
             {
                 serialized = Serialize(obj);
-                CreateJustString(serialized, false);
+                Log(serialized, false);
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
             }
             return serialized;
         }
 
+        /// <summary>
+        /// Serializing the log model to json string.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private string Serialize(object obj)
         {
             try
             {
-                
                 return JsonSerializer.Serialize(obj);
-
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return "Exception occured"; 
+                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
             }
         }
-        //private string SerializeException(object ex)
-        //{
-        //    return Newtonsoft.Json.JsonConvert.SerializeObject(ex, Newtonsoft.Json.Formatting.Indented);       
-        //}
-        
-        public void CreateJustString(string LogContent, bool UseDefaultDate = false)
+
+        /// <summary>
+        /// Creates simple log with given string.
+        /// </summary>
+        /// <param name="LogContent"></param>
+        /// <param name="UseDefaultDate"></param>
+        /// <returns>LogContent</returns>
+        public string Log(string LogContent, bool UseDefaultDate = false)
         {
 
             try
@@ -169,31 +313,99 @@ namespace EasMe
                         IntervalFormat = "MM.dd.yyyy HH.mm";
                         break;
                 }
+                switch (_SeperateLogTypes)
+                {
+                    case true:
+                        break;
+                    case false:
+                        break;
+                }
                 string LogPath = _DirLog + DateTime.Now.ToString(IntervalFormat) + " -log.txt";
                 File.AppendAllText(LogPath, LogContent);
-                if(_EnableConsoleLogging)
+                if (_EnableConsoleLogging)
                     Console.WriteLine(LogContent);
             }
-            catch (Exception)
-            {                
-                throw;
+            catch (Exception e)
+            {
+                return Exception(e, ErrorType.TypeList.CREATING_LOG_ERROR);
             }
+            return LogContent;
+
         }
 
-        private LogModel CreateModel(string Severity, string LogMessage, string Status, string? Ip, string? HWID, string? HttpMethod, string? RequestUrl, int? ErrorNo, Exception? ex, Dictionary<string, string>? Headers)
+
+        /// <summary>
+        /// Converts given parameters to WebLogModel.
+        /// </summary>
+        /// <param name="Severity"></param>
+        /// <param name="LogMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <param name="ex"></param>
+        /// <returns>EasMe.Models.WebLogModel</returns>
+        private WebLogModel WebModelCreate(string Severity, string LogMessage, ErrorType.TypeList ErrorNo, string? Ip, string? HttpMethod, string? RequestUrl, Dictionary<string, string>? Headers, Exception? ex)
         {
-            var log = new LogModel();
-            log.Severity = Severity.ToUpper();
-            log.Message = LogMessage;
-            log.TraceAction = GetActionName();
-            log.TraceClass = GetClassName();
-            log.Status = Status.ToUpper();
-            log.Ip = Ip;
-            log.HWID = HWID;
-            log.HttpMethod = HttpMethod;
-            log.RequestUrl = RequestUrl;
-            log.Headers = ConvertHeadersToString(Headers);
-            if(ex != null)
+            var log = new WebLogModel
+            {
+                Severity = Severity.ToUpper(),
+                LogType = 1,
+                Message = LogMessage,
+                TraceAction = GetActionName(),
+                TraceClass = GetClassName(),
+                Ip = Ip,
+                HttpMethod = HttpMethod,
+                RequestUrl = RequestUrl,
+                Headers = EasProxy.ConvertHeadersToString(Headers),
+                ErrorNo = ErrorNo.ToString()
+            };
+            return log;
+        }
+
+        /// <summary>
+        /// Converts given parameters to BaseLogModel.
+        /// </summary>
+        /// <param name="Severity"></param>
+        /// <param name="LogMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <returns>EasMe.Models.BaseLogModel</returns>
+        private BaseLogModel BaseModelCreate(string Severity, string LogMessage, ErrorType.TypeList ErrorNo)
+        {
+            var log = new BaseLogModel
+            {
+                Severity = Severity.ToUpper(),
+                Message = LogMessage,
+                LogType = 0,
+                TraceAction = GetActionName(),
+                TraceClass = GetClassName(),
+                ErrorNo = ErrorNo.ToString()
+            };
+            return log;
+        }
+
+        /// <summary>
+        /// Converts given parameters to ErrorLogModel.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="Severity"></param>
+        /// <param name="ErrorNo"></param>
+        /// <returns>EasMe.Models.ErrorLogModel</returns>
+        private ErrorLogModel ErrorModelCreate(Exception? ex, string Severity, ErrorType.TypeList ErrorNo)
+        {
+            var message = ErrorType.EnumGetKeybyValue(ErrorNo);
+            if (string.IsNullOrEmpty(message)) message = "Unknown Error";
+            var log = new ErrorLogModel
+            {
+                LogType = -1,
+                Severity = Severity.ToUpper(),
+                Message = message,
+                TraceAction = GetActionName(),
+                TraceClass = GetClassName(),
+                ErrorNo = ErrorNo.ToString()
+            };
+            if (ex != null)
             {
                 log.ExceptionMessage = ex.Message;
                 log.ExceptionStackTrace = ex.StackTrace;
@@ -203,49 +415,54 @@ namespace EasMe
                     log.ExceptionInner = ex.InnerException.Message;
                 }
             }
-           
-
-            log.ErrorNo = ErrorNo;
-
             return log;
         }
-        private string ConvertHeadersToString(Dictionary<string, string>? Headers)
-        {
-            var val = "";
-            if (Headers == null) return "";
-            foreach (var item in Headers)
-            {
-                val += $"{item.Key}:{item.Value}|";
-            }
-            return val.Substring(0, val.Length - 1);
 
-        }
-   
-        private string? GetActionName()
+        /// <summary>
+        /// Converts given parameters to ClientModelCreate.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="Severity"></param>
+        /// <param name="LogMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <returns>EasMe.Models.ClientLogModel</returns>
+        private ClientLogModel ClientModelCreate(string Severity, string LogMessage, ErrorType.TypeList ErrorNo)
         {
-            var methodInfo = new StackTrace().GetFrame(3).GetMethod();
+            var log = new ClientLogModel
+            {
+                LogType = 2,
+                Severity = Severity.ToUpper(),
+                Message = LogMessage,
+                TraceAction = GetActionName(),
+                TraceClass = GetClassName(),
+                ErrorNo = ErrorNo.ToString(),
+            };
+            return log;
+        }
+
+
+        /// <summary>
+        /// Gets the name of the function this function is called from.
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <returns></returns>
+        private string? GetActionName(int frame = 3)
+        {
+            var methodInfo = new StackTrace().GetFrame(frame).GetMethod();
             return methodInfo.Name;
         }
-        private string? GetClassName()
+
+        /// <summary>
+        /// Gets the name of the class this function is called from.
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <returns></returns>
+        private string? GetClassName(int frame = 3)
         {
-            var methodInfo = new StackTrace().GetFrame(3).GetMethod();
+            var methodInfo = new StackTrace().GetFrame(frame).GetMethod();
             return methodInfo.ReflectedType.Name;
         }
-        /*
-        public DateTime Date { get; private set; } = DateTime.Now;
-        public string Severity { get; set; }
-        public string? Status { get; set; }
-        public string? TraceAction { get; set; }
-        public string? TraceClass { get; set; }
-        public object? Message { get; set; }
-        public int? ErrorNo { get; set; }        
-        public string? Ip { get; set; }
-        public string? HttpMethod { get; set; }
-        public string? RequestUrl { get; set; }
-        public string? Headers { get; set; }
-        public string? Exception { get; set; }
-        public string? HWID { get; set; }
-        */
+
 
     }
 

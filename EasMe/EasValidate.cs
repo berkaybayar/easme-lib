@@ -4,10 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace EasMe 
 {
-    public class EasValidate
+    public static class EasValidate
     {
-
-        public bool IsValidEmail(string email)
+        public static bool IsValidEmail(string email)
         {
             var trimmedEmail = email.Trim();
             if (trimmedEmail.EndsWith("."))
@@ -24,7 +23,7 @@ namespace EasMe
                 return false;
             }
         }
-        public bool IsValidIPAddress(string ipAddress, out string version)
+        public static bool IsValidIPAddress(string ipAddress, out string version)
         {
             IPAddress address;
             version = "";
@@ -45,7 +44,7 @@ namespace EasMe
             return false;
         }
         //It's not quite possible make %100 sure it is correct but this will do for most cases
-        public bool isValidFilePath(string path)
+        public static bool isValidFilePath(string path)
         {
             bool isValid = path.IndexOfAny(Path.GetInvalidPathChars()) == -1;
             if (!isValid)
@@ -64,7 +63,7 @@ namespace EasMe
             }
             return true;
         }
-        public bool IsValidMACAddress(string macAddress)
+        public static bool IsValidMACAddress(string macAddress)
         {
             var MACRegex = "^[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}$";
             if (!Regex.IsMatch(macAddress, MACRegex))
@@ -73,7 +72,7 @@ namespace EasMe
             }
             return true;
         }
-        public bool IsValidPort(string port)
+        public static bool IsValidPort(string port)
         {
             var PortRegex = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
             if (!Regex.IsMatch(port, PortRegex))
@@ -83,7 +82,7 @@ namespace EasMe
             return true;
         }
 
-        public bool HasSpecialChars(string yourString, string allowedChars)
+        public static bool HasSpecialChars(string yourString, string allowedChars)
         {
             foreach (char c in yourString)
             {
@@ -99,7 +98,7 @@ namespace EasMe
             return false;
         }
 
-        public bool IsStrongPassword(string password, string allowedChars, int minLength = 6, int maxLength = 16, int minUpperCaseCount = 1, int minLowerCaseCount = 1, int minNumberCount = 1, int minSpecialCharCount = 1)
+        public static bool IsStrongPassword(string password, string allowedChars, int minLength = 6, int maxLength = 16, int minUpperCaseCount = 1, int minLowerCaseCount = 1, int minNumberCount = 1, int minSpecialCharCount = 1)
         {
             if (password.Length < minLength || password.Length > maxLength)
             {
@@ -129,7 +128,7 @@ namespace EasMe
             return true;
         }
         
-        public bool IsUrlImage(string URL)
+        public static bool IsUrlImage(string URL)
         {
             var result = false;
             var req = (HttpWebRequest)HttpWebRequest.Create(URL);
@@ -147,7 +146,7 @@ namespace EasMe
             return false;
         }
 
-        public bool IsUrlVideo(string URL)
+        public static bool IsUrlVideo(string URL)
         {
             var result = false;
             var req = (HttpWebRequest)HttpWebRequest.Create(URL);
@@ -165,7 +164,7 @@ namespace EasMe
             return false;
         }
         
-        public bool IsURL(string url)
+        public static bool IsURL(string url)
         {
             return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }

@@ -3,6 +3,9 @@ using System.Text;
 
 namespace EasMe
 {
+    /// <summary>
+    /// Write or read from INI file
+    /// </summary>
     public class EasINI
     {
 
@@ -19,16 +22,28 @@ namespace EasMe
         {
             Path = INIFilePath;
         }
+        
         public EasINI()
         {
             Path = Directory.GetCurrentDirectory() + @"\service.ini";
         }
-        
-        
+
+        /// <summary>
+        /// Writes a value to the INI file
+        /// </summary>
+        /// <param name="Section"></param>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
         public void Write(string Section, string Key, string Value)
         {
             WritePrivateProfileString(Section, Key, Value, this.Path);
         }
+        /// <summary>
+        /// Reads a value from the INI file
+        /// </summary>
+        /// <param name="Section"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
         public string? Read(string Section, string Key)
         {
             StringBuilder buffer = new StringBuilder(255);

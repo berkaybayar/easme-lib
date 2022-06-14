@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using EasMe.Models;
+using Newtonsoft.Json.Linq;
 using System.Net;
 
 
@@ -32,13 +33,7 @@ namespace EasMe
         var Captcha = _recaptcha.Validate(Secret, CaptchaResponse);
         */
 
-        public class CaptchaResponse
-        {
-            public bool Success { get; set; }
-            public DateTime ChallengeTS { get; set; }
-            public string ApkPackageName { get; set; }
-            public string ErrorCodes { get; set; }
-        }
+
         public CaptchaResponse Validate(string Secret, string CaptchaResponse)
         {
 

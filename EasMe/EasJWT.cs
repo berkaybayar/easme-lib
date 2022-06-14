@@ -5,6 +5,9 @@ using System.Text;
 
 namespace EasMe
 {
+    /// <summary>
+    /// JWT Authentication helper, generating and reading tokens.
+    /// </summary>
     public class EasJWT
     {
         private static string _secretString;
@@ -17,8 +20,13 @@ namespace EasMe
             _secretBytes = Encoding.ASCII.GetBytes(_secretString);
             _issuer = issuer;
             _audience = audience;
-        }       
-
+        }
+        /// <summary>
+        /// Generates a JWT token by ClaimsIdentity.
+        /// </summary>
+        /// <param name="claimsIdentity"></param>
+        /// <param name="expireMinutes"></param>
+        /// <returns></returns>
         public string GenerateJWTToken(ClaimsIdentity claimsIdentity, int expireMinutes)
         {
             try
@@ -42,7 +50,13 @@ namespace EasMe
 
         }
 
-
+        /// <summary>
+        /// Validates JWT token and returns ClaimsPrincipal.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="validateIssuer"></param>
+        /// <param name="validateAudience"></param>
+        /// <returns></returns>
         public ClaimsPrincipal ValidateJWTToken(string token,bool validateIssuer = false, bool validateAudience = false)
         {
             try

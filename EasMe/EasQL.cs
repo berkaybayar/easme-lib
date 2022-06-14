@@ -4,9 +4,18 @@ using System.Data.SqlClient;
 
 namespace EasMe
 {
+    /// <summary>
+    /// SQL helper, used to execute SQL queries, and get data from SQL database.
+    /// </summary>
     public class EasQL
     {
-
+        /// <summary>
+        /// Executes SQL query and returns DataTable.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="cmd"></param>
+        /// <param name="Timeout"></param>
+        /// <returns>DataTable</returns>
         public DataTable GetTable(string Connection, SqlCommand cmd, int Timeout = 0)
         {
             DataTable dt = new DataTable();
