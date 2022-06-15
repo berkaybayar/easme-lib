@@ -49,7 +49,7 @@
           "lib/netstandard2.0/Microsoft.Extensions.Primitives.dll": {}
         }
       },
-      "Microsoft.IdentityModel.Abstractions/6.18.0": {
+      "Microsoft.IdentityModel.Abstractions/6.19.0": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Microsoft.IdentityModel.Abstractions.dll": {}
@@ -58,10 +58,10 @@
           "lib/netstandard2.0/Microsoft.IdentityModel.Abstractions.dll": {}
         }
       },
-      "Microsoft.IdentityModel.JsonWebTokens/6.18.0": {
+      "Microsoft.IdentityModel.JsonWebTokens/6.19.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.IdentityModel.Tokens": "6.18.0"
+          "Microsoft.IdentityModel.Tokens": "6.19.0"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll": {}
@@ -70,10 +70,10 @@
           "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll": {}
         }
       },
-      "Microsoft.IdentityModel.Logging/6.18.0": {
+      "Microsoft.IdentityModel.Logging/6.19.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.IdentityModel.Abstractions": "6.18.0"
+          "Microsoft.IdentityModel.Abstractions": "6.19.0"
         },
         "compile": {
           "lib/netstandard2.0/Microsoft.IdentityModel.Logging.dll": {}
@@ -82,11 +82,11 @@
           "lib/netstandard2.0/Microsoft.IdentityModel.Logging.dll": {}
         }
       },
-      "Microsoft.IdentityModel.Tokens/6.18.0": {
+      "Microsoft.IdentityModel.Tokens/6.19.0": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.5.0",
-          "Microsoft.IdentityModel.Logging": "6.18.0",
+          "Microsoft.IdentityModel.Logging": "6.19.0",
           "System.Security.Cryptography.Cng": "4.5.0"
         },
         "compile": {
@@ -208,11 +208,11 @@
           }
         }
       },
-      "System.IdentityModel.Tokens.Jwt/6.18.0": {
+      "System.IdentityModel.Tokens.Jwt/6.19.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.IdentityModel.JsonWebTokens": "6.18.0",
-          "Microsoft.IdentityModel.Tokens": "6.18.0"
+          "Microsoft.IdentityModel.JsonWebTokens": "6.19.0",
+          "Microsoft.IdentityModel.Tokens": "6.19.0"
         },
         "compile": {
           "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.dll": {}
@@ -432,10 +432,10 @@
         "microsoft.extensions.primitives.nuspec"
       ]
     },
-    "Microsoft.IdentityModel.Abstractions/6.18.0": {
-      "sha512": "ItCO09JoIQr9sY0AumHRLJKToMKM4/jFcBsg3uhKBZZLX1KPxjed/mKrQzo9PXiarfC87rguvFWWg9C996sEqA==",
+    "Microsoft.IdentityModel.Abstractions/6.19.0": {
+      "sha512": "SNDIcIdXeclk8lcwUtZMijCxBZ44krYG9at6kQMuds6I7zkiVvfYwOp394zI8tXFFDXu49Q6XFFTS59Exgw6xA==",
       "type": "package",
-      "path": "microsoft.identitymodel.abstractions/6.18.0",
+      "path": "microsoft.identitymodel.abstractions/6.19.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -447,14 +447,14 @@
         "lib/net472/Microsoft.IdentityModel.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.IdentityModel.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.IdentityModel.Abstractions.xml",
-        "microsoft.identitymodel.abstractions.6.18.0.nupkg.sha512",
+        "microsoft.identitymodel.abstractions.6.19.0.nupkg.sha512",
         "microsoft.identitymodel.abstractions.nuspec"
       ]
     },
-    "Microsoft.IdentityModel.JsonWebTokens/6.18.0": {
-      "sha512": "KKdPkIwDJbHEuhikOsz6EnIha6kMMoCWSEFJpgeMJxF+/rMM/xhN2VSn1gqGuWQvHM76a/Iq69qPItp+Lh5ZEA==",
+    "Microsoft.IdentityModel.JsonWebTokens/6.19.0": {
+      "sha512": "PMk1mP88y/dv6n1j9Xa6Go6Kl1bNsV4Z5+fmnd4FAOKtYFIGJOSN2VadCPqvm7h7FEPBlpqtbRr4yccefnBSoQ==",
       "type": "package",
-      "path": "microsoft.identitymodel.jsonwebtokens/6.18.0",
+      "path": "microsoft.identitymodel.jsonwebtokens/6.19.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -466,14 +466,14 @@
         "lib/net472/Microsoft.IdentityModel.JsonWebTokens.xml",
         "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.dll",
         "lib/netstandard2.0/Microsoft.IdentityModel.JsonWebTokens.xml",
-        "microsoft.identitymodel.jsonwebtokens.6.18.0.nupkg.sha512",
+        "microsoft.identitymodel.jsonwebtokens.6.19.0.nupkg.sha512",
         "microsoft.identitymodel.jsonwebtokens.nuspec"
       ]
     },
-    "Microsoft.IdentityModel.Logging/6.18.0": {
-      "sha512": "mz+34wEZ1aJEalEmyWeiPDlZENQhaY/PiJcz6PK2mPyrEwDgiBLPG47pG9A9PdzSRn9gYyNnVGOzw6QQevUvHw==",
+    "Microsoft.IdentityModel.Logging/6.19.0": {
+      "sha512": "773vzDzuwg+v+Jvsa+HOSPAZmMl1KztszdBErBPlXvNxZCvL52FrYlQblI6m1f3Pr9DtQt8jCI0RG6b1MajLgg==",
       "type": "package",
-      "path": "microsoft.identitymodel.logging/6.18.0",
+      "path": "microsoft.identitymodel.logging/6.19.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -485,14 +485,14 @@
         "lib/net472/Microsoft.IdentityModel.Logging.xml",
         "lib/netstandard2.0/Microsoft.IdentityModel.Logging.dll",
         "lib/netstandard2.0/Microsoft.IdentityModel.Logging.xml",
-        "microsoft.identitymodel.logging.6.18.0.nupkg.sha512",
+        "microsoft.identitymodel.logging.6.19.0.nupkg.sha512",
         "microsoft.identitymodel.logging.nuspec"
       ]
     },
-    "Microsoft.IdentityModel.Tokens/6.18.0": {
-      "sha512": "21Vymmf8k0WcbsEcEt0gvRTr594KeS9nI2h+4frVGUlcNZvdmLGDIRyqMflERVy2BXTVfLIoCN2sxHCwStgKQw==",
+    "Microsoft.IdentityModel.Tokens/6.19.0": {
+      "sha512": "kmEuZo1+Q4CJIprBVOcZQ18to3WUbPaYE9HRAoK0hEhoh8cH0uA8oOOjff4N2gQ/gk79QrAJTbh0RI7vIZU7vA==",
       "type": "package",
-      "path": "microsoft.identitymodel.tokens/6.18.0",
+      "path": "microsoft.identitymodel.tokens/6.19.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -504,7 +504,7 @@
         "lib/net472/Microsoft.IdentityModel.Tokens.xml",
         "lib/netstandard2.0/Microsoft.IdentityModel.Tokens.dll",
         "lib/netstandard2.0/Microsoft.IdentityModel.Tokens.xml",
-        "microsoft.identitymodel.tokens.6.18.0.nupkg.sha512",
+        "microsoft.identitymodel.tokens.6.19.0.nupkg.sha512",
         "microsoft.identitymodel.tokens.nuspec"
       ]
     },
@@ -771,10 +771,10 @@
         "version.txt"
       ]
     },
-    "System.IdentityModel.Tokens.Jwt/6.18.0": {
-      "sha512": "sERb3slzqZN16ObPwgA4FGLZ+2WVmPswiuZKKD/Z0I8nQbzt90PeOdWKBBTdqEjULYPrabVK+4R929vURfsPtA==",
+    "System.IdentityModel.Tokens.Jwt/6.19.0": {
+      "sha512": "iQwoziWm2ilFGlBnImQmB5RFwAoIEIp2QbQi2Wm0PJLhQfo80VhFzsPEiuhCkDvVkN1/D5Y++/GjBck27qP30w==",
       "type": "package",
-      "path": "system.identitymodel.tokens.jwt/6.18.0",
+      "path": "system.identitymodel.tokens.jwt/6.19.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -786,7 +786,7 @@
         "lib/net472/System.IdentityModel.Tokens.Jwt.xml",
         "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.dll",
         "lib/netstandard2.0/System.IdentityModel.Tokens.Jwt.xml",
-        "system.identitymodel.tokens.jwt.6.18.0.nupkg.sha512",
+        "system.identitymodel.tokens.jwt.6.19.0.nupkg.sha512",
         "system.identitymodel.tokens.jwt.nuspec"
       ]
     },
@@ -1054,9 +1054,10 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Microsoft.AspNetCore.Http.Abstractions >= 2.2.0",
+      "Microsoft.IdentityModel.Tokens >= 6.19.0",
       "Newtonsoft.Json >= 13.0.1",
       "System.Data.SqlClient >= 4.8.3",
-      "System.IdentityModel.Tokens.Jwt >= 6.18.0",
+      "System.IdentityModel.Tokens.Jwt >= 6.19.0",
       "System.Management >= 6.0.0"
     ]
   },
@@ -1108,6 +1109,10 @@
             "target": "Package",
             "version": "[2.2.0, )"
           },
+          "Microsoft.IdentityModel.Tokens": {
+            "target": "Package",
+            "version": "[6.19.0, )"
+          },
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[13.0.1, )"
@@ -1118,7 +1123,7 @@
           },
           "System.IdentityModel.Tokens.Jwt": {
             "target": "Package",
-            "version": "[6.18.0, )"
+            "version": "[6.19.0, )"
           },
           "System.Management": {
             "target": "Package",

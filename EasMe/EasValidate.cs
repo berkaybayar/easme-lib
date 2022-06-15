@@ -130,15 +130,11 @@ namespace EasMe
         
         public static bool IsUrlImage(string URL)
         {
-            var result = false;
-            var req = (HttpWebRequest)HttpWebRequest.Create(URL);
-            req.Method = "HEAD";
-            using (var resp = req.GetResponse())
-            {
-                result =  resp.ContentType.ToLower(CultureInfo.InvariantCulture)
-                           .StartsWith("image/");
-            }
-            if (result) return true;
+           
+            var client = new HttpClient();
+            var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
+            if (req != null)
+                return req.ToString().ToLower().StartsWith("image/"); 
             if (URL.Contains(".jpg") || URL.Contains(".png") || URL.Contains(".gif") || URL.Contains(".jpeg"))
             {
                 return true;
@@ -148,15 +144,11 @@ namespace EasMe
 
         public static bool IsUrlVideo(string URL)
         {
-            var result = false;
-            var req = (HttpWebRequest)HttpWebRequest.Create(URL);
-            req.Method = "HEAD";
-            using (var resp = req.GetResponse())
-            {
-                result = resp.ContentType.ToLower(CultureInfo.InvariantCulture)
-                           .StartsWith("video/");
-            }
-            if (result) return true;
+            var client = new HttpClient();
+            var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
+            if(req != null) 
+             return req.ToString().ToLower().StartsWith("video/");                          
+            
             if (URL.Contains(".mp4") || URL.Contains(".avi") || URL.Contains(".mkv") || URL.Contains(".wmv") || URL.Contains(".flv") || URL.Contains(".mov") || URL.Contains(".mpeg") || URL.Contains(".mpg") || URL.Contains(".webm"))
             {
                 return true;

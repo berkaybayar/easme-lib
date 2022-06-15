@@ -33,6 +33,9 @@ namespace EasMe
 
             return resultToken;
         }
-
+        public string HashString()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

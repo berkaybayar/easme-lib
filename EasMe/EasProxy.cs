@@ -34,20 +34,6 @@ namespace EasMe
               "X-Real-IP",
         };
         /// <summary>
-        /// Gets header values by httpContext
-        /// </summary>
-        /// <param name="httpContext"></param>
-        /// <returns></returns>
-        public static Dictionary<string, string> GetHeaderValues(HttpContext httpContext)
-        {
-            Dictionary<string, string> headerValues = new Dictionary<string, string>();
-            foreach (string header in _HeaderList)
-            {
-                headerValues.Add(header, httpContext.Request.Headers[header]);
-            }
-            return headerValues;
-        }
-        /// <summary>
         /// Converts all headers to string
         /// </summary>
         /// <param name="Headers"></param>
@@ -63,6 +49,17 @@ namespace EasMe
             return val.Substring(0, val.Length - 1);
 
         }
+        
+        /// <summary>
+        /// Gets header values by httpContext
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetHeaderValues(HttpContext httpContext)
+        {
+            return GetHeaderValues(httpContext.Request);
+        }
+
         /// <summary>
         /// Gets header values by HttpRequest
         /// </summary>
@@ -85,17 +82,7 @@ namespace EasMe
         /// <returns></returns>
         public static List<string> GetIP(HttpContext httpContext)
         {
-            var list = new List<string>();
-            var headers = GetHeaderValues(httpContext);
-            foreach (var item in headers)
-            {
-                if (item.Key == "X-FORWARDED-FOR" || item.Key == "X-ORIGINAL-HOST" || item.Key == "PC-Real-IP" || item.Key == "X-Real-IP" || item.Key == "CF-Connecting-IP")
-                {
-                    list.Add(item.Value);
-                }
-            }
-            list.Add(httpContext.Connection.RemoteIpAddress.ToString());
-            return list;
+            return GetIP(httpContext.Request);
         }
 
         /// <summary>
@@ -155,7 +142,19 @@ namespace EasMe
         {
             return httpRequest.Path.ToUriComponent();
         }
+        public static string GetContentType(HttpContext httpContext)
+        {            
+            return GetContentType(httpContext.Request);
+        }
 
-
+        public static string GetContentType(HttpRequest httpRequest)
+        {
+            var contentType = httpRequest.ContentType;
+            if (string.IsNullOrEmpty(contentType))
+            {
+                return "Unkown";
+            }
+            return contentType;
+        }
     }
 }

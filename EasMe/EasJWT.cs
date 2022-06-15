@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -62,7 +63,7 @@ namespace EasMe
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var tokenValidationParameters = new TokenValidationParameters
+                var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(_secretBytes),

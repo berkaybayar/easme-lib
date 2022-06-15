@@ -29,7 +29,7 @@ namespace EasMe
 
         }
         /// <summary>
-        /// Sends mail
+        /// Sends mail, better to create thread for this function.
         /// </summary>
         /// <param name="Body"></param>
         /// <param name="SendTo"></param>

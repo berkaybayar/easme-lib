@@ -13,7 +13,7 @@ namespace EasMe
         private static string _DirLog;
         private static int _Interval;
         private static bool _EnableConsoleLogging;
-        private static bool _SeperateLogTypes;
+        private static bool _EnableClientLogging = false;
         public static Dictionary<int, string> CustomErrorNoList;
         /*
         Interval value        
@@ -28,17 +28,17 @@ namespace EasMe
         2 => Every Minute
         */
 
-        public EasLog(string FilePath, bool SeperateLogTypes = true, bool EnableConsoleLogging = true, int Interval = 0)
+        public EasLog(string FilePath, bool EnableClientLogging = false, bool EnableConsoleLogging = true, int Interval = 0)
         {
-            _SeperateLogTypes = SeperateLogTypes;
+            _EnableClientLogging = EnableClientLogging;
             _DirLog = FilePath;
             _Interval = Interval;
             _EnableConsoleLogging = EnableConsoleLogging;
         }
 
-        public EasLog(bool SeperateLogTypes = true, bool EnableConsoleLogging = true, int Interval = 0)
+        public EasLog(bool EnableClientLogging = false, bool EnableConsoleLogging = true, int Interval = 0)
         {
-            _SeperateLogTypes = SeperateLogTypes;
+            _EnableClientLogging = EnableClientLogging;
             _DirLog = Directory.GetCurrentDirectory() + "\\Logs\\";
             _Interval = Interval;
             _EnableConsoleLogging = EnableConsoleLogging;
@@ -53,32 +53,30 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public string Info(string LogMessage)
+
+        public string Info(string LogMessage, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
             try
             {
-                var log = BaseModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS);
-                serialized = Serialize(log);
-                Log(serialized, false);
-
-            }
-            catch (Exception e)
-            {
-                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
-            return serialized;
-
-        }
-        public string InfoWeb(string LogMessage, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
-        {
-            string serialized;
-            try
-            {
-                var log = WebModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS, Ip, HttpMethod, RequestUrl, Headers, null);
-                serialized = Serialize(log);
-                Log(serialized, false);
-
+                if (!string.IsNullOrEmpty(Ip))
+                {
+                    var log = WebModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS, Ip, HttpMethod, RequestUrl, Headers, null);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
+                else if (_EnableClientLogging)
+                {
+                    var log = ClientModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
+                else
+                {
+                    var log = BaseModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
             }
             catch (Exception e)
             {
@@ -86,23 +84,7 @@ namespace EasMe
             }
             return serialized;
         }
-        public string InfoClient(string LogMessage)
-        {
-            string serialized;
-            try
-            {
-                var log = ClientModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS);
-                serialized = Serialize(log);
-                Log(serialized, false);
 
-            }
-            catch (Exception e)
-            {
-                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
-            return serialized;
-
-        }
 
         /// <summary>
         /// Creates log with Error severity and failed status.
@@ -114,14 +96,31 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public string Error(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR)
+
+        public string Error(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
             try
             {
-                var log = BaseModelCreate("ERROR", LogMessage, ErrorNo);
-                serialized = Serialize(log);
-                Log(serialized, false);
+                if (!string.IsNullOrEmpty(Ip))
+                {
+                    var log = WebModelCreate("ERROR", LogMessage, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
+                else if (_EnableClientLogging)
+                {
+                    var log = ClientModelCreate("ERROR", LogMessage, ErrorNo);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
+                else
+                {
+                    var log = BaseModelCreate("ERROR", LogMessage, ErrorNo);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
+                
             }
             catch (Exception e)
             {
@@ -129,39 +128,10 @@ namespace EasMe
             }
             return serialized;
         }
-        public string ErrorWeb(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
-        {
-            string serialized;
-            try
-            {
-                var log = WebModelCreate("ERROR", LogMessage, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
-                serialized = Serialize(log);
-                Log(serialized, false);
-            }
-            catch (Exception e)
-            {
-                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
-            return serialized;
-        }
-        public string ErrorClient(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR)
-        {
-            string serialized;
-            try
-            {
-                var log = ClientModelCreate("ERROR", LogMessage, ErrorNo);
-                serialized = Serialize(log);
-                Log(serialized, false);
-            }
-            catch (Exception e)
-            {
-                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
-            return serialized;
-        }
+ 
 
         /// <summary>
-        /// Creates log with Exception severity and failed status. ErrorLogModel is used
+        /// Creates log with Exception severity and failed status. If ip variable added it logs web model. If client logging enabled logs client model. If not it logs base model.
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="Ip"></param>
@@ -169,13 +139,30 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public string Exception(Exception ex, ErrorType.TypeList Error = ErrorType.TypeList.EXCEPTION_OCCURED)
+
+        public string Exception(Exception ex, ErrorType.TypeList ErrorNo = ErrorType.TypeList.EXCEPTION_OCCURED, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
             try
             {
-                serialized = Serialize(ErrorModelCreate(ex, "ERROR", Error));
-                Log(serialized, false);
+                if (!string.IsNullOrEmpty(Ip))
+                {
+                    var log = WebModelCreate("EXCEPTION", ex.Message, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
+                    serialized = Serialize(log);
+                    Log(serialized, false);
+                }
+                else if (_EnableClientLogging)
+                {
+                    var log = ClientModelCreate("EXCEPTION", ex.Message, ErrorNo);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
+                else
+                {
+                    var log = BaseModelCreate("EXCEPTION", ex.Message, ErrorNo);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }               
             }
             catch (Exception e)
             {
@@ -183,9 +170,8 @@ namespace EasMe
             }
             return serialized;
         }
-
         /// <summary>
-        /// Creates log with Warning severity and warn status.
+        /// Creates log with warning severity and warn status. If ip variable added it logs web model. If client logging enabled logs client model. If not it logs base model.
         /// </summary>
         /// <param name="LogMessage"></param>
         /// <param name="ErrorNo"></param>
@@ -194,55 +180,37 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public string Warn(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.WARN)
+        public string Warn(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.WARN, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
             try
             {
-                var log = BaseModelCreate("WARN", LogMessage, ErrorNo);
-                serialized = Serialize(log);
-                Log(serialized, false);
+                if (!string.IsNullOrEmpty(Ip))
+                {
+                    var log = WebModelCreate("WARN", LogMessage, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
+                else if (_EnableClientLogging)
+                {
+                    var log = ClientModelCreate("WARN", LogMessage, ErrorNo);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }
+                else
+                {
+                    var log = BaseModelCreate("WARN", LogMessage, ErrorNo);
+                    serialized = Serialize(log);
+                    Log(serialized);
+                }                
             }
             catch (Exception e)
             {
                 return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
+            }            
             return serialized;
-
         }
-        public string WarnWeb(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.WARN, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
-        {
-            string serialized;
-            try
-            {
-                var log = WebModelCreate("WARN", LogMessage, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
-                serialized = Serialize(log);
-                Log(serialized, false);
-            }
-            catch (Exception e)
-            {
-                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
-            return serialized;
-
-        }
-        public string WarnClient(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.WARN)
-        {
-            string serialized;
-            try
-            {
-                var log = ClientModelCreate("WARN", LogMessage, ErrorNo);
-                serialized = Serialize(log);
-                Log(serialized, false);
-            }
-            catch (Exception e)
-            {
-                return Exception(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
-            return serialized;
-
-        }
-
+    
 
         /// <summary>
         /// Creates log with given custom class, serializes the custom log model.
@@ -255,7 +223,7 @@ namespace EasMe
             try
             {
                 serialized = Serialize(obj);
-                Log(serialized, false);
+                Log(serialized);
 
             }
             catch (Exception e)
@@ -295,9 +263,9 @@ namespace EasMe
             {
                 string IntervalFormat = "";
                 if (UseDefaultDate)
-                    LogContent = $"[{DateTime.Now}] {LogContent}\n";
+                    LogContent = $"[{DateTime.Now}] {LogContent}";
                 else
-                    LogContent = $"{LogContent}\n";
+                    LogContent = $"{LogContent}";
                 //Creates log file in current directory
                 if (!Directory.Exists(_DirLog)) Directory.CreateDirectory(_DirLog);
 
@@ -313,15 +281,9 @@ namespace EasMe
                         IntervalFormat = "MM.dd.yyyy HH.mm";
                         break;
                 }
-                switch (_SeperateLogTypes)
-                {
-                    case true:
-                        break;
-                    case false:
-                        break;
-                }
-                string LogPath = _DirLog + DateTime.Now.ToString(IntervalFormat) + " -log.txt";
-                File.AppendAllText(LogPath, LogContent);
+               
+                string LogPath = _DirLog + DateTime.Now.ToString(IntervalFormat) + " -log.json";
+                File.AppendAllText(LogPath, LogContent + "\n");
                 if (_EnableConsoleLogging)
                     Console.WriteLine(LogContent);
             }
@@ -394,13 +356,13 @@ namespace EasMe
         /// <returns>EasMe.Models.ErrorLogModel</returns>
         private ErrorLogModel ErrorModelCreate(Exception? ex, string Severity, ErrorType.TypeList ErrorNo)
         {
-            var message = ErrorType.EnumGetKeybyValue(ErrorNo);
-            if (string.IsNullOrEmpty(message)) message = "Unknown Error";
+            //var message = ErrorType.EnumGetKeybyValue(ErrorNo);
+            //if (string.IsNullOrEmpty(message)) message = "Unknown Error";
             var log = new ErrorLogModel
             {
                 LogType = -1,
                 Severity = Severity.ToUpper(),
-                Message = message,
+                Message = ErrorNo,
                 TraceAction = GetActionName(),
                 TraceClass = GetClassName(),
                 ErrorNo = ErrorNo.ToString()
