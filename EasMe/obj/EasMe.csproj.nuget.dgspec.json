@@ -67,6 +67,10 @@
             "System.Management": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "Uno.UI": {
+              "target": "Package",
+              "version": "[4.3.8, )"
             }
           },
           "imports": [

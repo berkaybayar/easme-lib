@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EasMe.Models;
+using Microsoft.AspNetCore.Http;
+using Windows.Devices.Geolocation;
 
 namespace EasMe
 {
@@ -155,6 +157,23 @@ namespace EasMe
                 return "Unkown";
             }
             return contentType;
+        }
+        public static GeoLocationModel GetGeolocation(uint accuracyInMeters = 50)
+        {
+            throw new NotImplementedException();
+            var model = new GeoLocationModel();
+            Geolocator geolocator = new Geolocator();
+            //geolocator.DesiredAccuracy = Windows.Devices.Geolocation.PositionAccuracy.High;
+            geolocator.DesiredAccuracyInMeters = accuracyInMeters;
+            try
+            {
+                Geoposition geoposition = (Geoposition)geolocator.GetGeopositionAsync(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1));
+                model.Latitude = geoposition.Coordinate.Latitude;
+                model.Longitude = geoposition.Coordinate.Longitude;
+                model.Accuracy = geoposition.Coordinate.Accuracy;
+            }
+            catch{ }
+            return model;
         }
     }
 }
