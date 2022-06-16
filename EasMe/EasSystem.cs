@@ -574,9 +574,9 @@ namespace EasMe
         {
             try
             {
-                return EasHash.Sha256Hash(GetMachineIdString());
+                return EasHash.BuildString(EasHash.SHA256Hash(GetMachineIdString()));
             }
-            catch { return "Unkown"; }
+            catch { return ""; }
         }
 
 

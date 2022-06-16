@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace EasMe
 {
-    public class EasGenerate
+    public static class EasGenerate
     {
         /// <summary>
         /// Generate a random string with a given length and allowed characters
@@ -12,7 +12,16 @@ namespace EasMe
         /// <param name="allowedChars"></param>
         /// <param name="onlyLetter"></param>
         /// <returns></returns>
-        public string GenerateRandomString(int length, string allowedChars = "", bool onlyLetter = false)
+        static string GenerateString(string chars,int length)
+        {          
+            var random = new Random();
+            string resultToken = new(
+               Enumerable.Repeat(chars, length)
+               .Select(token => token[random.Next(token.Length)]).ToArray());
+
+            return resultToken;
+        }
+        public static string GenerateRandomString(int length, string allowedChars = "", bool onlyLetter = false)
         {
             string lowerAll = "abcdefghijklmnoprstuvwxyz";
             string upperAll = lowerAll.ToUpper();
@@ -20,22 +29,30 @@ namespace EasMe
             string allChars;
             if (onlyLetter)
             {
+
                 allChars = lowerAll + upperAll + allowedChars;
+                return GenerateString(allChars,length);                
             }
             else
             {
                 allChars = lowerAll + upperAll + digits + allowedChars;
-            }
-            var random = new Random();
-            string resultToken = new string(
-               Enumerable.Repeat(allChars, length)
-               .Select(token => token[random.Next(token.Length)]).ToArray());
-
-            return resultToken;
+                return GenerateString(allChars, length);
+                            
+            }            
         }
-        public string HashString()
+      
+        public static string GenerateRandomLetters(int length)
         {
-            throw new NotImplementedException();
+            string lowerAll = "abcdefghijklmnoprstuvwxyz";
+            string upperAll = lowerAll.ToUpper();
+            string allChars = lowerAll + upperAll;
+            return GenerateString(allChars, length);
+        }
+        public static string GenerateRandomNumbers(int digitCount)
+        {
+            string digits = "0123456789";
+            return GenerateString(digits, digitCount);
+
         }
     }
 }

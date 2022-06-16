@@ -9,62 +9,64 @@ namespace EasMe
 {
     public class EasHash
     {
-        public static string Sha256Hash(string rawData)
+        /// <summary>
+        /// Converts hashed byte array to string
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static string BuildString(byte[] bytes)
         {
-            using (SHA256 sha256Hash = SHA256.Create())
+            StringBuilder builder = new();
+            for (int i = 0; i < bytes.Length; i++)
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
+                builder.Append(bytes[i].ToString("x2"));
             }
+            return builder.ToString();
         }
-        public static string Sha512Hash(string rawData)
+        public static byte[] ConvertStringToByteArray(string yourStr) => Encoding.UTF8.GetBytes(yourStr);
+        public static string ConvertBytesToString(byte[] byteArray) => Encoding.UTF8.GetString(byteArray);
+        public static byte[] ComputeHash(HashAlgorithm algorithm, string rawData) => algorithm.ComputeHash(ConvertStringToByteArray(rawData));
+        public static byte[] ComputeSaltedHash(HashAlgorithm algorithm, string rawData, string saltStr)
         {
-            using (SHA512 sha256Hash = SHA512.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+            var plainText = ConvertStringToByteArray(rawData);
+            var salt = ConvertStringToByteArray(saltStr);
+            byte[] plainTextWithSaltBytes =
+              new byte[plainText.Length + salt.Length];
 
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
-            }
-        }
-        public static string Sha1Hash(string rawData)
-        {
-            using (SHA1 sha256Hash = SHA1.Create())
+            for (int i = 0; i < plainText.Length; i++)
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
+                plainTextWithSaltBytes[i] = plainText[i];
             }
-        }
-        public static string Sha384Hash(string rawData)
-        {
-            using (SHA384 sha256Hash = SHA384.Create())
+            for (int i = 0; i < salt.Length; i++)
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
+                plainTextWithSaltBytes[plainText.Length + i] = salt[i];
             }
+
+            return algorithm.ComputeHash(plainTextWithSaltBytes);
         }
+        
+        public static byte[] MD5Hash(string rawData) => ComputeHash(MD5.Create(), rawData);
+        public static byte[] MD5HashSalted(string rawData, string salt) => ComputeSaltedHash(MD5.Create(), rawData, salt);
+        
+        public static byte[] SHA1Hash(string rawData) => ComputeHash(SHA1.Create(), rawData);
+        public static byte[] SHA1HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA1.Create(), rawData, salt);
+        
+        
+        public static byte[] SHA256Hash(string rawData) => ComputeHash(SHA256.Create(), rawData);
+        public static byte[] SHA256HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA256.Create(), rawData, salt);
+        
+        
+        public static byte[] SHA384Hash(string rawData) => ComputeHash(SHA384.Create(), rawData);
+        public static byte[] SHA384HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA384.Create(), rawData, salt);
+        
+        
+        public static byte[] SHA512Hash(string rawData) => ComputeHash(SHA512.Create(), rawData);        
+        public static byte[] SHA512HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA512.Create(), rawData, salt);
+        
+        
+       
+        
+       
         private string HexString(byte[] bt)
         {
             try
@@ -91,24 +93,34 @@ namespace EasMe
             }
             catch
             {
-                return "Unknown";
+                return "";
             }
         }
-        
-        public static string MD5Hash(string rawData)
-        {
-            using (MD5 sha256Hash = MD5.Create())
-            {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
 
-                StringBuilder builder = new();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
+        /// <summary>
+        /// Compares 2 byte arrays for equality.
+        /// </summary>
+        /// <param name="array1"></param>
+        /// <param name="array2"></param>
+        /// <returns>true if arrays are equal</returns>
+        public static bool CompareByteArrays(byte[] array1, byte[] array2)
+        {
+            if (array1.Length != array2.Length)
+            {
+                return false;
             }
+
+            for (int i = 0; i < array1.Length; i++)
+            {
+                if (array1[i] != array2[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
+
 
     }
 }

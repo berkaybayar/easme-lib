@@ -6,7 +6,7 @@ using System.Net;
 namespace EasMe
 {
 
-    public class EasReCaptcha
+    public static class EasReCaptcha
     {
 
         /*
@@ -32,9 +32,9 @@ namespace EasMe
         string Secret = "your-secret-key";       
         var Captcha = _recaptcha.Validate(Secret, CaptchaResponse);
         */
+        
 
-
-        public CaptchaResponse Validate(string Secret, string CaptchaResponse)
+        public static CaptchaResponse Validate(string Secret, string CaptchaResponse)
         {
 
             try

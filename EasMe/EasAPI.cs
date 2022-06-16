@@ -60,6 +60,7 @@ namespace EasMe
             }
             return Response;
         }
+
         /// <summary>
         /// Sends post request
         /// </summary>
@@ -93,7 +94,89 @@ namespace EasMe
     
         }
 
+        public HttpResponseMessage SendGetRequest(string URL, string? TOKEN = null)
+        {
+            HttpClient client = new HttpClient();
+            if (!string.IsNullOrEmpty(TOKEN))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
 
+            client.BaseAddress = new Uri(URL);
+            var postTask = client.GetAsync(client.BaseAddress);
+            postTask.Wait();
+            return postTask.Result;
+        }
+
+
+        public HttpResponseMessage SendPostRequestAsJson(string URL, object Data, string? TOKEN = null)
+        {
+            HttpClient client = new HttpClient();
+
+            if (!string.IsNullOrEmpty(TOKEN))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.BaseAddress = new Uri(URL);
+            var postTask = client.PostAsJsonAsync(URL, Data);
+            postTask.Wait();
+            return postTask.Result;
+        }
+        public HttpResponseMessage SendPostRequest(string URL, HttpContent Content, string? TOKEN = null)
+        {
+            HttpClient client = new HttpClient();
+            if (!string.IsNullOrEmpty(TOKEN))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.BaseAddress = new Uri(URL);
+            var postTask = client.PostAsync(URL, Content);
+            postTask.Wait();
+            return postTask.Result;
+        }
+        public HttpResponseMessage SendDeleteRequest(string URL, string? TOKEN = null)
+        {
+            HttpClient client = new HttpClient();
+            if (!string.IsNullOrEmpty(TOKEN))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.BaseAddress = new Uri(URL);
+            var postTask = client.DeleteAsync(URL);
+            postTask.Wait();
+            return postTask.Result;
+        }
+        public HttpResponseMessage SendPatchRequest(string URL, HttpContent Content, string? TOKEN = null)
+        {
+            HttpClient client = new HttpClient();
+            if (!string.IsNullOrEmpty(TOKEN))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.BaseAddress = new Uri(URL);
+            var postTask = client.PatchAsync(URL, Content);
+            postTask.Wait();
+            return postTask.Result;
+        }
+        public HttpResponseMessage SendPutRequest(string URL, HttpContent Content, string? TOKEN = null)
+        {
+            HttpClient client = new HttpClient();
+            if (!string.IsNullOrEmpty(TOKEN))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.BaseAddress = new Uri(URL);
+            var postTask = client.PutAsync(URL, Content);
+            postTask.Wait();
+            return postTask.Result;
+        }
+        public HttpResponseMessage SendPutRequestAsJson(string URL, object Data, string? TOKEN = null)
+        {
+            HttpClient client = new HttpClient();
+            if (!string.IsNullOrEmpty(TOKEN))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.BaseAddress = new Uri(URL);
+            var postTask = client.PutAsJsonAsync(URL, Data);
+            postTask.Wait();
+            return postTask.Result;
+        }
+        public HttpResponseMessage Send(string URL, HttpRequestMessage Data, string? TOKEN = null)
+        {
+            HttpClient client = new HttpClient();
+            if (!string.IsNullOrEmpty(TOKEN))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
+            client.BaseAddress = new Uri(URL);
+            var postTask = client.Send( Data);
+            return postTask;
+        }
     }
     
 

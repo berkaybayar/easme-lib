@@ -60,10 +60,15 @@ namespace EasMe.Models
             FAILED_TO_GET_RESPONSE = 52,
             FAILED_TO_READ_RESPONSE = 53,
             FAILED_TO_WRITE_RESPONSE = 54,
-            FAILED_TO_SEND_RESPONSE = 55
-                
-                
-                
+            FAILED_TO_SEND_RESPONSE = 55,
+            
+            FAILED_TO_DELETE_FILE = 61,
+            FAILED_TO_DELETE_FOLDER = 62,
+            FAILED_TO_CREATE_FILE = 63,
+            FAILED_TO_CREATE_FOLDER = 64,
+            FAILED_TO_READ_FILE = 65,
+            FAILED_TO_WRITE_FILE = 66,
+
         }
         public static string? EnumGetKeybyValue(int value){
             return Enum.GetName(typeof(TypeList), value);        
