@@ -92,17 +92,27 @@ namespace EasMe
             return result;
 
         }
-        private ManagementObject? GetManagementObj(string className, string searchCol = "*")
-
+        //private ManagementObject? GetManagementObj(string className, string searchCol = "*")
+        //{            
+        //    foreach (var item )
+        //    {
+        //        if (obj == null)
+        //            continue;
+        //        return obj;
+        //    }
+        //    return null;
+        //}
+        private List<ManagementObject> GetManagementObjList(string className, string searchCol = "*")
         {
+            var list = new List<ManagementObject>();
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("select " + searchCol + " from " + className);
             foreach (ManagementObject obj in searcher.Get())
             {
                 if (obj == null)
                     continue;
-                return obj;
+                list.Add(obj);
             }
-            return null;
+            return list;
         }
         #endregion
 
@@ -125,9 +135,7 @@ namespace EasMe
         public List<RamModel> GetRamList()
         {
             var list = new List<RamModel>();
-            ManagementObjectSearcher searcher = new
-                   ManagementObjectSearcher("select * from Win32_PhysicalMemory");
-            foreach (ManagementObject obj in searcher.Get())
+            foreach (var obj in GetManagementObjList("Win32_PhysicalMemory"))
             {
                 var ramModel = new RamModel();
                 ramModel.Attributes = obj.Properties["Attributes"].Value.ToString();
@@ -156,46 +164,44 @@ namespace EasMe
             }
             return list;
         }
-        public MotherboardModel? GetMotherboard()
+        public MotherboardModel GetMotherboard()
         {
+            var motherboardModel = new MotherboardModel();
+            
             try
             {
-                var item = GetManagementObj("Win32_BaseBoard");
-                if (item != null)
-                {
-                    var motherboardModel = new MotherboardModel();
-                    motherboardModel.Caption = item["Caption"].ToString();
-                    motherboardModel.ConfigOptions = item["ConfigOptions"].ToString();
-                    motherboardModel.CreationClassName = item["CreationClassName"].ToString();
-                    motherboardModel.Description = item["Description"].ToString();
-                    motherboardModel.HostingBoard = item["HostingBoard"].ToString();
-                    motherboardModel.HotSwappable = item["HotSwappable"].ToString();
-                    motherboardModel.Manufacturer = item["Manufacturer"].ToString();
-                    motherboardModel.Name = item["Name"].ToString();
-                    motherboardModel.PoweredOn = item["PoweredOn"].ToString();
-                    motherboardModel.Product = item["Product"].ToString();
-                    motherboardModel.Removable = item["Removable"].ToString();
-                    motherboardModel.Replaceable = item["Replaceable"].ToString();
-                    motherboardModel.RequiresDaughterBoard = item["RequiresDaughterBoard"].ToString();
-                    motherboardModel.SerialNumber = item["SerialNumber"].ToString();
-                    motherboardModel.Status = item["Status"].ToString();
-                    motherboardModel.Tag = item["Tag"].ToString();
-                    motherboardModel.Version = item["Version"].ToString();
-                    return motherboardModel;
-                }
+                var item = GetManagementObjList("Win32_BaseBoard").FirstOrDefault();
+                motherboardModel.Caption = item["Caption"].ToString();
+                motherboardModel.ConfigOptions = item["ConfigOptions"].ToString();
+                motherboardModel.CreationClassName = item["CreationClassName"].ToString();
+                motherboardModel.Description = item["Description"].ToString();
+                motherboardModel.HostingBoard = item["HostingBoard"].ToString();
+                motherboardModel.HotSwappable = item["HotSwappable"].ToString();
+                motherboardModel.Manufacturer = item["Manufacturer"].ToString();
+                motherboardModel.Name = item["Name"].ToString();
+                motherboardModel.PoweredOn = item["PoweredOn"].ToString();
+                motherboardModel.Product = item["Product"].ToString();
+                motherboardModel.Removable = item["Removable"].ToString();
+                motherboardModel.Replaceable = item["Replaceable"].ToString();
+                motherboardModel.RequiresDaughterBoard = item["RequiresDaughterBoard"].ToString();
+                motherboardModel.SerialNumber = item["SerialNumber"].ToString();
+                motherboardModel.Status = item["Status"].ToString();
+                motherboardModel.Tag = item["Tag"].ToString();
+                motherboardModel.Version = item["Version"].ToString();
             }
             catch
             {
             }
-            return null;
+            return motherboardModel;
+
 
         }
-        public CPUModel? GetProcessor()
+        public CPUModel GetProcessor()
         {
+            var CPUModel = new CPUModel();            
             try
             {
-                var item = GetManagementObj("Win32_Processor");
-                var CPUModel = new CPUModel();
+                var item = GetManagementObjList("Win32_Processor").FirstOrDefault();
                 CPUModel.AddressWidth = item["AddressWidth"].ToString();
                 CPUModel.Architecture = item["Architecture"].ToString();
                 CPUModel.AssetTag = item["AssetTag"].ToString();
@@ -240,19 +246,20 @@ namespace EasMe
                 CPUModel.Version = item["Version"].ToString();
                 CPUModel.VirtualizationFirmwareEnabled = item["VirtualizationFirmwareEnabled"].ToString();
                 CPUModel.VMMonitorModeExtensions = item["VMMonitorModeExtensions"].ToString();
-                return CPUModel;
             }
             catch
             {
             }
-            return null;
+            return CPUModel;
+
 
         }
-        public DiskModel? GetDisk()
+        public List<DiskModel> GetDiskList()
         {
+            var list = new List<DiskModel>();
             try
             {
-                var disk = GetManagementObj("Win32_DiskDrive");
+                var disk = GetManagementObjList("Win32_DiskDrive").FirstOrDefault();
                 var model = new DiskModel();
                 model.BytesPerSector = disk["BytesPerSector"].ToString();
                 model.Capabilities = disk["Capabilities"].ToString();
@@ -286,70 +293,73 @@ namespace EasMe
                 model.TotalSectors = disk["TotalSectors"].ToString();
                 model.TotalTracks = disk["TotalTracks"].ToString();
                 model.TracksPerCylinder = disk["TracksPerCylinder"].ToString();
-                return model;
+                list.Add(model);
             }
             catch
             {
             }
-            return null;
+            return list;
 
         }
-        public VideoModel? GetVideoCard()
+        public List<GPUModel> GetGPUList()
         {
+            var list = new List<GPUModel>();
             try
             {
-                var video = GetManagementObj("Win32_VideoController");
-                var model = new VideoModel();
-                model.AdapterRAM = video["AdapterRAM"].ToString();
-                model.Availability = video["Availability"].ToString();
-                model.Caption = video["Caption"].ToString();
-                model.ConfigManagerErrorCode = video["ConfigManagerErrorCode"].ToString();
-                model.ConfigManagerUserConfig = video["ConfigManagerUserConfig"].ToString();
-                model.CreationClassName = video["CreationClassName"].ToString();
-                model.CurrentBitsPerPixel = video["CurrentBitsPerPixel"].ToString();
-                model.CurrentHorizontalResolution = video["CurrentHorizontalResolution"].ToString();
-                model.CurrentNumberOfColors = video["CurrentNumberOfColors"].ToString();
-                model.CurrentNumberOfColumns = video["CurrentNumberOfColumns"].ToString();
-                model.CurrentNumberOfRows = video["CurrentNumberOfRows"].ToString();
-                model.CurrentScanMode = video["CurrentScanMode"].ToString();
-                model.CurrentVerticalResolution = video["CurrentVerticalResolution"].ToString();
-                model.Description = video["Description"].ToString();
-                model.DeviceID = video["DeviceID"].ToString();
-                model.DriverVersion = video["DriverVersion"].ToString();
-                model.InstalledDisplayDrivers = video["InstalledDisplayDrivers"].ToString();
-                model.MaxRefreshRate = video["MaxRefreshRate"].ToString();
-                model.MinRefreshRate = video["MinRefreshRate"].ToString();
-                model.Name = video["Name"].ToString();
-                model.PNPDeviceID = video["PNPDeviceID"].ToString();
-                model.Status = video["Status"].ToString();
-                model.SystemCreationClassName = video["SystemCreationClassName"].ToString();
-                model.SystemName = video["SystemName"].ToString();
-                model.VideoArchitecture = video["VideoArchitecture"].ToString();
-                model.VideoMemoryType = video["VideoMemoryType"].ToString();
-                model.VideoProcessor = video["VideoProcessor"].ToString();
-                model.AdapterCompatibility = video["AdapterCompatibility"].ToString();
-                model.AdapterDACType = video["AdapterDACType"].ToString();
-                model.CurrentRefreshRate = video["CurrentRefreshRate"].ToString();
-                model.DitherType = video["DitherType"].ToString();
-                model.DriverDate = video["DriverDate"].ToString();
-                model.InfFilename = video["InfFilename"].ToString();
-                model.InfSection = video["InfSection"].ToString();
-                model.Monochrome = video["Monochrome"].ToString();
-                model.VideoModeDescription = video["VideoModeDescription"].ToString();
-                return model;
+                var GPUList = GetManagementObjList("Win32_VideoController");
+                foreach(var video in GPUList)
+                {
+                    var model = new GPUModel();
+                    model.AdapterRAM = video["AdapterRAM"].ToString();
+                    model.Availability = video["Availability"].ToString();
+                    model.Caption = video["Caption"].ToString();
+                    model.ConfigManagerErrorCode = video["ConfigManagerErrorCode"].ToString();
+                    model.ConfigManagerUserConfig = video["ConfigManagerUserConfig"].ToString();
+                    model.CreationClassName = video["CreationClassName"].ToString();
+                    model.CurrentBitsPerPixel = video["CurrentBitsPerPixel"].ToString();
+                    model.CurrentHorizontalResolution = video["CurrentHorizontalResolution"].ToString();
+                    model.CurrentNumberOfColors = video["CurrentNumberOfColors"].ToString();
+                    model.CurrentNumberOfColumns = video["CurrentNumberOfColumns"].ToString();
+                    model.CurrentNumberOfRows = video["CurrentNumberOfRows"].ToString();
+                    model.CurrentScanMode = video["CurrentScanMode"].ToString();
+                    model.CurrentVerticalResolution = video["CurrentVerticalResolution"].ToString();
+                    model.Description = video["Description"].ToString();
+                    model.DeviceID = video["DeviceID"].ToString();
+                    model.DriverVersion = video["DriverVersion"].ToString();
+                    model.InstalledDisplayDrivers = video["InstalledDisplayDrivers"].ToString();
+                    model.MaxRefreshRate = video["MaxRefreshRate"].ToString();
+                    model.MinRefreshRate = video["MinRefreshRate"].ToString();
+                    model.Name = video["Name"].ToString();
+                    model.PNPDeviceID = video["PNPDeviceID"].ToString();
+                    model.Status = video["Status"].ToString();
+                    model.SystemCreationClassName = video["SystemCreationClassName"].ToString();
+                    model.SystemName = video["SystemName"].ToString();
+                    model.VideoArchitecture = video["VideoArchitecture"].ToString();
+                    model.VideoMemoryType = video["VideoMemoryType"].ToString();
+                    model.VideoProcessor = video["VideoProcessor"].ToString();
+                    model.AdapterCompatibility = video["AdapterCompatibility"].ToString();
+                    model.AdapterDACType = video["AdapterDACType"].ToString();
+                    model.CurrentRefreshRate = video["CurrentRefreshRate"].ToString();
+                    model.DitherType = video["DitherType"].ToString();
+                    model.DriverDate = video["DriverDate"].ToString();
+                    model.InfFilename = video["InfFilename"].ToString();
+                    model.InfSection = video["InfSection"].ToString();
+                    model.Monochrome = video["Monochrome"].ToString();
+                    model.VideoModeDescription = video["VideoModeDescription"].ToString();
+                    list.Add(model);
+                }                
             }
             catch
             {
             }
-            return null;
+            return list;
         }
-        public BIOSModel? GetBIOS()
+        public BIOSModel GetBIOS()
         {
+            var model = new BIOSModel();            
             try
             {
-                var bios = GetManagementObj("Win32_BIOS");
-                var model = new BIOSModel();
-
+                var bios = GetManagementObjList("Win32_BIOS").FirstOrDefault();
                 model.BIOSVersion = bios["BIOSVersion"].ToString();
                 model.BiosCharacteristics = bios["BiosCharacteristics"].ToString();
                 model.Caption = bios["Caption"].ToString();
@@ -372,13 +382,11 @@ namespace EasMe
                 model.SystemBiosMinorVersion = bios["SystemBiosMinorVersion"].ToString();
                 model.TargetOperatingSystem = bios["TargetOperatingSystem"].ToString();
                 model.Version = bios["Version"].ToString();
-                return model;
             }
             catch
             {
             }
-            return null;
-
+            return model;
         }
         public string GetMotherboardSerial()
         {
@@ -487,7 +495,7 @@ namespace EasMe
 
         }
 
-        public string GetMachineGuid()
+        private string GetMachineGuid()
         {
             string location = @"SOFTWARE\Microsoft\Cryptography";
             string name = "MachineGuid";
@@ -503,7 +511,11 @@ namespace EasMe
             return machineGuid.ToString().ToUpper();
         }
 
-        public string GetDiskUUID()
+        /// <summary>
+        /// Get Disk UUID from Win32_ComputerSystemProduct
+        /// </summary>
+        /// <returns></returns>
+        private string GetDiskUUID()
         {
             string run = "get-wmiobject Win32_ComputerSystemProduct  | Select-Object -ExpandProperty UUID";
             var oProcess = new Process();
@@ -520,54 +532,51 @@ namespace EasMe
         }
 
 
-        public string GetUniqueSystemId()
-        {
-            return $"{GetMACAddress()}-{GetDiskUUID()}-{GetMachineGuid()}-{Value()}";
-        }
 
-        private string GetHash(string s)
+        //Same with bios versions can be updated to a new version and make users licence invalid
+        //Also since Rams and Disks and GPUs can have multiple, changing ram or disk or gpu order may result in making users licence invalid
+        //Security 0 = low, 1 = medium, 2 = high
+        private string GetMachineIdString(bool EnableBiosVersionIdentifier = true)
         {
             try
             {
-                MD5 sec = new MD5CryptoServiceProvider();
-                ASCIIEncoding enc = new ASCIIEncoding();
-                byte[] bt = enc.GetBytes(s);
-                return GetHexString(sec.ComputeHash(bt));
-            }
-            catch
-            {
-                return "Unknown";
-            }
-
-        }
-        private string GetHexString(byte[] bt)
-        {
-            try
-            {
-                string s = string.Empty;
-                for (int i = 0; i < bt.Length; i++)
+                var processor = GetProcessor();
+                var processorIdentifier = "";
+                if (processor != null)
+                    processorIdentifier = $"{processor.Name}:{processor.Manufacturer}:{processor.ProcessorId}";
+                //Disabled ram id  
+                var ramIdentifier = "";
+                if (false)
                 {
-                    byte b = bt[i];
-                    int n, n1, n2;
-                    n = (int)b;
-                    n1 = n & 15;
-                    n2 = (n >> 4) & 15;
-                    if (n2 > 9)
-                        s += ((char)(n2 - 10 + (int)'A')).ToString();
-                    else
-                        s += n2.ToString();
-                    if (n1 > 9)
-                        s += ((char)(n1 - 10 + (int)'A')).ToString();
-                    else
-                        s += n1.ToString();
-                    if ((i + 1) != bt.Length && (i + 1) % 2 == 0) s += "-";
+                    var ramList = GetRamList();
+                    if (ramList != null)
+                        ramIdentifier = string.Join(";", ramList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}"));
                 }
-                return s;
+                var bios = GetBIOS();
+                var biosIdentifier = $"{bios.Manufacturer}:{bios.SMBIOSBIOSVersion}:{bios.SerialNumber}";
+                if (EnableBiosVersionIdentifier)
+                    biosIdentifier += $":{bios.ReleaseDate}:{bios.Version}";
+                var mainboard = GetMotherboard();
+                var mainboardIdentifier = $"{mainboard.Name}:{mainboard.Manufacturer}:{mainboard.SerialNumber}";
+                var gpuList = GetGPUList();
+                var gpuIdentifier = string.Join(";", gpuList.Select(x => $"{x.Name}"));
+                var diskList = GetDiskList();
+                var diskIdentifier = string.Join(";", diskList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}:{x.Size}"));
+                var machineName = GetMachineName();
+                var ethernetMac = GetMACAddress();
+                string id = processorIdentifier + "|" + ramIdentifier + "|" + biosIdentifier + "|" + mainboardIdentifier + "|" + gpuIdentifier + "|" + diskIdentifier + "|" + machineName + "|" + ethernetMac + "|" + GetDiskUUID() + "|" + GetMachineGuid();
+                //Removing Whitespace
+                return id.Replace(" ","");
             }
-            catch
+            catch { return "Unkown"; }
+        }
+        public string GetMachineIdHashed()
+        {
+            try
             {
-                return "Unknown";
+                return EasHash.Sha256Hash(GetMachineIdString());
             }
+            catch { return "Unkown"; }
         }
 
 
@@ -669,10 +678,10 @@ namespace EasMe
             catch { }
             return lResult.TrimEnd(' ', ';');
         }
-
+        
         private static List<string> ListOfCpuProperties = new List<string> { "UniqueId", "ProcessorId", "Name", "Manufacturer" };
 
-        private static string GetCpuId()
+        public static string GetCpuId()
         {
             return GetIdentifier("Win32_Processor", ListOfCpuProperties);
         }

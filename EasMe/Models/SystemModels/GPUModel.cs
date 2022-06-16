@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasMe.Models.SystemModels
 {
-    public class VideoModel
+    public class GPUModel
     {
         public string? AdapterCompatibility { get; set; }
         public string? AdapterDACType { get; set; }
