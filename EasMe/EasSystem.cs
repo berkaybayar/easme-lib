@@ -533,9 +533,8 @@ namespace EasMe
 
 
 
-        //Same with bios versions can be updated to a new version and make users licence invalid
-        //Also since Rams and Disks and GPUs can have multiple, changing ram or disk or gpu order may result in making users licence invalid
-        //Security 0 = low, 1 = medium, 2 = high
+        //bios versions can be updated to a new version and make users licence invalid  
+        //Also since Rams and Disks and GPUs can have multiple, changing ram or disk or gpu order may result in differenet id        
         private string GetMachineIdString(bool EnableBiosVersionIdentifier = true)
         {
             try
@@ -564,7 +563,8 @@ namespace EasMe
                 var diskIdentifier = string.Join(";", diskList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}:{x.Size}"));
                 var machineName = GetMachineName();
                 var ethernetMac = GetMACAddress();
-                string id = processorIdentifier + "|" + ramIdentifier + "|" + biosIdentifier + "|" + mainboardIdentifier + "|" + gpuIdentifier + "|" + diskIdentifier + "|" + machineName + "|" + ethernetMac + "|" + GetDiskUUID() + "|" + GetMachineGuid();
+                string id = processorIdentifier + "|" + ramIdentifier + "|" + biosIdentifier + "|" + mainboardIdentifier + "|" + gpuIdentifier + "|" 
+                    + diskIdentifier + "|" + machineName + "|" + ethernetMac + "|" + GetDiskUUID() + "|" + GetMachineGuid();
                 //Removing Whitespace
                 return id.Replace(" ","");
             }
