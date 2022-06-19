@@ -11,7 +11,7 @@ namespace EasMe.Models
        
 
 
-        public enum TypeList
+        public enum ErrorList
         {
             SUCCESS = 0,
             INFO = 1,
@@ -70,9 +70,15 @@ namespace EasMe.Models
             FAILED_TO_READ_FILE = 65,
             FAILED_TO_WRITE_FILE = 66,
 
+            CONVERT_EXCEPTION_TO_LOG_MODEL_ERROR = 70,
+            CREATE_BASE_MODEL_ERROR = 71,
+            CREATE_WEB_MODEL_ERROR = 72,
+            LOAD_CONFIGURATION_ERROR = 73,
+            NOT_FOUND_LOADED_CONFIGURATION_ERROR = 74,
+
         }
         public static string? EnumGetKeybyValue(int value){
-            return Enum.GetName(typeof(TypeList), value);        
+            return Enum.GetName(typeof(ErrorList), value);        
         }
 
     }

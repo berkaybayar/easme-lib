@@ -39,11 +39,11 @@ namespace EasMe
                     try
                     {
                         File.Delete(file);
-                        if (_isEnableLogging) EasLogFast.Info("File deleted: " + file);
+                        if (_isEnableLogging) EasLog.Info("File deleted: " + file);
                     }
                     catch
                     {
-                        if (_isEnableLogging) EasLogFast.Error("Error deleting file: " + file,Models.ErrorType.TypeList.FAILED_TO_DELETE_FILE);
+                        if (_isEnableLogging) EasLog.Error("Error deleting file: " + file,Models.ErrorType.ErrorList.FAILED_TO_DELETE_FILE);
                     }
 
                 }
@@ -54,11 +54,11 @@ namespace EasMe
                 try
                 {
                     Directory.Delete(FilePath);
-                    if (_isEnableLogging) EasLogFast.Info("Folder deleted: " + FilePath);
+                    if (_isEnableLogging) EasLog.Info("Folder deleted: " + FilePath);
                 }
                 catch
                 {
-                    if (_isEnableLogging) EasLogFast.Error("Error deleting folder:" + FilePath);
+                    if (_isEnableLogging) EasLog.Error("Error deleting folder:" + FilePath);
                 }
             }
             else
@@ -66,11 +66,11 @@ namespace EasMe
                 try
                 {
                     File.Delete(FilePath);
-                    if (_isEnableLogging) EasLogFast.Info("File deleted: " + FilePath);
+                    if (_isEnableLogging) EasLog.Info("File deleted: " + FilePath);
                 }
                 catch
                 {
-                    if (_isEnableLogging) EasLogFast.Error("Error deleting file:" + FilePath);
+                    if (_isEnableLogging) EasLog.Error("Error deleting file:" + FilePath);
                 }
 
             }

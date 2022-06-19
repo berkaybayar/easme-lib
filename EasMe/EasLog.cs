@@ -8,7 +8,7 @@ namespace EasMe
     /// <summary>
     /// Simple logging helper with few useful options.
     /// </summary>
-    public class EasLog
+    public static class EasLog
     {
         private static string _DirLog;
         private static string _DateFormat;
@@ -19,25 +19,44 @@ namespace EasMe
         private static bool _SeperateLogs;
         private static bool _EnableClientInfoLogging;
         private static bool _EnableDebugMode;
+        private static bool _IsLoadedConfig;
         public static Dictionary<int, string> _CustomErrorList;
-        
-        public EasLog(LogConfiguration config)
-        {
+
+
+        /// <summary>
+        /// Initialize the log configuration. Call this method in your application startup.
+        /// </summary>
+        /// <param name="config"></param>
+        public static void LoadConfiguration(LogConfiguration config)        {
             
-            _DirLog = config.LogFolderPath;
-            _DateFormat = config.DateFormatString;
-            _EnableConsoleLogging = config.EnableConsoleLogging;
-            _CustomErrorList = config.CustomErrorList;
-            _MaxLogFileSize = config.MaxLogFileSize;
-            _LogFileExtension = config.LogFileExtension;
-            _SeperateLogs = config.SeperateLogs;
-            _LogFileName = config.LogFileName;
-            _EnableClientInfoLogging = config.EnableClientInfoLogging;
-            _EnableDebugMode = config.EnableDebugMode;
+            try
+            {
+                _DirLog = config.LogFolderPath;
+                _DateFormat = config.DateFormatString;
+                _EnableConsoleLogging = config.EnableConsoleLogging;
+                _CustomErrorList = config.CustomErrorList;
+                _MaxLogFileSize = config.MaxLogFileSize;
+                _LogFileExtension = config.LogFileExtension;
+                _SeperateLogs = config.SeperateLogs;
+                _LogFileName = config.LogFileName;
+                _EnableClientInfoLogging = config.EnableClientInfoLogging;
+                _EnableDebugMode = config.EnableDebugMode;
+                _IsLoadedConfig = true;
+            }
+            catch (Exception e)
+            {
+                _IsLoadedConfig = false;
+                throw new Exception(ErrorType.ErrorList.LOAD_CONFIGURATION_ERROR.ToString(),e);
+            }
+        }
+        /// <summary>
+        /// Initialize default configuration. Call this method in your application startup.
+        /// </summary>
+        public static void LoadDefaultConfiguration()
+        {
+            LoadConfiguration(new LogConfiguration());
         }
         
-
-
         /// <summary>
         /// Creates log with Info severity and success status.
         /// </summary>
@@ -48,19 +67,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public string Info(string LogMessage, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static string Info(string LogMessage, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
-            try
-            {
-                var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
-                var model = BaseModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS, null, webModel);
-                serialized = Log(model);
-            }
-            catch (Exception e)
-            {
-                return Error(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate("INFO", LogMessage, ErrorType.ErrorList.SUCCESS, null, webModel);
+            serialized = Log(model);
             return serialized;
         }
         
@@ -76,20 +88,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public string Error(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static string Error(string LogMessage, ErrorType.ErrorList ErrorNo = ErrorType.ErrorList.ERROR, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
-            try
-            {
-                var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
-                var model = BaseModelCreate("ERROR", LogMessage, ErrorNo, null, webModel);
-                serialized = Log(model);
-
-            }
-            catch (Exception e)
-            {
-                return Error(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate("ERROR", LogMessage, ErrorNo, null, webModel);
+            serialized = Log(model);
             return serialized;
         }
        
@@ -104,19 +108,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public string Error(Exception ex, ErrorType.TypeList ErrorNo = ErrorType.TypeList.EXCEPTION_OCCURED, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static string Error(Exception ex, ErrorType.ErrorList ErrorNo = ErrorType.ErrorList.EXCEPTION_OCCURED, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
-            try
-            {
-                var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
-                var model = BaseModelCreate("EXCEPTION", ErrorNo.ToString(), ErrorNo, ex, webModel);
-                serialized = Log(model);
-            }
-            catch (Exception e)
-            {
-                return Error(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate("EXCEPTION", ErrorNo.ToString(), ErrorNo, ex, webModel);
+            serialized = Log(model);
             return serialized;
 
         }
@@ -132,19 +129,12 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public string Warn(string LogMessage, ErrorType.TypeList ErrorNo = ErrorType.TypeList.WARN, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static string Warn(string LogMessage, ErrorType.ErrorList ErrorNo = ErrorType.ErrorList.WARN, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
-            try
-            {
-                var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
-                var model = BaseModelCreate("WARN", LogMessage, ErrorNo, null, webModel);
-                serialized = Log(model);
-            }
-            catch (Exception e)
-            {
-                return Error(e, ErrorType.TypeList.LOGGING_ERROR);
-            }
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate("WARN", LogMessage, ErrorNo, null, webModel);
+            serialized = Log(model);
             return serialized;
         }
 
@@ -157,9 +147,13 @@ namespace EasMe
         /// <param name="LogContent"></param>
         /// <param name="UseDefaultDate"></param>
         /// <returns>LogContent</returns>
-        public string Log(object obj)
+        public static string Log(object obj)
         {
-            string serialized = "";
+            if (!_IsLoadedConfig)
+            {
+                throw new Exception(ErrorType.ErrorList.NOT_FOUND_LOADED_CONFIGURATION_ERROR.ToString());
+            }
+            string serialized = "Error in Logging";
             try
             {
                 if (obj == null) return serialized;
@@ -173,21 +167,21 @@ namespace EasMe
                 }
                 if (!Directory.Exists(_DirLog)) Directory.CreateDirectory(_DirLog);
 
-                string LogPath = _DirLog + "\\" + _LogFileName  + DateTime.Now.ToString(_DateFormat);
+                string LogPath = _DirLog + "\\" + _LogFileName  + DateTime.Now.ToString(_DateFormat) + _LogFileExtension;
                 File.AppendAllText(LogPath, serialized + "\n");
                 if (_EnableConsoleLogging)
                     Console.WriteLine(serialized);
+                return serialized;                
             }
             catch (Exception e)
             {
-                return Error(e, ErrorType.TypeList.CREATING_LOG_ERROR);
+                throw new Exception(ErrorType.ErrorList.LOGGING_ERROR.ToString(), e);
             }
-            return serialized;
             
             
         }
         
-        public string Serialize(object obj)
+        public static string Serialize(object obj)
         {
             try
             {
@@ -195,7 +189,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                return Error(e, ErrorType.TypeList.LOGGING_ERROR);
+                throw new Exception(ErrorType.ErrorList.SERIALIZATION_ERROR.ToString(), e);
             }
         }
 
@@ -211,14 +205,20 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <param name="ex"></param>
         /// <returns>EasMe.Models.WebLogModel</returns>
-        private WebLogModel WebModelCreate(string? Ip, string? HttpMethod, string? RequestUrl, Dictionary<string, string>? Headers)
+        private static WebLogModel WebModelCreate(string? Ip, string? HttpMethod, string? RequestUrl, Dictionary<string, string>? Headers)
         {
             var log = new WebLogModel();            
-            log.Ip = Ip;
-            log.HttpMethod = HttpMethod;
-            log.RequestUrl = RequestUrl;
-            log.Headers = EasProxy.ConvertHeadersToString(Headers);
-            
+            try
+            {
+                log.Ip = Ip;
+                log.HttpMethod = HttpMethod;
+                log.RequestUrl = RequestUrl;
+                log.Headers = EasProxy.ConvertHeadersToString(Headers);                
+            }
+            catch (Exception e)
+            {
+                throw new Exception(ErrorType.ErrorList.CREATE_WEB_MODEL_ERROR.ToString(), e);
+            }
             return log;
         }
 
@@ -229,40 +229,54 @@ namespace EasMe
         /// <param name="LogMessage"></param>
         /// <param name="ErrorNo"></param>
         /// <returns>EasMe.Models.BaseLogModel</returns>
-        private BaseLogModel BaseModelCreate(string Severity, string LogMessage, ErrorType.TypeList ErrorNo, Exception? Exception = null,WebLogModel? WebLog = null)
+        private static BaseLogModel BaseModelCreate(string Severity, string LogMessage, ErrorType.ErrorList ErrorNo, Exception? Exception = null,WebLogModel? WebLog = null)
         {
-            var log = new BaseLogModel();
-            log.Severity = Severity.ToUpper();
-            log.Message = LogMessage;
-            log.LogType = 0;
-            
-            log.TraceAction = GetActionName();
-            log.TraceClass = GetClassName();
-            log.ErrorNo = ErrorNo.ToString();
-            if (Exception != null)
-                //log.Exception = Serialize(ConvertExceptionToLogModel(Exception));
-                log.Exception = ConvertExceptionToLogModel(Exception);
-            if (_EnableClientInfoLogging)
-                log.ClientLog = new ClientLogModel();
-            log.WebLog = WebLog;
-            return log;
+            try
+            {
+                var log = new BaseLogModel();
+                log.Severity = Severity.ToUpper();
+                log.Message = LogMessage;
+                log.LogType = 0;
+
+                log.TraceAction = GetActionName();
+                log.TraceClass = GetClassName();
+                log.ErrorNo = ErrorNo.ToString();
+                if (Exception != null)
+                    //log.Exception = Serialize(ConvertExceptionToLogModel(Exception));
+                    log.Exception = ConvertExceptionToLogModel(Exception);
+                if (_EnableClientInfoLogging)
+                    log.ClientLog = new ClientLogModel();
+                log.WebLog = WebLog;
+                return log;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(ErrorType.ErrorList.CREATE_BASE_MODEL_ERROR.ToString(), e);
+            }
         }
-        
 
 
-        private ErrorLogModel ConvertExceptionToLogModel(Exception ex)
+
+        private static ErrorLogModel ConvertExceptionToLogModel(Exception ex)
         {
             var model = new ErrorLogModel();
-            model.ExceptionMessage = ex.Message;
-            if (_EnableDebugMode)
+            try
             {
-                model.ExceptionSource = ex.Source;
-                model.ExceptionStackTrace = ex.StackTrace;
-                var inner = ex.InnerException;
-                if (inner != null)
-                    model.ExceptionInner = inner.ToString();
+                model.ExceptionMessage = ex.Message;
+                if (_EnableDebugMode)
+                {
+                    model.ExceptionSource = ex.Source;
+                    model.ExceptionStackTrace = ex.StackTrace;
+                    var inner = ex.InnerException;
+                    if (inner != null)
+                        model.ExceptionInner = inner.ToString();
+                }
+
             }
-            
+            catch (Exception e)
+            {
+                throw new Exception(ErrorType.ErrorList.CONVERT_EXCEPTION_TO_LOG_MODEL_ERROR.ToString(), e);
+            }
             return model;
 
         }
