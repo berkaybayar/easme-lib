@@ -8,12 +8,11 @@ namespace EasMe.Models.LogModels
 {
     internal class ClientLogModel
     {
-        static EasSystem _system = new EasSystem();        
-        public string? Ip { get; private set ; } = _system.GetRemoteIPAddress();           
-        public string? HWID { get; private set; } = _system.GetMachineIdHashed();
-        public string? ThreadId { get; private set; } = _system.GetThreadId();
-        public string? OSVersion { get; private set; } = _system.GetOSVersion();
-        public string? Timezone { get; private set; } = _system.GetTimezone();
+        public string? Ip { get; private set ; } = EasSystem.GetRemoteIPAddress();           
+        public string? HWID { get; private set; } = EasSystem.GetMachineIdHashed();
+        public string? ThreadId { get; private set; } = EasSystem.GetThreadId();
+        public string? OSVersion { get; private set; } = EasSystem.GetOSVersion();
+        public string? Timezone { get; private set; } = EasSystem.GetTimezone();
 
 
     }

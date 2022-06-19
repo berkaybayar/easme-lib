@@ -23,19 +23,19 @@ namespace EasMe
                 return false;
             }
         }
-        public static bool IsValidIPAddress(string ipAddress, out string version)
+        public static bool IsValidIPAddress(string IpAddress, out string IpVersion)
         {
             IPAddress address;
-            version = "";
-            if (IPAddress.TryParse(ipAddress, out address))
+            IpVersion = "";
+            if (IPAddress.TryParse(IpAddress, out address))
             {
                 switch (address.AddressFamily)
                 {
                     case System.Net.Sockets.AddressFamily.InterNetwork:
-                        version = "IPv4";
+                        IpVersion = "IPv4";
                         return true;
                     case System.Net.Sockets.AddressFamily.InterNetworkV6:
-                        version = "IPv6";
+                        IpVersion = "IPv6";
                         return true;
                     default:
                         return false;

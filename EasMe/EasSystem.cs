@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EasMe
 {
-    public class EasSystem
+    public static class EasSystem
     {
         //private  ManagementObjectSearcher baseboardSearcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BaseBoard");
         //private  ManagementObjectSearcher motherboardSearcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_MotherboardDevice");
@@ -21,7 +21,7 @@ namespace EasMe
             Disk = 3,
         }
         #region Read System.Management
-        private string GetIdentifier(string wmiClass, string wmiProperty)
+        private static string GetIdentifier(string wmiClass, string wmiProperty)
         {
             var result = "";
 
@@ -55,7 +55,7 @@ namespace EasMe
             return result;
 
         }
-        private string GetIdentifier(string wmiClass, string wmiProperty, string wmiMustBeTrue)
+        private static string GetIdentifier(string wmiClass, string wmiProperty, string wmiMustBeTrue)
         {
             string? result = "";
 
@@ -102,7 +102,7 @@ namespace EasMe
         //    }
         //    return null;
         //}
-        private List<ManagementObject> GetManagementObjList(string className, string searchCol = "*")
+        private static List<ManagementObject> GetManagementObjList(string className, string searchCol = "*")
         {
             var list = new List<ManagementObject>();
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("select " + searchCol + " from " + className);
@@ -116,7 +116,7 @@ namespace EasMe
         }
         #endregion
 
-        public string? GetMACAddress()
+        public static string? GetMACAddress()
         {
             try
             {
@@ -132,7 +132,7 @@ namespace EasMe
                 return "Unkown";
             }
         }
-        public List<RamModel> GetRamList()
+        public static List<RamModel> GetRamList()
         {
             var list = new List<RamModel>();
             foreach (var obj in GetManagementObjList("Win32_PhysicalMemory"))
@@ -164,7 +164,7 @@ namespace EasMe
             }
             return list;
         }
-        public MotherboardModel GetMotherboard()
+        public static MotherboardModel GetMotherboard()
         {
             var motherboardModel = new MotherboardModel();
             
@@ -196,7 +196,7 @@ namespace EasMe
 
 
         }
-        public CPUModel GetProcessor()
+        public static CPUModel GetProcessor()
         {
             var CPUModel = new CPUModel();            
             try
@@ -254,7 +254,7 @@ namespace EasMe
 
 
         }
-        public List<DiskModel> GetDiskList()
+        public static List<DiskModel> GetDiskList()
         {
             var list = new List<DiskModel>();
             try
@@ -301,7 +301,7 @@ namespace EasMe
             return list;
 
         }
-        public List<GPUModel> GetGPUList()
+        public static List<GPUModel> GetGPUList()
         {
             var list = new List<GPUModel>();
             try
@@ -354,7 +354,7 @@ namespace EasMe
             }
             return list;
         }
-        public BIOSModel GetBIOS()
+        public static BIOSModel GetBIOS()
         {
             var model = new BIOSModel();            
             try
@@ -388,7 +388,7 @@ namespace EasMe
             }
             return model;
         }
-        public string GetMotherboardSerial()
+        public static string GetMotherboardSerial()
         {
             try
             {
@@ -400,7 +400,7 @@ namespace EasMe
             }
             return "Unkown";
         }
-        public string GetProcessorId()
+        public static string GetProcessorId()
         {
             try
             {
@@ -412,7 +412,7 @@ namespace EasMe
             }
             return "Unkown";
         }
-        public string GetDiskSerial()
+        public static string GetDiskSerial()
         {
             try
             {
@@ -424,7 +424,7 @@ namespace EasMe
             }
             return "Unkown";
         }
-        public string GetVideoProcessorName()
+        public static string GetVideoProcessorName()
         {
             try
             {
@@ -436,12 +436,12 @@ namespace EasMe
             }
             return "Unkown";
         }
-        public string GetTimezone()
+        public static string GetTimezone()
         {
             return TimeZoneInfo.Local.StandardName;
 
         }
-        public string GetOSVersion()
+        public static string GetOSVersion()
         {
             try
             {
@@ -452,7 +452,7 @@ namespace EasMe
                 return "Unknown";
             }
         }
-        public string GetMachineName()
+        public static string GetMachineName()
         {
             try
             {
@@ -464,7 +464,7 @@ namespace EasMe
             }
 
         }
-        public string GetThreadId()
+        public static string GetThreadId()
         {
             try
             {
@@ -480,7 +480,7 @@ namespace EasMe
         ///     Gets this device remote IP Address.
         /// </summary>
         /// <returns></returns>
-        public string GetRemoteIPAddress()
+        public static string GetRemoteIPAddress()
         {
             try
             {
@@ -495,7 +495,7 @@ namespace EasMe
 
         }
 
-        private string GetMachineGuid()
+        private static string GetMachineGuid()
         {
             string location = @"SOFTWARE\Microsoft\Cryptography";
             string name = "MachineGuid";
@@ -515,7 +515,7 @@ namespace EasMe
         /// Get Disk UUID from Win32_ComputerSystemProduct
         /// </summary>
         /// <returns></returns>
-        private string GetDiskUUID()
+        private static string GetDiskUUID()
         {
             string run = "get-wmiobject Win32_ComputerSystemProduct  | Select-Object -ExpandProperty UUID";
             var oProcess = new Process();
@@ -535,7 +535,7 @@ namespace EasMe
 
         //bios versions can be updated to a new version and make users licence invalid  
         //Also since Rams and Disks and GPUs can have multiple, changing ram or disk or gpu order may result in differenet id        
-        private string GetMachineIdString(bool EnableBiosVersionIdentifier = true)
+        private static string GetMachineIdString(bool EnableBiosVersionIdentifier = true)
         {
             try
             {
@@ -570,7 +570,7 @@ namespace EasMe
             }
             catch { return "Unkown"; }
         }
-        public string GetMachineIdHashed()
+        public static string GetMachineIdHashed()
         {
             try
             {
@@ -581,7 +581,7 @@ namespace EasMe
 
 
 
-        private string? GetTest()
+        private static string? GetTest()
         {
             try
             {
