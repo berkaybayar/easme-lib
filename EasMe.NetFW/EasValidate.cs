@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 
-namespace EasMe 
+namespace EasMe
 {
     public static class EasValidate
     {
@@ -131,14 +130,14 @@ namespace EasMe
 
             return true;
         }
-        
+
         public static bool IsUrlImage(string URL)
         {
-           
+
             var client = new HttpClient();
             var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
             if (req != null)
-                return req.ToString().ToLower().StartsWith("image/"); 
+                return req.ToString().ToLower().StartsWith("image/");
             if (URL.Contains(".jpg") || URL.Contains(".png") || URL.Contains(".gif") || URL.Contains(".jpeg"))
             {
                 return true;
@@ -150,16 +149,16 @@ namespace EasMe
         {
             var client = new HttpClient();
             var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
-            if(req != null) 
-             return req.ToString().ToLower().StartsWith("video/");                          
-            
+            if (req != null)
+                return req.ToString().ToLower().StartsWith("video/");
+
             if (URL.Contains(".mp4") || URL.Contains(".avi") || URL.Contains(".mkv") || URL.Contains(".wmv") || URL.Contains(".flv") || URL.Contains(".mov") || URL.Contains(".mpeg") || URL.Contains(".mpg") || URL.Contains(".webm"))
             {
                 return true;
             }
             return false;
         }
-        
+
         public static bool IsURL(string url)
         {
             return Uri.IsWellFormedUriString(url, UriKind.Absolute);

@@ -1,29 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace EasMe.Models.LogModels
 {
-    internal class BaseLogModel 
+    internal class BaseLogModel
     {
         public DateTime Date { get; private set; } = DateTime.Now;
         public int LogType { get; set; }
         public string Severity { get; set; }
-        public string? ErrorNo { get; set; }        
+        public string? ErrorNo { get; set; }
         public object? Message { get; set; }
-        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? TraceAction { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? TraceClass { get; set; }
-        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ErrorLogModel? Exception { get; set; }
-        
-        
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public WebLogModel? WebLog { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

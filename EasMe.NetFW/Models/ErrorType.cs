@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasMe.Models
 {
     public static class ErrorType
     {
-       
+
 
 
         public enum TypeList
@@ -55,13 +51,13 @@ namespace EasMe.Models
             EMAIL_ALREADY_SENT = 46,
             EMAIL_SENT_FAILED = 47,
 
-            NO_ONLINE_NETWORK = 50 ,
+            NO_ONLINE_NETWORK = 50,
             FAILED_TO_CONNECT = 51,
             FAILED_TO_GET_RESPONSE = 52,
             FAILED_TO_READ_RESPONSE = 53,
             FAILED_TO_WRITE_RESPONSE = 54,
             FAILED_TO_SEND_RESPONSE = 55,
-            
+
             FAILED_TO_DELETE_FILE = 61,
             FAILED_TO_DELETE_FOLDER = 62,
             FAILED_TO_CREATE_FILE = 63,
@@ -70,8 +66,9 @@ namespace EasMe.Models
             FAILED_TO_WRITE_FILE = 66,
 
         }
-        public static string EnumGetKeybyValue(int value){
-            return Enum.GetName(typeof(TypeList), value);        
+        public static string EnumGetKeybyValue(int value)
+        {
+            return Enum.GetName(typeof(TypeList), value);
         }
 
     }

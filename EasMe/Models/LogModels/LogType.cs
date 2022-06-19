@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Models.LogModels
+﻿namespace EasMe.Models.LogModels
 {
     internal static class LogType
     {
@@ -15,7 +9,7 @@ namespace EasMe.Models.LogModels
             Base = 0,
             Web = 1,
             Client = 2,
-            
+
         }
     }
 }

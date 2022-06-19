@@ -40,8 +40,12 @@ namespace EasMe
         /// </summary>
         /// <param name="Headers"></param>
         /// <returns>Format: "HEADER:VALUE|HEADER2:VALUE2"</returns>       
-        public static string ConvertHeadersToString(Dictionary<string, string>? Headers)
+        public static string? ConvertHeadersToString(Dictionary<string, string>? Headers)
         {
+            if (Headers == null || Headers.Count == 0)
+            {
+                return null;
+            }
             var val = "";
             if (Headers == null) return "";
             foreach (var item in Headers)
@@ -51,7 +55,7 @@ namespace EasMe
             return val.Substring(0, val.Length - 1);
 
         }
-        
+
         /// <summary>
         /// Gets header values by httpContext
         /// </summary>
@@ -145,7 +149,7 @@ namespace EasMe
             return httpRequest.Path.ToUriComponent();
         }
         public static string GetContentType(HttpContext httpContext)
-        {            
+        {
             return GetContentType(httpContext.Request);
         }
 
@@ -172,7 +176,7 @@ namespace EasMe
                 model.Longitude = geoposition.Coordinate.Longitude;
                 model.Accuracy = geoposition.Coordinate.Accuracy;
             }
-            catch{ }
+            catch { }
             return model;
         }
     }

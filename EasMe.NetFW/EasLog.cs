@@ -15,7 +15,7 @@ namespace EasMe
     {
         private static string _DirLog;
         private static int _Interval;
-        private static bool _EnableConsoleLogging;        
+        private static bool _EnableConsoleLogging;
         public static Dictionary<int, string> CustomErrorNoList;
         /*
         Interval value        
@@ -32,7 +32,7 @@ namespace EasMe
 
         public EasLog(string FilePath, bool EnableConsoleLogging = true, int Interval = 0)
         {
-            
+
             _DirLog = FilePath;
             _Interval = Interval;
             _EnableConsoleLogging = EnableConsoleLogging;
@@ -40,7 +40,7 @@ namespace EasMe
 
         public EasLog(bool EnableConsoleLogging = true, int Interval = 0)
         {
-            
+
             _DirLog = Directory.GetCurrentDirectory() + "\\Logs\\";
             _Interval = Interval;
             _EnableConsoleLogging = EnableConsoleLogging;
@@ -65,7 +65,7 @@ namespace EasMe
                 {
                     var model = WebModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS, Ip, HttpMethod, RequestUrl, Headers, null);
                     serialized = Log(model);
-                }                
+                }
                 else
                 {
                     var model = BaseModelCreate("INFO", LogMessage, ErrorType.TypeList.SUCCESS);
@@ -115,7 +115,7 @@ namespace EasMe
                 {
                     var model = WebModelCreate("ERROR", LogMessage, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
                     serialized = Log(model);
-                }               
+                }
                 else
                 {
                     var model = BaseModelCreate("ERROR", LogMessage, ErrorNo);
@@ -220,7 +220,7 @@ namespace EasMe
                 {
                     var model = WebModelCreate("WARN", LogMessage, ErrorNo, Ip, HttpMethod, RequestUrl, Headers, null);
                     serialized = Log(model);
-                }                
+                }
                 else
                 {
                     var model = BaseModelCreate("WARN", LogMessage, ErrorNo);
@@ -304,11 +304,11 @@ namespace EasMe
                 return Exception(e, ErrorType.TypeList.CREATING_LOG_ERROR);
             }
             return serialized;
-            
+
             string Serialize(object obj2)
             {
-                try                
-                {                    
+                try
+                {
                     return JsonConvert.SerializeObject(obj2);
                 }
                 catch (Exception e)
@@ -323,9 +323,9 @@ namespace EasMe
             var b = new JsonSerializerSettings();
             b.Formatting = Formatting.Indented;
             return JsonConvert.SerializeObject(obj2, b);
-            
-            
-            
+
+
+
         }
 
         /// <summary>
@@ -410,9 +410,9 @@ namespace EasMe
             return model;
 
         }
-        
 
-        
+
+
         /// <summary>
         /// Gets the name of the function this function is called from.
         /// </summary>

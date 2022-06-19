@@ -27,8 +27,9 @@ namespace EasMe
         /// Initialize the log configuration. Call this method in your application startup.
         /// </summary>
         /// <param name="config"></param>
-        public static void LoadConfiguration(LogConfiguration config)        {
-            
+        public static void LoadConfiguration(LogConfiguration config)
+        {
+
             try
             {
                 _DirLog = config.LogFolderPath;
@@ -46,7 +47,7 @@ namespace EasMe
             catch (Exception e)
             {
                 _IsLoadedConfig = false;
-                throw new Exception(ErrorType.ErrorList.LOAD_CONFIGURATION_ERROR.ToString(),e);
+                throw new Exception(ErrorType.ErrorList.LOAD_CONFIGURATION_ERROR.ToString(), e);
             }
         }
         /// <summary>
@@ -56,7 +57,7 @@ namespace EasMe
         {
             LoadConfiguration(new LogConfiguration());
         }
-        
+
         /// <summary>
         /// Creates log with Info severity and success status.
         /// </summary>
@@ -75,7 +76,7 @@ namespace EasMe
             serialized = Log(model);
             return serialized;
         }
-        
+
 
         /// <summary>
         /// Creates log with Error severity and failed status.
@@ -96,7 +97,7 @@ namespace EasMe
             serialized = Log(model);
             return serialized;
         }
-       
+
 
         /// <summary>
         /// Creates log with Exception severity and failed status. If ip variable added it logs web model. If not it logs base model.
@@ -167,25 +168,27 @@ namespace EasMe
                 }
                 if (!Directory.Exists(_DirLog)) Directory.CreateDirectory(_DirLog);
 
-                string LogPath = _DirLog + "\\" + _LogFileName  + DateTime.Now.ToString(_DateFormat) + _LogFileExtension;
+                string LogPath = _DirLog + "\\" + _LogFileName + DateTime.Now.ToString(_DateFormat) + _LogFileExtension;
                 File.AppendAllText(LogPath, serialized + "\n");
                 if (_EnableConsoleLogging)
                     Console.WriteLine(serialized);
-                return serialized;                
+                return serialized;
             }
             catch (Exception e)
             {
                 throw new Exception(ErrorType.ErrorList.LOGGING_ERROR.ToString(), e);
             }
-            
-            
+
+
         }
-        
+
         public static string Serialize(object obj)
         {
             try
             {
-                return JsonSerializer.Serialize(obj).Trim();
+                var o = new JsonSerializerOptions();
+                o.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+                return JsonSerializer.Serialize(obj, o);
             }
             catch (Exception e)
             {
@@ -207,13 +210,13 @@ namespace EasMe
         /// <returns>EasMe.Models.WebLogModel</returns>
         private static WebLogModel WebModelCreate(string? Ip, string? HttpMethod, string? RequestUrl, Dictionary<string, string>? Headers)
         {
-            var log = new WebLogModel();            
+            var log = new WebLogModel();
             try
             {
                 log.Ip = Ip;
                 log.HttpMethod = HttpMethod;
                 log.RequestUrl = RequestUrl;
-                log.Headers = EasProxy.ConvertHeadersToString(Headers);                
+                log.Headers = EasProxy.ConvertHeadersToString(Headers);
             }
             catch (Exception e)
             {
@@ -229,7 +232,7 @@ namespace EasMe
         /// <param name="LogMessage"></param>
         /// <param name="ErrorNo"></param>
         /// <returns>EasMe.Models.BaseLogModel</returns>
-        private static BaseLogModel BaseModelCreate(string Severity, string LogMessage, ErrorType.ErrorList ErrorNo, Exception? Exception = null,WebLogModel? WebLog = null)
+        private static BaseLogModel BaseModelCreate(string Severity, string LogMessage, ErrorType.ErrorList ErrorNo, Exception? Exception = null, WebLogModel? WebLog = null)
         {
             try
             {
@@ -237,9 +240,12 @@ namespace EasMe
                 log.Severity = Severity.ToUpper();
                 log.Message = LogMessage;
                 log.LogType = 0;
+                if (_EnableDebugMode = true)
+                {
+                    log.TraceAction = GetActionName();
+                    log.TraceClass = GetClassName();
+                }
 
-                log.TraceAction = GetActionName();
-                log.TraceClass = GetClassName();
                 log.ErrorNo = ErrorNo.ToString();
                 if (Exception != null)
                     //log.Exception = Serialize(ConvertExceptionToLogModel(Exception));
@@ -280,9 +286,9 @@ namespace EasMe
             return model;
 
         }
-        
 
-        
+
+
         /// <summary>
         /// Gets the name of the function this function is called from.
         /// </summary>

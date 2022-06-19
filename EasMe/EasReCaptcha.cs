@@ -32,7 +32,7 @@ namespace EasMe
         string Secret = "your-secret-key";       
         var Captcha = _recaptcha.Validate(Secret, CaptchaResponse);
         */
-        
+
 
         public static CaptchaResponse Validate(string Secret, string CaptchaResponse)
         {

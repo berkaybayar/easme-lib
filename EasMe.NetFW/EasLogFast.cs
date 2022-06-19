@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasMe
 {
     /// <summary>
     /// Static class for fast loggin with EasLog
     /// </summary>
-    public static class EasLogFast 
+    public static class EasLogFast
     {
         static EasLog _log = new EasLog();
         public static string Info(string message)
@@ -44,6 +40,6 @@ namespace EasMe
         {
             return _log.ExceptionClient(ex);
         }
-        
+
     }
 }

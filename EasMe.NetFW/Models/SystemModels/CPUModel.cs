@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Models.SystemModels
+﻿namespace EasMe.Models.SystemModels
 {
     public class CPUModel
     {
@@ -52,6 +46,6 @@ namespace EasMe.Models.SystemModels
         public string Version { get; set; }
         public string VirtualizationFirmwareEnabled { get; set; }
         public string VMMonitorModeExtensions { get; set; }
-  
+
     }
 }

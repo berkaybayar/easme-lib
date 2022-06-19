@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Models.SystemModels
+﻿namespace EasMe.Models.SystemModels
 {
     public class RamModel
     {
@@ -30,6 +24,6 @@ namespace EasMe.Models.SystemModels
         public string? Tag { get; set; }
         public string? TotalWidth { get; set; }
         public string? TypeDetail { get; set; }
-        
+
     }
 }

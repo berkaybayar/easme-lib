@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Models.SystemModels
+﻿namespace EasMe.Models.SystemModels
 {
     public class GPUModel
     {
@@ -44,6 +38,6 @@ namespace EasMe.Models.SystemModels
         public string VideoMemoryType { get; set; }
         public string VideoModeDescription { get; set; }
         public string VideoProcessor { get; set; }
-       
+
     }
 }

@@ -12,8 +12,8 @@ namespace EasMe
         /// <param name="allowedChars"></param>
         /// <param name="onlyLetter"></param>
         /// <returns></returns>
-        static string GenerateString(string chars,int length)
-        {          
+        static string GenerateString(string chars, int length)
+        {
             var random = new Random();
             string resultToken = new string(
                Enumerable.Repeat(chars, length)
@@ -31,16 +31,16 @@ namespace EasMe
             {
 
                 allChars = lowerAll + upperAll + allowedChars;
-                return GenerateString(allChars,length);                
+                return GenerateString(allChars, length);
             }
             else
             {
                 allChars = lowerAll + upperAll + digits + allowedChars;
                 return GenerateString(allChars, length);
-                            
-            }            
+
+            }
         }
-      
+
         public static string GenerateRandomLetters(int length)
         {
             string lowerAll = "abcdefghijklmnoprstuvwxyz";

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe
+﻿namespace EasMe
 {
     public class LogConfiguration
     {
@@ -22,7 +16,7 @@ namespace EasMe
         /// Max log file size, after this value is being reached creates new log file, default value is "10MB".
         /// </summary>
         public string MaxLogFileSize { get; set; } = "10MB";
-        
+
         /// <summary>
         /// Whether to enable console logging, writes json logs in console as well as saving logs to a file. Default value is true.
         /// </summary>
@@ -30,13 +24,13 @@ namespace EasMe
         /// <summary>
         /// Formatting datetime in log file name, default value is "MM.dd.yyyy"
         /// </summary>
-        public string DateFormatString { get; set; } = "MM.dd.yyyy"; 
+        public string DateFormatString { get; set; } = "MM.dd.yyyy";
 
         /// <summary>
         /// Log file name addition to DateFormatString, default value is "Log_".
         /// </summary>
         public string LogFileName { get; set; } = "Log_";
-        
+
         /// <summary>
         /// Set log file extension default value is ".json".
         /// </summary>

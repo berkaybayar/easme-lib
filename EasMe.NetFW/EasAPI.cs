@@ -23,7 +23,7 @@ namespace EasMe
             try
             {
                 var rMessage = JObject.Parse(response.ToString())[parse];
-                return  rMessage.ToString();
+                return rMessage.ToString();
             }
             catch (Exception ex)
             {
@@ -45,9 +45,9 @@ namespace EasMe
             var Response = new APIResponseModel();
             try
             {
-                if(!string.IsNullOrEmpty(TOKEN))
+                if (!string.IsNullOrEmpty(TOKEN))
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
-                
+
                 client.BaseAddress = new Uri(URL);
                 var postTask = client.GetAsync(client.BaseAddress);
                 postTask.Wait();
@@ -72,13 +72,13 @@ namespace EasMe
         /// <returns></returns>
         public APIResponseModel PostAsJson(string URL, object Data, string TOKEN = null)
         {
-            HttpClient client = new HttpClient();            
+            HttpClient client = new HttpClient();
             var Response = new APIResponseModel();
             try
             {
                 if (!string.IsNullOrEmpty(TOKEN))
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
-                
+
                 client.BaseAddress = new Uri(URL);
                 var content = new StringContent(Data.ToString(), Encoding.UTF8, "application/json");
                 var postTask = client.PostAsync(URL, content);
@@ -94,7 +94,7 @@ namespace EasMe
 
             }
             return Response;
-    
+
         }
 
         public HttpResponseMessage SendGetRequest(string URL, string TOKEN = null)
@@ -110,7 +110,7 @@ namespace EasMe
         }
 
 
-        
+
         public HttpResponseMessage SendPostRequest(string URL, HttpContent Content, string TOKEN = null)
         {
             HttpClient client = new HttpClient();
@@ -121,8 +121,8 @@ namespace EasMe
             postTask.Wait();
             return postTask.Result;
         }
-       
-        
+
+
         public HttpResponseMessage SendPutRequest(string URL, HttpContent Content, string TOKEN = null)
         {
             HttpClient client = new HttpClient();
@@ -133,10 +133,10 @@ namespace EasMe
             postTask.Wait();
             return postTask.Result;
         }
-        
-        
+
+
     }
-    
+
 
 
 }

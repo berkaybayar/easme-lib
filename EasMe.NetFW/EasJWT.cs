@@ -1,6 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -59,7 +58,7 @@ namespace EasMe
         /// <param name="validateIssuer"></param>
         /// <param name="validateAudience"></param>
         /// <returns></returns>
-        public ClaimsPrincipal ValidateJWTToken(string token,bool validateIssuer = false, bool validateAudience = false)
+        public ClaimsPrincipal ValidateJWTToken(string token, bool validateIssuer = false, bool validateAudience = false)
         {
             try
             {

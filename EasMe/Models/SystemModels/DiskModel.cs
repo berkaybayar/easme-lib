@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Models.SystemModels
+﻿namespace EasMe.Models.SystemModels
 {
     public class DiskModel
     {
@@ -40,6 +34,6 @@ namespace EasMe.Models.SystemModels
         public string? TotalSectors { get; set; }
         public string? TotalTracks { get; set; }
         public string? TracksPerCylinder { get; set; }
-   
+
     }
 }

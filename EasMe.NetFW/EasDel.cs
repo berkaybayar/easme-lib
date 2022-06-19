@@ -48,7 +48,7 @@ namespace EasMe
                     }
                     catch
                     {
-                        if (_isEnableLogging) _log.Error("Error deleting file: " + file,Models.ErrorType.TypeList.FAILED_TO_DELETE_FILE);
+                        if (_isEnableLogging) _log.Error("Error deleting file: " + file, Models.ErrorType.TypeList.FAILED_TO_DELETE_FILE);
                     }
 
                 }

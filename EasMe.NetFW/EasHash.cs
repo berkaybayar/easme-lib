@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EasMe
 {
@@ -44,29 +40,29 @@ namespace EasMe
 
             return algorithm.ComputeHash(plainTextWithSaltBytes);
         }
-        
+
         public static byte[] MD5Hash(string rawData) => ComputeHash(MD5.Create(), rawData);
         public static byte[] MD5HashSalted(string rawData, string salt) => ComputeSaltedHash(MD5.Create(), rawData, salt);
-        
+
         public static byte[] SHA1Hash(string rawData) => ComputeHash(SHA1.Create(), rawData);
         public static byte[] SHA1HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA1.Create(), rawData, salt);
-        
-        
+
+
         public static byte[] SHA256Hash(string rawData) => ComputeHash(SHA256.Create(), rawData);
         public static byte[] SHA256HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA256.Create(), rawData, salt);
-        
-        
+
+
         public static byte[] SHA384Hash(string rawData) => ComputeHash(SHA384.Create(), rawData);
         public static byte[] SHA384HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA384.Create(), rawData, salt);
-        
-        
-        public static byte[] SHA512Hash(string rawData) => ComputeHash(SHA512.Create(), rawData);        
+
+
+        public static byte[] SHA512Hash(string rawData) => ComputeHash(SHA512.Create(), rawData);
         public static byte[] SHA512HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA512.Create(), rawData, salt);
-        
-        
-       
-        
-       
+
+
+
+
+
         private string HexString(byte[] bt)
         {
             try

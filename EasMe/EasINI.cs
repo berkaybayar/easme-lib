@@ -22,7 +22,7 @@ namespace EasMe
         {
             Path = INIFilePath;
         }
-        
+
         public EasINI()
         {
             Path = Directory.GetCurrentDirectory() + @"\service.ini";

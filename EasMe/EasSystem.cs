@@ -116,7 +116,7 @@ namespace EasMe
         }
         #endregion
 
-        public static string? GetMACAddress()
+        public static string GetMACAddress()
         {
             try
             {
@@ -125,12 +125,14 @@ namespace EasMe
                                 where nic.OperationalStatus == OperationalStatus.Up
                                 select nic.GetPhysicalAddress().ToString()
                             ).FirstOrDefault();
-                return macAddr;
+                if (!string.IsNullOrEmpty(macAddr))
+                    return macAddr;
             }
             catch
             {
-                return "Unkown";
             }
+            return "Not Found";
+
         }
         public static List<RamModel> GetRamList()
         {
@@ -167,7 +169,7 @@ namespace EasMe
         public static MotherboardModel GetMotherboard()
         {
             var motherboardModel = new MotherboardModel();
-            
+
             try
             {
                 var item = GetManagementObjList("Win32_BaseBoard").FirstOrDefault();
@@ -198,7 +200,7 @@ namespace EasMe
         }
         public static CPUModel GetProcessor()
         {
-            var CPUModel = new CPUModel();            
+            var CPUModel = new CPUModel();
             try
             {
                 var item = GetManagementObjList("Win32_Processor").FirstOrDefault();
@@ -307,7 +309,7 @@ namespace EasMe
             try
             {
                 var GPUList = GetManagementObjList("Win32_VideoController");
-                foreach(var video in GPUList)
+                foreach (var video in GPUList)
                 {
                     var model = new GPUModel();
                     model.AdapterRAM = video["AdapterRAM"].ToString();
@@ -347,7 +349,7 @@ namespace EasMe
                     model.Monochrome = video["Monochrome"].ToString();
                     model.VideoModeDescription = video["VideoModeDescription"].ToString();
                     list.Add(model);
-                }                
+                }
             }
             catch
             {
@@ -356,7 +358,7 @@ namespace EasMe
         }
         public static BIOSModel GetBIOS()
         {
-            var model = new BIOSModel();            
+            var model = new BIOSModel();
             try
             {
                 var bios = GetManagementObjList("Win32_BIOS").FirstOrDefault();
@@ -563,10 +565,10 @@ namespace EasMe
                 var diskIdentifier = string.Join(";", diskList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}:{x.Size}"));
                 var machineName = GetMachineName();
                 var ethernetMac = GetMACAddress();
-                string id = processorIdentifier + "|" + ramIdentifier + "|" + biosIdentifier + "|" + mainboardIdentifier + "|" + gpuIdentifier + "|" 
+                string id = processorIdentifier + "|" + ramIdentifier + "|" + biosIdentifier + "|" + mainboardIdentifier + "|" + gpuIdentifier + "|"
                     + diskIdentifier + "|" + machineName + "|" + ethernetMac + "|" + GetDiskUUID() + "|" + GetMachineGuid();
                 //Removing Whitespace
-                return id.Replace(" ","");
+                return id.Replace(" ", "");
             }
             catch { return "Unkown"; }
         }
@@ -678,7 +680,7 @@ namespace EasMe
             catch { }
             return lResult.TrimEnd(' ', ';');
         }
-        
+
         private static List<string> ListOfCpuProperties = new List<string> { "UniqueId", "ProcessorId", "Name", "Manufacturer" };
 
         public static string GetCpuId()
