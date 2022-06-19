@@ -10,6 +10,7 @@ namespace EasMe.Models.LogModels
     {
         public enum TypeList
         {
+            Debug = -2,
             Error = -1,
             Base = 0,
             Web = 1,

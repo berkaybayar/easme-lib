@@ -1,48 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EasMe.Models;
+using EasMe.Models.LogModels;
 
 namespace EasMe
 {
     /// <summary>
-    /// Static class for fast loggin with EasLog
+    /// Static class for fast loggin with EasLog, uses default LogConfiguartion.
     /// </summary>
     public static class EasLogFast 
     {
-        static EasLog _log = new EasLog();
-        public static string Info(string message)
+        static EasLog _log = new EasLog(new LogConfiguration());
+        public static string Info(string Message)
         {
-            return _log.Info(message);
+            return _log.Info(Message);
+        }       
+        public static string Error(string Message,ErrorType.TypeList ErrorNo = ErrorType.TypeList.ERROR)
+        {
+            return _log.Error(Message);
         }
-        public static string InfoClient(string message)
+        
+        public static string Error(Exception ex)
         {
-            return _log.InfoClient(message);
+            return _log.Error(ex);
         }
-        public static string Error(string message)
+        public static string Warn(string Message)
         {
-            return _log.Error(message);
+            return _log.Warn(Message);
         }
-        public static string ErrorClient(string message)
+        
+        public static string Serialize(object obj)
         {
-            return _log.ErrorClient(message);
-        }
-        public static string Exception(Exception ex)
-        {
-            return _log.Exception(ex);
-        }
-        public static string Warn(string message)
-        {
-            return _log.Warn(message);
-        }
-        public static string WarnClient(string message)
-        {
-            return _log.WarnClient(message);
-        }
-        public static string ExceptionClient(Exception ex)
-        {
-            return _log.ExceptionClient(ex);
+            return _log.Serialize(obj);
         }
         
     }

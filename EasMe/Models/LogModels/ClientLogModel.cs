@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasMe.Models.LogModels
 {
-    internal class ClientLogModel : BaseLogModel
+    internal class ClientLogModel
     {
         static EasSystem _system = new EasSystem();        
         public string? Ip { get; private set ; } = _system.GetRemoteIPAddress();           

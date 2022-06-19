@@ -70,7 +70,7 @@ namespace EasMe.Models
             FAILED_TO_WRITE_FILE = 66,
 
         }
-        public static string? EnumGetKeybyValue(int value){
+        public static string EnumGetKeybyValue(int value){
             return Enum.GetName(typeof(TypeList), value);        
         }
 

@@ -8,7 +8,7 @@ namespace EasMe
     public class EasDel
     {
 
-        static EasLog _log = new EasLog();
+       
         //public static string DirCurrent = Directory.GetCurrentDirectory();//gets current directory 
         //public static string DirUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);//gets user directory C:\Users\%username%
         //public static string DirDesktop = DirUser + "\\Desktop";//gets desktop directory C:\Users\%username%\desktop
@@ -24,11 +24,6 @@ namespace EasMe
             _isEnableLogging = isEnableLogging;
         }
 
-        public EasDel(string LogPath)
-        {
-            _isEnableLogging = true;
-            _log = new EasLog(LogPath);
-        }
         /// <summary>
         /// Deletes file or folder, if it is folder it will delete all files and subfolders
         /// </summary>
@@ -44,11 +39,11 @@ namespace EasMe
                     try
                     {
                         File.Delete(file);
-                        if (_isEnableLogging) _log.Info("File deleted: " + file);
+                        if (_isEnableLogging) EasLogFast.Info("File deleted: " + file);
                     }
                     catch
                     {
-                        if (_isEnableLogging) _log.Error("Error deleting file: " + file,Models.ErrorType.TypeList.FAILED_TO_DELETE_FILE);
+                        if (_isEnableLogging) EasLogFast.Error("Error deleting file: " + file,Models.ErrorType.TypeList.FAILED_TO_DELETE_FILE);
                     }
 
                 }
@@ -59,11 +54,11 @@ namespace EasMe
                 try
                 {
                     Directory.Delete(FilePath);
-                    if (_isEnableLogging) _log.Info("Folder deleted: " + FilePath);
+                    if (_isEnableLogging) EasLogFast.Info("Folder deleted: " + FilePath);
                 }
                 catch
                 {
-                    if (_isEnableLogging) _log.Error("Error deleting folder:" + FilePath);
+                    if (_isEnableLogging) EasLogFast.Error("Error deleting folder:" + FilePath);
                 }
             }
             else
@@ -71,11 +66,11 @@ namespace EasMe
                 try
                 {
                     File.Delete(FilePath);
-                    if (_isEnableLogging) _log.Info("File deleted: " + FilePath);
+                    if (_isEnableLogging) EasLogFast.Info("File deleted: " + FilePath);
                 }
                 catch
                 {
-                    if (_isEnableLogging) _log.Error("Error deleting file:" + FilePath);
+                    if (_isEnableLogging) EasLogFast.Error("Error deleting file:" + FilePath);
                 }
 
             }
