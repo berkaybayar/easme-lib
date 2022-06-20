@@ -34,12 +34,12 @@ namespace EasMe
         */
 
 
-        public static CaptchaResponse Validate(string Secret, string CaptchaResponse)
+        public static CaptchaResponseModel Validate(string Secret, string CaptchaResponse)
         {
 
             try
             {
-                var response = new CaptchaResponse();
+                var response = new CaptchaResponseModel();
                 var client = new WebClient();
                 var result = client.DownloadString(string.Format($"https://www.google.com/recaptcha/api/siteverify?secret={Secret}&response={CaptchaResponse}"));
                 var obj = JObject.Parse(result);
@@ -51,7 +51,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                return new CaptchaResponse { Success = false, ErrorCodes = ex.Message };
+                return new CaptchaResponseModel { Success = false, ErrorCodes = ex.Message };
             }
 
 

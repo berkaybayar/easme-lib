@@ -9,6 +9,12 @@ namespace EasMe
     /// </summary>
     public class EasQL
     {
+        private static string _connection;
+
+        public EasQL(string connectionString)
+        {
+            _connection = connectionString;
+        }
         /// <summary>
         /// Executes SQL query and returns DataTable.
         /// </summary>
@@ -18,7 +24,7 @@ namespace EasMe
         /// <returns>DataTable</returns>
         public DataTable GetTable(string Connection, SqlCommand cmd, int Timeout = 0)
         {
-            DataTable dt = new DataTable();
+            DataTable dt = new();
             using (SqlConnection conn = new SqlConnection(Connection))
             {
                 try
@@ -31,12 +37,20 @@ namespace EasMe
                     conn.Close();
                     conn.Dispose();
                 }
-                catch (Exception) { throw; }
+                catch (Exception e)
+                {
+                    throw new EasException(Error.SQL_FAILED_GET_TABLE, cmd.CommandText, e);
+
+                }
 
             }
             return dt;
         }
-
+        public DataTable GetTable(SqlCommand cmd, int Timeout = 0)
+        {
+            if (string.IsNullOrEmpty(_connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            return GetTable(_connection, cmd, Timeout);
+        }
         public int ExecNonQuery(string Connection, SqlCommand cmd, int Timeout = 0)
         {
             int rowsEffected = 0;
@@ -51,10 +65,19 @@ namespace EasMe
                     conn.Close();
                     conn.Dispose();
                 }
-                catch (Exception) { throw; }
+                catch (Exception e)
+                {
+                    throw new EasException(Error.SQL_FAILED_EXEC_NONQUERY, cmd.CommandText, e);
+
+                }
 
             }
             return rowsEffected;
+        }
+        public int ExecNonQuery(SqlCommand cmd, int Timeout = 0)
+        {
+            if (string.IsNullOrEmpty(_connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            return ExecNonQuery(_connection, cmd, Timeout);
         }
 
         public object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0)
@@ -71,23 +94,41 @@ namespace EasMe
                     conn.Close();
                     conn.Dispose();
                 }
-                catch (Exception) { throw; }
+                catch (Exception e)
+                {
+                    throw new EasException(Error.SQL_FAILED_EXEC_SCALAR, cmd.CommandText, e);
+
+                }
 
 
             }
             return obj;
         }
+        public object ExecScalar(SqlCommand cmd, int Timeout = 0)
+        {
+            if (string.IsNullOrEmpty(_connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            return ExecScalar(_connection, cmd, Timeout);
+        }
 
         public void BackupDatabase(string Connection, string DatabaseName, string BackupPath, int Timeout = 0)
         {
-            string query = $@"BACKUP DATABASE {DatabaseName} TO DISK = '{BackupPath}\{DatabaseName}-{DateTime.Now.ToString(" H-mm-ss dd-MM-yyyy")}.bak'";
-            var cmd = new SqlCommand(query);
-            ExecNonQuery(Connection, cmd, Timeout);
+            try
+            {
+                string query = $@"BACKUP DATABASE {DatabaseName} TO DISK = '{BackupPath}\{DatabaseName}-{DateTime.Now.ToString(" H-mm-ss dd-MM-yyyy")}.bak'";
+                var cmd = new SqlCommand(query);
+                ExecNonQuery(Connection, cmd, Timeout);
+            }
+            catch (Exception e)
+            {
+                throw new EasException(Error.SQL_FAILED_BACKUP_DATABASE, DatabaseName, e);
+            }
         }
         public void ShrinkDatabase(string Connection, string DatabaseName, string DatabaseLogName = "_log")
         {
-            if (DatabaseLogName == "_log") DatabaseLogName = DatabaseName + DatabaseLogName;
-            string query = $@"BEGIN
+            try
+            {
+                if (DatabaseLogName == "_log") DatabaseLogName = DatabaseName + DatabaseLogName;
+                string query = $@"BEGIN
                                 ALTER DATABASE [{DatabaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
                                 DBCC SHRINKFILE(N'{DatabaseLogName}', 1)
                                 ALTER DATABASE [{DatabaseName}] SET RECOVERY FULL WITH NO_WAIT
@@ -97,42 +138,76 @@ namespace EasMe
                                 DBCC SHRINKFILE(N'{DatabaseName}', 1)
                                 ALTER DATABASE [{DatabaseName}] SET RECOVERY FULL WITH NO_WAIT
                             END";
-            var cmd = new SqlCommand(query);
-            ExecNonQuery(Connection, cmd);
+                var cmd = new SqlCommand(query);
+                ExecNonQuery(Connection, cmd);
+            }
+            catch (Exception e)
+            {
+                throw new EasException(Error.SQL_FAILED_SHRINK_DATABASE, DatabaseName, e);
+            }
         }
 
 
         public void TruncateTable(string Connection, string TableName)
         {
-            string query = $@"TRUNCATE TABLE {TableName}";
-            var cmd = new SqlCommand(query);
-            ExecNonQuery(Connection, cmd);
+            
+            try
+            {
+                string query = $@"TRUNCATE TABLE {TableName}";
+                var cmd = new SqlCommand(query);
+                ExecNonQuery(Connection, cmd);
+            }
+            catch (Exception e)
+            {
+                throw new EasException(Error.SQL_TABLE_TRUNCATE_FAILED, TableName, e);
+            }
         }
 
         public void DropTable(string Connection, string TableName)
         {
-            string query = $@"DROP TABLE {TableName}";
-            var cmd = new SqlCommand(query);
-            ExecNonQuery(Connection, cmd);
+            try
+            {
+                string query = $@"DROP TABLE {TableName}";
+                var cmd = new SqlCommand(query);
+                ExecNonQuery(Connection, cmd);
+            }
+            catch (Exception e)
+            {
+                throw new EasException(Error.SQL_FAILED_DROP_TABLE, TableName, e);
+            }
         }
         public void DropDatabase(string Connection, string DatabaseName)
         {
-            string query = $@"DROP DATABASE {DatabaseName}";
-            var cmd = new SqlCommand(query);
-            ExecNonQuery(Connection, cmd);
+            try
+            {
+                string query = $@"DROP DATABASE {DatabaseName}";
+                var cmd = new SqlCommand(query);
+                ExecNonQuery(Connection, cmd);
+            }
+            catch (Exception e)
+            {
+                throw new EasException(Error.SQL_FAILED_DROP_DATABASE, DatabaseName, e);
+            }
         }
 
         public List<string> GetAllTableName(string Connection)
         {
-            string query = $@"SELECT '['+SCHEMA_NAME(schema_id)+'].['+name+']' FROM sys.tables";
-            var list = new List<string>();
-            SqlCommand cmd = new SqlCommand(query);
-            var dt = GetTable(Connection, cmd);
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                list.Add(row[0].ToString());
+                string query = $@"SELECT '['+SCHEMA_NAME(schema_id)+'].['+name+']' FROM sys.tables";
+                var list = new List<string>();
+                SqlCommand cmd = new SqlCommand(query);
+                var dt = GetTable(Connection, cmd);
+                foreach (DataRow row in dt.Rows)
+                {
+                    list.Add(row[0].ToString());
+                }
+                return list;
             }
-            return list;
+            catch (Exception e)
+            {
+                throw new EasException(Error.SQL_FAILED_GET_ALL_TABLE_NAME,Connection, e);
+            }
         }
 
 

@@ -41,7 +41,7 @@
                     }
                     catch
                     {
-                        if (_isEnableLogging) EasLog.Error("Error deleting file: " + file, Models.ErrorType.ErrorList.FAILED_TO_DELETE_FILE);
+                        if (_isEnableLogging) EasLog.Error("Error deleting file: " + file, Error.FAILED_TO_DELETE_FILE);
                     }
 
                 }
