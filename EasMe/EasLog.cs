@@ -12,7 +12,7 @@ namespace EasMe
     public static class EasLog
     {
 
-        private static LogConfiguration _config;
+        private static LogConfiguration _config = new();
 
         /// <summary>
         /// Initialize the log configuration. Call this method in your application startup.
@@ -123,11 +123,7 @@ namespace EasMe
         /// <returns>LogContent</returns>
         public static string Log(object obj)
         {
-            if (_config == null)
-            {
-                LoadConfigurationDefault();
-                //throw new Exception(ErrorList.NOT_FOUND_LOADED_CONFIGURATION_ERROR.ToString());
-            }
+            
             string serialized = "Error in Logging";
             try
             {
@@ -191,7 +187,7 @@ namespace EasMe
                 {
                     return null;
                 }
-                log.Ip = Ip;                
+                log.Ip = Ip;
                 log.HttpMethod = HttpMethod;
                 log.RequestUrl = RequestUrl;
                 log.Headers = EasProxy.ConvertHeadersToString(Headers);
@@ -212,8 +208,10 @@ namespace EasMe
         /// <returns>EasMe.Models.BaseLogModel</returns>
         private static BaseLogModel BaseModelCreate(Severity Severity, object Log, Error ErrorNo, Exception? Exception = null, WebLogModel? WebLog = null)
         {
+            
             try
             {
+                
                 var log = new BaseLogModel();
                 log.Severity = Severity.ToString();
                 log.Message = Log;
@@ -225,7 +223,7 @@ namespace EasMe
                 }
 
                 log.ErrorNo = ErrorNo.ToString();
-                
+
 
                 if (_config.EnableClientInfoLogging)
                 {
@@ -249,69 +247,69 @@ namespace EasMe
                 throw new EasException(EasMe.Error.FAILED_TO_CREATE_BASE_MODEL, e);
             };
         }
-   
 
 
 
-    private static ErrorLogModel ConvertExceptionToLogModel(Exception ex)
-    {
-        var model = new ErrorLogModel();
-        try
+
+        private static ErrorLogModel ConvertExceptionToLogModel(Exception ex)
         {
-            model.ExceptionMessage = ex.Message;
-            if (_config.EnableDebugMode)
+            var model = new ErrorLogModel();
+            try
             {
-                model.ExceptionSource = ex.Source;
-                model.ExceptionStackTrace = ex.StackTrace;
-                var inner = ex.InnerException;
-                if (inner != null)
-                    model.ExceptionInner = inner.ToString();
+                model.ExceptionMessage = ex.Message;
+                if (_config.EnableDebugMode)
+                {
+                    model.ExceptionSource = ex.Source;
+                    model.ExceptionStackTrace = ex.StackTrace;
+                    var inner = ex.InnerException;
+                    if (inner != null)
+                        model.ExceptionInner = inner.ToString();
+                }
+
             }
+            catch (Exception e)
+            {
+                throw new Exception(EasMe.Error.FAILED_TO_CONVERT_EXCEPTION_TO_LOG_MODEL.ToString(), e);
+            }
+            return model;
 
         }
-        catch (Exception e)
+
+
+
+        /// <summary>
+        /// Gets the name of the function this function is called from.
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <returns></returns>
+        private static string GetActionName(int frame = 3)
         {
-            throw new Exception(EasMe.Error.FAILED_TO_CONVERT_EXCEPTION_TO_LOG_MODEL.ToString(), e);
+            var trace = new StackTrace().GetFrame(frame);
+            if (trace == null) return "Unkown";
+            var method = trace.GetMethod();
+            if (method != null) return method.Name;
+            return "Unkown";
         }
-        return model;
+
+        /// <summary>
+        /// Gets the name of the class this function is called from.
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <returns></returns>
+        private static string GetClassName(int frame = 3)
+        {
+            var trace = new StackTrace().GetFrame(frame);
+            if (trace == null) return "Unkown";
+            var method = trace.GetMethod();
+            if (method == null) return "Unkown";
+            var reflected = method.ReflectedType;
+            if (reflected != null) return reflected.Name;
+            var declaring = method.DeclaringType;
+            if (declaring != null) return declaring.Name;
+            return "Unkown";
+        }
+
 
     }
-
-
-
-    /// <summary>
-    /// Gets the name of the function this function is called from.
-    /// </summary>
-    /// <param name="frame"></param>
-    /// <returns></returns>
-    private static string GetActionName(int frame = 3)
-    {
-        var trace = new StackTrace().GetFrame(frame);
-        if (trace == null) return "Unkown";
-        var method = trace.GetMethod();
-        if (method != null) return method.Name;
-        return "Unkown";
-    }
-
-    /// <summary>
-    /// Gets the name of the class this function is called from.
-    /// </summary>
-    /// <param name="frame"></param>
-    /// <returns></returns>
-    private static string GetClassName(int frame = 3)
-    {
-        var trace = new StackTrace().GetFrame(frame);
-        if (trace == null) return "Unkown";
-        var method = trace.GetMethod();
-        if (method == null) return "Unkown";
-        var reflected = method.ReflectedType;
-        if (reflected != null) return reflected.Name;
-        var declaring = method.DeclaringType;
-        if (declaring != null) return declaring.Name;
-        return "Unkown";
-    }
-
-
-}
 }
 

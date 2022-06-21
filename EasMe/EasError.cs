@@ -5,7 +5,7 @@
     /// </summary>
     public static class EasError
     {
-        
+
         public static string? EnumGetKeybyValue(int value)
         {
             return Enum.GetName(typeof(Error), value);
@@ -31,7 +31,7 @@
             var toStr = value.ToString();
             return ConvertEnumStringToReadable(toStr);
         }
-       
+
     }
     public enum LogType
     {
@@ -48,7 +48,7 @@
         INFO = 101,
         WARN = 102,
         ERROR = 103,
-        DEBUG = 104,        
+        DEBUG = 104,
         EXCEPTION_OCCURED = 107,
     }
     public enum Error
@@ -93,8 +93,8 @@
         FILE_NOT_EXIST = 310,
         FOLDER_NOT_EXIST = 311,
         FILE_ALREADY_EXIST = 312,
-        FOLDER_ALREADY_EXIST = 313,        
-        FILE_IS_BEING_USED = 314,        
+        FOLDER_ALREADY_EXIST = 313,
+        FILE_IS_BEING_USED = 314,
         FAILED_TO_CREATE_FILE = 315,
         FAILED_TO_CREATE_FOLDER = 316,
         FAILED_TO_CREATE_LOG = 317,
@@ -105,7 +105,7 @@
         FAILED_TO_WRITE_LOG = 322,
         LOG_FILE_CONTENT_NULL = 323,
         NO_LOGS_FOUND = 324,
-        
+
         NOT_EXISTS = 400,
         NOT_FOUND = 405,
         NOT_ALLOWED = 406,
@@ -124,7 +124,7 @@
         ALREADY_USED = 419,
         ALREADY_IN_USE = 420,
         EXPIRED = 421,
-        NOT_EXPIRED = 422,     
+        NOT_EXPIRED = 422,
 
         AUTHENTICATION_FAILED = 500,
         AUTHORIZATION_FAILED = 501,
@@ -141,7 +141,7 @@
         FAILED_TO_WRITE_RESPONSE = 512,
         FAILED_TO_SEND_RESPONSE = 513,
 
-        FAILED_TO_CONVERT_EXCEPTION_TO_LOG_MODEL= 700,
+        FAILED_TO_CONVERT_EXCEPTION_TO_LOG_MODEL = 700,
         FAILED_TO_CREATE_BASE_MODEL = 701,
         FAILED_TO_CREATE_WEB_MODEL = 702,
         FAILED_TO_LOAD_CONFIGURATION = 703,

@@ -15,6 +15,9 @@ namespace EasMe
         {
             _connection = connectionString;
         }
+        public EasQL()
+        {
+        }
         /// <summary>
         /// Executes SQL query and returns DataTable.
         /// </summary>
@@ -150,7 +153,7 @@ namespace EasMe
 
         public void TruncateTable(string Connection, string TableName)
         {
-            
+
             try
             {
                 string query = $@"TRUNCATE TABLE {TableName}";
@@ -206,7 +209,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_FAILED_GET_ALL_TABLE_NAME,Connection, e);
+                throw new EasException(Error.SQL_FAILED_GET_ALL_TABLE_NAME, Connection, e);
             }
         }
 
