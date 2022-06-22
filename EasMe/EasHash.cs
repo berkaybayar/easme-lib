@@ -3,7 +3,7 @@ using System.Text;
 
 namespace EasMe
 {
-    public class EasHash
+    public static class EasHash
     {
         /// <summary>
         /// Converts hashed byte array to string
@@ -63,7 +63,7 @@ namespace EasMe
 
 
 
-        private string HexString(byte[] bt)
+        private static string HexString(byte[] bt)
         {
             try
             {

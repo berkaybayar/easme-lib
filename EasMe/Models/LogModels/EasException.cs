@@ -2,7 +2,7 @@
 {
     public class EasException : Exception
     {
-        public EasException(Error error, string message, Exception? Inner = null) : base(error.ToString() + " : " + message, Inner)
+        public EasException(Error error, string message, Exception? Inner = null) : base(error.ToString() + " => " + message, Inner)
         {
         }
 
@@ -14,19 +14,19 @@
         {
 
         }
-        public EasException(Error error, Error error2) : base(error.ToString() + " | " + error2.ToString())
+        public EasException(Error error, Error error2) : base(error.ToString() + " <> " + error2.ToString())
         {
 
         }
-        public EasException(Error error, Error error2, string message) : base(error.ToString() + " | " + error2.ToString() + " : " + message)
+        public EasException(Error error, Error error2, string message) : base(error.ToString() + " <> " + error2.ToString() + " => " + message)
         {
 
         }
-        public EasException(Error error, Error error2, Exception Inner) : base(error.ToString() + " | " + error2.ToString(), Inner)
+        public EasException(Error error, Error error2, Exception Inner) : base(error.ToString() + " <> " + error2.ToString(), Inner)
         {
 
         }
-        public EasException(Error error, Error error2, string message, Exception Inner) : base(error.ToString() + " | " + error2.ToString() + " : " + message, Inner)
+        public EasException(Error error, Error error2, string message, Exception Inner) : base(error.ToString() + " <> " + error2.ToString() + " => " + message, Inner)
         {
 
         }

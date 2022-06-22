@@ -532,53 +532,134 @@ namespace EasMe
             var result = oProcess.StandardOutput.ReadToEnd();
             return result.Trim();
         }
+        /// <summary>
+        /// Gets 6 Hardware Ids first two is reliable for general usage.
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> GetHardwareIds()
+        {
+            List<string> list = new();
+            var model = GetHardwareModel();
+            var id1 = $"{model.ProcessorId}:{model.MotherboardId}:{model.BiosId}:{model.MACAddresses}";
+            list.Add(id1.Trim());
+            var id2 = $"{model.DiskUUID}:{model.MachineGuid}:{model.MachineName}:{model.GPU1}";
+            list.Add(id2.Trim());
+            var id3 = $"{model.Ram1}:{model.Disk1}:{model.Ram2}:{model.Disk2}";
+            list.Add(id3.Trim());
+            var id4 = $"{model.Ram3}:{model.Disk3}:{model.Ram4}:{model.Disk4}";
+            list.Add(id4.Trim());
+            var id5 = $"{model.Ram5}:{model.Disk5}:{model.Ram6}:{model.Disk6}";
+            list.Add(id5.Trim());
+            var id6 = $"{model.Ram7}:{model.Disk7}:{model.Ram8}:{model.Disk8}";
+            list.Add(id6.Trim());
+            return list;
+        }
+        /// <summary>
+        /// Gets 6 Hardware SHA256Hashed Ids first two is reliable for general usage.
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> GetHashedHardwareIds()
+        {
+            List<string> list = GetHardwareIds();
+            List<string> newList = new();
+            foreach(var item in list)
+            {
+                var hashed =  EasHash.BuildString(EasHash.SHA256Hash(item));
+                newList.Add(hashed);
+            }
 
+            return list;
+        }
 
-
-        //bios versions can be updated to a new version and make users licence invalid  
-        //Also since Rams and Disks and GPUs can have multiple, changing ram or disk or gpu order may result in differenet id        
-        private static string GetMachineIdString(bool EnableBiosVersionIdentifier = true)
+        private static HWIDModel GetHardwareModel()
         {
             try
             {
                 var processor = GetProcessor();
-                var processorIdentifier = "";
-                if (processor != null)
-                    processorIdentifier = $"{processor.Name}:{processor.Manufacturer}:{processor.ProcessorId}";
-                //Disabled ram id  
-                var ramIdentifier = "";
-                if (false)
-                {
-                    var ramList = GetRamList();
-                    if (ramList != null)
-                        ramIdentifier = string.Join(";", ramList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}"));
-                }
                 var bios = GetBIOS();
-                var biosIdentifier = $"{bios.Manufacturer}:{bios.SMBIOSBIOSVersion}:{bios.SerialNumber}";
-                if (EnableBiosVersionIdentifier)
-                    biosIdentifier += $":{bios.ReleaseDate}:{bios.Version}";
                 var mainboard = GetMotherboard();
-                var mainboardIdentifier = $"{mainboard.Name}:{mainboard.Manufacturer}:{mainboard.SerialNumber}";
                 var gpuList = GetGPUList();
-                var gpuIdentifier = string.Join(";", gpuList.Select(x => $"{x.Name}"));
                 var diskList = GetDiskList();
-                var diskIdentifier = string.Join(";", diskList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}:{x.Size}"));
-                var machineName = GetMachineName();
-                var ethernetMac = GetMACAddress();
-                string id = processorIdentifier + "|" + ramIdentifier + "|" + biosIdentifier + "|" + mainboardIdentifier + "|" + gpuIdentifier + "|"
-                    + diskIdentifier + "|" + machineName + "|" + ethernetMac + "|" + GetDiskUUID() + "|" + GetMachineGuid();
-                //Removing Whitespace
-                return id.Replace(" ", "");
+                var ramList = GetRamList();
+
+                var hwidModel = new HWIDModel();
+                hwidModel.MachineName = GetMachineName();
+                hwidModel.MACAddresses = GetMACAddress();              
+                hwidModel.DiskUUID = GetDiskUUID();
+                hwidModel.MachineGuid = GetMachineGuid();
+
+                var processorIdentifier = $"{processor.Name}:{processor.Manufacturer}:{processor.ProcessorId}";
+                hwidModel.ProcessorId = processorIdentifier;
+
+                //var ramIdentifier = string.Join("::", ramList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}"));
+                //var gpuIdentifier = string.Join("::", gpuList.Select(x => $"{x.Name}"));                
+                //var diskIdentifier = string.Join("::", diskList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}:{x.Size}"));
+                var ram1 = ramList[0];
+                hwidModel.Ram1 = $"{ram1.Name}:{ram1.Manufacturer}:{ram1.SerialNumber}";
+                var ram2 = ramList[1];
+                hwidModel.Ram2 = $"{ram2.Name}:{ram2.Manufacturer}:{ram2.SerialNumber}";
+                var ram3 = ramList[2];
+                hwidModel.Ram3 = $"{ram3.Name}:{ram3.Manufacturer}:{ram3.SerialNumber}";
+                var ram4 = ramList[3];
+                hwidModel.Ram4 = $"{ram4.Name}:{ram4.Manufacturer}:{ram4.SerialNumber}";
+                var ram5 = ramList[4];
+                hwidModel.Ram5 = $"{ram5.Name}:{ram5.Manufacturer}:{ram5.SerialNumber}";
+                var ram6 = ramList[5];
+                hwidModel.Ram6 = $"{ram6.Name}:{ram6.Manufacturer}:{ram6.SerialNumber}";
+                var ram7 = ramList[6];
+                hwidModel.Ram7 = $"{ram7.Name}:{ram7.Manufacturer}:{ram7.SerialNumber}";
+                var ram8 = ramList[7];
+                hwidModel.Ram8 = $"{ram8.Name}:{ram8.Manufacturer}:{ram8.SerialNumber}";
+
+                var gpu1 = gpuList[0];
+                hwidModel.GPU1 = $"{gpu1.Name}";
+                var gpu2 = gpuList[1];
+                hwidModel.GPU2 = $"{gpu2.Name}";
+                var gpu3 = gpuList[2];
+                hwidModel.GPU3 = $"{gpu3.Name}";
+                var gpu4 = gpuList[3];
+                hwidModel.GPU4 = $"{gpu4.Name}";
+                
+                var biosIdentifier = $"{bios.Manufacturer}:{bios.SMBIOSBIOSVersion}:{bios.SerialNumber}";
+                hwidModel.BiosId = biosIdentifier;
+                
+                var mainboardIdentifier = $"{mainboard.Name}:{mainboard.Manufacturer}:{mainboard.SerialNumber}";
+                hwidModel.MotherboardId = mainboardIdentifier;
+               
+                var disk1 = diskList[0];
+                hwidModel.Disk1 = $"{disk1.Name}:{disk1.Manufacturer}:{disk1.SerialNumber}:{disk1.Size}";
+                var disk2 = diskList[1];
+                hwidModel.Disk2 = $"{disk2.Name}:{disk2.Manufacturer}:{disk2.SerialNumber}:{disk2.Size}";
+                var disk3 = diskList[2];
+                hwidModel.Disk3 = $"{disk3.Name}:{disk3.Manufacturer}:{disk3.SerialNumber}:{disk3.Size}";
+                var disk4 = diskList[3];
+                hwidModel.Disk4 = $"{disk4.Name}:{disk4.Manufacturer}:{disk4.SerialNumber}:{disk4.Size}";
+                var disk5 = diskList[4];
+                hwidModel.Disk5 = $"{disk5.Name}:{disk5.Manufacturer}:{disk5.SerialNumber}:{disk5.Size}";
+                var disk6 = diskList[5];
+                hwidModel.Disk6 = $"{disk6.Name}:{disk6.Manufacturer}:{disk6.SerialNumber}:{disk6.Size}";
+                var disk7 = diskList[6];
+                hwidModel.Disk7 = $"{disk7.Name}:{disk7.Manufacturer}:{disk7.SerialNumber}:{disk7.Size}";
+                var disk8 = diskList[7];
+                hwidModel.Disk8 = $"{disk8.Name}:{disk8.Manufacturer}:{disk8.SerialNumber}:{disk8.Size}";
+
+                return hwidModel;
             }
-            catch { return "Unkown"; }
+            catch 
+            {
+                throw new EasException("Error getting machine hardware ids.");
+            }
         }
         public static string GetMachineIdHashed()
         {
             try
             {
-                return EasHash.BuildString(EasHash.SHA256Hash(GetMachineIdString()));
+                return GetHashedHardwareIds().FirstOrDefault();
             }
-            catch { return ""; }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in getting machine id (first).",ex);
+            }
         }
 
 

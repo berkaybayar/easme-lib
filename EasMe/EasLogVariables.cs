@@ -1,38 +1,11 @@
-﻿namespace EasMe
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EasMe
 {
-    /// <summary>
-    /// Error helper for EasLog also contains enum ErrorList
-    /// </summary>
-    public static class EasError
-    {
-
-        public static string? EnumGetKeybyValue(int value)
-        {
-            return Enum.GetName(typeof(Error), value);
-        }
-        /// <summary>
-        /// Convert an error code to a readable string
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string? ConvertEnumStringToReadable(string value)
-        {
-            var result = value.Replace("_", " ").ToLower();
-            var firstChar = char.ToUpper(result[0]);
-            return firstChar + result.Substring(1) + ".";
-        }
-        /// <summary>
-        /// Convert an error code to a readable string
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string? ConvertEnumStringToReadable(Error value)
-        {
-            var toStr = value.ToString();
-            return ConvertEnumStringToReadable(toStr);
-        }
-
-    }
     public enum LogType
     {
         DEBUG = -2,
@@ -63,6 +36,7 @@
         EXCEPTION_OCCURED = 107,
         NULL_REFERENCE = 108,
         TIMEOUT = 109,
+        FAILED = 110,
 
         SQL_ERROR = 200,
         SQL_UPDATE_FAILED = 201,
@@ -97,14 +71,14 @@
         FILE_IS_BEING_USED = 314,
         FAILED_TO_CREATE_FILE = 315,
         FAILED_TO_CREATE_FOLDER = 316,
-        FAILED_TO_CREATE_LOG = 317,
+        //FAILED_TO_CREATE_LOG = 317,
         FAILED_TO_DELETE_FILE = 318,
         FAILED_TO_DELETE_FOLDER = 319,
         FAILED_TO_READ_FILE = 320,
         FAILED_TO_WRITE_FILE = 321,
-        FAILED_TO_WRITE_LOG = 322,
-        LOG_FILE_CONTENT_NULL = 323,
-        NO_LOGS_FOUND = 324,
+        //FAILED_TO_WRITE_LOG = 322,
+        //LOG_FILE_CONTENT_NULL = 323,
+        //NO_LOGS_FOUND = 324,
 
         NOT_EXISTS = 400,
         NOT_FOUND = 405,

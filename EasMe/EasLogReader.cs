@@ -15,7 +15,7 @@ namespace EasMe
             try
             {
                 _logFileContent = File.ReadAllText(_logFilePath);
-                if (string.IsNullOrEmpty(_logFileContent)) throw new EasException(Error.LOG_FILE_CONTENT_NULL, _logFileContent);
+                if (string.IsNullOrEmpty(_logFileContent)) throw new EasException(Error.NULL_REFERENCE, "[EasLogReader] Log file content");
             }
             catch (Exception e)
             {
@@ -29,7 +29,7 @@ namespace EasMe
         /// <exception cref="EasException"></exception>
         public string[] GetLogFileContentAsString()
         {
-            if (string.IsNullOrEmpty(_logFileContent)) throw new EasException(Error.LOG_FILE_CONTENT_NULL);
+            if (string.IsNullOrEmpty(_logFileContent)) throw new EasException(Error.NULL_REFERENCE, "[GetLogFileContentAsString] Log file content");
             string[] lines = _logFileContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             return lines;
         }
@@ -50,7 +50,7 @@ namespace EasMe
                     if (deserialized == null) throw new EasException(Error.DESERIALIZATION_ERROR);
                     list.Add(deserialized);
                 }
-                if (list.Count == 0) throw new EasException(Error.NO_LOGS_FOUND);
+                if (list.Count == 0) throw new EasException(Error.NOT_FOUND, "[GetLogFileContent] logs not found");
                 return list;
             }
             catch (Exception ex)
