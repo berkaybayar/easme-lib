@@ -43,7 +43,6 @@ namespace EasMe
                 catch (Exception e)
                 {
                     throw new EasException(Error.SQL_FAILED_GET_TABLE, cmd.CommandText, e);
-
                 }
 
             }
@@ -126,6 +125,10 @@ namespace EasMe
                 throw new EasException(Error.SQL_FAILED_BACKUP_DATABASE, DatabaseName, e);
             }
         }
+        public void BackupDatabase(string DatabaseName, string BackupPath, int Timeout = 0)
+        {
+            BackupDatabase(_connection, DatabaseName, BackupPath,Timeout);
+        }
         public void ShrinkDatabase(string Connection, string DatabaseName, string DatabaseLogName = "_log")
         {
             try
@@ -149,7 +152,10 @@ namespace EasMe
                 throw new EasException(Error.SQL_FAILED_SHRINK_DATABASE, DatabaseName, e);
             }
         }
-
+        public void ShrinkDatabase(string DatabaseName, string DatabaseLogName = "_log")
+        {
+            ShrinkDatabase(DatabaseName, DatabaseLogName);
+        }
 
         public void TruncateTable(string Connection, string TableName)
         {
@@ -165,6 +171,11 @@ namespace EasMe
                 throw new EasException(Error.SQL_TABLE_TRUNCATE_FAILED, TableName, e);
             }
         }
+        public void TruncateTable(string TableName)
+        {
+
+            TruncateTable(_connection, TableName);
+        }
 
         public void DropTable(string Connection, string TableName)
         {
@@ -179,6 +190,11 @@ namespace EasMe
                 throw new EasException(Error.SQL_FAILED_DROP_TABLE, TableName, e);
             }
         }
+
+        public void DropTable(string TableName)
+        {
+            DropTable(_connection,TableName);
+        }
         public void DropDatabase(string Connection, string DatabaseName)
         {
             try
@@ -191,6 +207,10 @@ namespace EasMe
             {
                 throw new EasException(Error.SQL_FAILED_DROP_DATABASE, DatabaseName, e);
             }
+        }
+        public void DropDatabase(string DatabaseName)
+        {
+            DropDatabase(_connection, DatabaseName);
         }
 
         public List<string> GetAllTableName(string Connection)
@@ -212,7 +232,10 @@ namespace EasMe
                 throw new EasException(Error.SQL_FAILED_GET_ALL_TABLE_NAME, Connection, e);
             }
         }
-
+        public List<string> GetAllTableName()
+        {
+            return GetAllTableName(_connection);
+        }
 
 
     }

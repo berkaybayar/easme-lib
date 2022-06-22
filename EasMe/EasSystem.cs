@@ -647,7 +647,7 @@ namespace EasMe
             }
             catch 
             {
-                throw new EasException("Error getting machine hardware ids.");
+                throw new EasException(Error.FAILED,"Getting machin ids");
             }
         }
         public static string GetMachineIdHashed()
@@ -658,7 +658,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in getting machine id (first).",ex);
+                throw new EasException(Error.FAILED,"Error in getting hashed machine id (first).",ex);
             }
         }
 

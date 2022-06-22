@@ -9,7 +9,7 @@ namespace EasMe
     /// <summary>
     /// Simple logging helper with few useful options.
     /// </summary>
-    public static class EasLog
+    public static class EasLogger
     {
 
         private static LogConfiguration _config = new();
