@@ -562,9 +562,9 @@ namespace EasMe
         {
             List<string> list = GetHardwareIds();
             List<string> newList = new();
-            foreach(var item in list)
+            foreach (var item in list)
             {
-                var hashed =  EasHash.BuildString(EasHash.SHA256Hash(item));
+                var hashed = EasHash.BuildString(EasHash.SHA256Hash(item));
                 newList.Add(hashed);
             }
 
@@ -584,7 +584,7 @@ namespace EasMe
 
                 var hwidModel = new HWIDModel();
                 hwidModel.MachineName = GetMachineName();
-                hwidModel.MACAddresses = GetMACAddress();              
+                hwidModel.MACAddresses = GetMACAddress();
                 hwidModel.DiskUUID = GetDiskUUID();
                 hwidModel.MachineGuid = GetMachineGuid();
 
@@ -619,13 +619,13 @@ namespace EasMe
                 hwidModel.GPU3 = $"{gpu3.Name}";
                 var gpu4 = gpuList[3];
                 hwidModel.GPU4 = $"{gpu4.Name}";
-                
+
                 var biosIdentifier = $"{bios.Manufacturer}:{bios.SMBIOSBIOSVersion}:{bios.SerialNumber}";
                 hwidModel.BiosId = biosIdentifier;
-                
+
                 var mainboardIdentifier = $"{mainboard.Name}:{mainboard.Manufacturer}:{mainboard.SerialNumber}";
                 hwidModel.MotherboardId = mainboardIdentifier;
-               
+
                 var disk1 = diskList[0];
                 hwidModel.Disk1 = $"{disk1.Name}:{disk1.Manufacturer}:{disk1.SerialNumber}:{disk1.Size}";
                 var disk2 = diskList[1];
@@ -645,9 +645,9 @@ namespace EasMe
 
                 return hwidModel;
             }
-            catch 
+            catch
             {
-                throw new EasException(Error.FAILED,"Getting machin ids");
+                throw new EasException(Error.FAILED, "Getting machin ids");
             }
         }
         public static string GetMachineIdHashed()
@@ -658,7 +658,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED,"Error in getting hashed machine id (first).",ex);
+                throw new EasException(Error.FAILED, "Error in getting hashed machine id (first).", ex);
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace EasMe
 {
-    public class LogConfiguration
+    public class EasLogConfiguration
     {
         /// <summary>
         /// Whether to seperate different log severities to different log files.

@@ -45,7 +45,7 @@ namespace EasMe
             return false;
         }
         public static bool IsValidIPAddress(this string IpAddress)
-        {            
+        {
             return IpAddress.IsValidIPAddress(out string IpVersion);
         }
         //It's not quite possible make %100 sure it is correct but this will do for most cases

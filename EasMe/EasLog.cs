@@ -9,16 +9,16 @@ namespace EasMe
     /// <summary>
     /// Simple logging helper with few useful options.
     /// </summary>
-    public static class EasLogger
+    public static class EasLog
     {
 
-        private static LogConfiguration _config = new();
+        private static EasLogConfiguration _config = new();
 
         /// <summary>
         /// Initialize the log configuration. Call this method in your application startup.
         /// </summary>
         /// <param name="config"></param>
-        public static void LoadConfiguration(LogConfiguration config)
+        public static void LoadConfiguration(EasLogConfiguration config)
         {
             _config = config;
             Info("Log configuration loaded.");
@@ -28,7 +28,7 @@ namespace EasMe
         /// </summary>
         public static void LoadConfigurationDefault()
         {
-            LoadConfiguration(new LogConfiguration());
+            LoadConfiguration(new EasLogConfiguration());
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace EasMe
         /// <returns>LogContent</returns>
         public static string Log(object obj)
         {
-            
+
             string serialized = "Error in Logging";
             try
             {
@@ -208,10 +208,10 @@ namespace EasMe
         /// <returns>EasMe.Models.BaseLogModel</returns>
         private static BaseLogModel BaseModelCreate(Severity Severity, object Log, Error ErrorNo, Exception? Exception = null, WebLogModel? WebLog = null)
         {
-            
+
             try
             {
-                
+
                 var log = new BaseLogModel();
                 log.Severity = Severity.ToString();
                 log.Message = Log;

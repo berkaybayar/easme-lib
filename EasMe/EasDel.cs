@@ -6,7 +6,6 @@
     public class EasDel
     {
 
-
         //public static string DirCurrent = Directory.GetCurrentDirectory();//gets current directory 
         //public static string DirUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);//gets user directory C:\Users\%username%
         //public static string DirDesktop = DirUser + "\\Desktop";//gets desktop directory C:\Users\%username%\desktop
@@ -37,11 +36,11 @@
                     try
                     {
                         File.Delete(file);
-                        if (_isEnableLogging) EasLogger.Info("File deleted: " + file);
+                        if (_isEnableLogging) EasLog.Info("File deleted: " + file);
                     }
                     catch
                     {
-                        if (_isEnableLogging) EasLogger.Error("Error deleting file: " + file, Error.FAILED_TO_DELETE_FILE);
+                        if (_isEnableLogging) EasLog.Error("Error deleting file: " + file, Error.FAILED_TO_DELETE_FILE);
                     }
 
                 }
@@ -52,11 +51,11 @@
                 try
                 {
                     Directory.Delete(FilePath);
-                    if (_isEnableLogging) EasLogger.Info("Folder deleted: " + FilePath);
+                    if (_isEnableLogging) EasLog.Info("Folder deleted: " + FilePath);
                 }
                 catch
                 {
-                    if (_isEnableLogging) EasLogger.Error("Error deleting folder:" + FilePath);
+                    if (_isEnableLogging) EasLog.Error("Error deleting folder:" + FilePath);
                 }
             }
             else
@@ -64,11 +63,11 @@
                 try
                 {
                     File.Delete(FilePath);
-                    if (_isEnableLogging) EasLogger.Info("File deleted: " + FilePath);
+                    if (_isEnableLogging) EasLog.Info("File deleted: " + FilePath);
                 }
                 catch
                 {
-                    if (_isEnableLogging) EasLogger.Error("Error deleting file:" + FilePath);
+                    if (_isEnableLogging) EasLog.Error("Error deleting file:" + FilePath);
                 }
 
             }

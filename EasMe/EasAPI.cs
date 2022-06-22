@@ -5,7 +5,7 @@ using System.Net.Http.Json;
 
 namespace EasMe
 {
-    public class EasAPI
+    public static class EasAPI
     {
 
         //Install-Package Microsoft.AspNet.WebApi.Client -Version 5.2.8
@@ -16,7 +16,7 @@ namespace EasMe
         /// <param name="response"></param>
         /// <param name="parse"></param>
         /// <returns></returns>
-        public string ParsefromJsonResponse(string response, string parse)
+        public static string ParsefromJsonResponse(string response, string parse)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace EasMe
         /// <param name="URL"></param>
         /// <param name="TOKEN"></param>
         /// <returns></returns>
-        public APIResponseModel Get(string URL, string? TOKEN = null)
+        public static APIResponseModel Get(string URL, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             var Response = new APIResponseModel();
@@ -68,7 +68,7 @@ namespace EasMe
         /// <param name="Data"></param>
         /// <param name="TOKEN"></param>
         /// <returns></returns>
-        public APIResponseModel PostAsJson(string URL, object Data, string? TOKEN = null)
+        public static APIResponseModel PostAsJson(string URL, object Data, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             var Response = new APIResponseModel();
@@ -94,7 +94,7 @@ namespace EasMe
 
         }
 
-        public HttpResponseMessage SendGetRequest(string URL, string? TOKEN = null)
+        public static HttpResponseMessage SendGetRequest(string URL, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             if (!string.IsNullOrEmpty(TOKEN))
@@ -107,7 +107,7 @@ namespace EasMe
         }
 
 
-        public HttpResponseMessage SendPostRequestAsJson(string URL, object Data, string? TOKEN = null)
+        public static HttpResponseMessage SendPostRequestAsJson(string URL, object Data, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
 
@@ -118,7 +118,7 @@ namespace EasMe
             postTask.Wait();
             return postTask.Result;
         }
-        public HttpResponseMessage SendPostRequest(string URL, HttpContent Content, string? TOKEN = null)
+        public static HttpResponseMessage SendPostRequest(string URL, HttpContent Content, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             if (!string.IsNullOrEmpty(TOKEN))
@@ -128,7 +128,7 @@ namespace EasMe
             postTask.Wait();
             return postTask.Result;
         }
-        public HttpResponseMessage SendDeleteRequest(string URL, string? TOKEN = null)
+        public static HttpResponseMessage SendDeleteRequest(string URL, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             if (!string.IsNullOrEmpty(TOKEN))
@@ -138,7 +138,7 @@ namespace EasMe
             postTask.Wait();
             return postTask.Result;
         }
-        public HttpResponseMessage SendPatchRequest(string URL, HttpContent Content, string? TOKEN = null)
+        public static HttpResponseMessage SendPatchRequest(string URL, HttpContent Content, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             if (!string.IsNullOrEmpty(TOKEN))
@@ -148,7 +148,7 @@ namespace EasMe
             postTask.Wait();
             return postTask.Result;
         }
-        public HttpResponseMessage SendPutRequest(string URL, HttpContent Content, string? TOKEN = null)
+        public static HttpResponseMessage SendPutRequest(string URL, HttpContent Content, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             if (!string.IsNullOrEmpty(TOKEN))
@@ -158,7 +158,7 @@ namespace EasMe
             postTask.Wait();
             return postTask.Result;
         }
-        public HttpResponseMessage SendPutRequestAsJson(string URL, object Data, string? TOKEN = null)
+        public static HttpResponseMessage SendPutRequestAsJson(string URL, object Data, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             if (!string.IsNullOrEmpty(TOKEN))
@@ -168,7 +168,7 @@ namespace EasMe
             postTask.Wait();
             return postTask.Result;
         }
-        public HttpResponseMessage Send(string URL, HttpRequestMessage Data, string? TOKEN = null)
+        public static HttpResponseMessage Send(string URL, HttpRequestMessage Data, string? TOKEN = null)
         {
             HttpClient client = new HttpClient();
             if (!string.IsNullOrEmpty(TOKEN))

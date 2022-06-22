@@ -8,7 +8,7 @@
         public string? ProcessorId { get; set; }
         public string? BiosId { get; set; }
         public string? MachineGuid { get; set; }
-        public string? DiskUUID { get; set; }        
+        public string? DiskUUID { get; set; }
         public string? GPU1 { get; set; }
         public string? GPU2 { get; set; }
         public string? GPU3 { get; set; }
