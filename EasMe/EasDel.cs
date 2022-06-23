@@ -22,7 +22,7 @@
         }
 
         /// <summary>
-        /// Deletes file or folder, if it is folder it will delete all files and subfolders
+        /// Deletes file or folder, if it is folder it will delete all files and subfolders.
         /// </summary>
         /// <param name="FilePath"></param>
         public void DeleteAllFiles(string FilePath)
@@ -40,7 +40,7 @@
                     }
                     catch
                     {
-                        if (_isEnableLogging) EasLog.Error("Error deleting file: " + file, Error.FAILED_TO_DELETE_FILE);
+                        if (_isEnableLogging) EasLog.Error("Error deleting file: " + file, Error.FAILED_TO_DELETE);
                     }
 
                 }
@@ -55,7 +55,7 @@
                 }
                 catch
                 {
-                    if (_isEnableLogging) EasLog.Error("Error deleting folder:" + FilePath);
+                    if (_isEnableLogging) EasLog.Error("Error deleting folder:" + FilePath, Error.FAILED_TO_DELETE);
                 }
             }
             else
@@ -67,7 +67,7 @@
                 }
                 catch
                 {
-                    if (_isEnableLogging) EasLog.Error("Error deleting file:" + FilePath);
+                    if (_isEnableLogging) EasLog.Error("Error deleting file:" + FilePath, Error.FAILED_TO_DELETE);
                 }
 
             }

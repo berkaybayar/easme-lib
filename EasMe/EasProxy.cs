@@ -40,11 +40,11 @@ namespace EasMe
         /// </summary>
         /// <param name="Headers"></param>
         /// <returns>Format: "HEADER:VALUE|HEADER2:VALUE2"</returns>       
-        public static string? ConvertHeadersToString(Dictionary<string, string>? Headers)
+        public static string? ConvertHeadersToString(this Dictionary<string, string>? Headers)
         {
             if (Headers == null || Headers.Count == 0)
             {
-                return null;
+                throw new EasException(Error.NULL_REFERENCE,"Header ");
             }
             var val = "";
             if (Headers == null) return "";
@@ -52,91 +52,61 @@ namespace EasMe
             {
                 val += $"{item.Key}:{item.Value}|";
             }
-            return val.Substring(0, val.Length - 1);
+            return val[..^1];
 
         }
 
-        /// <summary>
-        /// Gets header values by httpContext
-        /// </summary>
-        /// <param name="httpContext"></param>
-        /// <returns></returns>
-        public static Dictionary<string, string> GetHeaderValues(HttpContext httpContext)
-        {
-            return GetHeaderValues(httpContext.Request);
-        }
+
 
         /// <summary>
         /// Gets header values by HttpRequest
         /// </summary>
         /// <param name="httpRequest"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> GetHeaderValues(HttpRequest httpRequest)
+        public static Dictionary<string, string> GetHeaderValues(this HttpRequest httpRequest)
         {
             Dictionary<string, string> headerValues = new Dictionary<string, string>();
             foreach (string header in _HeaderList)
             {
-                headerValues.Add(header, httpRequest.Headers[header]);
+                var value = httpRequest.Headers[header];
+                if (!string.IsNullOrEmpty(value))
+                {
+                    headerValues.Add(header, value);
+                }
             }
             return headerValues;
         }
 
-        /// <summary>
-        /// Gets IP's in http request headers by httpContext.
-        /// </summary>
-        /// <param name="httpRequest"></param>
-        /// <returns></returns>
-        public static List<string> GetIP(HttpContext httpContext)
-        {
-            return GetIP(httpContext.Request);
-        }
+
 
         /// <summary>
         /// Gets IP's in http request headers by HttpRequest.
         /// </summary>
         /// <param name="httpRequest"></param>
         /// <returns></returns>
-        public static List<string> GetIP(HttpRequest httpRequest)
+        public static List<string> GetIP(this HttpRequest httpRequest)
         {
             var list = new List<string>();
-            var headers = GetHeaderValues(httpRequest);
+            var headers = httpRequest.GetHeaderValues();
+            list.Add(httpRequest.HttpContext.Connection.RemoteIpAddress.ToString());
             foreach (var item in headers)
             {
                 if (item.Key == "X-FORWARDED-FOR" || item.Key == "X-ORIGINAL-HOST" || item.Key == "PC-Real-IP" || item.Key == "X-Real-IP" || item.Key == "CF-Connecting-IP")
                 {
                     list.Add(item.Value);
                 }
-            }
-            list.Add(httpRequest.HttpContext.Connection.RemoteIpAddress.ToString());
+            }            
             return list;
         }
-        /// <summary>
-        /// Get Remote IP Address by HttpContext.
-        /// </summary>
-        /// <param name="httpContext"></param>
-        /// <returns></returns>
-        public static string GetRemoteIpAddress(HttpContext httpContext)
-        {
-            return httpContext.Connection.RemoteIpAddress.ToString();
-        }
+
         /// <summary>
         /// Get Remote IP Address by HttpRequest.
         /// </summary>
         /// <param name="httpRequest"></param>
         /// <returns></returns>
-        public static string GetRemoteIpAddress(HttpRequest httpRequest)
+        public static string GetRemoteIpAddress(this HttpRequest httpRequest)
         {
             return httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
-        }
-
-        /// <summary>
-        ///     Gets request URL by HttpContext.
-        /// </summary>
-        /// <param name="httpContext"></param>
-        /// <returns></returns>
-        public static string GetRequestQuery(HttpContext httpContext)
-        {
-            return httpContext.Request.Path.ToUriComponent();
         }
 
         /// <summary>
@@ -144,27 +114,22 @@ namespace EasMe
         /// </summary>
         /// <param name="httpRequest"></param>
         /// <returns></returns>
-        public static string GetRequestQuery(HttpRequest httpRequest)
+        public static string GetRequestQuery(this HttpRequest httpRequest)
         {
             return httpRequest.Path.ToUriComponent();
         }
-        public static string GetContentType(HttpContext httpContext)
-        {
-            return GetContentType(httpContext.Request);
-        }
 
-        public static string GetContentType(HttpRequest httpRequest)
-        {
-            var contentType = httpRequest.ContentType;
-            if (string.IsNullOrEmpty(contentType))
-            {
-                return "Unkown";
-            }
-            return contentType;
-        }
-        public static GeoLocationModel GetGeolocation(uint accuracyInMeters = 50)
+       
+        /// <summary>
+        /// Gets request GeoLocation by HttpRequest.
+        /// </summary>
+        /// <param name="accuracyInMeters"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private static GeoLocationModel GetGeolocation(this HttpRequest httpRequest, uint accuracyInMeters = 50)
         {
             throw new NotImplementedException();
+            //NOT IMPLEMENTED
             var model = new GeoLocationModel();
             Geolocator geolocator = new Geolocator();
             //geolocator.DesiredAccuracy = Windows.Devices.Geolocation.PositionAccuracy.High;

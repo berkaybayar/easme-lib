@@ -32,7 +32,7 @@ namespace EasMe
         }
 
         /// <summary>
-        /// Creates log with Info severity and success status.
+        /// Creates log with Info severity.
         /// </summary>
         /// <param name="LogMessage"></param>
         /// <param name="Ip"></param>
@@ -52,7 +52,7 @@ namespace EasMe
 
 
         /// <summary>
-        /// Creates log with Error severity and failed status.
+        /// Creates log with Error severity.
         /// </summary>
         /// <param name="LogMessage"></param>
         /// <param name="ErrorNo"></param>
@@ -73,7 +73,7 @@ namespace EasMe
 
 
         /// <summary>
-        /// Creates log with Exception severity and failed status. If ip variable added it logs web model. If not it logs base model.
+        /// Creates log with Exception.
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="Ip"></param>
@@ -82,19 +82,112 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static string Error(Exception ex, Error ErrorNo = EasMe.Error.EXCEPTION_OCCURED, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static string Error(Exception ex, Error ErrorNo = EasMe.Error.EXCEPTION, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
             string serialized;
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
-            var model = BaseModelCreate(Severity.EXCEPTION_OCCURED, ErrorNo.ToString(), ErrorNo, ex, webModel);
+            var model = BaseModelCreate(Severity.EXCEPTION, ErrorNo.ToString(), ErrorNo, ex, webModel);
             serialized = Log(model);
             return serialized;
 
         }
-
-
         /// <summary>
-        /// Creates log with warning severity and warn status. If ip variable added it logs web model. If client logging enabled logs client model. If not it logs base model.
+        /// Creates log with Exception severity.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+
+        public static string Error(string LogMessage,Exception ex, Error ErrorNo = EasMe.Error.EXCEPTION, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        {
+            string serialized;
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate(Severity.EXCEPTION,LogMessage, ErrorNo, ex, webModel);
+            serialized = Log(model);
+            return serialized;
+
+        }
+        /// <summary>
+        /// Creates log with Fatal severity.
+        /// </summary>
+        /// <param name="LogMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+
+        public static string Fatal(object LogMessage, Error ErrorNo = EasMe.Error.FATAL, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        {
+            string serialized;
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate(Severity.FATAL, LogMessage, ErrorNo, null, webModel);
+            serialized = Log(model);
+            return serialized;
+        }
+        /// <summary>
+        /// Creates log with Fatal severity.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+
+        public static string Fatal(string LogMessage, Exception ex, Error ErrorNo = EasMe.Error.FATAL, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        {
+            string serialized;
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate(Severity.FATAL, LogMessage, ErrorNo, ex, webModel);
+            serialized = Log(model);
+            return serialized;
+
+        }
+        /// <summary>
+        /// Creates log with Debug severity.
+        /// </summary>
+        /// <param name="LogMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+        
+        public static string Debug(object LogMessage, Error ErrorNo = EasMe.Error.DEBUG, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        {
+            string serialized;
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate(Severity.DEBUG, LogMessage, ErrorNo, null, webModel,true);
+            serialized = Log(model);
+            return serialized;
+        }
+        /// <summary>
+        /// Creates log with Debug severity.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="Ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <returns></returns>
+
+        public static string Debug(string LogMessage, Exception ex, Error ErrorNo = EasMe.Error.DEBUG, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        {
+            string serialized;
+            var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
+            var model = BaseModelCreate(Severity.DEBUG, LogMessage, ErrorNo, ex, webModel, true);
+            serialized = Log(model);
+            return serialized;
+
+        }
+        /// <summary>
+        /// Creates log with warning severity.
         /// </summary>
         /// <param name="LogMessage"></param>
         /// <param name="ErrorNo"></param>
@@ -116,7 +209,7 @@ namespace EasMe
 
 
         /// <summary>
-        /// Creates log with given object.
+        /// Creates log with given object. If its not string it will log serialized object.
         /// </summary>
         /// <param name="LogContent"></param>
         /// <param name="UseDefaultDate"></param>
@@ -128,13 +221,14 @@ namespace EasMe
             try
             {
                 if (obj == null) return serialized;
+                //possibly this check not needed
                 if (obj is string)
                 {
                     serialized = obj.ToString();
                 }
                 else
                 {
-                    serialized = Serialize(obj);
+                    serialized = obj.Serialize();
                 }
                 if (!Directory.Exists(_config.LogFolderPath)) Directory.CreateDirectory(_config.LogFolderPath);
 
@@ -146,13 +240,18 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new Exception(EasMe.Error.LOGGING_ERROR.ToString(), e);
+                throw new EasException(EasMe.Error.LOGGING_ERROR,"Exception occured while writing log to log file.", e);
             }
 
 
         }
-
-        public static string Serialize(object obj)
+        /// <summary>
+        /// Serializes given object to json string. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        public static string Serialize(this object obj)
         {
             try
             {
@@ -162,7 +261,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new Exception(EasMe.Error.SERIALIZATION_ERROR.ToString(), e);
+                throw new EasException(EasMe.Error.SERIALIZATION_ERROR,"Exception occured while serializing object.", e);
             }
         }
 
@@ -194,7 +293,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new Exception(EasMe.Error.FAILED_TO_CREATE_WEB_MODEL.ToString(), e);
+                throw new EasException(EasMe.Error.FAILED_TO_CREATE,"Web Log Model creation failed." ,e);
             }
             return log;
         }
@@ -206,7 +305,7 @@ namespace EasMe
         /// <param name="LogMessage"></param>
         /// <param name="ErrorNo"></param>
         /// <returns>EasMe.Models.BaseLogModel</returns>
-        private static BaseLogModel BaseModelCreate(Severity Severity, object Log, Error ErrorNo, Exception? Exception = null, WebLogModel? WebLog = null)
+        private static BaseLogModel BaseModelCreate(Severity Severity, object Log, Error ErrorNo, Exception? Exception = null, WebLogModel? WebLog = null,bool ForceDebug = false)
         {
 
             try
@@ -216,15 +315,12 @@ namespace EasMe
                 log.Severity = Severity.ToString();
                 log.Message = Log;
                 log.LogType = 0;
-                if (_config.EnableDebugMode == true)
+                log.ErrorNo = ErrorNo.ToString();
+                if (_config.EnableDebugMode || ForceDebug)
                 {
                     log.TraceAction = GetActionName();
                     log.TraceClass = GetClassName();
                 }
-
-                log.ErrorNo = ErrorNo.ToString();
-
-
                 if (_config.EnableClientInfoLogging)
                 {
                     log.ClientLog = new ClientLogModel();
@@ -237,27 +333,33 @@ namespace EasMe
                 }
                 if (Exception != null)
                 {
-                    log.Exception = ConvertExceptionToLogModel(Exception);
+                    log.Exception = ConvertExceptionToLogModel(Exception,ForceDebug);
                     log.LogType = -1;
                 }
                 return log;
             }
             catch (Exception e)
             {
-                throw new EasException(EasMe.Error.FAILED_TO_CREATE_BASE_MODEL, e);
+                throw new EasException(EasMe.Error.FAILED_TO_CREATE,"Base Log Model creation failed.", e);
             };
         }
 
 
 
-
-        private static ErrorLogModel ConvertExceptionToLogModel(Exception ex)
+        /// <summary>
+        /// Converts System.Exception model to custom Exception model.
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <param name="ForceDebug"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        private static ErrorLogModel ConvertExceptionToLogModel(Exception ex,bool ForceDebug = false)
         {
             var model = new ErrorLogModel();
             try
             {
                 model.ExceptionMessage = ex.Message;
-                if (_config.EnableDebugMode)
+                if (_config.EnableDebugMode || ForceDebug)
                 {
                     model.ExceptionSource = ex.Source;
                     model.ExceptionStackTrace = ex.StackTrace;
@@ -269,7 +371,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new Exception(EasMe.Error.FAILED_TO_CONVERT_EXCEPTION_TO_LOG_MODEL.ToString(), e);
+                throw new EasException(EasMe.Error.FAILED_TO_CONVERT,"Failed to convert System.Exception model to Custom Exception model.", e);
             }
             return model;
 

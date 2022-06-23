@@ -10,7 +10,7 @@ namespace EasMe
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static string BuildString(byte[] bytes)
+        public static string BuildString(this byte[] bytes)
         {
             StringBuilder builder = new();
             for (int i = 0; i < bytes.Length; i++)
@@ -19,9 +19,9 @@ namespace EasMe
             }
             return builder.ToString();
         }
-        public static byte[] ConvertStringToByteArray(string yourStr) => Encoding.UTF8.GetBytes(yourStr);
-        public static string ConvertBytesToString(byte[] byteArray) => Encoding.UTF8.GetString(byteArray);
-        public static byte[] ComputeHash(HashAlgorithm algorithm, string rawData) => algorithm.ComputeHash(ConvertStringToByteArray(rawData));
+        public static byte[] ConvertStringToByteArray(this string yourStr) => Encoding.UTF8.GetBytes(yourStr);
+        public static string ConvertBytesToString(this byte[] byteArray) => Encoding.Default.GetString(byteArray);
+        private static byte[] ComputeHash(HashAlgorithm algorithm, string rawData) => algorithm.ComputeHash(rawData.ConvertStringToByteArray());
         public static byte[] ComputeSaltedHash(HashAlgorithm algorithm, string rawData, string saltStr)
         {
             var plainText = ConvertStringToByteArray(rawData);
@@ -41,29 +41,29 @@ namespace EasMe
             return algorithm.ComputeHash(plainTextWithSaltBytes);
         }
 
-        public static byte[] MD5Hash(string rawData) => ComputeHash(MD5.Create(), rawData);
-        public static byte[] MD5HashSalted(string rawData, string salt) => ComputeSaltedHash(MD5.Create(), rawData, salt);
+        public static byte[] MD5Hash(this string rawData) => ComputeHash(MD5.Create(), rawData);
+        public static byte[] MD5HashSalted(this string rawData, string salt) => ComputeSaltedHash(MD5.Create(), rawData, salt);
 
-        public static byte[] SHA1Hash(string rawData) => ComputeHash(SHA1.Create(), rawData);
-        public static byte[] SHA1HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA1.Create(), rawData, salt);
-
-
-        public static byte[] SHA256Hash(string rawData) => ComputeHash(SHA256.Create(), rawData);
-        public static byte[] SHA256HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA256.Create(), rawData, salt);
+        public static byte[] SHA1Hash(this string rawData) => ComputeHash(SHA1.Create(), rawData);
+        public static byte[] SHA1HashSalted(this string rawData, string salt) => ComputeSaltedHash(SHA1.Create(), rawData, salt);
 
 
-        public static byte[] SHA384Hash(string rawData) => ComputeHash(SHA384.Create(), rawData);
-        public static byte[] SHA384HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA384.Create(), rawData, salt);
+        public static byte[] SHA256Hash(this string rawData) => ComputeHash(SHA256.Create(), rawData);
+        public static byte[] SHA256HashSalted(this string rawData, string salt) => ComputeSaltedHash(SHA256.Create(), rawData, salt);
 
 
-        public static byte[] SHA512Hash(string rawData) => ComputeHash(SHA512.Create(), rawData);
-        public static byte[] SHA512HashSalted(string rawData, string salt) => ComputeSaltedHash(SHA512.Create(), rawData, salt);
+        public static byte[] SHA384Hash(this string rawData) => ComputeHash(SHA384.Create(), rawData);
+        public static byte[] SHA384HashSalted(this string rawData, string salt) => ComputeSaltedHash(SHA384.Create(), rawData, salt);
 
-
+        
+        public static byte[] SHA512Hash(this string rawData) => ComputeHash(SHA512.Create(), rawData);
+        public static byte[] SHA512HashSalted(this string rawData, string salt) => ComputeSaltedHash(SHA512.Create(), rawData, salt);
 
 
 
-        private static string HexString(byte[] bt)
+
+
+        private static string HexBytesToString(this byte[] bt)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace EasMe
         /// <param name="array1"></param>
         /// <param name="array2"></param>
         /// <returns>true if arrays are equal</returns>
-        public static bool CompareByteArrays(byte[] array1, byte[] array2)
+        public static bool CompareByteArrays(this byte[] array1, byte[] array2)
         {
             if (array1.Length != array2.Length)
             {
