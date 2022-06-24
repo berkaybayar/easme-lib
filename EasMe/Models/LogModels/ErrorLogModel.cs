@@ -1,6 +1,6 @@
 ﻿namespace EasMe.Models.LogModels
 {
-    public class ErrorLogModel
+    internal class ErrorLogModel
     {
 
         public string? ExceptionMessage { get; set; }

@@ -15,7 +15,7 @@ namespace EasMe
         private static EasLogConfiguration _config = new();
 
         /// <summary>
-        /// Initialize the log configuration. Call this method in your application startup.
+        /// Initialize the EasLogConfiguration. Call this method in your application startup.
         /// </summary>
         /// <param name="config"></param>
         public static void LoadConfiguration(EasLogConfiguration config)
@@ -24,13 +24,20 @@ namespace EasMe
             Info("Log configuration loaded.");
         }
         /// <summary>
-        /// Initialize default configuration. Call this method in your application startup.
+        /// Initialize default EasLogConfiguration. Call this method in your application startup.
         /// </summary>
         public static void LoadConfigurationDefault()
         {
-            LoadConfiguration(new EasLogConfiguration());
+            _config = new EasLogConfiguration();
+            Info("Default Log configuration loaded.");
         }
-
+        public static void CheckConfig()
+        {
+            if (_config == null)
+            {
+                throw new EasException(EasMe.Error.CONFIGURATION_NOT_LOADED, "EasLogConfiguration not loaded, call LoadConfiguration() or LoadConfigurationDefault() in your application startup.");
+            }
+        }
         /// <summary>
         /// Creates log with Info severity.
         /// </summary>
@@ -41,13 +48,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static string Info(object LogMessage, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Info(object LogMessage, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.INFO, LogMessage, EasMe.Error.SUCCESS, null, webModel);
-            serialized = Log(model);
-            return serialized;
+            Log(model);
         }
 
 
@@ -62,13 +68,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static string Error(object LogMessage, Error ErrorNo = EasMe.Error.ERROR, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Error(object LogMessage, Error ErrorNo = EasMe.Error.ERROR, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.ERROR, LogMessage, ErrorNo, null, webModel);
-            serialized = Log(model);
-            return serialized;
+            Log(model);
         }
 
 
@@ -82,15 +87,15 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static string Error(Exception ex, Error ErrorNo = EasMe.Error.EXCEPTION, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Error(Exception ex, Error ErrorNo = EasMe.Error.EXCEPTION, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.EXCEPTION, ErrorNo.ToString(), ErrorNo, ex, webModel);
-            serialized = Log(model);
-            return serialized;
+            Log(model);
 
         }
+
         /// <summary>
         /// Creates log with Exception severity.
         /// </summary>
@@ -101,13 +106,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static string Error(string LogMessage,Exception ex, Error ErrorNo = EasMe.Error.EXCEPTION, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Error(string LogMessage,Exception ex, Error ErrorNo = EasMe.Error.EXCEPTION, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.EXCEPTION,LogMessage, ErrorNo, ex, webModel);
-            serialized = Log(model);
-            return serialized;
+            Log(model);
 
         }
         /// <summary>
@@ -121,13 +125,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static string Fatal(object LogMessage, Error ErrorNo = EasMe.Error.FATAL, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Fatal(object LogMessage, Error ErrorNo = EasMe.Error.FATAL, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.FATAL, LogMessage, ErrorNo, null, webModel);
-            serialized = Log(model);
-            return serialized;
+            Log(model);
         }
         /// <summary>
         /// Creates log with Fatal severity.
@@ -139,13 +142,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static string Fatal(string LogMessage, Exception ex, Error ErrorNo = EasMe.Error.FATAL, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Fatal(string LogMessage, Exception ex, Error ErrorNo = EasMe.Error.FATAL, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.FATAL, LogMessage, ErrorNo, ex, webModel);
-            serialized = Log(model);
-            return serialized;
+            Log(model);
 
         }
         /// <summary>
@@ -159,13 +161,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
         
-        public static string Debug(object LogMessage, Error ErrorNo = EasMe.Error.DEBUG, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Debug(object LogMessage, Error ErrorNo = EasMe.Error.DEBUG, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.DEBUG, LogMessage, ErrorNo, null, webModel,true);
-            serialized = Log(model);
-            return serialized;
+             Log(model);
         }
         /// <summary>
         /// Creates log with Debug severity.
@@ -177,13 +178,12 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static string Debug(string LogMessage, Exception ex, Error ErrorNo = EasMe.Error.DEBUG, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Debug(string LogMessage, Exception ex, Error ErrorNo = EasMe.Error.DEBUG, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.DEBUG, LogMessage, ErrorNo, ex, webModel, true);
-            serialized = Log(model);
-            return serialized;
+            Log(model);
 
         }
         /// <summary>
@@ -196,13 +196,12 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public static string Warn(object LogMessage, Error ErrorNo = EasMe.Error.WARN, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
+        public static void Warn(object LogMessage, Error ErrorNo = EasMe.Error.WARN, string? Ip = null, string? HttpMethod = null, string? RequestUrl = null, Dictionary<string, string>? Headers = null)
         {
-            string serialized;
+            CheckConfig();
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.WARN, LogMessage, ErrorNo, null, webModel);
-            serialized = Log(model);
-            return serialized;
+            Log(model);
         }
 
 
@@ -214,13 +213,13 @@ namespace EasMe
         /// <param name="LogContent"></param>
         /// <param name="UseDefaultDate"></param>
         /// <returns>LogContent</returns>
-        public static string Log(object obj)
+        public static void Log(object obj)
         {
-
-            string serialized = "Error in Logging";
+            CheckConfig();
+            string serialized;
             try
             {
-                if (obj == null) return serialized;
+                if (obj == null) throw new EasException(EasMe.Error.NULL_REFERENCE, "Log content is null");
                 //possibly this check not needed
                 if (obj is string)
                 {
@@ -236,7 +235,6 @@ namespace EasMe
                 File.AppendAllText(LogPath, serialized + "\n");
                 if (_config.EnableConsoleLogging)
                     Console.WriteLine(serialized);
-                return serialized;
             }
             catch (Exception e)
             {
@@ -307,10 +305,8 @@ namespace EasMe
         /// <returns>EasMe.Models.BaseLogModel</returns>
         private static BaseLogModel BaseModelCreate(Severity Severity, object Log, Error ErrorNo, Exception? Exception = null, WebLogModel? WebLog = null,bool ForceDebug = false)
         {
-
             try
             {
-
                 var log = new BaseLogModel();
                 log.Severity = Severity.ToString();
                 log.Message = Log;
@@ -355,6 +351,7 @@ namespace EasMe
         /// <exception cref="EasException"></exception>
         private static ErrorLogModel ConvertExceptionToLogModel(Exception ex,bool ForceDebug = false)
         {
+            
             var model = new ErrorLogModel();
             try
             {

@@ -1,6 +1,6 @@
 ﻿namespace EasMe.Models.LogModels
 {
-    public class WebLogModel
+    internal class WebLogModel
     {
         public string? Ip { get; set; }
         public string? HttpMethod { get; set; }

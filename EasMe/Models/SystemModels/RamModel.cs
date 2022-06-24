@@ -1,6 +1,6 @@
 ﻿namespace EasMe.Models.SystemModels
 {
-    public class RamModel
+    internal class RamModel
     {
         public string? Attributes { get; set; }
         public string? BankLabel { get; set; }

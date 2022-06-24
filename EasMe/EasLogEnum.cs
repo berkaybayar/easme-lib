@@ -82,6 +82,7 @@
         CONFIGURATION_IS_NOT_VALID = 328,
         FAILED_TO_CONVERT = 329,
         FAILED_TO_MOVE = 330,
+        FAILED_TO_PARSE = 331,
 
         NOT_EXISTS = 400,
         NOT_FOUND = 405,

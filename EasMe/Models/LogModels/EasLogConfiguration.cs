@@ -45,6 +45,10 @@
         /// Whether to enable debug mode for Exception Error logging. Default value is false. If set false exception logging will only write exception message to log file.
         /// </summary>
         public bool EnableDebugMode { get; set; } = false;
+        /// <summary>
+        /// Whether to throw Exceptions after it has been logged. 
+        /// </summary>
+        public bool EnableExceptionThrow { get; set; } = false;
 
         ///// <summary>
         ///// Whether to print calling function and its class to logs. Defualt value is false.

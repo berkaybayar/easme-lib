@@ -1,6 +1,6 @@
 ﻿namespace EasMe.Models.SystemModels
 {
-    public class BIOSModel
+    internal class BIOSModel
     {
         public string? BiosCharacteristics { get; set; }
         public string? BIOSVersion { get; set; }

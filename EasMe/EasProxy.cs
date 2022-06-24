@@ -98,6 +98,15 @@ namespace EasMe
             }            
             return list;
         }
+        /// <summary>
+        /// Gets Remove IP in HttpRequest headers by HttpRequest.
+        /// </summary>
+        /// <param name="httpRequest"></param>
+        /// <returns></returns>
+        public static string GetRemoteIP(this HttpRequest httpRequest)
+        {
+            return httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
+        }
 
         /// <summary>
         /// Get Remote IP Address by HttpRequest.

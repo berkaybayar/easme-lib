@@ -1,6 +1,6 @@
 ﻿namespace EasMe.Models.SystemModels
 {
-    public class CPUModel
+    internal class CPUModel
     {
         public string? AddressWidth { get; set; }
         public string? Architecture { get; set; }

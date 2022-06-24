@@ -1,6 +1,6 @@
 ﻿namespace EasMe.Models.SystemModels
 {
-    public class HWIDModel
+    internal class HWIDModel
     {
         public string? MachineName { get; set; }
         public string? MACAddresses { get; set; }

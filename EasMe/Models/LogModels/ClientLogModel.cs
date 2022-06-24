@@ -1,6 +1,6 @@
 ﻿namespace EasMe.Models.LogModels
 {
-    public class ClientLogModel
+    internal class ClientLogModel
     {
         public string? Ip { get; private set; } = EasSystem.GetRemoteIPAddress();
         public string? HWID { get; private set; } = EasSystem.GetMachineIdHashed();
