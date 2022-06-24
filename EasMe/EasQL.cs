@@ -35,7 +35,7 @@ namespace EasMe
                 }
                 catch (Exception e)
                 {
-                    throw new EasException(Error.SQL_FAILED_GET_TABLE, "SQL Query: " + cmd.CommandText, e);
+                    throw new EasException(Error.SQL_GET_TABLE_FAILED, "SQL Query: " + cmd.CommandText, e);
                 }
 
             }
@@ -66,7 +66,7 @@ namespace EasMe
                 }
                 catch (Exception e)
                 {
-                    throw new EasException(Error.SQL_FAILED_EXEC_NONQUERY, "SQL Query: " + cmd.CommandText, e);
+                    throw new EasException(Error.SQL_EXEC_NON_QUERY_FAILED, "SQL Query: " + cmd.CommandText, e);
 
                 }
 
@@ -97,11 +97,9 @@ namespace EasMe
                 }
                 catch (Exception e)
                 {
-                    throw new EasException(Error.SQL_FAILED_EXEC_SCALAR, "SQL Query: " + cmd.CommandText, e);
+                    throw new EasException(Error.SQL_EXEC_NON_QUERY_FAILED, "SQL Query: " + cmd.CommandText, e);
 
                 }
-
-
             }
             return obj;
         }
@@ -124,7 +122,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_FAILED_BACKUP_DATABASE, DatabaseName, e);
+                throw new EasException(Error.SQL_BACKUP_DATABASE_FAILED, DatabaseName, e);
             }
         }
         /// <summary>
@@ -154,7 +152,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_FAILED_SHRINK_DATABASE, DatabaseName, e);
+                throw new EasException(Error.SQL_SHRINK_DATABASE_FAILED, DatabaseName, e);
             }
         }
         /// <summary>
@@ -174,7 +172,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_TABLE_TRUNCATE_FAILED, TableName, e);
+                throw new EasException(Error.SQL_TRUNCATE_FAILED, TableName, e);
             }
         }
         /// <summary>
@@ -193,7 +191,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_FAILED_DROP_TABLE, TableName, e);
+                throw new EasException(Error.SQL_DROP_TABLE_FAILED, TableName, e);
             }
         }
         /// <summary>
@@ -212,7 +210,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_FAILED_DROP_DATABASE, DatabaseName, e);
+                throw new EasException(Error.SQL_DROP_DATABASE_FAILED, DatabaseName, e);
             }
         }
         /// <summary>
