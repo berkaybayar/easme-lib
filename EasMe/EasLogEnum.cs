@@ -2,23 +2,22 @@
 {
     public enum LogType
     {
-        DEBUG = -2,
-        ERROR = -1,
         BASE = 0,
-        WEB = 1,
-        CLIENT = 2,
+        DEBUG = 1,
+        ERROR = 2,
+        WEB = 3,
+        CLIENT = 4,
 
     }
 
     public enum Severity
     {
-        SUCCESS = 100,
-        INFO = 101,
-        WARN = 102,
-        ERROR = 103,
-        DEBUG = 104,
-        EXCEPTION = 107,
-        FATAL = 108
+        INFO = 100,
+        WARN = 101,
+        ERROR = 104,
+        DEBUG = 105,
+        EXCEPTION = 106,
+        FATAL = 107
     }
     public enum Error
     {

@@ -2,10 +2,10 @@
 {
     public class EasLogConfiguration
     {
-        /// <summary>
-        /// Whether to seperate different log severities to different log files.
-        /// </summary>
-        public bool SeperateLogs { get; set; } = false;
+        ///// <summary>
+        ///// Whether to seperate different log severities to different log files.
+        ///// </summary>
+        //public bool SeperateLogs { get; set; } = false;
 
         /// <summary>
         /// Set logs folder path to be stored. Defualt is current directory, adds folder named Logs.
@@ -13,21 +13,22 @@
         public string LogFolderPath { get; set; } = Directory.GetCurrentDirectory() + "\\Logs";
 
         /// <summary>
-        /// Max log file size, after this value is being reached creates new log file, default value is "10MB".
+        /// Max log file size, after this value is being reached creates new log file, default value is "10-MB".
         /// </summary>
-        public string MaxLogFileSize { get; set; } = "10MB";
+        public string MaxLogFileSize { get; set; } = "10-MB";
 
         /// <summary>
         /// Whether to enable console logging, writes json logs in console as well as saving logs to a file. Default value is true.
         /// </summary>
         public bool EnableConsoleLogging { get; set; } = true;
+        
         /// <summary>
-        /// Formatting datetime in log file name, default value is "MM.dd.yyyy"
+        /// Formatting DateTime in log file name, default value is "MM.dd.yyyy". This is added after LogFileName variable.
         /// </summary>
         public string DateFormatString { get; set; } = "MM.dd.yyyy";
 
         /// <summary>
-        /// Log file name addition to DateFormatString, default value is "Log_".
+        /// Set log file name, default value is "Log_".
         /// </summary>
         public string LogFileName { get; set; } = "Log_";
 
@@ -45,6 +46,7 @@
         /// Whether to enable debug mode for Exception Error logging. Default value is false. If set false exception logging will only write exception message to log file.
         /// </summary>
         public bool EnableDebugMode { get; set; } = false;
+        
         /// <summary>
         /// Whether to throw Exceptions after it has been logged. 
         /// </summary>

@@ -11,8 +11,10 @@ namespace EasMe
     /// </summary>
     public static class EasLog
     {
+        private static EasLogConfiguration? Configuration { get; set; }
+        private static int? OverSizeExt { get; set; } = 0;
 
-        private static EasLogConfiguration _config = new();
+        private static string ExactLogPath { get; set; } = "";
 
         /// <summary>
         /// Initialize the EasLogConfiguration. Call this method in your application startup.
@@ -20,24 +22,26 @@ namespace EasMe
         /// <param name="config"></param>
         public static void LoadConfiguration(EasLogConfiguration config)
         {
-            _config = config;
+            Configuration = config;
+            ExactLogPath = Configuration.LogFolderPath + "\\" + Configuration.LogFileName + DateTime.Now.ToString(Configuration.DateFormatString) + Configuration.LogFileExtension;
             Info("Log configuration loaded.");
         }
+        
         /// <summary>
         /// Initialize default EasLogConfiguration. Call this method in your application startup.
         /// </summary>
         public static void LoadConfigurationDefault()
         {
-            _config = new EasLogConfiguration();
+            Configuration = new EasLogConfiguration();
+            ExactLogPath = Configuration.LogFolderPath + "\\" + Configuration.LogFileName + DateTime.Now.ToString(Configuration.DateFormatString) + Configuration.LogFileExtension;
             Info("Default Log configuration loaded.");
         }
         public static void CheckConfig()
         {
-            if (_config == null)
-            {
-                throw new EasException(EasMe.Error.NOT_LOADED, "EasLogConfiguration not loaded, call LoadConfiguration() or LoadConfigurationDefault() in your application startup.");
-            }
+            if (Configuration == null) throw new EasException(EasMe.Error.NOT_LOADED, "EasLogConfiguration not loaded, call LoadConfiguration() or LoadConfigurationDefault() in your application startup.");            
+            if (string.IsNullOrEmpty(ExactLogPath)) throw new EasException(EasMe.Error.NULL_REFERENCE, "EasLog configuration error, exact log file path not loaded.");
         }
+
         /// <summary>
         /// Creates log with Info severity.
         /// </summary>
@@ -93,7 +97,7 @@ namespace EasMe
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.EXCEPTION, ErrorNo.ToString(), ErrorNo, ex, webModel);
             Log(model);
-
+            if (Configuration.EnableExceptionThrow) throw new EasException(EasMe.Error.EXCEPTION, ex.Message,ex);
         }
 
         /// <summary>
@@ -112,7 +116,7 @@ namespace EasMe
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.EXCEPTION,LogMessage, ErrorNo, ex, webModel);
             Log(model);
-
+            if (Configuration.EnableExceptionThrow) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
         }
         /// <summary>
         /// Creates log with Fatal severity.
@@ -148,7 +152,7 @@ namespace EasMe
             var webModel = WebModelCreate(Ip, HttpMethod, RequestUrl, Headers);
             var model = BaseModelCreate(Severity.FATAL, LogMessage, ErrorNo, ex, webModel);
             Log(model);
-
+            if (Configuration.EnableExceptionThrow) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
         }
         /// <summary>
         /// Creates log with Debug severity.
@@ -221,26 +225,25 @@ namespace EasMe
             {
                 if (obj == null) throw new EasException(EasMe.Error.NULL_REFERENCE, "Log content is null");
                 //possibly this check not needed
-                if (obj is string)
+                serialized = obj.Serialize();
+                if (!Directory.Exists(Configuration.LogFolderPath)) Directory.CreateDirectory(Configuration.LogFolderPath);
+                
+                var size = File.ReadAllBytes(ExactLogPath).Length;
+                if (size > ConvertConfigFileSize(Configuration.MaxLogFileSize))
                 {
-                    serialized = obj.ToString();
+                    OverSizeExt++;
+                    ExactLogPath = ExactLogPath.Replace(Configuration.LogFileExtension, $"_{OverSizeExt}{Configuration.LogFileExtension}");
                 }
-                else
-                {
-                    serialized = obj.Serialize();
-                }
-                if (!Directory.Exists(_config.LogFolderPath)) Directory.CreateDirectory(_config.LogFolderPath);
-
-                string LogPath = _config.LogFolderPath + "\\" + _config.LogFileName + DateTime.Now.ToString(_config.DateFormatString) + _config.LogFileExtension;
-                File.AppendAllText(LogPath, serialized + "\n");
-                if (_config.EnableConsoleLogging)
+                File.AppendAllText(ExactLogPath, serialized + "\n");
+                if (Configuration.EnableConsoleLogging)
                     Console.WriteLine(serialized);
             }
             catch (Exception e)
             {
                 throw new EasException(EasMe.Error.LOGGING_ERROR,"Exception occured while writing log to log file.", e);
             }
-
+            
+           
 
         }
         /// <summary>
@@ -312,12 +315,12 @@ namespace EasMe
                 log.Message = Log;
                 log.LogType = 0;
                 log.ErrorNo = ErrorNo.ToString();
-                if (_config.EnableDebugMode || ForceDebug)
+                if (Configuration.EnableDebugMode || ForceDebug)
                 {
                     log.TraceAction = GetActionName();
                     log.TraceClass = GetClassName();
                 }
-                if (_config.EnableClientInfoLogging)
+                if (Configuration.EnableClientInfoLogging)
                 {
                     log.ClientLog = new ClientLogModel();
                     log.LogType = 2;
@@ -356,7 +359,7 @@ namespace EasMe
             try
             {
                 model.ExceptionMessage = ex.Message;
-                if (_config.EnableDebugMode || ForceDebug)
+                if (Configuration.EnableDebugMode || ForceDebug)
                 {
                     model.ExceptionSource = ex.Source;
                     model.ExceptionStackTrace = ex.StackTrace;
@@ -408,6 +411,25 @@ namespace EasMe
             return "Unkown";
         }
 
+        private static int ConvertConfigFileSize(string value)
+        {
+            try
+            {
+                var size = Convert.ToInt32(value.Split("-")[0].Trim());
+                var unit = value.Split("-")[1].ToLower();
+                return unit switch
+                {
+                    "kb" => size * 1024,
+                    "mb" => size * 1024 * 1024,
+                    "gb" => size * 1024 * 1024 * 1024,
+                    _ => size,
+                };
+            }
+            catch(Exception ex)
+            {
+                throw new EasException(EasMe.Error.FAILED_TO_PARSE, "Failed to parse configuration file size.", ex);
+            }
+        }
 
     }
 }
