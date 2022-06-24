@@ -407,18 +407,14 @@ string name = claims.Identity.Name;
 
 ---
 ## EasGenerate
-EasGenerate helps you with generating random string with several options.
-
-### Define Class
-```c#
-EasGenerate _easgenerate = new EasGenerate();
-```
+EasGenerate is a static class that helps you with generating random strings.
 
 ### Usage
 ```c#
-//Definition
+static string GenerateString(string chars, int length){};
 public string GenerateRandomString(int length, string allowedChars = "", bool onlyLetter = false){};
+public static string GenerateRandomLetters(int length){};
+public static int GenerateRandomNumbers(int digitCount){};
 
-//Usage
-var password = _easgenerate.GenerateRandomString(16,"[]{}()'^+*");
+var password = EasGenerate.GenerateRandomString(16,"[]{}()'^+*");
 ```

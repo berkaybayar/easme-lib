@@ -35,7 +35,7 @@ namespace EasMe
         {
             if (_config == null)
             {
-                throw new EasException(EasMe.Error.CONFIGURATION_NOT_LOADED, "EasLogConfiguration not loaded, call LoadConfiguration() or LoadConfigurationDefault() in your application startup.");
+                throw new EasException(EasMe.Error.NOT_LOADED, "EasLogConfiguration not loaded, call LoadConfiguration() or LoadConfigurationDefault() in your application startup.");
             }
         }
         /// <summary>

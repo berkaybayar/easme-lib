@@ -6,10 +6,10 @@ namespace EasMe
     /// <summary>
     /// Write or read from INI file
     /// </summary>
-    public class EasINI
+    public static class EasINI
     {
 
-        private string Path;
+        private static string? Path;
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -17,26 +17,32 @@ namespace EasMe
         [DllImport("kernel32.dll")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-
-        public EasINI(string INIFilePath)
+        public static void LoadFile(string INIFilePath)
         {
             Path = INIFilePath;
         }
-
-        public EasINI()
+        public static void LoadDefaultFile()
         {
-            Path = Directory.GetCurrentDirectory() + @"\service.ini";
+            Path = Directory.GetCurrentDirectory() + @"\service.ini";            
         }
 
+        private static void CheckLoaded()
+        {
+            if (Path == null)
+            {
+                throw new EasException(Error.NOT_LOADED, "INI file path not loaded, CAll LoadFile() or LoadDefaultFile() in your application startup.");
+            }
+        }
         /// <summary>
         /// Writes a value to the INI file
         /// </summary>
         /// <param name="Section"></param>
         /// <param name="Key"></param>
         /// <param name="Value"></param>
-        public void Write(string Section, string Key, string Value)
+        public static void Write(string Section, string Key, string Value)
         {
-            WritePrivateProfileString(Section, Key, Value, this.Path);
+            CheckLoaded();
+            WritePrivateProfileString(Section, Key, Value, Path);
         }
         /// <summary>
         /// Reads a value from the INI file
@@ -44,10 +50,11 @@ namespace EasMe
         /// <param name="Section"></param>
         /// <param name="Key"></param>
         /// <returns></returns>
-        public string? Read(string Section, string Key)
+        public static string? Read(string Section, string Key)
         {
-            StringBuilder buffer = new StringBuilder(255);
-            GetPrivateProfileString(Section, Key, "", buffer, 255, this.Path);
+            CheckLoaded();
+            StringBuilder buffer = new(255);
+            GetPrivateProfileString(Section, Key, "", buffer, 255, Path);
             return Convert.ToString(buffer);
         }
 

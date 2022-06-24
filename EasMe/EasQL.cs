@@ -8,6 +8,8 @@ namespace EasMe
     /// </summary>
     public static class EasQL
     {
+        private static string Connection { get; set; }
+        
         /// <summary>
         /// Executes SQL query and returns DataTable.
         /// </summary>
@@ -241,10 +243,6 @@ namespace EasMe
 
 
 
-        //--------------------------------------------------------
-        //LOADED CONN STR FUNCTIONS
-        //--------------------------------------------------------
-        private static string _connection;
 
         /// <summary>
         /// Loads connection string to use functions without giving connection string each time.
@@ -252,12 +250,12 @@ namespace EasMe
         /// <param name="connectionString"></param>
         public static void LoadConnectionString(string connectionString)
         {
-            _connection = connectionString;
+            Connection = connectionString;
         }
 
         private static void CheckIfLoaded()
         {
-            if (string.IsNullOrEmpty(_connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED, "Can not use functions without connection string parameter if you have not used Load() function to load connection string.");
+            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED, "Can not use functions without connection string parameter if you have not used Load() function to load connection string.");
         }
 
         /// <summary>
@@ -271,8 +269,8 @@ namespace EasMe
         public static DataTable GetTable(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(_connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
-            return GetTable(_connection, cmd, Timeout);
+            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            return GetTable(Connection, cmd, Timeout);
         }
         /// <summary>
         /// Exectues SQL query and returns affected row count.
@@ -285,8 +283,8 @@ namespace EasMe
         public static int ExecNonQuery(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(_connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
-            return ExecNonQuery(_connection, cmd, Timeout);
+            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            return ExecNonQuery(Connection, cmd, Timeout);
         }
 
         /// <summary>
@@ -300,8 +298,8 @@ namespace EasMe
         public static object ExecScalar(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(_connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
-            return ExecScalar(_connection, cmd, Timeout);
+            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            return ExecScalar(Connection, cmd, Timeout);
         }
 
         /// <summary>
@@ -315,7 +313,7 @@ namespace EasMe
         public static void BackupDatabase(string DatabaseName, string BackupPath, int Timeout = 0)
         {
             CheckIfLoaded();
-            BackupDatabase(_connection, DatabaseName, BackupPath, Timeout);
+            BackupDatabase(Connection, DatabaseName, BackupPath, Timeout);
         }
         /// <summary>
         /// Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but still you should backup first.
@@ -327,7 +325,7 @@ namespace EasMe
         public static void ShrinkDatabase(string DatabaseName, string DatabaseLogName = "_log")
         {
             CheckIfLoaded();
-            ShrinkDatabase(_connection, DatabaseName, DatabaseLogName);
+            ShrinkDatabase(Connection, DatabaseName, DatabaseLogName);
         }
 
 
@@ -341,7 +339,7 @@ namespace EasMe
         public static void TruncateTable(string TableName)
         {
             CheckIfLoaded();
-            TruncateTable(_connection, TableName);
+            TruncateTable(Connection, TableName);
         }
 
 
@@ -355,7 +353,7 @@ namespace EasMe
         public static void DropTable(string TableName)
         {
             CheckIfLoaded();
-            DropTable(_connection, TableName);
+            DropTable(Connection, TableName);
         }
 
 
@@ -368,7 +366,7 @@ namespace EasMe
         public static void DropDatabase(string DatabaseName)
         {
             CheckIfLoaded();
-            DropDatabase(_connection, DatabaseName);
+            DropDatabase(Connection, DatabaseName);
         }
 
         /// <summary>
@@ -380,7 +378,7 @@ namespace EasMe
         public static List<string> GetAllTableName()
         {
             CheckIfLoaded();
-            return GetAllTableName(_connection);
+            return GetAllTableName(Connection);
         }
     }
 }

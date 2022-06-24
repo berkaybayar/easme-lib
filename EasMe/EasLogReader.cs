@@ -6,39 +6,30 @@ namespace EasMe
 
     public static class EasLogReader
     {
-        private static string? _logFilePath;
-        private static string? _logFileContent;
+        public static string? LogFilePath { get; set; }
+        public static string[] LogFileContent { get; set; }
 
-        private static void CheckIfLoaded()
+
+        private static void CheckLoaded()
         {
-            if (string.IsNullOrEmpty(_logFilePath)) throw new EasException(Error.NULL_REFERENCE, "Log file path not loaded.");
-            if (string.IsNullOrEmpty(_logFileContent)) throw new EasException(Error.NULL_REFERENCE, "Log file content not loaded or NULL.");
+            if (string.IsNullOrEmpty(LogFilePath)) throw new EasException(Error.NOT_LOADED, "Log file path not loaded.");
         }
         public static void Load(string logFilePath)
         {
-            _logFilePath = logFilePath;
-            if (!File.Exists(_logFilePath)) throw new EasException(Error.NOT_EXISTS, "Could not locate log file with given path. => Path:" + _logFilePath);
+            LogFilePath = logFilePath;
+            if (!File.Exists(LogFilePath)) throw new EasException(Error.NOT_EXISTS, "Could not locate log file with given path. => Path:" + LogFilePath);
             try
             {
-                _logFileContent = File.ReadAllText(_logFilePath);
-                if (string.IsNullOrEmpty(_logFileContent)) throw new EasException(Error.NULL_REFERENCE, "Error occured while loading log file, Log file content is NULL.");
+                var fileContent = File.ReadAllText(LogFilePath);
+                string[] lines = fileContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                LogFileContent = lines;
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_READ, "Failed reading log file with given path => Path:" + _logFilePath, e);
+                throw new EasException(Error.FAILED_TO_READ, "Failed reading log file with given path => Path:" + LogFilePath, e);
             }
         }
-        /// <summary>
-        /// Gets all logs in string array.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static string[] GetLogFileContentAsString()
-        {
-            if (string.IsNullOrEmpty(_logFileContent)) throw new EasException(Error.NULL_REFERENCE, "Failed getting log file content as string, Log file content is NULL");
-            string[] lines = _logFileContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            return lines;
-        }
+
         /// <summary>
         /// Gets deserialized list of all logs.
         /// </summary>
@@ -46,11 +37,11 @@ namespace EasMe
         /// <exception cref="EasException"></exception>
         public static List<BaseLogModel> GetLogFileContent()
         {
+            CheckLoaded();
             try
             {
                 var list = new List<BaseLogModel>();
-                string[] lines = _logFileContent.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                foreach (var line in lines)
+                foreach (var line in LogFileContent)
                 {
                     var deserialized = JsonConvert.DeserializeObject<BaseLogModel>(line);
                     if (deserialized == null) throw new EasException(Error.DESERIALIZATION_ERROR);

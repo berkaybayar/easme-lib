@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
-
+using System.Net.Mail;
 namespace EasMe
 {
 
@@ -15,7 +15,7 @@ namespace EasMe
             }
             try
             {
-                var addr = new System.Net.Mail.MailAddress(str);
+                var addr = new MailAddress(str);
                 return addr.Address == trimmedEmail;
             }
             catch
@@ -24,29 +24,19 @@ namespace EasMe
             }
         }
 
-        public static bool IsValidIPAddress(this string IpAddress, out string IpVersion)
+        public static bool IsValidIPAddress(this string value, out IPAddress? IpAddress)
         {
-            IPAddress address;
-            IpVersion = "";
-            if (IPAddress.TryParse(IpAddress, out address))
+            IpAddress = null;
+            if (IPAddress.TryParse(value, out IPAddress? address))
             {
-                switch (address.AddressFamily)
-                {
-                    case System.Net.Sockets.AddressFamily.InterNetwork:
-                        IpVersion = "IPv4";
-                        return true;
-                    case System.Net.Sockets.AddressFamily.InterNetworkV6:
-                        IpVersion = "IPv6";
-                        return true;
-                    default:
-                        return false;
-                }
+                IpAddress = address;
+                return true;
             }
             return false;
         }
         public static bool IsValidIPAddress(this string IpAddress)
         {
-            return IpAddress.IsValidIPAddress(out string IpVersion);
+            return IpAddress.IsValidIPAddress(out IPAddress? IpVersion);
         }
         //It's not quite possible make %100 sure it is correct but this will do for most cases
         public static bool IsValidFilePath(this string path)
