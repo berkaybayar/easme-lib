@@ -227,12 +227,15 @@ namespace EasMe
                 //possibly this check not needed
                 serialized = obj.Serialize();
                 if (!Directory.Exists(Configuration.LogFolderPath)) Directory.CreateDirectory(Configuration.LogFolderPath);
-                
-                var size = File.ReadAllBytes(ExactLogPath).Length;
-                if (size > ConvertConfigFileSize(Configuration.MaxLogFileSize))
+
+                if (File.Exists(ExactLogPath))
                 {
-                    OverSizeExt++;
-                    ExactLogPath = ExactLogPath.Replace(Configuration.LogFileExtension, $"_{OverSizeExt}{Configuration.LogFileExtension}");
+                    var size = File.ReadAllBytes(ExactLogPath).Length;
+                    if (size > ConvertConfigFileSize(Configuration.MaxLogFileSize))
+                    {
+                        OverSizeExt++;
+                        ExactLogPath = ExactLogPath.Replace(Configuration.LogFileExtension, $"_{OverSizeExt}{Configuration.LogFileExtension}");
+                    }
                 }
                 File.AppendAllText(ExactLogPath, serialized + "\n");
                 if (Configuration.EnableConsoleLogging)

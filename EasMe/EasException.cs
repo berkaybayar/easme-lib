@@ -2,6 +2,10 @@
 {
     public class EasException : Exception
     {
+        public EasException(string message, Exception? Inner = null) : base(message, Inner)
+        {
+
+        }
         public EasException(Error error, string message, Exception? Inner = null) : base(error.ToString() + " => " + message, Inner)
         {
             
