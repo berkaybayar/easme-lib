@@ -2,10 +2,7 @@
 {
     public class EasLogConfiguration
     {
-        ///// <summary>
-        ///// Whether to seperate different log severities to different log files.
-        ///// </summary>
-        //public bool SeperateLogs { get; set; } = false;
+
 
         /// <summary>
         /// Set logs folder path to be stored. Defualt is current directory, adds folder named Logs.
@@ -52,10 +49,6 @@
         /// </summary>
         public bool EnableExceptionThrow { get; set; } = false;
 
-        ///// <summary>
-        ///// Whether to print calling function and its class to logs. Defualt value is false.
-        ///// </summary>
-        //public bool EnableTrace { get; set; } = false; //enable trace for debug logging also only log exception full in debug logging for normal only log message
-        public Dictionary<int, string> CustomErrorList { get; set; } = new Dictionary<int, string>();
+        
     }
 }

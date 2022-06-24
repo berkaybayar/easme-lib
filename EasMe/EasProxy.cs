@@ -44,7 +44,7 @@ namespace EasMe
         {
             if (Headers == null || Headers.Count == 0)
             {
-                throw new EasException(Error.NULL_REFERENCE,"Header ");
+                throw new EasException(Error.NULL_REFERENCE, "ConvertHeadersToString Headers is NULL");
             }
             var val = "";
             if (Headers == null) return "";

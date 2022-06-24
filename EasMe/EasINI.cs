@@ -28,10 +28,7 @@ namespace EasMe
 
         private static void CheckLoaded()
         {
-            if (Path == null)
-            {
-                throw new EasException(Error.NOT_LOADED, "INI file path not loaded, CAll LoadFile() or LoadDefaultFile() in your application startup.");
-            }
+            if (string.IsNullOrEmpty(Path)) throw new EasException(Error.NOT_LOADED, "INI file path not loaded, CAll LoadFile() or LoadDefaultFile() in your application startup.");
         }
         /// <summary>
         /// Writes a value to the INI file
@@ -54,7 +51,7 @@ namespace EasMe
         {
             CheckLoaded();
             StringBuilder buffer = new(255);
-            GetPrivateProfileString(Section, Key, "", buffer, 255, Path);
+            _ = GetPrivateProfileString(Section, Key, "", buffer, 255, Path);
             return Convert.ToString(buffer);
         }
 

@@ -84,7 +84,7 @@ namespace EasMe
         public static object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0)
         {
             var obj = new object();
-            using (SqlConnection conn = new SqlConnection(Connection))
+            using (SqlConnection conn = new(Connection))
             {
                 try
                 {
@@ -253,7 +253,7 @@ namespace EasMe
 
         private static void CheckIfLoaded()
         {
-            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED, "Can not use functions without connection string parameter if you have not used Load() function to load connection string.");
+            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.NOT_INITIALIZED, "Can not use functions without connection string parameter if you have not used Load() function to load connection string.");
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace EasMe
         public static DataTable GetTable(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.NOT_INITIALIZED, "Connection not initialized");
             return GetTable(Connection, cmd, Timeout);
         }
         /// <summary>
@@ -281,7 +281,7 @@ namespace EasMe
         public static int ExecNonQuery(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.NOT_INITIALIZED, "Connection not initialized");
             return ExecNonQuery(Connection, cmd, Timeout);
         }
 
@@ -296,7 +296,7 @@ namespace EasMe
         public static object ExecScalar(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.SQL_CONNECTION_NOT_INITIALIZED);
+            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.NOT_INITIALIZED,"Connection not initialized");
             return ExecScalar(Connection, cmd, Timeout);
         }
 

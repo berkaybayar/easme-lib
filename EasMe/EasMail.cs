@@ -55,8 +55,12 @@ namespace EasMe
                 smtp.Send(message);
 
             }
-            catch (Exception) { throw; }
-
+            catch (Exception ex) 
+            {
+                throw new EasException(Error.EMAIL_SENT_FAILED, "Failed to send email.", ex);
+            }
+            
+            
 
         }
     }

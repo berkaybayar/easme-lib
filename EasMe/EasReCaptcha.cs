@@ -51,7 +51,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                return new CaptchaResponseModel { Success = false, ErrorCodes = ex.Message };
+                throw new EasException(Error.FAILED, "Could not validate reCaptcha.", ex);
             }
 
 
