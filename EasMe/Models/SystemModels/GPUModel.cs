@@ -1,6 +1,6 @@
 ﻿namespace EasMe.Models.SystemModels
 {
-    internal class GPUModel
+    public class GPUModel
     {
         public string? AdapterCompatibility { get; set; }
         public string? AdapterDACType { get; set; }

@@ -2,7 +2,7 @@
 
 namespace EasMe.Models.LogModels
 {
-    internal class BaseLogModel
+    public class BaseLogModel
     {
         public DateTime Date { get; private set; } = DateTime.Now;
         public int LogType { get; set; }
