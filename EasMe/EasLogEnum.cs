@@ -3,11 +3,10 @@
     public enum LogType
     {
         BASE = 0,
-        DEBUG = 1,
-        ERROR = 2,
-        WEB = 3,
-        CLIENT = 4,
-
+        EXCEPTION = 1,
+        WEB = 2,
+        CLIENT = 3,
+        
     }
 
     public enum Severity

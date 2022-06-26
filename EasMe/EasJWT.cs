@@ -17,6 +17,7 @@ namespace EasMe
         private static string? Issuer { get; set; }
         private static string? Audience { get; set; }
         private static byte[]? Secret { get; set; }
+        public static bool IsInitialized {  get;  private set; } = false;
         
         /// <summary>
         /// Loads your secret key, issuer, audience. Call this method in your application startup.
@@ -24,24 +25,19 @@ namespace EasMe
         /// <param name="secret"></param>
         /// <param name="issuer"></param>
         /// <param name="audience"></param>
-        public static void LoadConfiguration(string secret, string? issuer = null, string? audience = null)
+        public static void Init(string secret, string? issuer = null, string? audience = null)
         {
             Issuer = issuer;
             Audience = audience;
-            if (!string.IsNullOrEmpty(Issuer))
-            {
-                ValidateIssuer = true;
-            }
-            if (!string.IsNullOrEmpty(Audience))
-            {
-                ValidateAudience = true;
-            }
+            if (!string.IsNullOrEmpty(Issuer)) ValidateIssuer = true;
+            if (!string.IsNullOrEmpty(Audience)) ValidateAudience = true;
             Secret = Encoding.ASCII.GetBytes(secret);
+            IsInitialized = true;
         }
 
         private static void CheckSecret()
         {
-            if (Secret.IsNullOrEmpty()) throw new EasException(Error.NULL_REFERENCE, "EasJWT configuartion error, secret not loaded.");
+            if (!IsInitialized) throw new EasException(Error.NOT_INITIALIZED, "EasJWT configuration error, not initialized.");
         }
         /// <summary>
         /// Generates a JWT token by ClaimsIdentity.

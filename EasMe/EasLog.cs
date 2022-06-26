@@ -24,7 +24,7 @@ namespace EasMe
         {
             Configuration = config;
             ExactLogPath = Configuration.LogFolderPath + "\\" + Configuration.LogFileName + DateTime.Now.ToString(Configuration.DateFormatString) + Configuration.LogFileExtension;
-            Info("Log configuration loaded.");
+            Info("EasLogConfiguration loaded.");
         }
         
         /// <summary>
@@ -34,7 +34,7 @@ namespace EasMe
         {
             Configuration = new EasLogConfiguration();
             ExactLogPath = Configuration.LogFolderPath + "\\" + Configuration.LogFileName + DateTime.Now.ToString(Configuration.DateFormatString) + Configuration.LogFileExtension;
-            Info("Default Log configuration loaded.");
+            Info("Default EasLogConfiguration loaded.");
         }
         public static void CheckConfig()
         {
@@ -316,7 +316,7 @@ namespace EasMe
                 var log = new BaseLogModel();
                 log.Severity = Severity.ToString();
                 log.Message = Log;
-                log.LogType = 0;
+                log.LogType = (int)LogType.BASE;
                 log.ErrorNo = ErrorNo.ToString();
                 if (Configuration.EnableDebugMode || ForceDebug)
                 {
@@ -326,17 +326,17 @@ namespace EasMe
                 if (Configuration.EnableClientInfoLogging)
                 {
                     log.ClientLog = new ClientLogModel();
-                    log.LogType = 2;
+                    log.LogType = (int)LogType.CLIENT;
                 }
                 if (WebLog != null)
                 {
                     log.WebLog = WebLog;
-                    log.LogType = 1;
+                    log.LogType = (int)LogType.WEB;
                 }
                 if (Exception != null)
                 {
                     log.Exception = ConvertExceptionToLogModel(Exception,ForceDebug);
-                    log.LogType = -1;
+                    log.LogType = (int)LogType.EXCEPTION;
                 }
                 return log;
             }

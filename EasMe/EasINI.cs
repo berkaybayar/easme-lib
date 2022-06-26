@@ -9,7 +9,7 @@ namespace EasMe
     public static class EasINI
     {
 
-        private static string? Path;
+        private static string? Path { get; set; }
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -19,6 +19,8 @@ namespace EasMe
 
         public static void LoadFile(string INIFilePath)
         {
+            
+            if (!File.Exists(INIFilePath)) throw new EasException(Error.NOT_EXISTS, "Given INI file path does not exist.");
             Path = INIFilePath;
         }
         public static void LoadDefaultFile()
@@ -28,7 +30,8 @@ namespace EasMe
 
         private static void CheckLoaded()
         {
-            if (string.IsNullOrEmpty(Path)) throw new EasException(Error.NOT_LOADED, "INI file path not loaded, CAll LoadFile() or LoadDefaultFile() in your application startup.");
+            if (string.IsNullOrEmpty(Path)) throw new EasException(Error.NOT_LOADED, "INI file path not loaded, Call LoadFile() or LoadDefaultFile() in your application startup.");
+            
         }
         /// <summary>
         /// Writes a value to the INI file
@@ -51,8 +54,9 @@ namespace EasMe
         {
             CheckLoaded();
             StringBuilder buffer = new(255);
-            _ = GetPrivateProfileString(Section, Key, "", buffer, 255, Path);
+            GetPrivateProfileString(Section, Key, "", buffer, 255, Path);
             return Convert.ToString(buffer);
+
         }
 
 
