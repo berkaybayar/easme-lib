@@ -59,7 +59,10 @@ namespace EasMe
             }
             return true;
         }
-
+        public static string TrimAbsolute(this string str)
+        {
+            return str.Replace(" ", "");
+        }
 
     }
 }

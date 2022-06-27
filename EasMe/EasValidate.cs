@@ -46,12 +46,12 @@ namespace EasMe
             {
                 return false;
             }
-            isValid = path.Contains(@"\");
+            isValid = path.Contains('\\');
             if (!isValid)
             {
                 return false;
             }
-            isValid = path.Contains(":");
+            isValid = path.Contains(':');
             if (!isValid)
             {
                 return false;

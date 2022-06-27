@@ -9,7 +9,7 @@ namespace EasMe
     /// </summary>
     public static class EasProxy
     {
-        public static string[] _HeaderList = new string[23]
+        public static string[] _HeaderList = new string[22]
         {
               "HOST",
               "ORIGIN",
@@ -18,7 +18,7 @@ namespace EasMe
               "ACCESSTOKEN",
               "CONTENT-LENGTH",
               "CONTENT-TYPE",
-              "COOKIE",
+              //"COOKIE",
               "REFERER",
               "SEC-CH-UA",
               "SEC-CH-UA-MOBILE",
@@ -35,26 +35,6 @@ namespace EasMe
               "CF-Connecting-IP",
               "X-Real-IP",
         };
-        /// <summary>
-        /// Converts all headers to string
-        /// </summary>
-        /// <param name="Headers"></param>
-        /// <returns>Format: "HEADER:VALUE|HEADER2:VALUE2"</returns>       
-        public static string? ConvertHeadersToString(this Dictionary<string, string>? Headers)
-        {
-            if (Headers == null || Headers.Count == 0)
-            {
-                throw new EasException(Error.NULL_REFERENCE, "ConvertHeadersToString Headers is NULL");
-            }
-            var val = "";
-            if (Headers == null) return "";
-            foreach (var item in Headers)
-            {
-                val += $"{item.Key}:{item.Value}|";
-            }
-            return val[..^1];
-
-        }
 
 
 
@@ -84,7 +64,7 @@ namespace EasMe
         /// </summary>
         /// <param name="httpRequest"></param>
         /// <returns></returns>
-        public static List<string> GetIP(this HttpRequest httpRequest)
+        public static List<string> GetHeaderRealIPs(this HttpRequest httpRequest)
         {
             var list = new List<string>();
             var headers = httpRequest.GetHeaderValues();
@@ -98,15 +78,7 @@ namespace EasMe
             }            
             return list;
         }
-        /// <summary>
-        /// Gets Remove IP in HttpRequest headers by HttpRequest.
-        /// </summary>
-        /// <param name="httpRequest"></param>
-        /// <returns></returns>
-        public static string GetRemoteIP(this HttpRequest httpRequest)
-        {
-            return httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
-        }
+
 
         /// <summary>
         /// Get Remote IP Address by HttpRequest.

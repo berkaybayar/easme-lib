@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace EasMe
 {
@@ -66,7 +66,7 @@ namespace EasMe
                 }
                 catch (Exception e)
                 {
-                    throw new EasException(Error.SQL_EXEC_NON_QUERY_FAILED, "SQL Query: " + cmd.CommandText, e);
+                    throw new EasException(Error.SQL_EXEC_NONQUERY_FAILED, "SQL Query: " + cmd.CommandText, e);
 
                 }
 
@@ -97,7 +97,7 @@ namespace EasMe
                 }
                 catch (Exception e)
                 {
-                    throw new EasException(Error.SQL_EXEC_NON_QUERY_FAILED, "SQL Query: " + cmd.CommandText, e);
+                    throw new EasException(Error.SQL_EXEC_NONQUERY_FAILED, "SQL Query: " + cmd.CommandText, e);
 
                 }
             }

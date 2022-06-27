@@ -13,10 +13,10 @@
     {
         INFO = 100,
         WARN = 101,
-        ERROR = 104,
-        DEBUG = 105,
-        EXCEPTION = 106,
-        FATAL = 107
+        ERROR = 102,
+        DEBUG = 103,
+        EXCEPTION = 104,
+        FATAL = 105
     }
     public enum Error
     {
@@ -27,8 +27,9 @@
         DEBUG = 104,
         EXCEPTION = 105,
         FATAL = 106,        
-        FAILED = 111,
-        TIMEOUT = 110,
+        FAILED = 107,
+        TIMEOUT = 108,
+        SERVICE = 109,
         
         SQL_ERROR = 200,
         SQL_UPDATE_FAILED = 201,
@@ -37,7 +38,7 @@
         SQL_CREATE_FAILED = 204,
         SQL_TRUNCATE_FAILED = 205,
         SQL_GET_TABLE_FAILED = 206,
-        SQL_EXEC_NON_QUERY_FAILED = 207,
+        SQL_EXEC_NONQUERY_FAILED = 207,
         SQL_EXEC_SCALAR_FAILED = 208,
         SQL_BACKUP_DATABASE_FAILED = 209,
         SQL_SHRINK_DATABASE_FAILED = 210,
@@ -63,6 +64,9 @@
         TOO_BIG_VALUE = 310,
         TOO_SMALL_VALUE = 311,
         SAME_VALUE = 312,
+        FAILED_TO_COPY = 312,
+        FAILED_TO_CUT = 312,
+        FAILED_TO_PASTE = 312,
 
         NOT_EXISTS = 400,
         NOT_FOUND = 401,
@@ -114,5 +118,35 @@
         //NOT_FOUND_LOADED_CONFIGURATION_ERROR = 704,
 
 
+    }
+    public enum LogNo
+    {
+        ErrINFO = 0,
+        ErrWARN = 1,
+        ErrERROR = 2,
+        ErrDEBUG = 3,
+        ErrEXCEPTION = 4,
+        ErrFATAL = 5,
+        ErrSUCCESS = 6,
+        ErrFAILED = 7,
+        ErrSERVICE = 9,
+        ErrSQL = 10,
+        ErrEASLOG = 11,
+        ErrSERIALIZATION = 12,
+        ErrDESERIALIZATION = 13,
+        ErrEASAPI = 14,
+        ErrEASDEL = 15,
+        ErrEASEXT = 16,
+        ErrEASGENERATE = 17,
+        ErrEASHASH = 18,
+        ErrEASINI = 19,
+        ErrEASJWT = 20,
+        ErrEASLOGREAD = 21,
+        ErrEASMAIL = 22,
+        ErrEASPROXY = 23,
+        ErrEASQL = 24,
+        ErrEASRECAPTCHA = 25,
+        ErrEASSYSTEM = 26,
+        ErrEASVALIDATE = 27,
     }
 }

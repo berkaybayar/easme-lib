@@ -12,6 +12,8 @@ namespace EasMe
     {
         //private  ManagementObjectSearcher baseboardSearcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BaseBoard");
         //private  ManagementObjectSearcher motherboardSearcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_MotherboardDevice");
+        internal static HWIDModel Hwid { get; set; } 
+        internal static string HashedHwid { get; set; } 
 
         enum HardwareType
         {
@@ -131,40 +133,49 @@ namespace EasMe
             catch
             {
             }
-            return "Not Found";
+            return "NOT_FOUND";
 
         }
         public static List<RamModel> GetRamList()
         {
-            var list = new List<RamModel>();
-            foreach (var obj in GetManagementObjList("Win32_PhysicalMemory"))
+            try
             {
-                var ramModel = new RamModel();
-                ramModel.Attributes = obj.Properties["Attributes"].Value.ToString();
-                ramModel.Capacity = obj.Properties["Capacity"].Value.ToString();
-                ramModel.Caption = obj.Properties["Caption"].Value.ToString();
-                ramModel.DeviceLocator = obj.Properties["DeviceLocator"].Value.ToString();
-                ramModel.FormFactor = obj.Properties["FormFactor"].Value.ToString();
-                ramModel.Manufacturer = obj.Properties["Manufacturer"].Value.ToString();
-                ramModel.Name = obj.Properties["Name"].Value.ToString();
-                ramModel.PartNumber = obj.Properties["PartNumber"].Value.ToString();
-                ramModel.SerialNumber = obj.Properties["SerialNumber"].Value.ToString();
-                ramModel.Speed = obj.Properties["Speed"].Value.ToString();
-                ramModel.Tag = obj.Properties["Tag"].Value.ToString();
-                ramModel.TotalWidth = obj.Properties["TotalWidth"].Value.ToString();
-                ramModel.TypeDetail = obj.Properties["TypeDetail"].Value.ToString();
-                ramModel.BankLabel = obj.Properties["BankLabel"].Value.ToString();
-                ramModel.ConfiguredClockSpeed = obj.Properties["ConfiguredClockSpeed"].Value.ToString();
-                ramModel.ConfiguredVoltage = obj.Properties["ConfiguredVoltage"].Value.ToString();
-                ramModel.CreationClassName = obj.Properties["CreationClassName"].Value.ToString();
-                ramModel.DataWidth = obj.Properties["DataWidth"].Value.ToString();
-                ramModel.Description = obj.Properties["Description"].Value.ToString();
-                ramModel.MaxVoltage = obj.Properties["MaxVoltage"].Value.ToString();
-                ramModel.MinVoltage = obj.Properties["MinVoltage"].Value.ToString();
-                ramModel.SMBIOSMemoryType = obj.Properties["SMBIOSMemoryType"].Value.ToString();
-                list.Add(ramModel);
+                var list = new List<RamModel>();
+                
+                foreach (var obj in GetManagementObjList("Win32_PhysicalMemory"))
+                {
+                    var ramModel = new RamModel();
+                    ramModel.Attributes = obj.Properties["Attributes"].Value.ToString();
+                    ramModel.Capacity = obj.Properties["Capacity"].Value.ToString();
+                    ramModel.Caption = obj.Properties["Caption"].Value.ToString();
+                    ramModel.DeviceLocator = obj.Properties["DeviceLocator"].Value.ToString();
+                    ramModel.FormFactor = obj.Properties["FormFactor"].Value.ToString();
+                    ramModel.Manufacturer = obj.Properties["Manufacturer"].Value.ToString();
+                    ramModel.Name = obj.Properties["Name"].Value.ToString();
+                    ramModel.PartNumber = obj.Properties["PartNumber"].Value.ToString();
+                    ramModel.SerialNumber = obj.Properties["SerialNumber"].Value.ToString();
+                    ramModel.Speed = obj.Properties["Speed"].Value.ToString();
+                    ramModel.Tag = obj.Properties["Tag"].Value.ToString();
+                    ramModel.TotalWidth = obj.Properties["TotalWidth"].Value.ToString();
+                    ramModel.TypeDetail = obj.Properties["TypeDetail"].Value.ToString();
+                    ramModel.BankLabel = obj.Properties["BankLabel"].Value.ToString();
+                    ramModel.ConfiguredClockSpeed = obj.Properties["ConfiguredClockSpeed"].Value.ToString();
+                    ramModel.ConfiguredVoltage = obj.Properties["ConfiguredVoltage"].Value.ToString();
+                    ramModel.CreationClassName = obj.Properties["CreationClassName"].Value.ToString();
+                    ramModel.DataWidth = obj.Properties["DataWidth"].Value.ToString();
+                    ramModel.Description = obj.Properties["Description"].Value.ToString();
+                    ramModel.MaxVoltage = obj.Properties["MaxVoltage"].Value.ToString();
+                    ramModel.MinVoltage = obj.Properties["MinVoltage"].Value.ToString();
+                    ramModel.SMBIOSMemoryType = obj.Properties["SMBIOSMemoryType"].Value.ToString();
+                    list.Add(ramModel);
+                }
+                return list;
             }
-            return list;
+            catch (Exception ex)
+            {
+                throw new EasException("GetRamList", ex);
+            }
+            
         }
         public static MotherboardModel GetMotherboard()
         {
@@ -191,8 +202,9 @@ namespace EasMe
                 motherboardModel.Tag = item["Tag"].ToString();
                 motherboardModel.Version = item["Version"].ToString();
             }
-            catch
+            catch (Exception ex)
             {
+                throw new EasException("GetMotherboard", ex);
             }
             return motherboardModel;
 
@@ -249,8 +261,9 @@ namespace EasMe
                 CPUModel.VirtualizationFirmwareEnabled = item["VirtualizationFirmwareEnabled"].ToString();
                 CPUModel.VMMonitorModeExtensions = item["VMMonitorModeExtensions"].ToString();
             }
-            catch
+            catch ( Exception ex)
             {
+                throw new EasException("GetProcessor", ex);
             }
             return CPUModel;
 
@@ -297,8 +310,9 @@ namespace EasMe
                 model.TracksPerCylinder = disk["TracksPerCylinder"].ToString();
                 list.Add(model);
             }
-            catch
+            catch (Exception ex)
             {
+                throw new EasException("GetDiskList", ex);
             }
             return list;
 
@@ -351,8 +365,9 @@ namespace EasMe
                     list.Add(model);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                throw new EasException("GetGPUList", ex);
             }
             return list;
         }
@@ -385,8 +400,9 @@ namespace EasMe
                 model.TargetOperatingSystem = bios["TargetOperatingSystem"].ToString();
                 model.Version = bios["Version"].ToString();
             }
-            catch
+            catch (Exception ex)
             {
+                throw new EasException("GetBIOS", ex);
             }
             return model;
         }
@@ -397,10 +413,10 @@ namespace EasMe
                 var serial = GetIdentifier("Win32_BaseBoard", "SerialNumber");
                 return serial;
             }
-            catch
+            catch (Exception ex)
             {
+                throw new EasException("GetMotherboardSerial", ex);
             }
-            return "Unkown";
         }
         public static string GetProcessorId()
         {
@@ -409,10 +425,10 @@ namespace EasMe
                 var id = GetIdentifier("Win32_Processor", "ProcessorId");
                 return id;
             }
-            catch
+            catch (Exception ex)
             {
+                throw new EasException("GetProcessorId", ex);
             }
-            return "Unkown";
         }
         public static string GetDiskSerial()
         {
@@ -421,10 +437,10 @@ namespace EasMe
                 var id = GetIdentifier("Win32_DiskDrive", "SerialNumber");
                 return id;
             }
-            catch
+            catch (Exception ex)
             {
+                throw new EasException("GetDiskSerial", ex);
             }
-            return "Unkown";
         }
         public static string GetVideoProcessorName()
         {
@@ -433,10 +449,10 @@ namespace EasMe
                 var id = GetIdentifier("Win32_VideoController", "VideoProcessor");
                 return id;
             }
-            catch
+            catch (Exception ex)
             {
+                throw new EasException("GetVideoProcessorName", ex);
             }
-            return "Unkown";
         }
         public static string GetTimezone()
         {
@@ -445,37 +461,16 @@ namespace EasMe
         }
         public static string GetOSVersion()
         {
-            try
-            {
-                return Environment.OSVersion.ToString();
-            }
-            catch
-            {
-                return "Unknown";
-            }
+            return Environment.OSVersion.ToString();
         }
         public static string GetMachineName()
         {
-            try
-            {
-                return Environment.MachineName.ToString();
-            }
-            catch
-            {
-                return "Unknown";
-            }
+            return Environment.MachineName.ToString();
 
         }
         public static string GetThreadId()
         {
-            try
-            {
-                return Environment.CurrentManagedThreadId.ToString();
-            }
-            catch
-            {
-                return "Unknown";
-            }
+            return Environment.CurrentManagedThreadId.ToString();
         }
 
         /// <summary>
@@ -490,27 +485,33 @@ namespace EasMe
                 var response = httpClient.GetAsync("https://api.ipify.org/").Result;
                 return response.Content.ReadAsStringAsync().Result;
             }
-            catch
+            catch (Exception ex)
             {
-                return "Unknown";
+                throw new EasException("GetRemoteIPAddress", ex);
             }
-
         }
 
         private static string GetMachineGuid()
         {
-            string location = @"SOFTWARE\Microsoft\Cryptography";
-            string name = "MachineGuid";
+            try
+            {
+                string location = @"SOFTWARE\Microsoft\Cryptography";
+                string name = "MachineGuid";
 
-            using RegistryKey localMachineX64View = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            using RegistryKey rk = localMachineX64View.OpenSubKey(location);
-            if (rk == null)
-                return "KeyNotFoundException";
-            object machineGuid = rk.GetValue(name);
-            if (machineGuid == null)
-                return "IndexOutOfRangeException";
+                using RegistryKey localMachineX64View = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                using RegistryKey rk = localMachineX64View.OpenSubKey(location);
+                if (rk == null)
+                    throw new KeyNotFoundException("Cannot find the key: " + location);
+                object machineGuid = rk.GetValue(name);
+                if (machineGuid == null)
+                    throw new IndexOutOfRangeException("Cannot find the value: " + name);
 
-            return machineGuid.ToString().ToUpper();
+                return machineGuid.ToString().ToUpper();
+            }
+            catch (Exception ex)
+            {
+                throw new EasException("GetMachineGuid", ex);
+            }
         }
 
         /// <summary>
@@ -530,7 +531,7 @@ namespace EasMe
             oProcess.Start();
             oProcess.WaitForExit();
             var result = oProcess.StandardOutput.ReadToEnd();
-            return result.Trim();
+            return result.TrimAbsolute();
         }
         /// <summary>
         /// Gets 6 Hardware Ids first two is reliable for general usage.
@@ -541,17 +542,15 @@ namespace EasMe
             List<string> list = new();
             var model = GetHardwareModel();
             var id1 = $"{model.ProcessorId}:{model.MotherboardId}:{model.BiosId}:{model.MACAddresses}";
-            list.Add(id1.Trim());
-            var id2 = $"{model.DiskUUID}:{model.MachineGuid}:{model.MachineName}:{model.GPU1}";
-            list.Add(id2.Trim());
-            var id3 = $"{model.Ram1}:{model.Disk1}:{model.Ram2}:{model.Disk2}";
-            list.Add(id3.Trim());
-            var id4 = $"{model.Ram3}:{model.Disk3}:{model.Ram4}:{model.Disk4}";
-            list.Add(id4.Trim());
-            var id5 = $"{model.Ram5}:{model.Disk5}:{model.Ram6}:{model.Disk6}";
-            list.Add(id5.Trim());
-            var id6 = $"{model.Ram7}:{model.Disk7}:{model.Ram8}:{model.Disk8}";
-            list.Add(id6.Trim());
+            list.Add(id1.TrimAbsolute());
+            var id2 = $"{model.DiskUUID}:{model.MachineGuid}:{model.MachineName}";
+            list.Add(id2.TrimAbsolute());
+            var id3 = $"{model.GPU}";
+            list.Add(id3.TrimAbsolute());
+            var id4 = $"{model.Ram}";
+            list.Add(id4.TrimAbsolute());
+            var id5 = $"{model.Disk}";
+            list.Add(id5.TrimAbsolute());
             return list;
         }
         /// <summary>
@@ -564,17 +563,18 @@ namespace EasMe
             List<string> newList = new();
             foreach (var item in list)
             {
-                var hashed = EasHash.BuildString(EasHash.SHA256Hash(item));
+                var hashed = EasHash.BuildString(EasHash.MD5Hash(item)).ToUpper();
                 newList.Add(hashed);
             }
 
-            return list;
+            return newList;
         }
 
-        private static HWIDModel GetHardwareModel()
+        public static HWIDModel GetHardwareModel()
         {
             try
             {
+                if (Hwid != null) return Hwid;
                 var processor = GetProcessor();
                 var bios = GetBIOS();
                 var mainboard = GetMotherboard();
@@ -594,100 +594,72 @@ namespace EasMe
                 //var ramIdentifier = string.Join("::", ramList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}"));
                 //var gpuIdentifier = string.Join("::", gpuList.Select(x => $"{x.Name}"));                
                 //var diskIdentifier = string.Join("::", diskList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}:{x.Size}"));
-                var ram1 = ramList[0];
-                hwidModel.Ram1 = $"{ram1.Name}:{ram1.Manufacturer}:{ram1.SerialNumber}";
-                var ram2 = ramList[1];
-                hwidModel.Ram2 = $"{ram2.Name}:{ram2.Manufacturer}:{ram2.SerialNumber}";
-                var ram3 = ramList[2];
-                hwidModel.Ram3 = $"{ram3.Name}:{ram3.Manufacturer}:{ram3.SerialNumber}";
-                var ram4 = ramList[3];
-                hwidModel.Ram4 = $"{ram4.Name}:{ram4.Manufacturer}:{ram4.SerialNumber}";
-                var ram5 = ramList[4];
-                hwidModel.Ram5 = $"{ram5.Name}:{ram5.Manufacturer}:{ram5.SerialNumber}";
-                var ram6 = ramList[5];
-                hwidModel.Ram6 = $"{ram6.Name}:{ram6.Manufacturer}:{ram6.SerialNumber}";
-                var ram7 = ramList[6];
-                hwidModel.Ram7 = $"{ram7.Name}:{ram7.Manufacturer}:{ram7.SerialNumber}";
-                var ram8 = ramList[7];
-                hwidModel.Ram8 = $"{ram8.Name}:{ram8.Manufacturer}:{ram8.SerialNumber}";
-
-                var gpu1 = gpuList[0];
-                hwidModel.GPU1 = $"{gpu1.Name}";
-                var gpu2 = gpuList[1];
-                hwidModel.GPU2 = $"{gpu2.Name}";
-                var gpu3 = gpuList[2];
-                hwidModel.GPU3 = $"{gpu3.Name}";
-                var gpu4 = gpuList[3];
-                hwidModel.GPU4 = $"{gpu4.Name}";
+                if (ramList != null || ramList.Count > 0)
+                {
+                    var ramIdentifier = string.Join("::", ramList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}"));
+                    hwidModel.Ram = ramIdentifier;
+                }
+                if (gpuList != null || gpuList.Count > 0)
+                {
+                    var gpuIdentifier = string.Join("::", gpuList.Select(x => $"{x.Name}"));
+                    hwidModel.GPU = gpuIdentifier;
+                }
+                if (diskList != null || diskList.Count > 0)
+                {
+                    var diskIdentifier = string.Join("::", diskList.Select(x => $"{x.SerialNumber}:{x.Size}"));
+                    hwidModel.Disk = diskIdentifier;
+                }
 
                 var biosIdentifier = $"{bios.Manufacturer}:{bios.SMBIOSBIOSVersion}:{bios.SerialNumber}";
                 hwidModel.BiosId = biosIdentifier;
 
-                var mainboardIdentifier = $"{mainboard.Name}:{mainboard.Manufacturer}:{mainboard.SerialNumber}";
+                var mainboardIdentifier = $"{mainboard.Manufacturer}:{mainboard.SerialNumber}";
                 hwidModel.MotherboardId = mainboardIdentifier;
 
-                var disk1 = diskList[0];
-                hwidModel.Disk1 = $"{disk1.Name}:{disk1.Manufacturer}:{disk1.SerialNumber}:{disk1.Size}";
-                var disk2 = diskList[1];
-                hwidModel.Disk2 = $"{disk2.Name}:{disk2.Manufacturer}:{disk2.SerialNumber}:{disk2.Size}";
-                var disk3 = diskList[2];
-                hwidModel.Disk3 = $"{disk3.Name}:{disk3.Manufacturer}:{disk3.SerialNumber}:{disk3.Size}";
-                var disk4 = diskList[3];
-                hwidModel.Disk4 = $"{disk4.Name}:{disk4.Manufacturer}:{disk4.SerialNumber}:{disk4.Size}";
-                var disk5 = diskList[4];
-                hwidModel.Disk5 = $"{disk5.Name}:{disk5.Manufacturer}:{disk5.SerialNumber}:{disk5.Size}";
-                var disk6 = diskList[5];
-                hwidModel.Disk6 = $"{disk6.Name}:{disk6.Manufacturer}:{disk6.SerialNumber}:{disk6.Size}";
-                var disk7 = diskList[6];
-                hwidModel.Disk7 = $"{disk7.Name}:{disk7.Manufacturer}:{disk7.SerialNumber}:{disk7.Size}";
-                var disk8 = diskList[7];
-                hwidModel.Disk8 = $"{disk8.Name}:{disk8.Manufacturer}:{disk8.SerialNumber}:{disk8.Size}";
 
+                Hwid = hwidModel;
                 return hwidModel;
             }
-            catch
+            catch (Exception ex)
             {
-                throw new EasException(Error.FAILED, "Getting machin ids");
+                throw new EasException(Error.FAILED, "Getting machine ids",ex);
             }
         }
         public static string GetMachineIdHashed()
         {
-            try
-            {
-                return GetHashedHardwareIds().FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw new EasException(Error.FAILED, "Error in getting hashed machine id (first).", ex);
-            }
+            if (HashedHwid != null) return HashedHwid;
+            var hashed = GetHashedHardwareIds().FirstOrDefault();
+            if (string.IsNullOrEmpty(hashed)) return "NOT_FOUND";
+            HashedHwid = hashed;
+            return hashed;
         }
 
 
 
-        private static string? GetTest()
-        {
-            try
-            {
-                var val = "";
-                ManagementObjectSearcher MOS = new ManagementObjectSearcher("Select * From Win32_DiskDrive");
-                foreach (ManagementObject item in MOS.Get())
-                {
-                    if (item == null) continue;
-                    foreach (var a in item.Properties)
-                    {
-                        if (a == null || a.Name == null || a.Value == null) continue;
-                        val += a.Name + ":" + a.Value.ToString() + "|";
-                    }
+        //private static string? GetTest()
+        //{
+        //    try
+        //    {
+        //        var val = "";
+        //        ManagementObjectSearcher MOS = new ManagementObjectSearcher("Select * From Win32_DiskDrive");
+        //        foreach (ManagementObject item in MOS.Get())
+        //        {
+        //            if (item == null) continue;
+        //            foreach (var a in item.Properties)
+        //            {
+        //                if (a == null || a.Name == null || a.Value == null) continue;
+        //                val += a.Name + ":" + a.Value.ToString() + "|";
+        //            }
 
-                    return val.Substring(0, val.Length - 1);
-                }
-            }
-            catch
-            {
-            }
-            return null;
+        //            return val.Substring(0, val.Length - 1);
+        //        }
+        //    }
+        //    catch
+        //    {
+        //    }
+        //    return null;
 
-        }
+        //}
 
 
 

@@ -6,10 +6,9 @@ namespace EasMe.Models.LogModels
     {
         public DateTime Date { get; private set; } = DateTime.Now;
         public int LogType { get; set; }
-        public string Logger { get; set; } = "EasLog";
-        public string Severity { get; set; }
-        public string? ErrorNo { get; set; }
-        public object? Message { get; set; }
+        //public string Logger { get; set; } = "EasLog";
+        public string? Severity { get; set; }
+        public object? Log { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? TraceAction { get; set; }
