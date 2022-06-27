@@ -25,36 +25,10 @@ namespace EasMe
         {
             if (Directory.Exists(filePath))
             {
-                string[] files = Directory.GetFiles(filePath);
-                string[] subdirs = Directory.GetDirectories(filePath);
-                foreach (string file in files)
-                {
-                    try
-                    {
-                        File.Delete(file);
-                        if (isLoggingEnabled) EasLog.Info("File deleted: " + file);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (isLoggingEnabled) EasLog.Exception("Error deleting file => Path: " + filePath, ex);
-                    }
-
-                }
-                foreach (string subdir in subdirs)
-                {
-                    DeleteAll(subdir);
-                }
-                try
-                {
-                    Directory.Delete(filePath);
-                    if (isLoggingEnabled) EasLog.Info("Folder deleted: " + filePath);
-                }
-                catch (Exception ex)
-                {
-                    if (isLoggingEnabled) EasLog.Exception("Error deleting file => Path: " + filePath, ex);
-                }
+                Directory.Delete(filePath, true);
+                if(isLoggingEnabled) EasLog.Info("Folder deleted: " + filePath); 
             }
-            else
+            else if(File.Exists(filePath))
             {
                 try
                 {
@@ -67,72 +41,138 @@ namespace EasMe
                 }
 
             }
+            else
+            {
+                throw new EasException("File or folder does not exist => Path: " + filePath);
+            }
 
 
             
         }
-        public static void MoveAll(string sourceFolder, string destFolder,bool overwrite, bool isLoggingEnabled = true)
+
+        /// <summary>
+        /// Moves all files to destination folder path. If source path is folder moves all files and sub folders inside, if its file it will move file with exact name. Parallel ForEach enabled.
+        /// </summary>
+        /// <param name="sourcePath"></param>
+        /// <param name="destPath"></param>
+        /// <param name="overwrite"></param>
+        /// <param name="isLoggingEnabled"></param>
+        public static void MoveAll(string sourcePath, string destPath,bool overwrite, bool isLoggingEnabled = true)
         {
-            try
+
+            if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
+            if (Directory.Exists(sourcePath))
             {
-
-                DirectoryInfo dirInfo = new DirectoryInfo(destFolder);
-                if (!dirInfo.Exists)
-                    Directory.CreateDirectory(destFolder);
-
-                List<string> Files = Directory.GetFiles(sourceFolder, "*.*", SearchOption.AllDirectories).ToList();
-
-                foreach (string file in Files)
+                string[] files = Directory.GetFiles(sourcePath);
+                string[] subdirs = Directory.GetDirectories(sourcePath);
+                Parallel.ForEach(files, file =>
                 {
-                    FileInfo mFile = new(file);
                     try
                     {
-                        mFile.MoveTo(dirInfo + "\\" + mFile.Name, overwrite);
+                        File.Move(file, destPath + "\\" + Path.GetFileName(file), true);
                         if (isLoggingEnabled) EasLog.Info("File moved: " + file);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        if (isLoggingEnabled) EasLog.Error("Overwrite not true, Error copying file => Source: " + sourceFolder + " Destination: " + destFolder);
+                        if (isLoggingEnabled) EasLog.Exception("Error while moving file => Path: " + file, ex);
                     }
-                }
-            }
-            catch (Exception ex)
-            {
+                });
+                Parallel.ForEach(subdirs, subdir =>
+                {
+                    try
+                    {
+                        MoveAll(subdir, destPath + "\\" + Path.GetFileName(subdir), overwrite, isLoggingEnabled);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (isLoggingEnabled) EasLog.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                    }
 
-                if (isLoggingEnabled) EasLog.Exception(Error.FAILED_TO_MOVE, ex);
+                });
+                
+            }
+            else if(File.Exists(sourcePath))
+            {
+                try
+                {
+                    File.Move(sourcePath,destPath + "\\" + Path.GetFileName(sourcePath), true);
+                    if (isLoggingEnabled) EasLog.Info("File moved => Source:" + sourcePath + " Destination: " + destPath);
+                }
+                catch (Exception ex)
+                {
+                    if (isLoggingEnabled) EasLog.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                }
+
+            }
+            else
+            {
+                throw new EasException("Given source path not exist.");
+                //if (isLoggingEnabled) EasLog.Error("Error while moving file. File or Directory not exist => Source:" + sourcePath + " Destination: " + destPath);
             }
         }
 
-        public static void CopyAll(string sourceFolder, string destFolder, bool overwrite, bool isLoggingEnabled = true)
+        /// <summary>
+        /// Moves all files to destination folder path. If source path is folder moves all files and sub folders inside, if its file it will move file with exact name. Parallel ForEach enabled.
+        /// </summary>
+        /// <param name="sourcePath"></param>
+        /// <param name="destPath"></param>
+        /// <param name="overwrite"></param>
+        /// <param name="isLoggingEnabled"></param>
+        public static void CopyAll(string sourcePath, string destPath, bool overwrite, bool isLoggingEnabled = true)
         {
-            try
+
+            if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
+            if (Directory.Exists(sourcePath))
             {
-
-                DirectoryInfo dirInfo = new DirectoryInfo(destFolder);
-                if (!dirInfo.Exists)
-                    Directory.CreateDirectory(destFolder);
-
-                List<string> Files = Directory.GetFiles(sourceFolder, "*.*", SearchOption.AllDirectories).ToList();
-
-                foreach (string file in Files)
+                string[] files = Directory.GetFiles(sourcePath);
+                string[] subdirs = Directory.GetDirectories(sourcePath);
+                Parallel.ForEach(files, file =>
                 {
-                    FileInfo mFile = new(file);
                     try
                     {
-                        mFile.CopyTo(dirInfo + "\\" + mFile.Name, overwrite);
+                        File.Copy(file, destPath + "\\" + Path.GetFileName(file), true);
                         if (isLoggingEnabled) EasLog.Info("File copied: " + file);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        if (isLoggingEnabled) EasLog.Error("Overwrite not true, Error copying file => Source: " + sourceFolder + " Destination: " + destFolder + file);
+                        if (isLoggingEnabled) EasLog.Exception("Error while copying file => Path: " + file, ex);
                     }
-                }
+                });
+                Parallel.ForEach(subdirs, subdir =>
+                {
+                    try
+                    {
+                        CopyAll(subdir, destPath + "\\" + Path.GetFileName(subdir), overwrite, isLoggingEnabled);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (isLoggingEnabled) EasLog.Exception("Error while copying file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                    }
+
+                });
+
             }
-            catch (Exception ex)
+            else if (File.Exists(sourcePath))
             {
-                if (isLoggingEnabled) EasLog.Exception("Error copying file => Source: " + sourceFolder + " Destination: " + destFolder, ex);
+                try
+                {
+                    File.Copy(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
+                    if (isLoggingEnabled) EasLog.Info("File moved => Source: " + sourcePath + " Destination: " + destPath);
+                }
+                catch (Exception ex)
+                {
+                    if (isLoggingEnabled) EasLog.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                }
+
             }
-        }        
+            else
+            {
+                throw new EasException("Given source path not exist.");
+                
+            }
+        }
+        
+        
     }
 
 }
