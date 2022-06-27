@@ -43,7 +43,7 @@ namespace EasMe
             }
             else
             {
-                throw new EasException("File or folder does not exist => Path: " + filePath);
+                throw new EasException("Error in DeleteAll: Given File or folder does not exist => Path: " + filePath);
             }
 
 
@@ -106,7 +106,7 @@ namespace EasMe
             }
             else
             {
-                throw new EasException("Given source path not exist.");
+                throw new EasException("Error in MoveAll: Given source path not exist.");
                 //if (isLoggingEnabled) EasLog.Error("Error while moving file. File or Directory not exist => Source:" + sourcePath + " Destination: " + destPath);
             }
         }
@@ -157,17 +157,17 @@ namespace EasMe
                 try
                 {
                     File.Copy(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
-                    if (isLoggingEnabled) EasLog.Info("File moved => Source: " + sourcePath + " Destination: " + destPath);
+                    if (isLoggingEnabled) EasLog.Info("File copying => Source: " + sourcePath + " Destination: " + destPath);
                 }
                 catch (Exception ex)
                 {
-                    if (isLoggingEnabled) EasLog.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                    if (isLoggingEnabled) EasLog.Exception("Error while copying file => Source:" + sourcePath + " Destination: " + destPath, ex);
                 }
 
             }
             else
             {
-                throw new EasException("Given source path not exist.");
+                throw new EasException("Error in CopyAll: Given source path not exist.");
                 
             }
         }
