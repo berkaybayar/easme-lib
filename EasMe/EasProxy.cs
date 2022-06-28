@@ -39,7 +39,7 @@ namespace EasMe
 
 
         /// <summary>
-        /// Gets header values by HttpRequest
+        /// Gets header values by HttpRequest.
         /// </summary>
         /// <param name="httpRequest"></param>
         /// <returns></returns>
@@ -111,19 +111,19 @@ namespace EasMe
         {
             throw new NotImplementedException();
             //NOT IMPLEMENTED
-            var model = new GeoLocationModel();
-            Geolocator geolocator = new Geolocator();
-            //geolocator.DesiredAccuracy = Windows.Devices.Geolocation.PositionAccuracy.High;
-            geolocator.DesiredAccuracyInMeters = accuracyInMeters;
-            try
-            {
-                Geoposition geoposition = (Geoposition)geolocator.GetGeopositionAsync(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1));
-                model.Latitude = geoposition.Coordinate.Latitude;
-                model.Longitude = geoposition.Coordinate.Longitude;
-                model.Accuracy = geoposition.Coordinate.Accuracy;
-            }
-            catch { }
-            return model;
+            //var model = new GeoLocationModel();
+            //Geolocator geolocator = new Geolocator();
+            ////geolocator.DesiredAccuracy = Windows.Devices.Geolocation.PositionAccuracy.High;
+            //geolocator.DesiredAccuracyInMeters = accuracyInMeters;
+            //try
+            //{
+            //    Geoposition geoposition = (Geoposition)geolocator.GetGeopositionAsync(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1));
+            //    model.Latitude = geoposition.Coordinate.Latitude;
+            //    model.Longitude = geoposition.Coordinate.Longitude;
+            //    model.Accuracy = geoposition.Coordinate.Accuracy;
+            //}
+            //catch { }
+            //return model;
         }
     }
 }

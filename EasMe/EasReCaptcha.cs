@@ -33,7 +33,13 @@ namespace EasMe
         var Captcha = _recaptcha.Validate(Secret, CaptchaResponse);
         */
 
-
+        /// <summary>
+        /// Validates given CaptchtaResponse from Google by SecretKey.
+        /// </summary>
+        /// <param name="Secret"></param>
+        /// <param name="CaptchaResponse"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
         public static CaptchaResponseModel Validate(string Secret, string CaptchaResponse)
         {
 

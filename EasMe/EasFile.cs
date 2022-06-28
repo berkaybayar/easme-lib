@@ -51,7 +51,7 @@ namespace EasMe
         }
 
         /// <summary>
-        /// Moves all files to destination folder path. If source path is folder moves all files and sub folders inside, if its file it will move file with exact name. Parallel ForEach enabled.
+        /// Moves all files to destination folder path. If source path is folder moves all files and sub folders inside not the actual folder.
         /// </summary>
         /// <param name="sourcePath"></param>
         /// <param name="destPath"></param>
@@ -112,7 +112,7 @@ namespace EasMe
         }
 
         /// <summary>
-        /// Moves all files to destination folder path. If source path is folder moves all files and sub folders inside, if its file it will move file with exact name. Parallel ForEach enabled.
+        /// Moves all file(s) to destination folder path. If source path is folder moves all files and sub folders inside not the actual folder.
         /// </summary>
         /// <param name="sourcePath"></param>
         /// <param name="destPath"></param>

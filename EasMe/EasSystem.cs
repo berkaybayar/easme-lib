@@ -57,53 +57,44 @@ namespace EasMe
             return result;
 
         }
-        private static string GetIdentifier(string wmiClass, string wmiProperty, string wmiMustBeTrue)
-        {
-            string? result = "";
+        //private static string GetIdentifier(string wmiClass, string wmiProperty, string wmiMustBeTrue)
+        //{
+        //    string? result = "";
 
-            try
-            {
-                ManagementClass mc =
-            new ManagementClass(wmiClass);
-                ManagementObjectCollection moc = mc.GetInstances();
-                foreach (ManagementObject mo in moc)
-                {
-                    if (mo[wmiMustBeTrue].ToString() == "True")
-                    {
-                        //Only get the first one
-                        if (!string.IsNullOrEmpty(result))
-                        {
-                            try
-                            {
-                                var prop = mo[wmiProperty];
-                                if (prop != null)
-                                    result = prop.ToString();
-                                break;
-                            }
-                            catch
-                            {
-                            }
-                        }
-                    }
-                }
-            }
-            catch
-            {
-            }
-            if (string.IsNullOrEmpty(result)) return "Unknown";
-            return result;
-
-        }
-        //private ManagementObject? GetManagementObj(string className, string searchCol = "*")
-        //{            
-        //    foreach (var item )
+        //    try
         //    {
-        //        if (obj == null)
-        //            continue;
-        //        return obj;
+        //        ManagementClass mc =
+        //    new ManagementClass(wmiClass);
+        //        ManagementObjectCollection moc = mc.GetInstances();
+        //        foreach (ManagementObject mo in moc)
+        //        {
+        //            if (mo[wmiMustBeTrue].ToString() == "True")
+        //            {
+        //                //Only get the first one
+        //                if (!string.IsNullOrEmpty(result))
+        //                {
+        //                    try
+        //                    {
+        //                        var prop = mo[wmiProperty];
+        //                        if (prop != null)
+        //                            result = prop.ToString();
+        //                        break;
+        //                    }
+        //                    catch
+        //                    {
+        //                    }
+        //                }
+        //            }
+        //        }
         //    }
-        //    return null;
+        //    catch
+        //    {
+        //    }
+        //    if (string.IsNullOrEmpty(result)) return "Unknown";
+        //    return result;
+
         //}
+
         private static List<ManagementObject> GetManagementObjList(string className, string searchCol = "*")
         {
             var list = new List<ManagementObject>();
@@ -118,6 +109,10 @@ namespace EasMe
         }
         #endregion
 
+        /// <summary>
+        /// Returns this computers MAC Address.
+        /// </summary>
+        /// <returns></returns>
         public static string GetMACAddress()
         {
             try
@@ -136,6 +131,12 @@ namespace EasMe
             return "NOT_FOUND";
 
         }
+        
+        /// <summary>
+        /// Returns this computers Ram information as a list of RamModel object.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
         public static List<RamModel> GetRamList()
         {
             try
@@ -177,6 +178,12 @@ namespace EasMe
             }
             
         }
+        
+        /// <summary>
+        /// Returns this computers Motherboard information as a MotherboardModel object.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
         public static MotherboardModel GetMotherboard()
         {
             var motherboardModel = new MotherboardModel();
@@ -210,6 +217,12 @@ namespace EasMe
 
 
         }
+        
+        /// <summary>
+        /// Returns this computers Processor information as a CPUModel object.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
         public static CPUModel GetProcessor()
         {
             var CPUModel = new CPUModel();
@@ -269,6 +282,12 @@ namespace EasMe
 
 
         }
+        
+        /// <summary>
+        /// Returns this computers Disk information as a list of DiskModel objects.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
         public static List<DiskModel> GetDiskList()
         {
             var list = new List<DiskModel>();
@@ -317,6 +336,13 @@ namespace EasMe
             return list;
 
         }
+        
+        
+        /// <summary>
+        /// Returns this computers GPU information as a list of GPUModel objects.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
         public static List<GPUModel> GetGPUList()
         {
             var list = new List<GPUModel>();
@@ -371,6 +397,12 @@ namespace EasMe
             }
             return list;
         }
+
+        /// <summary>
+        /// Returns this computers BIOS information as a BIOSModel object.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
         public static BIOSModel GetBIOS()
         {
             var model = new BIOSModel();
@@ -406,6 +438,8 @@ namespace EasMe
             }
             return model;
         }
+        
+
         public static string GetMotherboardSerial()
         {
             try
@@ -459,24 +493,24 @@ namespace EasMe
             return TimeZoneInfo.Local.StandardName;
 
         }
+    
         public static string GetOSVersion()
         {
             return Environment.OSVersion.ToString();
         }
+
         public static string GetMachineName()
         {
             return Environment.MachineName.ToString();
 
         }
+  
         public static string GetThreadId()
         {
             return Environment.CurrentManagedThreadId.ToString();
         }
 
-        /// <summary>
-        ///     Gets this device remote IP Address.
-        /// </summary>
-        /// <returns></returns>
+
         public static string GetRemoteIPAddress()
         {
             try
@@ -487,10 +521,17 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetRemoteIPAddress", ex);
+                return "NotFound";
+                //throw new EasException("GetRemoteIPAddress", ex);
             }
         }
-
+        /// <summary>
+        /// Gets MachineGUID assigned by Windows.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        /// <exception cref="IndexOutOfRangeException"></exception>
+        /// <exception cref="EasException"></exception>
         private static string GetMachineGuid()
         {
             try
@@ -515,7 +556,7 @@ namespace EasMe
         }
 
         /// <summary>
-        /// Get Disk UUID from Win32_ComputerSystemProduct
+        /// Returns Disk UUID from Win32_ComputerSystemProduct
         /// </summary>
         /// <returns></returns>
         private static string GetDiskUUID()
@@ -534,7 +575,7 @@ namespace EasMe
             return result.TrimAbsolute();
         }
         /// <summary>
-        /// Gets 6 Hardware Ids first two is reliable for general usage.
+        /// Returns List of Hardware Ids, first two is reliable for general usage.
         /// </summary>
         /// <returns></returns>
         private static List<string> GetHardwareIds()
@@ -554,7 +595,7 @@ namespace EasMe
             return list;
         }
         /// <summary>
-        /// Gets 6 Hardware SHA256Hashed Ids first two is reliable for general usage.
+        /// Returns list of Hardware Ids MD5Hashed Ids first two is reliable for general usage.
         /// </summary>
         /// <returns></returns>
         private static List<string> GetHashedHardwareIds()
@@ -570,6 +611,11 @@ namespace EasMe
             return newList;
         }
 
+        /// <summary>
+        /// Returns this computers Hardware Model.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
         public static HWIDModel GetHardwareModel()
         {
             try
@@ -662,7 +708,7 @@ namespace EasMe
         //}
 
 
-
+        /*
         /// <summary>
         /// Generates a Guid based on the current computer hardware
         /// Example: C384B159-8E36-6C85-8ED8-6897486500FF
@@ -676,7 +722,7 @@ namespace EasMe
             var lMac = GetMac();
             var lConcatStr = $"CPU:{lCpuId}|BIOS:{lBiodId}|Mainboard:{lMainboard}|GPU:{lGpuId}|MAC:{lMac}";
             return Hash(lConcatStr);
-            string Hash(string s)
+            static string Hash(string s)
             {
                 try
                 {
@@ -691,7 +737,7 @@ namespace EasMe
             }
         }
 
-
+        
         #region Original Device ID Getting Code
 
         //Return a hardware identifier
@@ -769,7 +815,7 @@ namespace EasMe
         }
 
         #endregion
-
+        */
 
     }
 }

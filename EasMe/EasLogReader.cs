@@ -14,10 +14,11 @@ namespace EasMe
         {
             if (string.IsNullOrEmpty(LogFilePath)) throw new EasException(Error.NOT_LOADED, "Log file path not loaded.");
         }
+        
         public static void Load(string logFilePath)
         {
             LogFilePath = logFilePath;
-            if (!File.Exists(LogFilePath)) throw new EasException(Error.NOT_EXISTS, "Could not locate log file with given path. => Path:" + LogFilePath);
+            if (!File.Exists(LogFilePath)) throw new EasException(Error.NOT_EXISTS, "Could not locate log file with given path: " + LogFilePath);
             try
             {
                 var fileContent = File.ReadAllText(LogFilePath);
@@ -26,7 +27,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_READ, "Failed reading log file with given path => Path:" + LogFilePath, e);
+                throw new EasException(Error.FAILED_TO_READ, "Failed reading log file with given path: " + LogFilePath, e);
             }
         }
 
@@ -43,7 +44,7 @@ namespace EasMe
                 var list = new List<BaseLogModel>();
                 foreach (var line in LogFileContent)
                 {
-                    var deserialized = JsonConvert.DeserializeObject<BaseLogModel>(line);
+                    var deserialized = line.Deserialize<BaseLogModel>();
                     if (deserialized == null) throw new EasException(Error.DESERIALIZATION_ERROR);
                     list.Add(deserialized);
                 }

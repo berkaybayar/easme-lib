@@ -32,7 +32,7 @@ namespace EasMe
         }
 
         /// <summary>
-        /// Sends get request
+        /// Sends get request.
         /// </summary>
         /// <param name="URL"></param>
         /// <param name="TOKEN"></param>
@@ -60,9 +60,9 @@ namespace EasMe
                 throw new EasException(Error.FAILED_TO_SEND_GET, "Failed to get response from API.", ex);
             }
         }
-
+        
         /// <summary>
-        /// Sends post request
+        /// Sends post request.
         /// </summary>
         /// <param name="URL"></param>
         /// <param name="Data"></param>

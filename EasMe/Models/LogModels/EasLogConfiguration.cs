@@ -15,11 +15,6 @@
         public string MaxLogFileSize { get; set; } = "10-MB";
 
         /// <summary>
-        /// Whether to enable console logging, writes json logs in console as well as saving logs to a file. Default value is true.
-        /// </summary>
-        public bool ConsoleLogging { get; set; } = true;
-        
-        /// <summary>
         /// Formatting DateTime in log file name, default value is "MM.dd.yyyy". This is added after LogFileName variable.
         /// </summary>
         public string DateFormatString { get; set; } = "MM.dd.yyyy";
@@ -35,6 +30,11 @@
         public string LogFileExtension { get; set; } = ".json";
 
         /// <summary>
+        /// Whether to enable console logging, writes json logs in console as well as saving logs to a file. Default value is true.
+        /// </summary>
+        public bool ConsoleLogging { get; set; } = true;
+
+        /// <summary>
         /// Whether to log current client information to log file, default value is false. If your app running on server this should be set to false.
         /// </summary>
         public bool ClientInfoLogging { get; set; } = false;
@@ -45,9 +45,14 @@
         public bool WebInfoLogging { get; set; } = false;
         
         /// <summary>
-        /// Whether to enable debug mode for Exception Error logging. Default value is false. If set false exception logging will only write exception message to log file.
+        /// Whether to enable debug mode for Exception Error logging. Default value is false. If set false exception logging will only write exception message to log file. If set true TraceLogging also overwritten as true.
         /// </summary>
         public bool DebugMode { get; set; } = false;
+
+        /// <summary>
+        /// Whether to enable Trace logging. Default value is false. If set true, it will print which class and method log method is called from. This is useful for debugging.
+        /// </summary>
+        public bool TraceLogging { get; set; } = false;
         
         /// <summary>
         /// Whether to throw Exceptions after it has been logged. 
