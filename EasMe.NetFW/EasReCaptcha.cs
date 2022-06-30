@@ -1,6 +1,5 @@
 ﻿using EasMe.Models;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Net;
 
 
@@ -34,13 +33,19 @@ namespace EasMe
         var Captcha = _recaptcha.Validate(Secret, CaptchaResponse);
         */
 
-
-        public static CaptchaResponse Validate(string Secret, string CaptchaResponse)
+        /// <summary>
+        /// Validates given CaptchtaResponse from Google by SecretKey.
+        /// </summary>
+        /// <param name="Secret"></param>
+        /// <param name="CaptchaResponse"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        public static CaptchaResponseModel Validate(string Secret, string CaptchaResponse)
         {
 
             try
             {
-                var response = new CaptchaResponse();
+                var response = new CaptchaResponseModel();
                 var client = new WebClient();
                 var result = client.DownloadString(string.Format($"https://www.google.com/recaptcha/api/siteverify?secret={Secret}&response={CaptchaResponse}"));
                 var obj = JObject.Parse(result);
@@ -52,7 +57,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                return new CaptchaResponse { Success = false, ErrorCodes = ex.Message };
+                throw new EasException(Error.FAILED, "Could not validate reCaptcha.", ex);
             }
 
 

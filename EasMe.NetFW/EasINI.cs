@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
 
 namespace EasMe
@@ -8,10 +6,10 @@ namespace EasMe
     /// <summary>
     /// Write or read from INI file
     /// </summary>
-    public class EasINI
+    public static class EasINI
     {
 
-        private string Path;
+        private static string? Path { get; set; }
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -19,26 +17,40 @@ namespace EasMe
         [DllImport("kernel32.dll")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-
-        public EasINI(string INIFilePath)
+        /// <summary>
+        /// Loads Service.ini file by given file path.
+        /// </summary>
+        /// <param name="INIFilePath"></param>
+        /// <exception cref="EasException"></exception>
+        public static void LoadFile(string INIFilePath)
         {
+            
+            if (!File.Exists(INIFilePath)) throw new EasException(Error.NOT_EXISTS, "Given INI file path does not exist.");
             Path = INIFilePath;
         }
-
-        public EasINI()
+        /// <summary>
+        /// Loads Service.ini file in current directory.
+        /// </summary>
+        public static void LoadDefaultFile()
         {
-            Path = Directory.GetCurrentDirectory() + @"\service.ini";
+            Path = Directory.GetCurrentDirectory() + @"\service.ini";            
         }
 
+        private static void CheckLoaded()
+        {
+            if (string.IsNullOrEmpty(Path)) throw new EasException(Error.NOT_LOADED, "INI file path not loaded, Call LoadFile() or LoadDefaultFile() in your application startup.");
+            
+        }
         /// <summary>
         /// Writes a value to the INI file
         /// </summary>
         /// <param name="Section"></param>
         /// <param name="Key"></param>
         /// <param name="Value"></param>
-        public void Write(string Section, string Key, string Value)
+        public static void Write(string Section, string Key, string Value)
         {
-            WritePrivateProfileString(Section, Key, Value, this.Path);
+            CheckLoaded();
+            WritePrivateProfileString(Section, Key, Value, Path);
         }
         /// <summary>
         /// Reads a value from the INI file
@@ -46,11 +58,13 @@ namespace EasMe
         /// <param name="Section"></param>
         /// <param name="Key"></param>
         /// <returns></returns>
-        public string Read(string Section, string Key)
+        public static string? Read(string Section, string Key)
         {
-            StringBuilder buffer = new StringBuilder(255);
-            GetPrivateProfileString(Section, Key, "", buffer, 255, this.Path);
+            CheckLoaded();
+            StringBuilder buffer = new(255);
+            GetPrivateProfileString(Section, Key, "", buffer, 255, Path);
             return Convert.ToString(buffer);
+
         }
 
 

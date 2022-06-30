@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasMe", "EasMe\EasMe.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasBox", "EasBox\EasBox.csproj", "{A34014DE-E353-44E7-874F-CFD7E3F16137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasMe.NetFW", "EasMe.NetFW\EasMe.NetFW.csproj", "{6B1B24AC-6357-4C95-B625-1EAE183E3D68}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,12 +26,6 @@ Global
 		{A34014DE-E353-44E7-874F-CFD7E3F16137}.Relase|Any CPU.Build.0 = Release|Any CPU
 		{A34014DE-E353-44E7-874F-CFD7E3F16137}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A34014DE-E353-44E7-874F-CFD7E3F16137}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B1B24AC-6357-4C95-B625-1EAE183E3D68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B1B24AC-6357-4C95-B625-1EAE183E3D68}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B1B24AC-6357-4C95-B625-1EAE183E3D68}.Relase|Any CPU.ActiveCfg = Release|Any CPU
-		{6B1B24AC-6357-4C95-B625-1EAE183E3D68}.Relase|Any CPU.Build.0 = Release|Any CPU
-		{6B1B24AC-6357-4C95-B625-1EAE183E3D68}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B1B24AC-6357-4C95-B625-1EAE183E3D68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

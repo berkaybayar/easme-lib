@@ -1,5 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -9,18 +8,36 @@ namespace EasMe
     /// <summary>
     /// JWT Authentication helper, generating and reading tokens.
     /// </summary>
-    public class EasJWT
-    {
-        private static string _secretString;
-        private static byte[] _secretBytes;
-        private static string _issuer;
-        private static string _audience;
-        public EasJWT(string secret, string issuer = "", string audience = "")
+    public static class EasJWT
+    { 
+        
+        private readonly static JwtSecurityTokenHandler TokenHandler = new ();
+        private static bool ValidateIssuer { get; set; } = false;
+        private static bool ValidateAudience { get; set; } = false;
+        private static string? Issuer { get; set; }
+        private static string? Audience { get; set; }
+        private static byte[]? Secret { get; set; }
+        public static bool IsInitialized {  get;  private set; } = false;
+        
+        /// <summary>
+        /// Loads your secret key, issuer, audience. Call this method in your application startup.
+        /// </summary>
+        /// <param name="secret"></param>
+        /// <param name="issuer"></param>
+        /// <param name="audience"></param>
+        public static void Init(string secret, string? issuer = null, string? audience = null)
         {
-            _secretString = secret;
-            _secretBytes = Encoding.ASCII.GetBytes(_secretString);
-            _issuer = issuer;
-            _audience = audience;
+            Issuer = issuer;
+            Audience = audience;
+            if (!string.IsNullOrEmpty(Issuer)) ValidateIssuer = true;
+            if (!string.IsNullOrEmpty(Audience)) ValidateAudience = true;
+            Secret = Encoding.ASCII.GetBytes(secret);
+            IsInitialized = true;
+        }
+
+        private static void CheckSecret()
+        {
+            if (!IsInitialized) throw new EasException(Error.NOT_INITIALIZED, "EasJWT configuration error, not initialized.");
         }
         /// <summary>
         /// Generates a JWT token by ClaimsIdentity.
@@ -28,8 +45,9 @@ namespace EasMe
         /// <param name="claimsIdentity"></param>
         /// <param name="expireMinutes"></param>
         /// <returns></returns>
-        public string GenerateJWTToken(ClaimsIdentity claimsIdentity, int expireMinutes)
+        public static string GenerateJWTToken(ClaimsIdentity claimsIdentity, int expireMinutes)
         {
+            CheckSecret();
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -37,16 +55,17 @@ namespace EasMe
                 {
                     Subject = claimsIdentity,
                     Expires = DateTime.Now.AddMinutes(expireMinutes),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_secretBytes), SecurityAlgorithms.HmacSha256Signature),
-                    Issuer = _issuer,
-                    Audience = _audience
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
+                    Issuer = Issuer,
+                    Audience = Audience
+                    
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return tokenHandler.WriteToken(token);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new EasException(Error.FAILED_TO_CREATE, "Could not create JWT token.", ex);
             }
 
         }
@@ -58,28 +77,26 @@ namespace EasMe
         /// <param name="validateIssuer"></param>
         /// <param name="validateAudience"></param>
         /// <returns></returns>
-        public ClaimsPrincipal ValidateJWTToken(string token, bool validateIssuer = false, bool validateAudience = false)
+        public static ClaimsPrincipal? ValidateJWTToken(string token)
         {
+            CheckSecret();
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                var tokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(_secretBytes),
-                    ValidateIssuer = validateIssuer,
-                    ValidateAudience = validateAudience
+                    IssuerSigningKey = new SymmetricSecurityKey(Secret),
+                    ValidateIssuer = ValidateIssuer,
+                    ValidateAudience = ValidateAudience
+
                 };
-                var claims = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-                if (claims != null)
-                {
-                    return claims;
-                }
-                return new ClaimsPrincipal();
+                var claims = TokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+                return claims;
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw new EasException(Error.FAILED_TO_VALIDATE, "Could not validate JWT token.", ex);
             }
         }
 

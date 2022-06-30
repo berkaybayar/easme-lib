@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using EasMe.Exceptions;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace EasMe
@@ -24,7 +25,6 @@ namespace EasMe
         /// <exception cref="EasException"></exception>
         public static void LoadFile(string INIFilePath)
         {
-            
             if (!File.Exists(INIFilePath)) throw new EasException(Error.NOT_EXISTS, "Given INI file path does not exist.");
             Path = INIFilePath;
         }

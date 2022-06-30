@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 
 namespace EasMe
@@ -7,26 +6,30 @@ namespace EasMe
 
     public class EasMail
     {
-        readonly string _host;
-        readonly string _mailaddress;
-        readonly string _password;
-        readonly int _port;
-        readonly bool _isSSL;
+        private string Host { get; set; }
+        private string MailAddress { get; set; }
+        private string Password { get; set; }
+        private int Port { get; set; }
+        private bool EnableSSL { get; set; }
         /// <summary>
-        /// Mail sender helper, uses SMTP protocol.
+        /// Mail sender class, uses SMTP protocol.
         /// </summary>
         /// <param name="Host"></param>
         /// <param name="MailAddress"></param>
         /// <param name="Password"></param>
         /// <param name="Port"></param>
         /// <param name="isSSL"></param>
-        public EasMail(string Host, string MailAddress, string Password, int Port, bool isSSL = false)
+        public EasMail(string host,
+                       string mailAddress,
+                       string password,
+                       int port,
+                       bool enableSSL = false)
         {
-            _host = Host;
-            _mailaddress = MailAddress;
-            _password = Password;
-            _port = Port;
-            _isSSL = isSSL;
+            this.Host = host;
+            this.MailAddress = mailAddress;
+            this.Password = password;
+            this.Port = port;
+            this.EnableSSL = enableSSL;
 
         }
         /// <summary>
@@ -39,25 +42,29 @@ namespace EasMe
         {
             try
             {
-                var fromAddress = new MailAddress(_mailaddress);
+                var fromAddress = new MailAddress(MailAddress);
                 var toAddress = new MailAddress(SendTo);
-                var smtp = new SmtpClient
+                using var smtp = new SmtpClient
                 {
-                    Host = _host,
-                    Port = _port,
-                    EnableSsl = _isSSL,
+                    Host = Host,
+                    Port = Port,
+                    EnableSsl = EnableSSL,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, _password)
+                    Credentials = new NetworkCredential(fromAddress.Address, Password)
 
                 };
-                var message = new MailMessage(fromAddress, toAddress) { Subject = Subject, Body = Body };
+                using var message = new MailMessage(fromAddress, toAddress) { Subject = Subject, Body = Body };
                 message.IsBodyHtml = true;
                 smtp.Send(message);
 
             }
-            catch (Exception) { throw; }
-
+            catch (Exception ex) 
+            {
+                throw new EasException(Error.EMAIL_SENT_FAILED, "Failed to send email.", ex);
+            }
+            
+            
 
         }
     }

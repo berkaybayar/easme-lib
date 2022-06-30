@@ -1,4 +1,5 @@
-﻿using EasMe.Models.LogModels;
+﻿using EasMe.Exceptions;
+using EasMe.Models.LogModels;
 using System.Diagnostics;
 namespace EasMe
 {
@@ -55,7 +56,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(EasMe.Error.FAILED_TO_PARSE, "Failed to parse configuration file size.", ex);
+                throw new FailedToParseException("Failed to parse configuration file size.", ex);
             }
         }
         /// <summary>
@@ -67,7 +68,7 @@ namespace EasMe
         /// <exception cref="EasException"></exception>
         internal static ErrorLogModel ConvertExceptionToLogModel(Exception ex, bool ForceDebug = false)
         {
-            EasLog.CheckConfig();
+            if (EasLog.Configuration == null) return new ErrorLogModel();
             var model = new ErrorLogModel();
             try
             {
@@ -84,7 +85,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(EasMe.Error.FAILED_TO_CONVERT, "Failed to convert System.Exception model to Custom Exception model.", e);
+                throw new FailedToConvertException("Failed to convert System.Exception model to Custom Exception model.", e);
             }
             return model;
 

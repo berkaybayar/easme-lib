@@ -1,24 +1,26 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Text.RegularExpressions;
-
+using System.Net.Mail;
 namespace EasMe
 {
+
     public static class EasValidate
     {
-        public static bool IsValidEmail(string email)
+        /// <summary>
+        /// Returns true if given string is valid email address.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool IsValidEmail(this string str)
         {
-            var trimmedEmail = email.Trim();
+            var trimmedEmail = str.Trim();
             if (trimmedEmail.EndsWith("."))
             {
                 return false;
             }
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);
+                var addr = new MailAddress(str);
                 return addr.Address == trimmedEmail;
             }
             catch
@@ -26,47 +28,58 @@ namespace EasMe
                 return false;
             }
         }
-        public static bool IsValidIPAddress(string ipAddress, out string version)
+        /// <summary>
+        /// returns true if given string is valid IP address.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="IpAddress"></param>
+        /// <returns></returns>
+        public static bool IsValidIPAddress(this string value, out IPAddress? IpAddress)
         {
-            IPAddress address;
-            version = "";
-            if (IPAddress.TryParse(ipAddress, out address))
+            IpAddress = null;
+            if (IPAddress.TryParse(value, out IPAddress? address))
             {
-                switch (address.AddressFamily)
-                {
-                    case System.Net.Sockets.AddressFamily.InterNetwork:
-                        version = "IPv4";
-                        return true;
-                    case System.Net.Sockets.AddressFamily.InterNetworkV6:
-                        version = "IPv6";
-                        return true;
-                    default:
-                        return false;
-                }
+                IpAddress = address;
+                return true;
             }
             return false;
         }
+        /// <summary>
+        /// Return true if given string is valid IP address.
+        /// </summary>
+        /// <param name="IpAddress"></param>
+        /// <returns></returns>
+        public static bool IsValidIPAddress(this string IpAddress)
+        {
+            return IpAddress.IsValidIPAddress(out IPAddress? IpVersion);
+        }
         //It's not quite possible make %100 sure it is correct but this will do for most cases
-        public static bool isValidFilePath(string path)
+        public static bool IsValidFilePath(this string path)
         {
             bool isValid = path.IndexOfAny(Path.GetInvalidPathChars()) == -1;
             if (!isValid)
             {
                 return false;
             }
-            isValid = path.Contains(@"\");
+            isValid = path.Contains('\\');
             if (!isValid)
             {
                 return false;
             }
-            isValid = path.Contains(":");
+            isValid = path.Contains(':');
             if (!isValid)
             {
                 return false;
             }
             return true;
         }
-        public static bool IsValidMACAddress(string macAddress)
+
+        /// <summary>
+        /// Returns true if given string is valid MAC Address.
+        /// </summary>
+        /// <param name="macAddress"></param>
+        /// <returns></returns>
+        public static bool IsValidMACAddress(this string macAddress)
         {
             var MACRegex = "^[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}$";
             if (!Regex.IsMatch(macAddress, MACRegex))
@@ -75,7 +88,12 @@ namespace EasMe
             }
             return true;
         }
-        public static bool IsValidPort(string port)
+        /// <summary>
+        /// Returns true if given string is valid Port.
+        /// </summary>
+        /// <param name="port"></param>
+        /// <returns></returns>
+        public static bool IsValidPort(this string port)
         {
             var PortRegex = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
             if (!Regex.IsMatch(port, PortRegex))
@@ -84,8 +102,13 @@ namespace EasMe
             }
             return true;
         }
-
-        public static bool HasSpecialChars(string yourString, string allowedChars)
+        /// <summary>
+        /// Checks if the string contains special chars. It will allow letters and digits by default.
+        /// </summary>
+        /// <param name="yourString"></param>
+        /// <param name="allowedChars"></param>
+        /// <returns></returns>
+        public static bool HasSpecialChars(this string yourString, string allowedChars = "")
         {
             foreach (char c in yourString)
             {
@@ -93,15 +116,26 @@ namespace EasMe
                 {
                     continue;
                 }
-                if (!allowedChars.Contains(c.ToString()))
+                if (!allowedChars.Contains(c))
                 {
                     return true;
                 }
             }
             return false;
         }
-
-        public static bool IsStrongPassword(string password, string allowedChars, int minLength = 6, int maxLength = 16, int minUpperCaseCount = 1, int minLowerCaseCount = 1, int minNumberCount = 1, int minSpecialCharCount = 1)
+        /// <summary>
+        /// Checks if password matches the requirements. It will allow letters and digits by default.
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="allowedChars"></param>
+        /// <param name="minLength"></param>
+        /// <param name="maxLength"></param>
+        /// <param name="minUpperCaseCount"></param>
+        /// <param name="minLowerCaseCount"></param>
+        /// <param name="minNumberCount"></param>
+        /// <param name="minSpecialCharCount"></param>
+        /// <returns></returns>
+        public static bool IsStrongPassword(this string password, string allowedChars, int minLength = 6, int maxLength = 16, int minUpperCaseCount = 1, int minLowerCaseCount = 1, int minNumberCount = 1, int minSpecialCharCount = 1)
         {
             if (password.Length < minLength || password.Length > maxLength)
             {
@@ -131,9 +165,14 @@ namespace EasMe
             return true;
         }
 
-        public static bool IsUrlImage(string URL)
+        /// <summary>
+        /// Returns true if given URL is image.
+        /// </summary>
+        /// <param name="URL"></param>
+        /// <returns></returns>
+        public static bool IsUrlImage(this string URL)
         {
-
+            if (!URL.IsValidURL()) return false;
             var client = new HttpClient();
             var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
             if (req != null)
@@ -144,9 +183,14 @@ namespace EasMe
             }
             return false;
         }
-
-        public static bool IsUrlVideo(string URL)
+        /// <summary>
+        /// Returns true if given URL is Video.
+        /// </summary>
+        /// <param name="URL"></param>
+        /// <returns></returns>
+        public static bool IsUrlVideo(this string URL)
         {
+            if (!URL.IsValidURL()) return false;
             var client = new HttpClient();
             var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
             if (req != null)
@@ -158,10 +202,16 @@ namespace EasMe
             }
             return false;
         }
-
-        public static bool IsURL(string url)
+        /// <summary>
+        /// Returns true if given string is valid URL.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static bool IsValidURL(this string url)
         {
             return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }
+        
+       
     }
 }

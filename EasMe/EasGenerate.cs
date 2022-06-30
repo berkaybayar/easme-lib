@@ -1,4 +1,5 @@
-﻿namespace EasMe
+﻿using EasMe.Exceptions;
+namespace EasMe
 {
     public static class EasGenerate
     {
@@ -11,7 +12,7 @@
         /// <returns></returns>
         static string GenerateString(string chars, int length)
         {
-            if (length > 1024) throw new EasException(Error.TOO_BIG_VALUE, "Give length to create random string is too big. Max allowed length value is 1024.");
+            if (length > 1024) throw new TooBigValueException("Give length to create random string is too big. Max allowed length value is 1024.");
             var random = new Random();
             string resultToken = new(
                Enumerable.Repeat(chars, length)

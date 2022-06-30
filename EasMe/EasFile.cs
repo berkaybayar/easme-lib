@@ -1,4 +1,5 @@
-﻿using EasMe.Models.LogModels;
+﻿using EasMe.Exceptions;
+using EasMe.Models.LogModels;
 
 namespace EasMe
 {
@@ -43,7 +44,7 @@ namespace EasMe
             }
             else
             {
-                throw new EasException("Error in DeleteAll: Given File or folder does not exist => Path: " + filePath);
+                throw new NotExistException("Error in DeleteAll: Given File or folder does not exist => Path: " + filePath);
             }
 
 
@@ -106,7 +107,7 @@ namespace EasMe
             }
             else
             {
-                throw new EasException("Error in MoveAll: Given source path not exist.");
+                throw new NotExistException("Error in MoveAll: Given source path not exist.");
                 //if (isLoggingEnabled) EasLog.Error("Error while moving file. File or Directory not exist => Source:" + sourcePath + " Destination: " + destPath);
             }
         }
@@ -167,7 +168,7 @@ namespace EasMe
             }
             else
             {
-                throw new EasException("Error in CopyAll: Given source path not exist.");
+                throw new NotExistException("Error in CopyAll: Given source path not exist.");
                 
             }
         }

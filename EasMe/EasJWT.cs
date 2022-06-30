@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+using EasMe.Exceptions;
 namespace EasMe
 {
     /// <summary>
@@ -37,7 +37,7 @@ namespace EasMe
 
         private static void CheckSecret()
         {
-            if (!IsInitialized) throw new EasException(Error.NOT_INITIALIZED, "EasJWT configuration error, not initialized.");
+            if (!IsInitialized) throw new NotInitializedException("EasJWT configuration error, not initialized. Call EasJWT.Init() in your application startup.");
         }
         /// <summary>
         /// Generates a JWT token by ClaimsIdentity.
@@ -65,7 +65,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED_TO_CREATE, "Could not create JWT token.", ex);
+                throw new FailedToCreateException("Could not create JWT token.", ex);
             }
 
         }
@@ -96,7 +96,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED_TO_VALIDATE, "Could not validate JWT token.", ex);
+                throw new FailedToValidateException("Could not validate JWT token.", ex);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
+using EasMe.Exceptions;
 namespace EasMe
 {
 
@@ -14,16 +15,14 @@ namespace EasMe
         public static bool IsValidEmail(this string str)
         {
             var trimmedEmail = str.Trim();
-            if (trimmedEmail.EndsWith("."))
-            {
+            if (trimmedEmail.EndsWith(".")) 
                 return false;
-            }
             try
             {
                 var addr = new MailAddress(str);
                 return addr.Address == trimmedEmail;
             }
-            catch
+            catch 
             {
                 return false;
             }
@@ -57,20 +56,11 @@ namespace EasMe
         public static bool IsValidFilePath(this string path)
         {
             bool isValid = path.IndexOfAny(Path.GetInvalidPathChars()) == -1;
-            if (!isValid)
-            {
+            if (!isValid) return false;
+            if (!path.Contains('\\')) 
                 return false;
-            }
-            isValid = path.Contains('\\');
-            if (!isValid)
-            {
+            if (!path.Contains(':')) 
                 return false;
-            }
-            isValid = path.Contains(':');
-            if (!isValid)
-            {
-                return false;
-            }
             return true;
         }
 
@@ -82,10 +72,8 @@ namespace EasMe
         public static bool IsValidMACAddress(this string macAddress)
         {
             var MACRegex = "^[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}$";
-            if (!Regex.IsMatch(macAddress, MACRegex))
-            {
+            if (!Regex.IsMatch(macAddress, MACRegex)) 
                 return false;
-            }
             return true;
         }
         /// <summary>
@@ -96,10 +84,8 @@ namespace EasMe
         public static bool IsValidPort(this string port)
         {
             var PortRegex = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
-            if (!Regex.IsMatch(port, PortRegex))
-            {
+            if (!Regex.IsMatch(port, PortRegex)) 
                 return false;
-            }
             return true;
         }
         /// <summary>
@@ -112,14 +98,10 @@ namespace EasMe
         {
             foreach (char c in yourString)
             {
-                if (char.IsLetterOrDigit(c))
-                {
+                if (char.IsLetterOrDigit(c)) 
                     continue;
-                }
-                if (!allowedChars.Contains(c))
-                {
+                if (!allowedChars.Contains(c)) 
                     return true;
-                }
             }
             return false;
         }
@@ -137,31 +119,18 @@ namespace EasMe
         /// <returns></returns>
         public static bool IsStrongPassword(this string password, string allowedChars, int minLength = 6, int maxLength = 16, int minUpperCaseCount = 1, int minLowerCaseCount = 1, int minNumberCount = 1, int minSpecialCharCount = 1)
         {
-            if (password.Length < minLength || password.Length > maxLength)
-            {
+            if (password.Length < minLength || password.Length > maxLength) 
                 return false;
-            }
-            if (HasSpecialChars(password, allowedChars))
-            {
+            if (HasSpecialChars(password, allowedChars)) 
                 return false;
-            }
-            if (password.Count(char.IsUpper) < minUpperCaseCount)
-            {
+            if (password.Count(char.IsUpper) < minUpperCaseCount) 
                 return false;
-            }
-            if (password.Count(char.IsLower) < minLowerCaseCount)
-            {
+            if (password.Count(char.IsLower) < minLowerCaseCount) 
                 return false;
-            }
-            if (password.Count(char.IsNumber) < minNumberCount)
-            {
+            if (password.Count(char.IsNumber) < minNumberCount) 
                 return false;
-            }
-            if ((password.Length - password.Count(char.IsLetterOrDigit)) < minSpecialCharCount)
-            {
+            if ((password.Length - password.Count(char.IsLetterOrDigit)) < minSpecialCharCount) 
                 return false;
-            }
-
             return true;
         }
 
@@ -172,16 +141,21 @@ namespace EasMe
         /// <returns></returns>
         public static bool IsUrlImage(this string URL)
         {
-            if (!URL.IsValidURL()) return false;
-            var client = new HttpClient();
-            var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
-            if (req != null)
-                return req.ToString().ToLower().StartsWith("image/");
-            if (URL.Contains(".jpg") || URL.Contains(".png") || URL.Contains(".gif") || URL.Contains(".jpeg"))
+            try
             {
-                return true;
+                if (!URL.IsValidURL()) return false;
+                var client = new HttpClient();
+                var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
+                if (req != null)
+                    return req.ToString().ToLower().StartsWith("image/");
+                if (URL.Contains(".jpg") || URL.Contains(".png") || URL.Contains(".gif") || URL.Contains(".jpeg")) 
+                    return true;
+                return false;
             }
-            return false;
+            catch(Exception ex)
+            {
+                throw new FailedToCheck("Failed to check if URL is image: " + URL, ex);
+            }
         }
         /// <summary>
         /// Returns true if given URL is Video.
@@ -190,17 +164,22 @@ namespace EasMe
         /// <returns></returns>
         public static bool IsUrlVideo(this string URL)
         {
-            if (!URL.IsValidURL()) return false;
-            var client = new HttpClient();
-            var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
-            if (req != null)
-                return req.ToString().ToLower().StartsWith("video/");
-
-            if (URL.Contains(".mp4") || URL.Contains(".avi") || URL.Contains(".mkv") || URL.Contains(".wmv") || URL.Contains(".flv") || URL.Contains(".mov") || URL.Contains(".mpeg") || URL.Contains(".mpg") || URL.Contains(".webm"))
+            try
             {
-                return true;
+                if (!URL.IsValidURL()) return false;
+                var client = new HttpClient();
+                var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
+                if (req != null)
+                    return req.ToString().ToLower().StartsWith("video/");
+
+                if (URL.Contains(".mp4") || URL.Contains(".avi") || URL.Contains(".mkv") || URL.Contains(".wmv") || URL.Contains(".flv") || URL.Contains(".mov") || URL.Contains(".mpeg") || URL.Contains(".mpg") || URL.Contains(".webm"))
+                    return true;
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                throw new FailedToCheck("Failed to check if given URL is video: " + URL,ex);
+            }
         }
         /// <summary>
         /// Returns true if given string is valid URL.

@@ -1,4 +1,5 @@
-﻿using EasMe.Models.LogModels;
+﻿using EasMe.Exceptions;
+using EasMe.Models.LogModels;
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -11,40 +12,39 @@ namespace EasMe
     /// </summary>
     public static class EasLog
     {
-        internal static EasLogConfiguration? Configuration { get; set; }
-        private static int? OverSizeExt { get; set; } = 0;
+        internal static EasLogConfiguration Configuration { get; set; } = new EasLogConfiguration();
+        private static int? _OverSizeExt  = 0;
 
-        private static string ExactLogPath { get; set; } = "";
+        private static string ExactLogPath { get; set; } = GetExactLogPath();
 
+        private static bool _IsCreated = false;
+        
         /// <summary>
-        /// Initialize the EasLogConfiguration. Call this method in your application startup.
+        /// Initialize the EasLogConfiguration. Call this method in your application startup. If no config is set, it will use default config.
         /// </summary>
         /// <param name="config"></param>
-        public static void LoadConfiguration(EasLogConfiguration config)
+        public static void LoadConfig(EasLogConfiguration? config = null)
         {
-            Configuration = config;
-            ExactLogPath = Configuration.LogFolderPath + "\\" + Configuration.LogFileName + DateTime.Now.ToString(Configuration.DateFormatString) + Configuration.LogFileExtension;
+            if(_IsCreated) 
+            if (config != null)
+            {
+                Configuration = config;
+            }
+            ExactLogPath = GetExactLogPath();
+            _IsCreated = true;
             Info("EasLogConfiguration loaded. LogPath: " + Configuration.LogFolderPath);
         }
-        /// <summary>
-        /// Initialize default EasLogConfiguration. Call this method in your application startup.
-        /// </summary>
-        public static void LoadConfigurationDefault()
+        private static string GetExactLogPath()
         {
-            Configuration = new EasLogConfiguration();
-            ExactLogPath = Configuration.LogFolderPath + "\\" + Configuration.LogFileName + DateTime.Now.ToString(Configuration.DateFormatString) + Configuration.LogFileExtension;
-            Info("Default EasLogConfiguration loaded. LogPath: " + ExactLogPath);
+            return Configuration.LogFolderPath + "\\" + Configuration.LogFileName + DateTime.Now.ToString(Configuration.DateFormatString) + Configuration.LogFileExtension;
         }
 
-
-        public static void CheckConfig()
+        public static void Write(object log, string? source = null)
         {
-            if (Configuration == null) throw new EasException(EasMe.Error.NOT_LOADED, "EasLogConfiguration not loaded, call LoadConfiguration() or LoadConfigurationDefault() in your application startup.");
-            if (string.IsNullOrEmpty(ExactLogPath)) throw new EasException(EasMe.Error.NULL_REFERENCE, "EasLog configuration error, exact log file path not loaded.");
+            var model = BaseModelCreate(Severity.BASE, log, null, false, source);
+            CreateLog(model);
         }
 
-
-        
         /// <summary>
         /// Creates log with Info severity and success state.
         /// </summary>
@@ -55,10 +55,10 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static void Info(object log)
+        public static void Info(object log , string?  source = null)
         {
-            var model = BaseModelCreate(Severity.INFO, log, null);
-            Log(model);
+            var model = BaseModelCreate(Severity.INFO, log, null,false,source);
+            CreateLog(model);
         }
 
 
@@ -73,10 +73,10 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static void Error(object logMessage)
+        public static void Error(object logMessage, string? source = null)
         {
-            var model = BaseModelCreate(Severity.ERROR, logMessage, null);
-            Log(model);
+            var model = BaseModelCreate(Severity.ERROR, logMessage, null, false, source);
+            CreateLog(model);
         }
 
         /// <summary>
@@ -90,10 +90,10 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static void Error(Error err , object logMessage)
+        public static void Error(Error err , object logMessage, string? source = null)
         {
-            var model = BaseModelCreate(Severity.ERROR, err.ToString() + ": " + logMessage, null);
-            Log(model);
+            var model = BaseModelCreate(Severity.ERROR, err.ToString() + ": " + logMessage, null, false, source);
+            CreateLog(model);
         }
 
 
@@ -108,11 +108,11 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public static void Warn(object logMessage)
+        public static void Warn(object logMessage, string? source = null)
         {
             
-            var model = BaseModelCreate(Severity.WARN, logMessage, null);
-            Log(model);
+            var model = BaseModelCreate(Severity.WARN, logMessage, null, false, source);
+            CreateLog(model);
         }
 
         /// <summary>
@@ -124,10 +124,10 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public static void Exception(Exception ex)
+        public static void Exception(Exception ex, string? source = null)
         {
-            var model = BaseModelCreate(Severity.EXCEPTION, ex.Message, ex);
-            Log(model);
+            var model = BaseModelCreate(Severity.EXCEPTION, ex.Message, ex, false, source);
+            CreateLog(model);
             if (Configuration.ThrowException) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
         }
         
@@ -141,10 +141,10 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static void Exception(object logMessage, Exception ex)
+        public static void Exception(object logMessage, Exception ex, string? source = null)
         {
-            var model = BaseModelCreate(Severity.EXCEPTION, logMessage, ex);
-            Log(model);
+            var model = BaseModelCreate(Severity.EXCEPTION, logMessage, ex, false, source);
+            CreateLog(model);
             if (Configuration.ThrowException) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
         }
 
@@ -160,10 +160,10 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static void Fatal(object logMessage)
+        public static void Fatal(object logMessage, string? source = null)
         {
-            var model = BaseModelCreate(Severity.FATAL, logMessage, null);
-            Log(model);
+            var model = BaseModelCreate(Severity.FATAL, logMessage, null, false, source);
+            CreateLog(model);
         }
         /// <summary>
         /// Creates log with Fatal severity.
@@ -175,12 +175,13 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public static void Fatal(object logMessage, Exception ex)
+        public static void Fatal(object logMessage, Exception ex, string? source = null)
         {
-            var model = BaseModelCreate(Severity.FATAL, logMessage, ex);
-            Log(model);
+            var model = BaseModelCreate(Severity.FATAL, logMessage, ex, false, source);
+            CreateLog(model);
             if (Configuration.ThrowException) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
         }
+        
         /// <summary>
         /// Creates log with Debug severity.
         /// </summary>
@@ -191,12 +192,12 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-
-        public static void Debug(object logMessage)
+        public static void Debug(object logMessage, string? source = null)
         {
-            var model = BaseModelCreate(Severity.DEBUG, logMessage, null, true);
-            Log(model);
+            var model = BaseModelCreate(Severity.DEBUG, logMessage, null, true, source);
+            CreateLog(model);
         }
+        
         /// <summary>
         /// Creates log with Debug severity.
         /// </summary>
@@ -206,22 +207,23 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-
-        public static void Debug(string logMessage, Exception ex)
+        public static void Debug(string logMessage, Exception ex, string? source = null)
         {
-            var model = BaseModelCreate(Severity.DEBUG, logMessage, ex, true);
-            Log(model);
+            var model = BaseModelCreate(Severity.DEBUG, logMessage, ex, true,  source);
+            CreateLog(model);
 
         }
+        
         /// <summary>
         /// Creates log with given object. If its not string it will log serialized object.
         /// </summary>
         /// <param name="LogContent"></param>
         /// <param name="UseDefaultDate"></param>
         /// <returns>LogContent</returns>
-        public static void Log(object obj)
+        public static void CreateLog(object obj)
         {
-            CheckConfig();
+            if (!_IsCreated) 
+                throw new NotInitializedException("EasLog.Create() must be called before any other method.");
             string serialized;
             try
             {
@@ -235,8 +237,8 @@ namespace EasMe
                     var size = File.ReadAllBytes(ExactLogPath).Length;
                     if (size > EasLogHelper.ConvertConfigFileSize(Configuration.MaxLogFileSize))
                     {
-                        OverSizeExt++;
-                        ExactLogPath = ExactLogPath.Replace(Configuration.LogFileExtension, $"_{OverSizeExt}{Configuration.LogFileExtension}");
+                        _OverSizeExt++;
+                        ExactLogPath = ExactLogPath.Replace(Configuration.LogFileExtension, $"_{_OverSizeExt}{Configuration.LogFileExtension}");
                     }
                 }
                 File.AppendAllText(ExactLogPath, serialized + "\n");
@@ -245,7 +247,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(EasMe.Error.LOGGING_ERROR, "Exception occured while writing log to log file.", e);
+                throw new LoggingFailedException("Exception occured while writing log to log file.", e);
             }
 
         }
@@ -257,15 +259,15 @@ namespace EasMe
         /// <param name="logMessage"></param>
         /// <param name="ErrorNo"></param>
         /// <returns>EasMe.Models.BaseLogModel</returns>
-        private static BaseLogModel BaseModelCreate(Severity Severity, object Log, Exception? Exception = null, bool ForceDebug = false)
+        private static BaseLogModel BaseModelCreate(Severity Severity, object Log, Exception? Exception = null, bool ForceDebug = false, string? source = null)
         {
-            CheckConfig();
             try
             {
                 var log = new BaseLogModel();
                 log.Severity = Severity.ToString();
                 log.Log = Log;
                 log.LogType = (int)LogType.BASE;
+                log.LogSource = source;
                 if (Configuration.DebugMode || ForceDebug || Configuration.TraceLogging)
                 {
                     log.TraceAction = EasLogHelper.GetActionName();
@@ -290,8 +292,8 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(EasMe.Error.FAILED_TO_CREATE, "Base Log Model creation failed.", e);
-            };
+                throw new FailedToCreateException("Base Log Model creation failed.", e);
+            }
         }
         /// <summary>
         /// Converts given parameters to WebLogModel.
@@ -323,7 +325,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(EasMe.Error.FAILED_TO_CREATE, "Web Log Model creation failed.", e);
+                throw new FailedToCreateException("Web Log Model creation failed.", e);
             }
             
         }

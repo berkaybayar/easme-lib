@@ -1,4 +1,5 @@
 ﻿using EasMe.Models;
+using EasMe.Exceptions;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -25,7 +26,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED_TO_PARSE, "Failed to parse from Json response.", ex);
+                throw new FailedToParseException("Failed to parse from Json response.", ex);
             }
 
 
@@ -57,7 +58,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED_TO_SEND_GET, "Failed to get response from API.", ex);
+                throw new ApiSendFailedToGetException("Failed to get response from API.", ex);
             }
         }
         
@@ -88,7 +89,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_POST, "Failed to post response to API.", e);
+                throw new ApiSendFailedToPostException("Failed to post response to API.", e);
             }
 
         }
@@ -108,7 +109,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_GET, "Failed to get response from API.", e);
+                throw new ApiSendFailedToSendException("Failed to get response from API.", e);
             }
         }
 
@@ -127,7 +128,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_POST, "Failed to post json to API.", e);
+                throw new ApiSendFailedToPostException("Failed to post json to API.", e);
             }
         }
         public static HttpResponseMessage SendPostRequest(string URL, HttpContent Content, string? TOKEN = null)
@@ -144,7 +145,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_POST, "Failed to post request to API.", e);
+                throw new ApiSendFailedToPostException( "Failed to post request to API.", e);
             }
         }
         public static HttpResponseMessage SendDeleteRequest(string URL, string? TOKEN = null)
@@ -160,7 +161,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_DELETE, "Failed to send delete request to API.", e);
+                throw new ApiSendFailedToDeleteException( "Failed to send delete request to API.", e);
             }
         }
         public static HttpResponseMessage SendPatchRequest(string URL, HttpContent Content, string? TOKEN = null)
@@ -177,7 +178,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_PATCH, "Failed to send patch request to API.", e);
+                throw new ApiSendFailedToPatchException("Failed to send patch request to API.", e);
             }
         }
         public static HttpResponseMessage SendPutRequest(string URL, HttpContent Content, string? TOKEN = null)
@@ -194,7 +195,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_PUT, "Failed to send put request to API.", e);
+                throw new ApiSendFailedToPutException( "Failed to send put request to API.", e);
             }
         }
         public static HttpResponseMessage SendPutRequestAsJson(string URL, object Data, string? TOKEN = null)
@@ -211,7 +212,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_PUT, "Failed to send put json request to API.", e);
+                throw new ApiSendFailedToPutException("Failed to send put json request to API.", e);
             }
         }
         public static HttpResponseMessage Send(string URL, HttpRequestMessage Data, string? TOKEN = null)
@@ -227,7 +228,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_SEND_REQUEST, "Failed to send request to API.", e);
+                throw new ApiSendFailedToSendException("Failed to send request to API.", e);
             }
         }
     }

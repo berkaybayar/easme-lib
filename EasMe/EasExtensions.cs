@@ -1,14 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using EasMe.Exceptions;
 
 namespace EasMe
 {
@@ -33,15 +29,17 @@ namespace EasMe
         {
             try
             {
-                var o = new JsonSerializerOptions
-                {
-                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                };
-                return JsonSerializer.Serialize(obj, o);
+                
+                return JsonConvert.SerializeObject(obj);
+                //var o = new JsonSerializerOptions
+                //{
+                //    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                //};
+                //return JsonSerializer.Serialize(obj, o);
             }
             catch (Exception e)
             {
-                throw new EasException(EasMe.Error.SERIALIZATION_ERROR, "Exception occured while serializing object.", e);
+                throw new SerializationFailedException("Exception occured while serializing object.", e);
             }
         }
 
@@ -55,15 +53,16 @@ namespace EasMe
         {
             try
             {
-                var o = new JsonSerializerOptions
-                {
-                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                };
-                return JsonSerializer.Deserialize<T>(str, o);
+                return JsonConvert.DeserializeObject<T>(str);
+                //var o = new JsonSerializerOptions
+                //{
+                //    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                //};
+                //return JsonSerializer.Deserialize<T>(str, o);
             }
             catch (Exception e)
             {
-                throw new EasException(EasMe.Error.SERIALIZATION_ERROR, "Exception occured while serializing object.", e);
+                throw new SerializationFailedException("Exception occured while serializing object.", e);
             }
         }
 
@@ -85,7 +84,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED_TO_PARSE, "XMLMarketManager.Init error, failed to parse Xml.", ex);
+                throw new FailedToParseException( "XMLMarketManager.Init error, failed to parse Xml.", ex);
             }
         }
 
@@ -113,7 +112,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED_TO_PARSE, "XMLMarketManager.Init error, failed to parse Xml.", ex);
+                throw new FailedToParseException( "XMLMarketManager.Init error, failed to parse Xml.", ex);
             }
         }
         
@@ -125,19 +124,26 @@ namespace EasMe
         /// <returns></returns>
         public static DataTable ToDataTable<T>(this IList<T> data)
         {
-            PropertyDescriptorCollection properties =
-                TypeDescriptor.GetProperties(typeof(T));
-            DataTable table = new DataTable();
-            foreach (PropertyDescriptor prop in properties)
-                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
-            foreach (T item in data)
+            try
             {
-                DataRow row = table.NewRow();
+                PropertyDescriptorCollection properties =
+                TypeDescriptor.GetProperties(typeof(T));
+                DataTable table = new DataTable();
                 foreach (PropertyDescriptor prop in properties)
-                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
-                table.Rows.Add(row);
+                    table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+                foreach (T item in data)
+                {
+                    DataRow row = table.NewRow();
+                    foreach (PropertyDescriptor prop in properties)
+                        row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                    table.Rows.Add(row);
+                }
+                return table;
             }
-            return table;
+            catch(Exception ex)
+            {
+                throw new FailedToConvertException("Exception occured while converting list to datatable.", ex);
+            }
         }
         /// <summary>
         /// Returns false if string is null or empty. Returns true otherwise.

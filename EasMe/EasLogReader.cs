@@ -1,4 +1,5 @@
-﻿using EasMe.Models.LogModels;
+﻿using EasMe.Exceptions;
+using EasMe.Models.LogModels;
 using Newtonsoft.Json;
 
 namespace EasMe
@@ -27,7 +28,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.FAILED_TO_READ, "Failed reading log file with given path: " + LogFilePath, e);
+                throw new FailedToReadException("Failed reading log file with given path: " + LogFilePath, e);
             }
         }
 
@@ -48,12 +49,12 @@ namespace EasMe
                     if (deserialized == null) throw new EasException(Error.DESERIALIZATION_ERROR);
                     list.Add(deserialized);
                 }
-                if (list.Count == 0) throw new EasException(Error.NOT_FOUND, "Failed getting log file content as List<BaseModel>, log file does not have logs recorded.");
+                if (list.Count == 0) throw new NotFoundException( "Failed getting log file content as List<BaseModel>, log file does not have logs recorded.");
                 return list;
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.DESERIALIZATION_ERROR, ex);
+                throw new DeserializationFailedException("Failed to deserialize log file content.", ex);
             }
         }
         /// <summary>

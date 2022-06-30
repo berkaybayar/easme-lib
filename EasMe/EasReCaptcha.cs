@@ -1,4 +1,5 @@
-﻿using EasMe.Models;
+﻿using EasMe.Exceptions;
+using EasMe.Models;
 using Newtonsoft.Json.Linq;
 using System.Net;
 
@@ -57,7 +58,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED, "Could not validate reCaptcha.", ex);
+                throw new FailedToValidateException("Could not validate reCaptcha.", ex);
             }
 
 

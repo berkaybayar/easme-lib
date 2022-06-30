@@ -1,4 +1,5 @@
-﻿using EasMe.Models.SystemModels;
+﻿using EasMe.Exceptions;
+using EasMe.Models.SystemModels;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
@@ -174,7 +175,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetRamList", ex);
+                throw new FailedToReadException("GetRamList", ex);
             }
             
         }
@@ -211,7 +212,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetMotherboard", ex);
+                throw new FailedToReadException("GetMotherboard", ex);
             }
             return motherboardModel;
 
@@ -276,7 +277,7 @@ namespace EasMe
             }
             catch ( Exception ex)
             {
-                throw new EasException("GetProcessor", ex);
+                throw new FailedToReadException("GetProcessor", ex);
             }
             return CPUModel;
 
@@ -331,7 +332,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetDiskList", ex);
+                throw new FailedToReadException("GetDiskList", ex);
             }
             return list;
 
@@ -393,7 +394,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetGPUList", ex);
+                throw new FailedToReadException("GetGPUList", ex);
             }
             return list;
         }
@@ -434,7 +435,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetBIOS", ex);
+                throw new FailedToReadException("GetBIOS", ex);
             }
             return model;
         }
@@ -449,7 +450,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetMotherboardSerial", ex);
+                throw new FailedToReadException("GetMotherboardSerial", ex);
             }
         }
         public static string GetProcessorId()
@@ -461,7 +462,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetProcessorId", ex);
+                throw new FailedToReadException("GetProcessorId", ex);
             }
         }
         public static string GetDiskSerial()
@@ -473,7 +474,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetDiskSerial", ex);
+                throw new FailedToReadException("GetDiskSerial", ex);
             }
         }
         public static string GetVideoProcessorName()
@@ -485,7 +486,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetVideoProcessorName", ex);
+                throw new FailedToReadException("GetVideoProcessorName", ex);
             }
         }
         public static string GetTimezone()
@@ -521,7 +522,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                return "NotFound";
+                return "";
                 //throw new EasException("GetRemoteIPAddress", ex);
             }
         }
@@ -551,7 +552,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException("GetMachineGuid", ex);
+                throw new FailedToReadException("GetMachineGuid", ex);
             }
         }
 
@@ -668,7 +669,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new EasException(Error.FAILED, "Getting machine ids",ex);
+                throw new FailedToReadException("Getting machine ids",ex);
             }
         }
         public static string GetMachineIdHashed()

@@ -7,7 +7,7 @@ namespace EasMe.Models.LogModels
         public DateTime Date { get; private set; } = DateTime.Now;
         public int LogType { get; set; }
         //public string Logger { get; set; } = "EasLog";
-        
+        public string? LogSource { get; set; } = null; 
         public string? Severity { get; set; }
         public object? Log { get; set; }
 

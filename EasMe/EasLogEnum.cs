@@ -11,12 +11,13 @@
 
     public enum Severity
     {
-        INFO = 100,
-        WARN = 101,
-        ERROR = 102,
-        DEBUG = 103,
-        EXCEPTION = 104,
-        FATAL = 105
+        BASE = 100,
+        INFO = 101,
+        WARN = 102,
+        ERROR = 103,
+        DEBUG = 104,
+        EXCEPTION = 105,
+        FATAL = 106
     }
     public enum Error
     {
