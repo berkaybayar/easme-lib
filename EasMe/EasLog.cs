@@ -6,7 +6,7 @@ namespace EasMe
 
 
     /// <summary>
-    /// Simple logging helper with few useful options.
+    /// Simple static logging helper with useful options.
     /// </summary>
     public static class EasLog
     {
@@ -23,7 +23,7 @@ namespace EasMe
         /// <param name="config"></param>
         public static void LoadConfig(EasLogConfiguration? config = null)
         {
-            if(_IsCreated) 
+            if (_IsCreated) throw new AlreadyLoadedException("EasLog configuration is already loaded.");
             if (config != null)
             {
                 Configuration = config;
@@ -227,7 +227,7 @@ namespace EasMe
             {
                 if (obj == null) throw new EasException(EasMe.Error.NULL_REFERENCE, "Log content is null");
                 //possibly this check not needed
-                serialized = obj.Serialize();
+                serialized = obj.JsonSerialize();
                 if (!Directory.Exists(Configuration.LogFolderPath)) Directory.CreateDirectory(Configuration.LogFolderPath);
 
                 if (File.Exists(ExactLogPath))
@@ -257,24 +257,19 @@ namespace EasMe
         /// <param name="logMessage"></param>
         /// <param name="ErrorNo"></param>
         /// <returns>EasMe.Models.BaseLogModel</returns>
-        private static BaseLogModel BaseModelCreate(Severity Severity, object Log, Exception? Exception = null, bool ForceDebug = false, string? source = null)
+        private static LogModel BaseModelCreate(Severity Severity, object Log, Exception? Exception = null, bool ForceDebug = false, string? source = null)
         {
             try
             {
-                var log = new BaseLogModel();
+                var log = new LogModel();
                 log.Severity = Severity.ToString();
                 log.Log = Log;
                 log.LogType = (int)LogType.BASE;
                 log.LogSource = source;
-                if (Configuration.DebugMode || ForceDebug || Configuration.TraceLogging)
+                if (Configuration.TraceLogging || ForceDebug)
                 {
-                    log.TraceAction = EasLogHelper.GetActionName();
+                    log.TraceMethod = EasLogHelper.GetActionName();
                     log.TraceClass = EasLogHelper.GetClassName();
-                }
-                if (Configuration.ClientInfoLogging)
-                {
-                    log.ClientLog = new ClientLogModel();
-                    log.LogType = (int)LogType.CLIENT;
                 }
                 if (Configuration.WebInfoLogging)
                 {
@@ -283,14 +278,14 @@ namespace EasMe
                 }
                 if (Exception != null)
                 {
-                    log.Exception = EasLogHelper.ConvertExceptionToLogModel(Exception, ForceDebug);
+                    log.Exception = Exception;
                     log.LogType = (int)LogType.EXCEPTION;
                 }
                 return log;
             }
             catch (Exception e)
             {
-                throw new FailedToCreateException("Base Log Model creation failed.", e);
+                throw new FailedToCreateException("BaseLogModel creation failed.", e);
             }
         }
         /// <summary>
@@ -318,12 +313,12 @@ namespace EasMe
                 log.Ip = EasHttpContext.Current.Request.GetRemoteIpAddress();
                 log.HttpMethod = EasHttpContext.Current.Request.Method;
                 log.RequestUrl = EasHttpContext.Current.Request.GetRequestQuery();
-                log.Headers = EasHttpContext.Current.Request.GetHeaderValues().Serialize();
+                log.Headers = EasHttpContext.Current.Request.GetHeaderValues().JsonSerialize();
                 return log;
             }
             catch (Exception e)
             {
-                throw new FailedToCreateException("Web Log Model creation failed.", e);
+                throw new FailedToCreateException("WebLogModel creation failed.", e);
             }
             
         }

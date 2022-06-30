@@ -37,15 +37,15 @@ namespace EasMe
         /// </summary>
         /// <returns</returns>
         /// <exception cref="EasException"></exception>
-        public static List<BaseLogModel> GetLogFileContent()
+        public static List<LogModel> GetLogFileContent()
         {
             CheckLoaded();
             try
             {
-                var list = new List<BaseLogModel>();
+                var list = new List<LogModel>();
                 foreach (var line in LogFileContent)
                 {
-                    var deserialized = line.Deserialize<BaseLogModel>();
+                    var deserialized = line.JsonDeserialize<LogModel>();
                     if (deserialized == null) throw new EasException(Error.DESERIALIZATION_ERROR);
                     list.Add(deserialized);
                 }
@@ -63,7 +63,7 @@ namespace EasMe
         /// <param name="Severity"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static List<BaseLogModel> GetLogFileContent(string Severity)
+        public static List<LogModel> GetLogFileContent(string Severity)
         {
             var list = GetLogFileContent();
             return list.Where(x => x.Severity == Severity).ToList();
@@ -73,7 +73,7 @@ namespace EasMe
         /// </summary>
         /// <param name="LogType"></param>
         /// <returns></returns>
-        public static List<BaseLogModel> GetLogFileContent(int LogType)
+        public static List<LogModel> GetLogFileContent(int LogType)
         {
             var list = GetLogFileContent();
             return list.Where(x => x.LogType == LogType).ToList();
@@ -83,7 +83,7 @@ namespace EasMe
         /// </summary>
         /// <param name="TraceClass"></param>
         /// <returns></returns>
-        public static List<BaseLogModel> GetLogFileContentByTrace(string TraceClass)
+        public static List<LogModel> GetLogFileContentByTrace(string TraceClass)
         {
             var list = GetLogFileContent();
             return list.Where(x => x.TraceClass == TraceClass).ToList();
@@ -94,10 +94,10 @@ namespace EasMe
         /// <param name="TraceClass"></param>
         /// <param name="TraceAction"></param>
         /// <returns></returns>
-        public static List<BaseLogModel> GetLogFileContentByTrace(string TraceClass, string TraceAction)
+        public static List<LogModel> GetLogFileContentByTrace(string TraceClass, string TraceAction)
         {
             var list = GetLogFileContent();
-            return list.Where(x => x.TraceAction == TraceAction && x.TraceClass == TraceClass).ToList();
+            return list.Where(x => x.TraceMethod == TraceAction && x.TraceClass == TraceClass).ToList();
         }
     }
 }

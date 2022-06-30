@@ -43,7 +43,7 @@ namespace EasMe
             try
             {
                 var split = value.Split("-");
-                if (split.Length == 0) throw new EasException("Given LogFileSize is not valid.");
+                if (split.Length == 0) throw new NotValidException("Given LogFileSize is not valid.");
                 var size = Convert.ToInt32(split[0].Trim());
                 var unit = split[1].Trim().ToLower();
                 return unit switch
@@ -59,36 +59,36 @@ namespace EasMe
                 throw new FailedToParseException("Failed to parse configuration file size.", ex);
             }
         }
-        /// <summary>
-        /// Converts System.Exception model to custom Exception model.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="ForceDebug"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        internal static ErrorLogModel ConvertExceptionToLogModel(Exception ex, bool ForceDebug = false)
-        {
-            if (EasLog.Configuration == null) return new ErrorLogModel();
-            var model = new ErrorLogModel();
-            try
-            {
-                model.ExceptionMessage = ex.Message;
-                if (EasLog.Configuration.DebugMode || ForceDebug)
-                {
-                    model.ExceptionSource = ex.Source;
-                    model.ExceptionStackTrace = ex.StackTrace;
-                    var inner = ex.InnerException;
-                    if (inner != null)
-                        model.ExceptionInner = inner.ToString();
-                }
+        ///// <summary>
+        ///// Converts System.Exception model to custom Exception model.
+        ///// </summary>
+        ///// <param name="ex"></param>
+        ///// <param name="ForceDebug"></param>
+        ///// <returns></returns>
+        ///// <exception cref="EasException"></exception>
+        //internal static ErrorLogModel ConvertExceptionToLogModel(Exception ex, bool ForceDebug = false)
+        //{
+        //    if (EasLog.Configuration == null) return new ErrorLogModel();
+        //    var model = new ErrorLogModel();
+        //    try
+        //    {
+        //        model.ExceptionMessage = ex.Message;
+        //        if (EasLog.Configuration.DebugMode || ForceDebug)
+        //        {
+        //            model.ExceptionSource = ex.Source;
+        //            model.ExceptionStackTrace = ex.StackTrace;
+        //            var inner = ex.InnerException;
+        //            if (inner != null)
+        //                model.ExceptionInner = inner.ToString();
+        //        }
 
-            }
-            catch (Exception e)
-            {
-                throw new FailedToConvertException("Failed to convert System.Exception model to Custom Exception model.", e);
-            }
-            return model;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new FailedToConvertException("Failed to convert System.Exception model to Custom Exception model.", e);
+        //    }
+        //    return model;
 
-        }
+        //}
     }
 }

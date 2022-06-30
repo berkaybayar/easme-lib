@@ -5,7 +5,6 @@
         BASE = 0,
         EXCEPTION = 1,
         WEB = 2,
-        CLIENT = 3,
         
     }
 

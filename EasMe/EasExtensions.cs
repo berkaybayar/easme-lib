@@ -25,22 +25,9 @@ namespace EasMe
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static string Serialize(this object obj)
+        public static string JsonSerialize(this object obj,Formatting formatting = Formatting.None)
         {
-            try
-            {
-                
-                return JsonConvert.SerializeObject(obj);
-                //var o = new JsonSerializerOptions
-                //{
-                //    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                //};
-                //return JsonSerializer.Serialize(obj, o);
-            }
-            catch (Exception e)
-            {
-                throw new SerializationFailedException("Exception occured while serializing object.", e);
-            }
+            return JsonConvert.SerializeObject(obj, formatting);
         }
 
         /// <summary>
@@ -49,21 +36,9 @@ namespace EasMe
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static T? Deserialize<T>(this string str)
+        public static T? JsonDeserialize<T>(this string str)
         {
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(str);
-                //var o = new JsonSerializerOptions
-                //{
-                //    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                //};
-                //return JsonSerializer.Deserialize<T>(str, o);
-            }
-            catch (Exception e)
-            {
-                throw new SerializationFailedException("Exception occured while serializing object.", e);
-            }
+            return JsonConvert.DeserializeObject<T>(str);
         }
 
         /// <summary>

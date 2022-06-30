@@ -34,21 +34,12 @@
         /// </summary>
         public bool ConsoleLogging { get; set; } = true;
 
-        /// <summary>
-        /// Whether to log current client information to log file, default value is false. If your app running on server this should be set to false.
-        /// </summary>
-        public bool ClientInfoLogging { get; set; } = false;
 
         /// <summary>
         /// Whether to log incoming web request information to log file, default value is false. If your app running on server this should be set to true. Also you need to Configure EasMe.HttpContext in order to log request data.
         /// </summary>
         public bool WebInfoLogging { get; set; } = false;
         
-        /// <summary>
-        /// Whether to enable debug mode for Exception Error logging. Default value is false. If set false exception logging will only write exception message to log file. If set true TraceLogging also overwritten as true.
-        /// </summary>
-        public bool DebugMode { get; set; } = false;
-
         /// <summary>
         /// Whether to enable Trace logging. Default value is false. If set true, it will print which class and method log method is called from. This is useful for debugging.
         /// </summary>

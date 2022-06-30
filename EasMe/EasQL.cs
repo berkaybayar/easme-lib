@@ -11,6 +11,7 @@ namespace EasMe
     {
         private static string Connection { get; set; }
         
+        
         /// <summary>
         /// Executes SQL query and returns DataTable.
         /// </summary>
@@ -36,7 +37,7 @@ namespace EasMe
                 }
                 catch (Exception e)
                 {
-                    throw new EasException(Error.SQL_GET_TABLE_FAILED, "SQL Query: " + cmd.CommandText, e);
+                    throw new SqlErrorException("GetTable failed SQL Query: " + cmd.CommandText, e);
                 }
 
             }
@@ -67,7 +68,7 @@ namespace EasMe
                 }
                 catch (Exception e)
                 {
-                    throw new EasException(Error.SQL_EXEC_NONQUERY_FAILED, "SQL Query: " + cmd.CommandText, e);
+                    throw new SqlErrorException("ExecNonQuery failed SQL Query: " + cmd.CommandText, e);
 
                 }
 
@@ -98,7 +99,7 @@ namespace EasMe
                 }
                 catch (Exception e)
                 {
-                    throw new EasException(Error.SQL_EXEC_NONQUERY_FAILED, "SQL Query: " + cmd.CommandText, e);
+                    throw new SqlErrorException("ExecScalar failed SQL Query: " + cmd.CommandText, e);
 
                 }
             }
@@ -123,7 +124,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_BACKUP_DATABASE_FAILED, DatabaseName, e);
+                throw new SqlErrorException("BackupDatabase failed: "+ DatabaseName, e);
             }
         }
         /// <summary>
@@ -153,7 +154,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_SHRINK_DATABASE_FAILED, DatabaseName, e);
+                throw new SqlErrorException("ShrinkDatabase failed: " + DatabaseName, e);
             }
         }
         /// <summary>
@@ -173,7 +174,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_TRUNCATE_FAILED, TableName, e);
+                throw new SqlErrorException( "TruncateTable failed: " + TableName, e);
             }
         }
         /// <summary>
@@ -192,7 +193,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_DROP_TABLE_FAILED, TableName, e);
+                throw new SqlErrorException("DropTable failed: " + TableName, e);
             }
         }
         /// <summary>
@@ -211,7 +212,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_DROP_DATABASE_FAILED, DatabaseName, e);
+                throw new SqlErrorException("DropDatabase failed: " +  DatabaseName, e);
             }
         }
         /// <summary>
@@ -236,7 +237,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new EasException(Error.SQL_ERROR, "", e);
+                throw new SqlErrorException("GetAllTableName failed.", e);
             }
         }
 
@@ -254,7 +255,7 @@ namespace EasMe
 
         private static void CheckIfLoaded()
         {
-            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.NOT_INITIALIZED, "Can not use functions without connection string parameter if you have not used Load() function to load connection string.");
+            if (string.IsNullOrEmpty(Connection)) throw new NotInitializedException("Can not use functions without connection string parameter if you have not used LoadConnectionString() function to load connection string.");
         }
 
         /// <summary>
@@ -268,7 +269,6 @@ namespace EasMe
         public static DataTable GetTable(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.NOT_INITIALIZED, "Connection not initialized");
             return GetTable(Connection, cmd, Timeout);
         }
         /// <summary>
@@ -282,7 +282,6 @@ namespace EasMe
         public static int ExecNonQuery(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.NOT_INITIALIZED, "Connection not initialized");
             return ExecNonQuery(Connection, cmd, Timeout);
         }
 
@@ -297,7 +296,6 @@ namespace EasMe
         public static object ExecScalar(SqlCommand cmd, int Timeout = 0)
         {
             CheckIfLoaded();
-            if (string.IsNullOrEmpty(Connection)) throw new EasException(Error.NOT_INITIALIZED,"Connection not initialized");
             return ExecScalar(Connection, cmd, Timeout);
         }
 
