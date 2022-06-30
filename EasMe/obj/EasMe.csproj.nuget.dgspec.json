@@ -58,7 +58,7 @@
             },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
-              "version": "[6.19.0, )"
+              "version": "[6.20.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -74,15 +74,11 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.19.0, )"
+              "version": "[6.20.0, )"
             },
             "System.Management": {
               "target": "Package",
               "version": "[6.0.0, )"
-            },
-            "Uno.UI": {
-              "target": "Package",
-              "version": "[4.3.8, )"
             }
           },
           "imports": [

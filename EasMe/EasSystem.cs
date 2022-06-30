@@ -4,8 +4,6 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
 using System.Net.NetworkInformation;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace EasMe
 {

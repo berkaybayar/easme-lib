@@ -1,6 +1,5 @@
 ﻿using EasMe.Models;
 using Microsoft.AspNetCore.Http;
-using Windows.Devices.Geolocation;
 
 namespace EasMe
 {

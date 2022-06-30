@@ -1,7 +1,5 @@
 ﻿using EasMe.Exceptions;
 using EasMe.Models.LogModels;
-using System.Diagnostics;
-using System.Text.Json;
 
 namespace EasMe
 {
