@@ -10,13 +10,12 @@
 
     public enum Severity
     {
-        BASE = 100,
-        INFO = 101,
-        WARN = 102,
-        ERROR = 103,
-        DEBUG = 104,
-        EXCEPTION = 105,
-        FATAL = 106
+        INFO = 1,
+        WARN = 2,
+        ERROR = 3,
+        DEBUG = 4,
+        EXCEPTION = 5,
+        FATAL = 6
     }
     public enum Error
     {
@@ -113,34 +112,5 @@
 
 
     }
-    public enum LogNo
-    {
-        ErrINFO = 0,
-        ErrWARN = 1,
-        ErrERROR = 2,
-        ErrDEBUG = 3,
-        ErrEXCEPTION = 4,
-        ErrFATAL = 5,
-        ErrSUCCESS = 6,
-        ErrFAILED = 7,
-        ErrSERVICE = 9,
-        ErrSQL = 10,
-        ErrEASLOG = 11,
-        ErrSERIALIZATION = 12,
-        ErrDESERIALIZATION = 13,
-        ErrEASAPI = 14,
-        ErrEASDEL = 15,
-        ErrEASEXT = 16,
-        ErrEASGENERATE = 17,
-        ErrEASHASH = 18,
-        ErrEASINI = 19,
-        ErrEASJWT = 20,
-        ErrEASLOGREAD = 21,
-        ErrEASMAIL = 22,
-        ErrEASPROXY = 23,
-        ErrEASQL = 24,
-        ErrEASRECAPTCHA = 25,
-        ErrEASSYSTEM = 26,
-        ErrEASVALIDATE = 27,
-    }
+
 }

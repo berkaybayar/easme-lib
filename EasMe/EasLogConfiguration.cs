@@ -20,7 +20,7 @@
         public string DateFormatString { get; set; } = "MM.dd.yyyy";
 
         /// <summary>
-        /// Set log file name, default value is "Log_".
+        /// Set log file name, default value is "Log_". This will what value to write before datetime.
         /// </summary>
         public string LogFileName { get; set; } = "Log_";
 
@@ -30,9 +30,9 @@
         public string LogFileExtension { get; set; } = ".json";
 
         /// <summary>
-        /// Whether to enable console logging, writes json logs in console as well as saving logs to a file. Default value is true.
+        /// Whether to enable logging to console, writes json logs in console as well as saving logs to a file. Default value is true.
         /// </summary>
-        public bool ConsoleLogging { get; set; } = true;
+        public bool ConsoleAppender { get; set; } = true;
 
 
         /// <summary>

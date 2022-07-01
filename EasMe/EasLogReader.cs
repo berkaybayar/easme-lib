@@ -54,7 +54,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new DeserializationFailedException("Failed to deserialize log file content.", ex);
+                throw new FailedToDeserializeException("Failed to deserialize log file content.", ex);
             }
         }
         /// <summary>

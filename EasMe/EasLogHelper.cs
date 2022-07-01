@@ -59,6 +59,82 @@ namespace EasMe
                 throw new FailedToParseException("Failed to parse configuration file size.", ex);
             }
         }
+
+
+        /// <summary>
+        /// Converts given parameters to BaseLogModel.
+        /// </summary>
+        /// <param name="Severity"></param>
+        /// <param name="logMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <returns>EasMe.Models.BaseLogModel</returns>
+        internal static LogModel LogModelCreate(Severity Severity, object Log, Exception? Exception = null, bool ForceDebug = false, string? source = null)
+        {
+            if (!EasLog._IsCreated)
+                throw new NotInitializedException("EasLog.Create() must be called before any other method.");
+            try
+            {
+                
+                var log = new LogModel();
+                log.Severity = Severity.ToString();
+                log.Log = $"[{source}] {Log}";
+                log.LogType = (int)LogType.BASE;
+                if (EasLog.Configuration.TraceLogging || ForceDebug)
+                {
+                    log.TraceMethod = EasLogHelper.GetActionName();
+                    log.TraceClass = EasLogHelper.GetClassName();
+                }
+                if (EasLog.Configuration.WebInfoLogging)
+                {
+                    log.WebLog = WebModelCreate();
+                    log.LogType = (int)LogType.WEB;
+                }
+                if (Exception != null)
+                {
+                    log.Exception = Exception;
+                    log.LogType = (int)LogType.EXCEPTION;
+                }
+                return log;
+            }
+            catch (Exception e)
+            {
+                throw new FailedToCreateException("LogModel creation failed.", e);
+            }
+        }
+        /// <summary>
+        /// Converts given parameters to WebLogModel.
+        /// </summary>
+        /// <param name="Severity"></param>
+        /// <param name="logMessage"></param>
+        /// <param name="ErrorNo"></param>
+        /// <param name="ip"></param>
+        /// <param name="HttpMethod"></param>
+        /// <param name="RequestUrl"></param>
+        /// <param name="Headers"></param>
+        /// <param name="ex"></param>
+        /// <returns>EasMe.Models.WebLogModel</returns>
+        internal static WebLogModel? WebModelCreate()
+        {
+            if (EasHttpContext.Current == null)
+            {
+                return null;
+            }
+            try
+            {
+                var log = new WebLogModel();
+                log.Ip = EasHttpContext.Current.Request.GetRemoteIpAddress();
+                log.HttpMethod = EasHttpContext.Current.Request.Method;
+                log.RequestUrl = EasHttpContext.Current.Request.GetRequestQuery();
+                log.Headers = EasHttpContext.Current.Request.GetHeaderValues().JsonSerialize();
+                return log;
+            }
+            catch (Exception e)
+            {
+                throw new FailedToCreateException("WebLogModel creation failed.", e);
+            }
+
+        }
+
         ///// <summary>
         ///// Converts System.Exception model to custom Exception model.
         ///// </summary>

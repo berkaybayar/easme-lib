@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EasMe.Exceptions;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Data;
-using Newtonsoft.Json;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using EasMe.Exceptions;
 
 namespace EasMe
 {
@@ -20,12 +21,55 @@ namespace EasMe
             dbSet.RemoveRange(dbSet);
         }
         /// <summary>
+        /// Gets one of the values from Json string.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string? ParseFromJson(this string jsonStr, string key)
+        {
+            try
+            {
+                var jObj = JObject.Parse(jsonStr.ToString());
+                if (jObj == null) return null;
+                return jObj.ParseFromJson(key);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToParseException("Failed to parse from Json response.", ex);
+            }
+        }
+        /// <summary>
+        /// Gets one of the values from Json Object.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string? ParseFromJson(this JObject jObject, string key)
+        {
+            try
+            {
+                
+                var isValid = jObject.TryGetValue(key,out var value);
+                if (isValid)
+                {
+                    if (value != null) 
+                        return value.ToString();
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToParseException("Failed to parse from Json.", ex);
+            }
+        }
+        /// <summary>
         /// Serializes given object to json string. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static string JsonSerialize(this object obj,Formatting formatting = Formatting.None)
+        public static string JsonSerialize(this object obj, Formatting formatting = Formatting.None)
         {
             return JsonConvert.SerializeObject(obj, formatting);
         }
@@ -52,14 +96,14 @@ namespace EasMe
         {
             try
             {
-                StringReader reader = new(xElement.ToString());
+                StringReader reader = new(xElement.ToString().Replace("True", "true").Replace("False", "false"));
                 XmlSerializer xmlSerializer = new(typeof(T));
                 var item = (T)xmlSerializer.Deserialize(reader);
                 return item;
             }
             catch (Exception ex)
             {
-                throw new FailedToParseException( "XMLMarketManager.Init error, failed to parse Xml.", ex);
+                throw new FailedToParseException("XMLMarketManager.Init error, failed to parse Xml.", ex);
             }
         }
 
@@ -72,25 +116,18 @@ namespace EasMe
         /// <exception cref="EasException"></exception>
         public static List<T> XmlDeserialize<T>(this IEnumerable<XElement> xElements)
         {
-            try
+            var list = new List<T>();
+            foreach (var xelemet in xElements)
             {
-                var list = new List<T>();
-                foreach (var xelemet in xElements)
+                var item = xelemet.XmlDeserialize<T>();
+                if (item != null)
                 {
-                    var item = xelemet.XmlDeserialize<T>();
-                    if (item != null)
-                    {
-                        list.Add(item);
-                    }
+                    list.Add(item);
                 }
-                return list;
             }
-            catch (Exception ex)
-            {
-                throw new FailedToParseException( "XMLMarketManager.Init error, failed to parse Xml.", ex);
-            }
+            return list;
         }
-        
+
         /// <summary>
         /// Converts List of T model to DataTable
         /// </summary>
@@ -115,19 +152,21 @@ namespace EasMe
                 }
                 return table;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new FailedToConvertException("Exception occured while converting list to datatable.", ex);
             }
         }
         /// <summary>
-        /// Returns false if string is null or empty. Returns true otherwise.
+        /// Returns false if string is equalt to false or null or empty. Returns true otherwise.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
         public static bool ToBoolean(this string? value)
         {
             if (string.IsNullOrEmpty(value)) return false;
+            if (value.ToLower().Trim() == "false") return false;
+            if (value.ToLower().Trim() == "true") return true;
             return true;
         }
 
@@ -157,7 +196,7 @@ namespace EasMe
             }
             return null;
         }
-        
+
         /// <summary>
         /// Replaces every space char in given string.
         /// </summary>
