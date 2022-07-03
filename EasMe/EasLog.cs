@@ -43,6 +43,15 @@ namespace EasMe
             WriteLog(model);
         }
 
+        public static void WriteAll(Severity severity, string[] logArray, string? source = null)
+        {
+            foreach (var log in logArray)
+            {
+                var model = EasLogHelper.LogModelCreate(severity, log, null, false, source);
+                WriteLog(model);
+            }
+        }
+        
         /// <summary>
         /// Creates log with Info severity and success state.
         /// </summary>

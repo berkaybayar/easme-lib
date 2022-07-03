@@ -35,7 +35,7 @@ namespace EasMe
         /// <param name="Section"></param>
         /// <param name="Key"></param>
         /// <param name="Value"></param>
-        public static void Write(string Section, string Key, string Value)
+        public void Write(string Section, string Key, string Value)
         {
             WritePrivateProfileString(Section, Key, Value, Path);
         }
@@ -45,7 +45,7 @@ namespace EasMe
         /// <param name="Section"></param>
         /// <param name="Key"></param>
         /// <returns></returns>
-        public static string? Read(string Section, string Key)
+        public string? Read(string Section, string Key)
         {
             StringBuilder buffer = new(255);
             GetPrivateProfileString(Section, Key, "", buffer, 255, Path);

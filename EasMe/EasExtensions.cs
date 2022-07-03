@@ -6,11 +6,90 @@ using System.ComponentModel;
 using System.Data;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Data.Common;
 
 namespace EasMe
 {
     public static class EasExtensions
     {
+        private static readonly HashSet<string> _booleanValues = new HashSet<string>((IEqualityComparer<string>)StringComparer.OrdinalIgnoreCase)
+    {
+      "true",
+      "1",
+      "on",
+      "yes",
+      "y"
+    };
+
+        //public static T ConvertTo<T>(this object value) => value.ConvertTo<T>(default(T));
+
+        //public static T ConvertTo<T>(this object value, T defaultValue) => value.ConvertTo<T>(defaultValue, true);
+
+        //public static T ConvertTo<T>(this object value, T defaultValue, bool ignoreException)
+        //{
+        //    if (!ignoreException)
+        //        return value.Convert<T>(defaultValue);
+        //    try
+        //    {
+        //        return value.Convert<T>(defaultValue);
+        //    }
+        //    catch
+        //    {
+        //        return typeof(T).Equals(typeof(string)) && defaultValue.IsNull<T>() ? (T)string.Empty : defaultValue;
+        //    }
+        //}
+
+        //private static T Convert<T>(this object value, T defaultValue)
+        //{
+        //    Type type = typeof(T);
+        //    if (value.IsNull())
+        //    {
+        //        if (type.Equals(typeof(string)) && defaultValue.IsNull<T>())
+        //            return (T);
+        //    }
+        //    else
+        //    {
+        //        if (type.Equals(typeof(bool)))
+        //            return (T)(ValueType)._booleanValues.Contains(value.ToString().ToLower());
+        //        if (type.Equals(typeof(Decimal)))
+        //        {
+        //            Decimal result;
+        //            return Decimal.TryParse(value.ToString(), NumberStyles.Any, (IFormatProvider)CultureInfo.InvariantCulture, out result) ? (T)(ValueType)result : default(T);
+        //        }
+        //        if (value.GetType() == type)
+        //            return (T)value;
+        //        TypeConverter converter1 = TypeDescriptor.GetConverter(value);
+        //        if (converter1.IsNotNull())
+        //        {
+        //            if (converter1.CanConvertTo(type))
+        //                return (T)converter1.ConvertTo(value, type);
+        //            if (converter1.GetType() == typeof(EnumConverter) && type == typeof(int))
+        //                return (T)value;
+        //        }
+        //        TypeConverter converter2 = TypeDescriptor.GetConverter(type);
+        //        if (converter2.IsNotNull() && converter2.CanConvertFrom(value.GetType()))
+        //            return (T)converter2.ConvertFrom(value);
+        //    }
+        //    return defaultValue;
+        //}
+
+        public static bool IsNull(this object target) => target.IsNull<object>();
+
+        public static bool IsNull<T>(this T target) => (object)target == DBNull.Value || (object)target == null;
+
+        public static bool IsNotNull(this object target) => !target.IsNull();
+
+        public static bool IsNullOrEmpty(this string target) => string.IsNullOrEmpty(target);
+
+        public static bool IsNullOrWhiteSpace(this string target) => string.IsNullOrWhiteSpace(target);
+
+        public static bool IsNotNullOrEmpty(this string target) => !string.IsNullOrEmpty(target);
+
+        public static bool IsNotNullOrWhiteSpace(this string target) => !string.IsNullOrWhiteSpace(target);
+        
         /// <summary>
         /// Truncates DbSet or Table, this action can not be undone.
         /// </summary>
@@ -19,6 +98,48 @@ namespace EasMe
         public static void Clear<T>(this DbSet<T> dbSet) where T : class
         {
             dbSet.RemoveRange(dbSet);
+        }
+        
+        /// <summary>
+        /// Returns true if given string is a valid database connection string.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static bool IsValidConnectionString(this string yourConn)
+        {
+            try
+            {
+                DbConnectionStringBuilder csb = new();
+                csb.ConnectionString = yourConn;
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// Gets Database name from connection string.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string ParseDbName(this string yourConn)
+        {
+            try
+            {
+                if (!yourConn.IsValidConnectionString()) return string.Empty;
+                var start = yourConn.IndexOf("Catalog=");
+                var sub = yourConn.Substring(start + 8);
+                var end = sub.IndexOf(";");
+                var dbName = sub.Substring(0, end);
+                return dbName;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
         /// <summary>
         /// Gets one of the values from Json string.
@@ -166,7 +287,9 @@ namespace EasMe
         {
             if (string.IsNullOrEmpty(value)) return false;
             if (value.ToLower().Trim() == "false") return false;
+            if (value.ToLower().Trim() == "0") return false;
             if (value.ToLower().Trim() == "true") return true;
+            if (value.ToLower().Trim() == "1") return true;            
             return true;
         }
 
