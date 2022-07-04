@@ -12,7 +12,12 @@
         /// <summary>
         /// Max log file size, after this value is being reached creates new log file, default value is "10-MB".
         /// </summary>
-        public string MaxLogFileSize { get; set; } = "10-MB";
+        //public string MaxLogFileSize { get; set; } = "10-MB";
+        
+        /// <summary>
+        /// Max log file count, after this value is being reached it will start deleting oldest log file. Default value is 10.
+        /// </summary>
+        //public int MaxLogFileCount { get; set; } = 10;
 
         /// <summary>
         /// Formatting DateTime in log file name, default value is "MM.dd.yyyy". This is added after LogFileName variable.

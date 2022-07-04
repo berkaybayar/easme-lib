@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "0cDl7UVsMXf6qCk3KnTJDf32PzYMwzbue3YXKMWvRkFK9J/OQgZ4Nq8Vdx9AibXXEyQDPaaWyOqUR/2aFnEpvw==",
+  "dgSpecHash": "yRoB88eKMlxFELee4n3jfKBSPstotVHUjERtsRitbjptnlhjjdQPX6tXR/7XGYiU7e0ab5YVkHAR0LIYW9RoHw==",
   "success": true,
   "projectFilePath": "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe\\EasMe.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\berka\\.nuget\\packages\\azure.core\\1.6.0\\azure.core.1.6.0.nupkg.sha512",
     "C:\\Users\\berka\\.nuget\\packages\\azure.identity\\1.3.0\\azure.identity.1.3.0.nupkg.sha512",
+    "C:\\Users\\berka\\.nuget\\packages\\log4net\\2.0.14\\log4net.2.0.14.nupkg.sha512",
     "C:\\Users\\berka\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\berka\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\berka\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.0.0\\microsoft.bcl.asyncinterfaces.1.0.0.nupkg.sha512",

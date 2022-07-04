@@ -58,15 +58,15 @@ namespace EasMe
             }
         }
         /// <summary>
-        /// Gets log file content by severity.
+        /// Gets log file content by LogLevel.
         /// </summary>
-        /// <param name="Severity"></param>
+        /// <param name="logLevel"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static List<LogModel> GetLogFileContent(string Severity)
+        public static List<LogModel> GetLogFileContent(string logLevel)
         {
             var list = GetLogFileContent();
-            return list.Where(x => x.Severity == Severity).ToList();
+            return list.Where(x => x.LogLevel == logLevel).ToList();
         }
         /// <summary>
         /// Gets filtered logs by LogType.

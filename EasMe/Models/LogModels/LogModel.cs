@@ -7,13 +7,16 @@ namespace EasMe.Models.LogModels
         public DateTime Date { get; private set; } = DateTime.Now;
         public int LogType { get; set; }
         
-        public string? Severity { get; set; }
+        public string? LogLevel { get; set; }
+        public string? Source { get; set; }
         public object? Log { get; set; }
         public string? ThreadId { get; private set; } = EasSystem.GetThreadId();
-                
-        public string? TraceMethod { get; set; } = "NotEnabled";
-        
-        public string? TraceClass { get; set; } = "NotEnabled";
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string? TraceMethod { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string? TraceClass { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Exception? Exception { get; set; }

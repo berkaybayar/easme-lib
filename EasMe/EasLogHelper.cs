@@ -68,33 +68,35 @@ namespace EasMe
         /// <param name="logMessage"></param>
         /// <param name="ErrorNo"></param>
         /// <returns>EasMe.Models.BaseLogModel</returns>
-        internal static LogModel LogModelCreate(Severity Severity, object Log, Exception? Exception = null, bool ForceDebug = false, string? source = null)
+        internal static LogModel LogModelCreate(Severity severity, string source, object log, Exception? exception = null, bool forceDebug = false)
         {
-            if (!EasLog._IsCreated)
-                throw new NotInitializedException("EasLog.Create() must be called before any other method.");
+            //if (!EasLog._IsCreated)
+            //    throw new NotInitializedException("EasLog.Create() must be called before any other method.");
             try
             {
                 
-                var log = new LogModel();
-                log.Severity = Severity.ToString();
-                log.Log = $"[{source}] {Log}";
-                log.LogType = (int)LogType.BASE;
-                if (EasLog.Configuration.TraceLogging || ForceDebug)
+                var logModel = new LogModel();
+                
+                logModel.LogLevel = severity.ToString();
+                logModel.Source = source;
+                logModel.Log = log;
+                logModel.LogType = (int)LogType.BASE;
+                if (IEasLog.Config.TraceLogging || forceDebug)
                 {
-                    log.TraceMethod = EasLogHelper.GetActionName();
-                    log.TraceClass = EasLogHelper.GetClassName();
+                    logModel.TraceMethod = EasLogHelper.GetActionName();
+                    logModel.TraceClass = EasLogHelper.GetClassName();
                 }
-                if (EasLog.Configuration.WebInfoLogging)
+                if (IEasLog.Config.WebInfoLogging)
                 {
-                    log.WebLog = WebModelCreate();
-                    log.LogType = (int)LogType.WEB;
+                    logModel.WebLog = WebModelCreate();
+                    logModel.LogType = (int)LogType.WEB;
                 }
-                if (Exception != null)
+                if (exception != null)
                 {
-                    log.Exception = Exception;
-                    log.LogType = (int)LogType.EXCEPTION;
+                    logModel.Exception = exception;
+                    logModel.LogType = (int)LogType.EXCEPTION;
                 }
-                return log;
+                return logModel;
             }
             catch (Exception e)
             {

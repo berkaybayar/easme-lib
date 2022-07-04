@@ -27,18 +27,18 @@ namespace EasMe
             if (Directory.Exists(filePath))
             {
                 Directory.Delete(filePath, true);
-                if(isLoggingEnabled) EasLog.Info("Folder deleted: " + filePath); 
+                if(isLoggingEnabled) SelfLog.Logger.Info("Folder deleted: " + filePath); 
             }
             else if(File.Exists(filePath))
             {
                 try
                 {
                     File.Delete(filePath);
-                    if (isLoggingEnabled) EasLog.Info("File deleted: " + filePath);
+                    if (isLoggingEnabled) SelfLog.Logger.Info("File deleted: " + filePath);
                 }
                 catch (Exception ex)
                 {
-                    if (isLoggingEnabled) EasLog.Exception("Error deleting file => Path: " + filePath, ex);
+                    if (isLoggingEnabled) SelfLog.Logger.Exception("Error deleting file => Path: " + filePath, ex);
                 }
 
             }
@@ -71,11 +71,11 @@ namespace EasMe
                     try
                     {
                         File.Move(file, destPath + "\\" + Path.GetFileName(file), true);
-                        if (isLoggingEnabled) EasLog.Info("File moved: " + file);
+                        if (isLoggingEnabled) SelfLog.Logger.Info("File moved: " + file);
                     }
                     catch (Exception ex)
                     {
-                        if (isLoggingEnabled) EasLog.Exception("Error while moving file => Path: " + file, ex);
+                        if (isLoggingEnabled) SelfLog.Logger.Exception("Error while moving file => Path: " + file, ex);
                     }
                 });
                 Parallel.ForEach(subdirs, subdir =>
@@ -86,7 +86,7 @@ namespace EasMe
                     }
                     catch (Exception ex)
                     {
-                        if (isLoggingEnabled) EasLog.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                        if (isLoggingEnabled) SelfLog.Logger.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
                     }
 
                 });
@@ -97,11 +97,11 @@ namespace EasMe
                 try
                 {
                     File.Move(sourcePath,destPath + "\\" + Path.GetFileName(sourcePath), true);
-                    if (isLoggingEnabled) EasLog.Info("File moved => Source:" + sourcePath + " Destination: " + destPath);
+                    if (isLoggingEnabled) SelfLog.Logger.Info("File moved => Source:" + sourcePath + " Destination: " + destPath);
                 }
                 catch (Exception ex)
                 {
-                    if (isLoggingEnabled) EasLog.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                    if (isLoggingEnabled) SelfLog.Logger.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
                 }
 
             }
@@ -132,11 +132,11 @@ namespace EasMe
                     try
                     {
                         File.Copy(file, destPath + "\\" + Path.GetFileName(file), true);
-                        if (isLoggingEnabled) EasLog.Info("File copied: " + file);
+                        if (isLoggingEnabled) SelfLog.Logger.Info("File copied: " + file);
                     }
                     catch (Exception ex)
                     {
-                        if (isLoggingEnabled) EasLog.Exception("Error while copying file => Path: " + file, ex);
+                        if (isLoggingEnabled) SelfLog.Logger.Exception("Error while copying file => Path: " + file, ex);
                     }
                 });
                 Parallel.ForEach(subdirs, subdir =>
@@ -147,7 +147,7 @@ namespace EasMe
                     }
                     catch (Exception ex)
                     {
-                        if (isLoggingEnabled) EasLog.Exception("Error while copying file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                        if (isLoggingEnabled) SelfLog.Logger.Exception("Error while copying file => Source:" + sourcePath + " Destination: " + destPath, ex);
                     }
 
                 });
@@ -158,11 +158,11 @@ namespace EasMe
                 try
                 {
                     File.Copy(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
-                    if (isLoggingEnabled) EasLog.Info("File copying => Source: " + sourcePath + " Destination: " + destPath);
+                    if (isLoggingEnabled) SelfLog.Logger.Info("File copying => Source: " + sourcePath + " Destination: " + destPath);
                 }
                 catch (Exception ex)
                 {
-                    if (isLoggingEnabled) EasLog.Exception("Error while copying file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                    if (isLoggingEnabled) SelfLog.Logger.Exception("Error while copying file => Source:" + sourcePath + " Destination: " + destPath, ex);
                 }
 
             }
@@ -172,8 +172,45 @@ namespace EasMe
                 
             }
         }
-        
-        
+
+
+
+        /// <summary>
+        /// Moves all file(s) to destination folder path. If source path is folder moves all files and sub folders inside not the actual folder.
+        /// </summary>
+        /// <param name="sourceFolderPath"></param>
+        /// <param name="destPath"></param>
+        /// <param name="overwrite"></param>
+        /// <param name="isLoggingEnabled"></param>
+        //public static void RenameAll(string sourceFolderPath,bool overwrite, bool isLoggingEnabled = true)
+        //{
+
+        //    if (Directory.Exists(sourceFolderPath))
+        //    {
+        //        string[] files = Directory.GetFiles(sourceFolderPath);
+        //        //string[] subdirs = Directory.GetDirectories(sourcePath);
+        //        long count = 0;
+        //        Parallel.ForEach(files, file =>
+        //        {
+        //            try
+        //            {
+        //                var destPath = sourceFolderPath + "\\" + Path.GetFileName(file).Replace(".", "_" + count + ".");
+        //                File.Move(file, destPath, true);
+        //                if (isLoggingEnabled) SelfLog.Logger.Info("File renamed: " + destPath);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                if (isLoggingEnabled) SelfLog.Logger.Exception("Error while renaming file => Path: " + file, ex);
+        //            }
+        //        });
+
+        //    }
+        //    else
+        //    {
+        //        throw new NotExistException("Error in RenameAll: Given source folder path not exist.");
+
+        //    }
+        //}        
     }
 
 }
