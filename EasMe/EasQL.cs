@@ -241,7 +241,32 @@ namespace EasMe
             }
         }
 
-
+        public static List<string> GetColumns(string connection, string tableName)
+        {
+            try
+            {
+                var list = new List<string>();
+                string query = $@"SELECT name FROM sys.columns WHERE object_id = OBJECT_ID('{tableName}')";
+                SqlCommand cmd = new(query);
+                var dt = GetTable(connection, cmd);
+                foreach (DataRow row in dt.Rows)
+                {
+                    if(row != null )
+                    {
+                        var columnName = row[0].ToString();
+                        if (!string.IsNullOrEmpty(columnName))
+                        {
+                            list.Add(columnName);
+                        }
+                    }
+                }
+                return list;
+            }
+            catch (Exception e)
+            {
+                throw new SqlErrorException("GetColumns failed.", e);
+            }
+        }
 
 
         /// <summary>
