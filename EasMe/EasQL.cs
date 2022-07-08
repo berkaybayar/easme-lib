@@ -1,17 +1,134 @@
-﻿using System.Data;
-using EasMe.Exceptions;
+﻿using EasMe.Exceptions;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace EasMe
 {
     /// <summary>
     /// SQL helper, used to execute SQL queries, and get data from SQL database.
     /// </summary>
-    public static class EasQL
+    public class EasQL
     {
-        private static string Connection { get; set; }
-        
-        
+        private static string? Connection { get; set; }
+
+        public EasQL(string connection)
+        {
+            if (!connection.IsValidConnectionString()) throw new NotValidException("EasQL given connection string is not valid");
+            Connection = connection;
+        }
+        /// <summary>
+        /// Executes SQL query and returns DataTable.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="cmd"></param>
+        /// <param name="Timeout"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        public DataTable GetTable(SqlCommand cmd, int Timeout = 0)
+        {
+            return GetTable(Connection, cmd, Timeout);
+        }
+        /// <summary>
+        /// Exectues SQL query and returns affected row count.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="cmd"></param>
+        /// <param name="Timeout"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        public int ExecNonQuery(SqlCommand cmd, int Timeout = 0)
+        {
+            return ExecNonQuery(Connection, cmd, Timeout);
+        }
+
+        /// <summary>
+        /// Exectues SQL query and returns the first column of first row in the result set returned by query. Additional columns or rows ignored.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="cmd"></param>
+        /// <param name="Timeout"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        public static object ExecScalar(SqlCommand cmd, int Timeout = 0)
+        {
+            return ExecScalar(Connection, cmd, Timeout);
+        }
+
+        /// <summary>
+        /// Executes a SQL query to backup database to the given folder path.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="DatabaseName"></param>
+        /// <param name="BackupFolderPath"></param>
+        /// <param name="Timeout"></param>
+        /// <exception cref="EasException"></exception>
+        public void BackupDatabase(string DatabaseName, string BackupPath, int Timeout = 0)
+        {
+            BackupDatabase(Connection, DatabaseName, BackupPath, Timeout);
+        }
+        /// <summary>
+        /// Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but still you should backup first.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="DatabaseName"></param>
+        /// <param name="DatabaseLogName"></param>
+        /// <exception cref="EasException"></exception>
+        public void ShrinkDatabase(string DatabaseName, string DatabaseLogName = "_log")
+        {
+            ShrinkDatabase(Connection, DatabaseName, DatabaseLogName);
+        }
+
+
+
+        /// <summary>
+        /// Deletes all records in given table but keeps the table. This action can not be undone, be aware of the risks before running this.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="TableName"></param>
+        /// <exception cref="EasException"></exception>
+        public void TruncateTable(string TableName)
+        {
+            TruncateTable(Connection, TableName);
+        }
+
+
+
+        /// <summary>
+        /// Deletes all records in the table and the table from database. This action can not be undone, be aware of the risks before running this.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="TableName"></param>
+        /// <exception cref="EasException"></exception>
+        public void DropTable(string TableName)
+        {
+            DropTable(Connection, TableName);
+        }
+
+
+        /// <summary>
+        /// Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks before running this.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <param name="DatabaseName"></param>
+        /// <exception cref="EasException"></exception>
+        public void DropDatabase(string DatabaseName)
+        {
+            DropDatabase(Connection, DatabaseName);
+        }
+
+        /// <summary>
+        /// Gets all table names in SQL database and returns.
+        /// </summary>
+        /// <param name="Connection"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        public List<string> GetAllTableName()
+        {
+            return GetAllTableName(Connection);
+        }
+
+
+        #region EasQL Static Methods
         /// <summary>
         /// Executes SQL query and returns DataTable.
         /// </summary>
@@ -124,7 +241,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new SqlErrorException("BackupDatabase failed: "+ DatabaseName, e);
+                throw new SqlErrorException("BackupDatabase failed: " + DatabaseName, e);
             }
         }
         /// <summary>
@@ -174,7 +291,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new SqlErrorException( "TruncateTable failed: " + TableName, e);
+                throw new SqlErrorException("TruncateTable failed: " + TableName, e);
             }
         }
         /// <summary>
@@ -212,7 +329,7 @@ namespace EasMe
             }
             catch (Exception e)
             {
-                throw new SqlErrorException("DropDatabase failed: " +  DatabaseName, e);
+                throw new SqlErrorException("DropDatabase failed: " + DatabaseName, e);
             }
         }
         /// <summary>
@@ -251,7 +368,7 @@ namespace EasMe
                 var dt = GetTable(connection, cmd);
                 foreach (DataRow row in dt.Rows)
                 {
-                    if(row != null )
+                    if (row != null)
                     {
                         var columnName = row[0].ToString();
                         if (!string.IsNullOrEmpty(columnName))
@@ -267,140 +384,10 @@ namespace EasMe
                 throw new SqlErrorException("GetColumns failed.", e);
             }
         }
-
-
-        /// <summary>
-        /// Loads connection string to use functions without giving connection string each time.
-        /// </summary>
-        /// <param name="connectionString"></param>
-        public static void LoadConnectionString(string connectionString)
-        {
-            Connection = connectionString;
-        }
-
-        private static void CheckIfLoaded()
-        {
-            if (string.IsNullOrEmpty(Connection)) throw new NotInitializedException("Can not use functions without connection string parameter if you have not used LoadConnectionString() function to load connection string.");
-        }
-
-        /// <summary>
-        /// Executes SQL query and returns DataTable.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="cmd"></param>
-        /// <param name="Timeout"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static DataTable GetTable(SqlCommand cmd, int Timeout = 0)
-        {
-            CheckIfLoaded();
-            return GetTable(Connection, cmd, Timeout);
-        }
-        /// <summary>
-        /// Exectues SQL query and returns affected row count.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="cmd"></param>
-        /// <param name="Timeout"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static int ExecNonQuery(SqlCommand cmd, int Timeout = 0)
-        {
-            CheckIfLoaded();
-            return ExecNonQuery(Connection, cmd, Timeout);
-        }
-
-        /// <summary>
-        /// Exectues SQL query and returns the first column of first row in the result set returned by query. Additional columns or rows ignored.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="cmd"></param>
-        /// <param name="Timeout"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static object ExecScalar(SqlCommand cmd, int Timeout = 0)
-        {
-            CheckIfLoaded();
-            return ExecScalar(Connection, cmd, Timeout);
-        }
-
-        /// <summary>
-        /// Executes a SQL query to backup database to the given folder path.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <param name="BackupFolderPath"></param>
-        /// <param name="Timeout"></param>
-        /// <exception cref="EasException"></exception>
-        public static void BackupDatabase(string DatabaseName, string BackupPath, int Timeout = 0)
-        {
-            CheckIfLoaded();
-            BackupDatabase(Connection, DatabaseName, BackupPath, Timeout);
-        }
-        /// <summary>
-        /// Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but still you should backup first.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <param name="DatabaseLogName"></param>
-        /// <exception cref="EasException"></exception>
-        public static void ShrinkDatabase(string DatabaseName, string DatabaseLogName = "_log")
-        {
-            CheckIfLoaded();
-            ShrinkDatabase(Connection, DatabaseName, DatabaseLogName);
-        }
+        #endregion
 
 
 
-        /// <summary>
-        /// Deletes all records in given table but keeps the table. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="TableName"></param>
-        /// <exception cref="EasException"></exception>
-        public static void TruncateTable(string TableName)
-        {
-            CheckIfLoaded();
-            TruncateTable(Connection, TableName);
-        }
 
-
-
-        /// <summary>
-        /// Deletes all records in the table and the table from database. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="TableName"></param>
-        /// <exception cref="EasException"></exception>
-        public static void DropTable(string TableName)
-        {
-            CheckIfLoaded();
-            DropTable(Connection, TableName);
-        }
-
-
-        /// <summary>
-        /// Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <exception cref="EasException"></exception>
-        public static void DropDatabase(string DatabaseName)
-        {
-            CheckIfLoaded();
-            DropDatabase(Connection, DatabaseName);
-        }
-
-        /// <summary>
-        /// Gets all table names in SQL database and returns.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static List<string> GetAllTableName()
-        {
-            CheckIfLoaded();
-            return GetAllTableName(Connection);
-        }
     }
 }

@@ -5,7 +5,7 @@
         BASE = 0,
         EXCEPTION = 1,
         WEB = 2,
-        
+
     }
 
     public enum Severity
@@ -25,11 +25,11 @@
         ERROR = 103,
         DEBUG = 104,
         EXCEPTION = 105,
-        FATAL = 106,        
+        FATAL = 106,
         FAILED = 107,
         TIMEOUT = 108,
         SERVICE = 109,
-        
+
         SQL_ERROR = 200,
         SQL_UPDATE_FAILED = 201,
         SQL_INSERT_FAILED = 202,
@@ -52,7 +52,7 @@
 
         LOGGING_ERROR = 300,
         SERIALIZATION_ERROR = 301,
-        DESERIALIZATION_ERROR = 302,        
+        DESERIALIZATION_ERROR = 302,
         FAILED_TO_CREATE = 303,
         FAILED_TO_DELETE = 304,
         FAILED_TO_READ = 305,

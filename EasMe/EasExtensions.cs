@@ -4,77 +4,119 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Data.Common;
 
 namespace EasMe
 {
     public static class EasExtensions
     {
         private static readonly HashSet<string> _booleanValues = new HashSet<string>((IEqualityComparer<string>)StringComparer.OrdinalIgnoreCase)
-    {
-      "true",
-      "1",
-      "on",
-      "yes",
-      "y"
-    };
+        {
+          "true",
+          "1",
+          "on",
+          "yes",
+          "y"
+        };
+        /// <summary>
+        /// Converts string to Type T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static T? StringConversion<T>(this string? str)
+        {
+            try
+            {
+                if (str == null)
+                    return default;
+                if (typeof(T) == typeof(string))
+                    return (T)(object)str;
+                if (typeof(T) == typeof(int))
+                    return (T)(object)int.Parse(str);
+                if (typeof(T) == typeof(bool))
+                {
+                    if (_booleanValues.Contains(str.ToLower()))
+                        return (T)(object)true;
+                    return (T)(object)false;
+                }
+                if (typeof(T) == typeof(float))
+                    return (T)(object)float.Parse(str);
+                if (typeof(T) == typeof(double))
+                    return (T)(object)double.Parse(str);
+                if (typeof(T) == typeof(decimal))
+                    return (T)(object)decimal.Parse(str);
+                if (typeof(T) == typeof(long))
+                    return (T)(object)long.Parse(str);
+                if (typeof(T) == typeof(short))
+                    return (T)(object)short.Parse(str);
+                if (typeof(T) == typeof(byte))
+                    return (T)(object)byte.Parse(str);
+                if (typeof(T) == typeof(sbyte))
+                    return (T)(object)sbyte.Parse(str);
+                if (typeof(T) == typeof(uint))
+                    return (T)(object)uint.Parse(str);
+                if (typeof(T) == typeof(ulong))
+                    return (T)(object)ulong.Parse(str);
+                if (typeof(T) == typeof(ushort))
+                    return (T)(object)ushort.Parse(str);
+                if (typeof(T) == typeof(ulong))
+                    return (T)(object)ulong.Parse(str);
+                if (typeof(T) == typeof(DateTime))
+                    return (T)(object)DateTime.Parse(str);
+                if (typeof(T) == typeof(TimeSpan))
+                    return (T)(object)TimeSpan.Parse(str);
+                if (typeof(T) == typeof(Guid))
+                    return (T)(object)Guid.Parse(str);
+                if (typeof(T) == typeof(XmlDocument))
+                {
+                    var doc = new XmlDocument();
+                    doc.LoadXml(str);
+                    return (T)(object)doc;
+                }
+                if (typeof(T) == typeof(XDocument))
+                    return (T)(object)XDocument.Parse(str);
+                if (typeof(T) == typeof(XmlNode))
+                    return (T)(object)new XmlDocument().CreateElement(str);
+                if (typeof(T) == typeof(JObject))
+                    return (T)(object)JObject.Parse(str);
+                if (typeof(T) == typeof(JArray))
+                    return (T)(object)JArray.Parse(str);
+                if (typeof(T) == typeof(JValue))
+                    return (T)(object)JValue.Parse(str);
+                if (typeof(T) == typeof(JToken))
+                    return (T)(object)JToken.Parse(str);
+                if (typeof(T) == typeof(DataSet))
+                    return (T)(object)new DataSet().ReadXml(new StringReader(str));
+                if (typeof(T) == typeof(DataTable))
+                    return (T)(object)new DataSet().Tables[0];
+                if (typeof(T) == typeof(DataRow))
+                    return (T)(object)new DataTable().NewRow();
+                if (typeof(T) == typeof(DataColumn))
+                    return (T)(object)new DataTable().Columns.Add(str);
+                if (typeof(T) == typeof(DataRowView))
+                    return (T)(object)new DataView().AddNew();
+                if (typeof(T) == typeof(DataView))
+                    return (T)(object)new DataView();
+                if (typeof(T) == typeof(DataRelation))
+                    return (T)(object)new DataRelation("", new DataColumn[0], new DataColumn[0]);
+                if (typeof(T) == typeof(DataColumn[]))
+                    return (T)(object)new DataTable().Columns.Cast<DataColumn>().ToArray();
+                if (typeof(T) == typeof(DataRowBuilder))
+                    return (T)(object)new DataTable().NewRow();
+                return default;
 
-        //public static T ConvertTo<T>(this object value) => value.ConvertTo<T>(default(T));
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToConvertException("StringConversion failed type: " + typeof(T), ex);
+            }
 
-        //public static T ConvertTo<T>(this object value, T defaultValue) => value.ConvertTo<T>(defaultValue, true);
+        }
 
-        //public static T ConvertTo<T>(this object value, T defaultValue, bool ignoreException)
-        //{
-        //    if (!ignoreException)
-        //        return value.Convert<T>(defaultValue);
-        //    try
-        //    {
-        //        return value.Convert<T>(defaultValue);
-        //    }
-        //    catch
-        //    {
-        //        return typeof(T).Equals(typeof(string)) && defaultValue.IsNull<T>() ? (T)string.Empty : defaultValue;
-        //    }
-        //}
-
-        //private static T Convert<T>(this object value, T defaultValue)
-        //{
-        //    Type type = typeof(T);
-        //    if (value.IsNull())
-        //    {
-        //        if (type.Equals(typeof(string)) && defaultValue.IsNull<T>())
-        //            return (T);
-        //    }
-        //    else
-        //    {
-        //        if (type.Equals(typeof(bool)))
-        //            return (T)(ValueType)._booleanValues.Contains(value.ToString().ToLower());
-        //        if (type.Equals(typeof(Decimal)))
-        //        {
-        //            Decimal result;
-        //            return Decimal.TryParse(value.ToString(), NumberStyles.Any, (IFormatProvider)CultureInfo.InvariantCulture, out result) ? (T)(ValueType)result : default(T);
-        //        }
-        //        if (value.GetType() == type)
-        //            return (T)value;
-        //        TypeConverter converter1 = TypeDescriptor.GetConverter(value);
-        //        if (converter1.IsNotNull())
-        //        {
-        //            if (converter1.CanConvertTo(type))
-        //                return (T)converter1.ConvertTo(value, type);
-        //            if (converter1.GetType() == typeof(EnumConverter) && type == typeof(int))
-        //                return (T)value;
-        //        }
-        //        TypeConverter converter2 = TypeDescriptor.GetConverter(type);
-        //        if (converter2.IsNotNull() && converter2.CanConvertFrom(value.GetType()))
-        //            return (T)converter2.ConvertFrom(value);
-        //    }
-        //    return defaultValue;
-        //}
 
         public static bool IsNull(this object target) => target.IsNull<object>();
 
@@ -89,7 +131,7 @@ namespace EasMe
         public static bool IsNotNullOrEmpty(this string target) => !string.IsNullOrEmpty(target);
 
         public static bool IsNotNullOrWhiteSpace(this string target) => !string.IsNullOrWhiteSpace(target);
-        
+
         /// <summary>
         /// Truncates DbSet or Table, this action can not be undone.
         /// </summary>
@@ -99,7 +141,7 @@ namespace EasMe
         {
             dbSet.RemoveRange(dbSet);
         }
-        
+
         /// <summary>
         /// Returns true if given string is a valid database connection string.
         /// </summary>
@@ -114,7 +156,7 @@ namespace EasMe
                 csb.ConnectionString = yourConn;
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -170,11 +212,11 @@ namespace EasMe
         {
             try
             {
-                
-                var isValid = jObject.TryGetValue(key,out var value);
+
+                var isValid = jObject.TryGetValue(key, out var value);
                 if (isValid)
                 {
-                    if (value != null) 
+                    if (value != null)
                         return value.ToString();
                 }
                 return null;
@@ -190,7 +232,7 @@ namespace EasMe
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static string JsonSerialize(this object obj, Formatting formatting = Formatting.None)
+        public static string JsonSerialize(this object obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
             return JsonConvert.SerializeObject(obj, formatting);
         }
@@ -289,7 +331,7 @@ namespace EasMe
             if (value.ToLower().Trim() == "false") return false;
             if (value.ToLower().Trim() == "0") return false;
             if (value.ToLower().Trim() == "true") return true;
-            if (value.ToLower().Trim() == "1") return true;            
+            if (value.ToLower().Trim() == "1") return true;
             return true;
         }
 

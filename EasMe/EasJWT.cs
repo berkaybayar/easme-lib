@@ -1,24 +1,24 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using EasMe.Exceptions;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using EasMe.Exceptions;
 namespace EasMe
 {
     /// <summary>
     /// JWT Authentication helper, generating and reading tokens.
     /// </summary>
     public static class EasJWT
-    { 
-        
-        private readonly static JwtSecurityTokenHandler TokenHandler = new ();
+    {
+
+        private readonly static JwtSecurityTokenHandler TokenHandler = new();
         private static bool ValidateIssuer { get; set; } = false;
         private static bool ValidateAudience { get; set; } = false;
         private static string? Issuer { get; set; }
         private static string? Audience { get; set; }
         private static byte[]? Secret { get; set; }
-        public static bool IsInitialized {  get;  private set; } = false;
-        
+        public static bool IsInitialized { get; private set; } = false;
+
         /// <summary>
         /// Loads your secret key, issuer, audience. Call this method in your application startup.
         /// </summary>
@@ -58,7 +58,7 @@ namespace EasMe
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
                     Issuer = Issuer,
                     Audience = Audience
-                    
+
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return tokenHandler.WriteToken(token);

@@ -74,7 +74,7 @@ namespace EasMe
                 {
                     list.Add(item.Value);
                 }
-            }            
+            }
             return list;
         }
 
@@ -99,7 +99,7 @@ namespace EasMe
             return httpRequest.Path.ToUriComponent();
         }
 
-       
+
         /// <summary>
         /// Gets request GeoLocation by HttpRequest.
         /// </summary>
@@ -109,20 +109,7 @@ namespace EasMe
         private static GeoLocationModel GetGeolocation(this HttpRequest httpRequest, uint accuracyInMeters = 50)
         {
             throw new NotImplementedException();
-            //NOT IMPLEMENTED
-            //var model = new GeoLocationModel();
-            //Geolocator geolocator = new Geolocator();
-            ////geolocator.DesiredAccuracy = Windows.Devices.Geolocation.PositionAccuracy.High;
-            //geolocator.DesiredAccuracyInMeters = accuracyInMeters;
-            //try
-            //{
-            //    Geoposition geoposition = (Geoposition)geolocator.GetGeopositionAsync(TimeSpan.FromMilliseconds(500), TimeSpan.FromSeconds(1));
-            //    model.Latitude = geoposition.Coordinate.Latitude;
-            //    model.Longitude = geoposition.Coordinate.Longitude;
-            //    model.Accuracy = geoposition.Coordinate.Accuracy;
-            //}
-            //catch { }
-            //return model;
+
         }
     }
 }

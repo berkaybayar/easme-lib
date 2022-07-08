@@ -24,7 +24,7 @@ namespace EasMe
         /// <exception cref="NotExistException"></exception>
         public EasINI(string? iniFilePath = null)
         {
-            if(iniFilePath == null) iniFilePath = Directory.GetCurrentDirectory() + @"\service.ini";
+            if (iniFilePath == null) iniFilePath = Directory.GetCurrentDirectory() + @"\service.ini";
             if (!File.Exists(iniFilePath)) throw new NotExistException("Given INI file path does not exist: " + iniFilePath);
             Path = iniFilePath;
         }

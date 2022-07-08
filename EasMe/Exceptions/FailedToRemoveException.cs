@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Exceptions
+﻿namespace EasMe.Exceptions
 {
     public class FailedToRemoveException : Exception
     {
@@ -13,6 +7,10 @@ namespace EasMe.Exceptions
 
         }
         public FailedToRemoveException(string message) : base(message)
+        {
+
+        }
+        public FailedToRemoveException(Exception? Inner = null) : base("FailedToRemoveException", Inner)
         {
 
         }

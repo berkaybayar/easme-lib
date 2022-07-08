@@ -39,7 +39,7 @@ namespace EasMe
 
         internal static int ConvertConfigFileSize(string value)
         {
-            
+
             try
             {
                 var split = value.Split("-");
@@ -74,9 +74,9 @@ namespace EasMe
             //    throw new NotInitializedException("EasLog.Create() must be called before any other method.");
             try
             {
-                
+
                 var logModel = new LogModel();
-                
+
                 logModel.LogLevel = severity.ToString();
                 logModel.Source = source;
                 logModel.Log = log;

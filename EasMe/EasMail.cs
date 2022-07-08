@@ -1,6 +1,6 @@
-﻿using System.Net;
+﻿using EasMe.Exceptions;
+using System.Net;
 using System.Net.Mail;
-using EasMe.Exceptions;
 namespace EasMe
 {
 
@@ -32,7 +32,7 @@ namespace EasMe
             this.EnableSSL = enableSSL;
 
         }
-        
+
         /// <summary>
         /// Sends mail, better to create thread for this function.
         /// </summary>
@@ -60,12 +60,12 @@ namespace EasMe
                 smtp.Send(message);
 
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 throw new EmailSendFailedException("Failed to send email.", ex);
             }
-            
-            
+
+
 
         }
     }

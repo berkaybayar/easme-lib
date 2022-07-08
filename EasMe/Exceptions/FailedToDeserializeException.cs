@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Exceptions
+﻿namespace EasMe.Exceptions
 {
     public class FailedToDeserializeException : Exception
     {
@@ -13,6 +7,10 @@ namespace EasMe.Exceptions
 
         }
         public FailedToDeserializeException(string message) : base(message)
+        {
+
+        }
+        public FailedToDeserializeException(Exception? Inner = null) : base("FailedToDeserializeException", Inner)
         {
 
         }

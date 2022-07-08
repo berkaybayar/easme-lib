@@ -1,5 +1,4 @@
 ﻿using EasMe.Exceptions;
-using EasMe.Models.LogModels;
 
 namespace EasMe
 {
@@ -11,7 +10,7 @@ namespace EasMe
     public sealed class EasLog : IEasLog
     {
         //internal static EasLogConfiguration Configuration { get; set; } = IEasLog.Config;
-        private static int? _OverSizeExt  = 0;
+        private static int? _OverSizeExt = 0;
 
         private static string ExactLogPath { get; set; } = GetExactLogPath();
 
@@ -46,7 +45,7 @@ namespace EasMe
                 WriteLog(model);
             }
         }
-        
+
         /// <summary>
         /// Creates log with Info severity and success state.
         /// </summary>
@@ -57,9 +56,10 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public void Info( object log)
+        public void Info(object log)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.INFO, _LogSource, log, null,false );
+
+            var model = EasLogHelper.LogModelCreate(Severity.INFO, _LogSource, log, null, false);
             WriteLog(model);
         }
 
@@ -75,7 +75,7 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public  void Error(object logMessage)
+        public void Error(object logMessage)
         {
             var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, logMessage, null, false);
             WriteLog(model);
@@ -92,14 +92,14 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public void Error(Error err , object logMessage)
+        public void Error(Error err, object logMessage)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, err.ToString() + ": " + logMessage, null, false );
+            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, err.ToString() + ": " + logMessage, null, false);
             WriteLog(model);
         }
 
 
-        
+
         /// <summary>
         /// Creates log with warning severity.
         /// </summary>
@@ -110,9 +110,9 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public  void Warn(object logMessage)
+        public void Warn(object logMessage)
         {
-            
+
             var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, logMessage, null, false);
             WriteLog(model);
         }
@@ -126,13 +126,13 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public  void Exception(Exception ex)
+        public void Exception(Exception ex)
         {
             var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, ex.Message, ex, false);
             WriteLog(model);
             if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
         }
-        
+
         /// <summary>
         /// Creates log with Exception.
         /// </summary>
@@ -143,7 +143,7 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public  void Exception(object logMessage, Exception ex)
+        public void Exception(object logMessage, Exception ex)
         {
             var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, logMessage, ex, false);
             WriteLog(model);
@@ -162,7 +162,7 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public  void Fatal(object logMessage)
+        public void Fatal(object logMessage)
         {
             var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, logMessage, null, false);
             WriteLog(model);
@@ -183,7 +183,7 @@ namespace EasMe
             WriteLog(model);
             if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
         }
-        
+
         /// <summary>
         /// Creates log with Debug severity.
         /// </summary>
@@ -199,7 +199,7 @@ namespace EasMe
             var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, null, true);
             WriteLog(model);
         }
-        
+
         /// <summary>
         /// Creates log with Debug severity.
         /// </summary>
@@ -209,7 +209,7 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public  void Debug(object logMessage, Exception ex)
+        public void Debug(object logMessage, Exception ex)
         {
             var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, ex, true);
             WriteLog(model);
@@ -223,10 +223,10 @@ namespace EasMe
         /// <returns>LogContent</returns>
         public void WriteLog(object obj)
         {
-
+            if (IEasLog.Config.DontLog) return;
             if (obj == null) throw new EasException(EasMe.Error.NULL_REFERENCE, "Log content is null");
             try
-            { 
+            {
                 var serialized = obj.JsonSerialize();
                 //Create log folder 
                 if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
@@ -251,7 +251,7 @@ namespace EasMe
                     //            File.Delete(oldLogPath);
                     //        }
                     //    }
-                       
+
                     //}
                 }
                 File.AppendAllText(ExactLogPath, serialized + "\n");
@@ -267,6 +267,6 @@ namespace EasMe
 
 
     }
-    
+
 }
 

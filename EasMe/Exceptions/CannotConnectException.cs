@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Exceptions
+﻿namespace EasMe.Exceptions
 {
     public class CannotConnectException : Exception
     {
@@ -13,6 +7,10 @@ namespace EasMe.Exceptions
 
         }
         public CannotConnectException(string message) : base(message)
+        {
+
+        }
+        public CannotConnectException(Exception? Inner = null) : base("CannotConnectException", Inner)
         {
 
         }

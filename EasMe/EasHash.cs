@@ -55,7 +55,7 @@ namespace EasMe
         public static byte[] SHA384Hash(this string rawData) => ComputeHash(SHA384.Create(), rawData);
         public static byte[] SHA384HashSalted(this string rawData, string salt) => ComputeSaltedHash(SHA384.Create(), rawData, salt);
 
-        
+
         public static byte[] SHA512Hash(this string rawData) => ComputeHash(SHA512.Create(), rawData);
         public static byte[] SHA512HashSalted(this string rawData, string salt) => ComputeSaltedHash(SHA512.Create(), rawData, salt);
 

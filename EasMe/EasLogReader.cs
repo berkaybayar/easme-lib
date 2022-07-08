@@ -1,6 +1,5 @@
 ﻿using EasMe.Exceptions;
 using EasMe.Models.LogModels;
-using Newtonsoft.Json;
 
 namespace EasMe
 {
@@ -15,7 +14,7 @@ namespace EasMe
         {
             if (string.IsNullOrEmpty(LogFilePath)) throw new EasException(Error.NOT_LOADED, "Log file path not loaded.");
         }
-        
+
         public static void Load(string logFilePath)
         {
             LogFilePath = logFilePath;
@@ -49,7 +48,7 @@ namespace EasMe
                     if (deserialized == null) throw new EasException(Error.DESERIALIZATION_ERROR);
                     list.Add(deserialized);
                 }
-                if (list.Count == 0) throw new NotFoundException( "Failed getting log file content as List<BaseModel>, log file does not have logs recorded.");
+                if (list.Count == 0) throw new NotFoundException("Failed getting log file content as List<BaseModel>, log file does not have logs recorded.");
                 return list;
             }
             catch (Exception ex)

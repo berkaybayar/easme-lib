@@ -43,7 +43,6 @@ namespace EasMe
         /// <exception cref="EasException"></exception>
         public static CaptchaResponseModel Validate(string Secret, string CaptchaResponse)
         {
-
             try
             {
                 var response = new CaptchaResponseModel();

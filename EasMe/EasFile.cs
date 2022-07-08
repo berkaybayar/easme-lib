@@ -1,5 +1,4 @@
 ﻿using EasMe.Exceptions;
-using EasMe.Models.LogModels;
 
 namespace EasMe
 {
@@ -27,9 +26,9 @@ namespace EasMe
             if (Directory.Exists(filePath))
             {
                 Directory.Delete(filePath, true);
-                if(isLoggingEnabled) SelfLog.Logger.Info("Folder deleted: " + filePath); 
+                if (isLoggingEnabled) SelfLog.Logger.Info("Folder deleted: " + filePath);
             }
-            else if(File.Exists(filePath))
+            else if (File.Exists(filePath))
             {
                 try
                 {
@@ -48,7 +47,7 @@ namespace EasMe
             }
 
 
-            
+
         }
 
         /// <summary>
@@ -58,7 +57,7 @@ namespace EasMe
         /// <param name="destPath"></param>
         /// <param name="overwrite"></param>
         /// <param name="isLoggingEnabled"></param>
-        public static void MoveAll(string sourcePath, string destPath,bool overwrite, bool isLoggingEnabled = true)
+        public static void MoveAll(string sourcePath, string destPath, bool overwrite, bool isLoggingEnabled = true)
         {
 
             if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
@@ -90,13 +89,13 @@ namespace EasMe
                     }
 
                 });
-                
+
             }
-            else if(File.Exists(sourcePath))
+            else if (File.Exists(sourcePath))
             {
                 try
                 {
-                    File.Move(sourcePath,destPath + "\\" + Path.GetFileName(sourcePath), true);
+                    File.Move(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
                     if (isLoggingEnabled) SelfLog.Logger.Info("File moved => Source:" + sourcePath + " Destination: " + destPath);
                 }
                 catch (Exception ex)
@@ -169,7 +168,7 @@ namespace EasMe
             else
             {
                 throw new NotExistException("Error in CopyAll: Given source path not exist.");
-                
+
             }
         }
 

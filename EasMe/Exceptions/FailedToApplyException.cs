@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Exceptions
+﻿namespace EasMe.Exceptions
 {
     public class FailedToApplyException : Exception
     {
@@ -13,6 +7,11 @@ namespace EasMe.Exceptions
 
         }
         public FailedToApplyException(string message) : base(message)
+        {
+
+
+        }
+        public FailedToApplyException(Exception? Inner = null) : base("FailedToApplyException", Inner)
         {
 
         }

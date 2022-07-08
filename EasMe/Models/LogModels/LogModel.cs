@@ -1,12 +1,11 @@
-﻿using System.Text.Json.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 namespace EasMe.Models.LogModels
 {
     public class LogModel
     {
         public DateTime Date { get; private set; } = DateTime.Now;
         public int LogType { get; set; }
-        
+
         public string? LogLevel { get; set; }
         public string? Source { get; set; }
         public object? Log { get; set; }
