@@ -8,7 +8,7 @@ namespace EasMe
     /// <summary>
     /// JWT Authentication helper, generating and reading tokens.
     /// </summary>
-    public static class EasJWT
+    public class EasJWT
     {
 
         private readonly static JwtSecurityTokenHandler TokenHandler = new();
@@ -17,27 +17,18 @@ namespace EasMe
         private static string? Issuer { get; set; }
         private static string? Audience { get; set; }
         private static byte[]? Secret { get; set; }
-        public static bool IsInitialized { get; private set; } = false;
-
-        /// <summary>
-        /// Loads your secret key, issuer, audience. Call this method in your application startup.
-        /// </summary>
-        /// <param name="secret"></param>
-        /// <param name="issuer"></param>
-        /// <param name="audience"></param>
-        public static void Init(string secret, string? issuer = null, string? audience = null)
+        
+        public EasJWT(string secret, string? issuer = null, string? audience = null)
         {
             Issuer = issuer;
             Audience = audience;
             if (!string.IsNullOrEmpty(Issuer)) ValidateIssuer = true;
             if (!string.IsNullOrEmpty(Audience)) ValidateAudience = true;
             Secret = Encoding.ASCII.GetBytes(secret);
-            IsInitialized = true;
         }
-
-        private static void CheckSecret()
+       public byte[] GetSecretByteArray()
         {
-            if (!IsInitialized) throw new NotInitializedException("EasJWT configuration error, not initialized. Call EasJWT.Init() in your application startup.");
+            return Secret;
         }
         /// <summary>
         /// Generates a JWT token by ClaimsIdentity.
@@ -45,9 +36,8 @@ namespace EasMe
         /// <param name="claimsIdentity"></param>
         /// <param name="expireMinutes"></param>
         /// <returns></returns>
-        public static string GenerateJWTToken(ClaimsIdentity claimsIdentity, int expireMinutes)
+        public string GenerateJWTToken(ClaimsIdentity claimsIdentity, int expireMinutes)
         {
-            CheckSecret();
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -65,7 +55,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new FailedToCreateException("Could not create JWT token.", ex);
+                throw new FailedToCreateException("EasJWT failed to create JWT token.", ex);
             }
 
         }
@@ -77,9 +67,8 @@ namespace EasMe
         /// <param name="validateIssuer"></param>
         /// <param name="validateAudience"></param>
         /// <returns></returns>
-        public static ClaimsPrincipal? ValidateJWTToken(string token)
+        public ClaimsPrincipal? ValidateJWTToken(string token)
         {
-            CheckSecret();
             try
             {
                 var tokenValidationParameters = new TokenValidationParameters
@@ -96,7 +85,7 @@ namespace EasMe
             }
             catch (Exception ex)
             {
-                throw new FailedToValidateException("Could not validate JWT token.", ex);
+                throw new FailedToValidateException("EasJWT failed to validate JWT token.", ex);
             }
         }
 

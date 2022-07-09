@@ -12,7 +12,6 @@ C:\Users\berka\source\repos\EasMe\EasMe.Core\obj\Release\net6.0\refint\EasMe.dll
 C:\Users\berka\source\repos\EasMe\EasMe.Core\obj\Release\net6.0\EasMe.pdb
 C:\Users\berka\source\repos\EasMe\EasMe.Core\obj\Release\net6.0\ref\EasMe.dll
 C:\Users\berka\source\repos\EasMe\EasMe\bin\Release\net6.0\requirements.txt
-C:\Users\berka\source\repos\EasMe\EasMe\bin\Release\net6.0\EasMe.dll.config
 C:\Users\berka\source\repos\EasMe\EasMe\bin\Release\net6.0\EasMe.deps.json
 C:\Users\berka\source\repos\EasMe\EasMe\bin\Release\net6.0\EasMe.dll
 C:\Users\berka\source\repos\EasMe\EasMe\bin\Release\net6.0\EasMe.pdb

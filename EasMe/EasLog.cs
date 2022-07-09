@@ -75,9 +75,9 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public void Error(object logMessage)
+        public void Error(object logMessage, Exception? ex = null)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, logMessage, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, logMessage, ex, false);
             WriteLog(model);
         }
 
@@ -92,9 +92,9 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public void Error(Error err, object logMessage)
+        public void Error(Error err, object logMessage,Exception? ex = null)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, err.ToString() + ": " + logMessage, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, err.ToString() + ": " + logMessage, ex, false);
             WriteLog(model);
         }
 
@@ -110,12 +110,12 @@ namespace EasMe
         /// <param name="RequestUrl"></param>
         /// <param name="Headers"></param>
         /// <returns></returns>
-        public void Warn(object logMessage)
+        public void Warn(object logMessage, Exception? ex = null)
         {
-
-            var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, logMessage, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, logMessage, ex, false);
             WriteLog(model);
         }
+
 
         /// <summary>
         /// Creates log with Exception.
@@ -211,6 +211,7 @@ namespace EasMe
         /// <returns></returns>
         public void Debug(object logMessage, Exception ex)
         {
+            var t = ex.GetType().Name;
             var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, ex, true);
             WriteLog(model);
 
