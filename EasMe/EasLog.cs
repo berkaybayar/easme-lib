@@ -1,4 +1,5 @@
 ﻿using EasMe.Exceptions;
+using EasMe.Models.LogModels;
 
 namespace EasMe
 {
@@ -45,7 +46,14 @@ namespace EasMe
                 WriteLog(model);
             }
         }
-
+        public void WriteAll(List<BulkLog> logs)
+        {
+            foreach (var log in logs)
+            {
+                var model = EasLogHelper.LogModelCreate(log.Severity, _LogSource, log.Log, log.Exception, false);
+                WriteLog(model);
+            }
+        }
         /// <summary>
         /// Creates log with Info severity and success state.
         /// </summary>
