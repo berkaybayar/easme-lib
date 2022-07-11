@@ -117,10 +117,7 @@ namespace EasMe
         /// <returns>EasMe.Models.WebLogModel</returns>
         internal static WebLogModel? WebModelCreate()
         {
-            if (EasHttpContext.Current == null)
-            {
-                return null;
-            }
+            if (EasHttpContext.Current == null) return null;
             try
             {
                 var log = new WebLogModel();

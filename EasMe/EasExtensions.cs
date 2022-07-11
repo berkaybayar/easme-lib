@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Common;
 using System.Xml;
@@ -118,19 +119,19 @@ namespace EasMe
         }
 
 
-        public static bool IsNull(this object target) => target.IsNull<object>();
+        public static bool IsNull(this object? target) => target.IsNull<object>();
 
-        public static bool IsNull<T>(this T target) => (object)target == DBNull.Value || (object)target == null;
+        public static bool IsNull<T>(this T? target) => (object)target == DBNull.Value || (object)target == null;
 
-        public static bool IsNotNull(this object target) => !target.IsNull();
+        public static bool IsNotNull(this object? target) => !target.IsNull();
 
-        public static bool IsNullOrEmpty(this string target) => string.IsNullOrEmpty(target);
+        public static bool IsNullOrEmpty(this string? target) => string.IsNullOrEmpty(target);
 
-        public static bool IsNullOrWhiteSpace(this string target) => string.IsNullOrWhiteSpace(target);
+        public static bool IsNullOrWhiteSpace(this string? target) => string.IsNullOrWhiteSpace(target);
 
-        public static bool IsNotNullOrEmpty(this string target) => !string.IsNullOrEmpty(target);
+        public static bool IsNotNullOrEmpty(this string? target) => !string.IsNullOrEmpty(target);
 
-        public static bool IsNotNullOrWhiteSpace(this string target) => !string.IsNullOrWhiteSpace(target);
+        public static bool IsNotNullOrWhiteSpace(this string? target) => !string.IsNullOrWhiteSpace(target);
 
         /// <summary>
         /// Truncates DbSet or Table, this action can not be undone.
@@ -269,7 +270,6 @@ namespace EasMe
                 throw new FailedToParseException("XMLMarketManager.Init error, failed to parse Xml.", ex);
             }
         }
-
         /// <summary>
         /// Deserializes given IEnumerable of XElement to T type object.
         /// </summary>
@@ -280,17 +280,61 @@ namespace EasMe
         public static List<T> XmlDeserialize<T>(this IEnumerable<XElement> xElements)
         {
             var list = new List<T>();
-            foreach (var xelemet in xElements)
+            foreach (var element in xElements)
             {
-                var item = xelemet.XmlDeserialize<T>();
-                if (item != null)
-                {
-                    list.Add(item);
-                }
+                var item = element.XmlDeserialize<T>();
+                if (item != null) list.Add(item);
             }
             return list;
         }
+        
+        /// <summary>
+        /// Deserializes given IEnumerable of XElement to T type object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xElements"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        public static async Task<List<T>> XmlDeserializeAsync<T>(this IEnumerable<XElement> xElements)
+        {
+            var list = new List<T?>();
+            var tasks = new List<Task<T?>>();
+            
+            foreach (var element in xElements)
+            {
+                tasks.Add(Task.Run(() =>
+                {
+                    var item = element.XmlDeserialize<T>();
+                    
+                    return item;
 
+                }));
+            }
+            var results = await Task.WhenAll(tasks);
+            list.AddRange(results);
+            list.RemoveAll(x => x == null);
+            return list;
+        }
+        /// <summary>
+        /// Deserializes given IEnumerable of XElement to T type object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xElements"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        public static HashSet<T> XmlDeserializeParallel<T>(this IEnumerable<XElement> xElements)
+        {
+            var array = new HashSet<T>();
+
+            var result = Parallel.ForEach(xElements, element =>
+            {
+                var item = element.XmlDeserialize<T>();
+                if (item != null) array.Add(item);
+            }); 
+            check:
+            if (result.IsCompleted) return array;
+            goto check;
+        }
         /// <summary>
         /// Converts List of T model to DataTable
         /// </summary>
@@ -370,6 +414,14 @@ namespace EasMe
         public static string TrimAbsolute(this string str)
         {
             return str.Replace(" ", "");
+        }
+
+        public static bool ValidateModel<T>(this T model)
+        {
+            var context = new ValidationContext(model);
+            var results = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(model, context, results, true);
+            return isValid;
         }
 
     }

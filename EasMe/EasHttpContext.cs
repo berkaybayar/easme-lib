@@ -8,20 +8,23 @@
         public ControllerClass(IHttpContextAccessor accessor)
         {
             EasHttpContext.Configure(accessor);
+            OR
+            IEasLog.ConfigureHttpContext(accessor);
+    
         }
      */
-    public static class EasHttpContext
+    internal static class EasHttpContext
     {
         private static Microsoft.AspNetCore.Http.IHttpContextAccessor? m_httpContextAccessor;
 
 
-        public static void Configure(Microsoft.AspNetCore.Http.IHttpContextAccessor? httpContextAccessor)
+        internal static void Configure(Microsoft.AspNetCore.Http.IHttpContextAccessor? httpContextAccessor)
         {
             m_httpContextAccessor = httpContextAccessor;
         }
 
 
-        public static Microsoft.AspNetCore.Http.HttpContext? Current
+        internal static Microsoft.AspNetCore.Http.HttpContext? Current
         {
             get
             {

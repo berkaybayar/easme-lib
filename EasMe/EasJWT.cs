@@ -26,10 +26,8 @@ namespace EasMe
             if (!string.IsNullOrEmpty(Audience)) ValidateAudience = true;
             Secret = Encoding.ASCII.GetBytes(secret);
         }
-       public byte[] GetSecretByteArray()
-        {
-            return Secret;
-        }
+        public byte[] GetSecretByteArray() => Secret;
+        
         /// <summary>
         /// Generates a JWT token by ClaimsIdentity.
         /// </summary>
@@ -89,6 +87,31 @@ namespace EasMe
             }
         }
 
+        public static ClaimsIdentity ConvertModelToClaimsIdentity<T>(T Model)
+        {
+            var claimsIdentity = new ClaimsIdentity();
+            foreach (var property in Model.GetType().GetProperties())
+            {
+                if (property == null) continue;
+                var value = property.GetValue(Model);
+                if (value == null) continue;
+                claimsIdentity.AddClaim(new Claim(property.Name, value.ToString()));
+            }
+            return claimsIdentity;
+
+        }
+        public static T ConvertClaimsIdentityToModel<T>(ClaimsIdentity claimsIdentity)
+        {
+            var model = Activator.CreateInstance<T>();
+            foreach (var property in model.GetType().GetProperties())
+            {
+                if (property == null) continue;
+                var value = claimsIdentity.FindFirst(property.Name);
+                if (value == null) continue;
+                property.SetValue(model, value.Value);
+            }
+            return model;
+        }
 
     }
 }
