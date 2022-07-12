@@ -235,7 +235,8 @@ namespace EasMe
         {
             try
             {
-                string query = $@"BACKUP DATABASE {DatabaseName} TO DISK = '{BackupFolderPath}\{DatabaseName}-{DateTime.Now: H-mm-ss dd-MM-yyyy}.bak'";
+                if (!Directory.Exists(BackupFolderPath)) Directory.CreateDirectory(BackupFolderPath);
+                string query = $@"BACKUP DATABASE {DatabaseName} TO DISK = '{BackupFolderPath}\{DatabaseName}.bak'";
                 var cmd = new SqlCommand(query);
                 ExecNonQuery(Connection, cmd, Timeout);
             }
