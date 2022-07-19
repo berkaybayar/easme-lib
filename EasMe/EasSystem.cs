@@ -1,4 +1,5 @@
 ﻿using EasMe.Exceptions;
+using EasMe.Extensions;
 using EasMe.Models.SystemModels;
 using Microsoft.Win32;
 using System.Diagnostics;

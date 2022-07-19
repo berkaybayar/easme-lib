@@ -1,4 +1,5 @@
-﻿namespace EasMe
+﻿
+namespace EasMe
 {
     public class EasException : Exception
     {

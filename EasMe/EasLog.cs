@@ -1,4 +1,7 @@
-﻿using EasMe.Exceptions;
+﻿
+using EasMe.Exceptions;
+using EasMe.Extensions;
+using EasMe.InternalUtils;
 using EasMe.Models.LogModels;
 
 namespace EasMe
@@ -37,8 +40,8 @@ namespace EasMe
             var model = EasLogHelper.LogModelCreate(severity, _LogSource, log, null, false);
             WriteLog(model);
         }
-
-        public void WriteAll(Severity severity, object[] logArray)
+        
+        public void WriteAll(Severity severity, IEnumerable<string> logArray)
         {
             foreach (var log in logArray)
             {

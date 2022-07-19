@@ -39,7 +39,7 @@ namespace EasMe
         /// <param name="Body"></param>
         /// <param name="SendTo"></param>
         /// <param name="Subject"></param>
-        public void SendMail(string Body, string SendTo, string Subject)
+        public void SendMail(string Subject, string Body, string SendTo )
         {
             try
             {
@@ -64,8 +64,6 @@ namespace EasMe
             {
                 throw new EmailSendFailedException("Failed to send email.", ex);
             }
-
-
 
         }
     }

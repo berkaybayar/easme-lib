@@ -1,4 +1,5 @@
 ﻿using EasMe.Exceptions;
+using System.Data.Common;
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
@@ -189,6 +190,26 @@ namespace EasMe
         public static bool IsValidURL(this string url)
         {
             return Uri.IsWellFormedUriString(url, UriKind.Absolute);
+        }
+
+        /// <summary>
+        /// Returns true if given string is a valid database connection string.
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static bool IsValidConnectionString(this string yourConn)
+        {
+            try
+            {
+                DbConnectionStringBuilder csb = new();
+                csb.ConnectionString = yourConn;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 

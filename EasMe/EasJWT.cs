@@ -26,7 +26,7 @@ namespace EasMe
             if (!string.IsNullOrEmpty(Audience)) ValidateAudience = true;
             Secret = Encoding.ASCII.GetBytes(secret);
         }
-        public byte[] GetSecretByteArray() => Secret;
+        public byte[]? GetSecretByteArray() => Secret;
         
         /// <summary>
         /// Generates a JWT token by ClaimsIdentity.
@@ -57,7 +57,35 @@ namespace EasMe
             }
 
         }
+        /// <summary>
+        /// Generates a JWT token by claims as IDictionary.
+        /// </summary>
+        /// <param name="claimsIdentity"></param>
+        /// <param name="expireMinutes"></param>
+        /// <returns></returns>
+        public string GenerateJWTToken(IDictionary<string,object?> claims, int expireMinutes)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Claims = claims,
+                    Expires = DateTime.Now.AddMinutes(expireMinutes),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
+                    Issuer = Issuer,
+                    Audience = Audience
 
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                return tokenHandler.WriteToken(token);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToCreateException("EasJWT failed to create JWT token.", ex);
+            }
+
+        }
         /// <summary>
         /// Validates JWT token and returns ClaimsPrincipal.
         /// </summary>
@@ -87,31 +115,6 @@ namespace EasMe
             }
         }
 
-        public static ClaimsIdentity ConvertModelToClaimsIdentity<T>(T Model)
-        {
-            var claimsIdentity = new ClaimsIdentity();
-            foreach (var property in Model.GetType().GetProperties())
-            {
-                if (property == null) continue;
-                var value = property.GetValue(Model);
-                if (value == null) continue;
-                claimsIdentity.AddClaim(new Claim(property.Name, value.ToString()));
-            }
-            return claimsIdentity;
-
-        }
-        public static T ConvertClaimsIdentityToModel<T>(ClaimsIdentity claimsIdentity)
-        {
-            var model = Activator.CreateInstance<T>();
-            foreach (var property in model.GetType().GetProperties())
-            {
-                if (property == null) continue;
-                var value = claimsIdentity.FindFirst(property.Name);
-                if (value == null) continue;
-                property.SetValue(model, value.Value);
-            }
-            return model;
-        }
 
     }
 }
