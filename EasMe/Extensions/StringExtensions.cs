@@ -1,11 +1,6 @@
 ﻿using EasMe.Exceptions;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -127,7 +122,7 @@ namespace EasMe.Extensions
         public static bool IsNotNullOrEmpty(this string? target) => !string.IsNullOrEmpty(target);
 
         public static bool IsNotNullOrWhiteSpace(this string? target) => !string.IsNullOrWhiteSpace(target);
-        
+
         /// <summary>
         /// Converts string to Int32, returns parsed value if success.
         /// </summary>

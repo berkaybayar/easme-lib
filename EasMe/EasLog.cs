@@ -40,7 +40,7 @@ namespace EasMe
             var model = EasLogHelper.LogModelCreate(severity, _LogSource, log, null, false);
             WriteLog(model);
         }
-        
+
         public void WriteAll(Severity severity, IEnumerable<string> logArray)
         {
             foreach (var log in logArray)
@@ -103,7 +103,7 @@ namespace EasMe
         /// <param name="Headers"></param>
         /// <returns></returns>
 
-        public void Error(Error err, object logMessage,Exception? ex = null)
+        public void Error(Error err, object logMessage, Exception? ex = null)
         {
             var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, err.ToString() + ": " + logMessage, ex, false);
             WriteLog(model);
@@ -141,7 +141,7 @@ namespace EasMe
         {
             var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, ex.Message, ex, false);
             WriteLog(model);
-            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
+            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace EasMe
         {
             var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, logMessage, ex, false);
             WriteLog(model);
-            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
+            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
         }
 
 
@@ -192,7 +192,7 @@ namespace EasMe
         {
             var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, logMessage, ex, false);
             WriteLog(model);
-            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.EXCEPTION, ex.Message, ex);
+            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace EasMe
         public void WriteLog(object obj)
         {
             if (IEasLog.Config.DontLog) return;
-            if (obj == null) throw new EasException(EasMe.Error.NULL_REFERENCE, "Log content is null");
+            if (obj == null) throw new EasException(EasMe.Error.NullReference, "Log content is null");
             try
             {
                 var serialized = obj.JsonSerialize();

@@ -4,7 +4,7 @@
     {
         public FailedToCheck(string message, Exception? Inner = null) : base(message, Inner)
         {
-            
+
         }
         public FailedToCheck(string message) : base(message)
         {

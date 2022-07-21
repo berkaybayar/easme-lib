@@ -17,7 +17,7 @@ namespace EasMe
         private static string? Issuer { get; set; }
         private static string? Audience { get; set; }
         private static byte[]? Secret { get; set; }
-        
+
         public EasJWT(string secret, string? issuer = null, string? audience = null)
         {
             Issuer = issuer;
@@ -27,7 +27,7 @@ namespace EasMe
             Secret = Encoding.ASCII.GetBytes(secret);
         }
         public byte[]? GetSecretByteArray() => Secret;
-        
+
         /// <summary>
         /// Generates a JWT token by ClaimsIdentity.
         /// </summary>
@@ -63,7 +63,7 @@ namespace EasMe
         /// <param name="claimsIdentity"></param>
         /// <param name="expireMinutes"></param>
         /// <returns></returns>
-        public string GenerateJWTToken(IDictionary<string,object?> claims, int expireMinutes)
+        public string GenerateJWTToken(IDictionary<string, object?> claims, int expireMinutes)
         {
             try
             {

@@ -1,10 +1,5 @@
 ﻿using EasMe.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasMe.Extensions
 {
@@ -17,7 +12,7 @@ namespace EasMe.Extensions
         /// <param name="Model"></param>
         /// <returns></returns>
         /// <exception cref="FailedToConvertException"></exception>
-        public static ClaimsIdentity ConvertModelToClaimsIdentity<T>(T Model)
+        public static ClaimsIdentity ToClaimsIdentity<T>(this T Model)
         {
             try
             {
@@ -45,7 +40,7 @@ namespace EasMe.Extensions
         /// <param name="ExceptionMessage"></param>
         /// <returns></returns>
         /// <exception cref="FailedToConvertException"></exception>
-        public static ClaimsIdentity ConvertModelToClaimsIdentity<T>(T Model, out List<Exception> ExceptionMessages)
+        public static ClaimsIdentity ToClaimsIdentity<T>(this T Model, out List<Exception> ExceptionMessages)
         {
             ExceptionMessages = new();
             var claimsIdentity = new ClaimsIdentity();
@@ -70,7 +65,7 @@ namespace EasMe.Extensions
 
 
         }
-        public static T ConvertClaimsIdentityToModel<T>(ClaimsIdentity claimsIdentity, out List<Exception> ExceptionMessages)
+        public static T ToModel<T>(this ClaimsIdentity claimsIdentity, out List<Exception> ExceptionMessages)
         {
 
             ExceptionMessages = new();
@@ -96,7 +91,7 @@ namespace EasMe.Extensions
 
         }
 
-        public static T ConvertClaimsIdentityToModel<T>(ClaimsIdentity claimsIdentity)
+        public static T ToModel<T>(this ClaimsIdentity claimsIdentity)
         {
             try
             {
