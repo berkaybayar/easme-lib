@@ -45,6 +45,7 @@ namespace EasMe.Extensions
             return list;
         }
 
+
         /// <summary>
         /// Deserializes given IEnumerable of XElement to T type object.
         /// </summary>
@@ -92,5 +93,6 @@ namespace EasMe.Extensions
             if (result.IsCompleted) return array;
             goto check;
         }
+
     }
 }

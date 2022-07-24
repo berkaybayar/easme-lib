@@ -30,13 +30,14 @@ namespace EasMe.Extensions
             }
         }
         /// <summary>
-        /// Serializes given object to json string. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.
+        /// Serializes given object to json string. Returns "null" string if object is null
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static string JsonSerialize(this object obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
+        public static string JsonSerialize(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
+            if (obj == null) return "null";
             return JsonConvert.SerializeObject(obj, formatting);
         }
 
