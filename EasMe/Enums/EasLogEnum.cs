@@ -64,7 +64,8 @@
         Offline,
         Disconnected,
         NoOnlineNetwork,
-
+        NotSet,
+        
         //Sql Errors
         SqlError,
         SqlNotFound,
@@ -118,7 +119,9 @@
         FailedToCopy,
         FailedToCut,
         FailedToPaste,
-
+        FailedToSave,
+        FailedToRemove,
+        FailedToBlock,
 
         //Other
         TooBigValue,
@@ -130,6 +133,9 @@
         WrongUsername,
         WrongEmail,
 
+        Blocked,
+        AlreadyBlocked,
+        
 
 
 

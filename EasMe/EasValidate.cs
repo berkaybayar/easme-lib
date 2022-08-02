@@ -118,7 +118,7 @@ namespace EasMe
         /// <param name="minNumberCount"></param>
         /// <param name="minSpecialCharCount"></param>
         /// <returns></returns>
-        public static bool IsStrongPassword(this string password, string allowedChars, int minLength = 6, int maxLength = 16, int minUpperCaseCount = 1, int minLowerCaseCount = 1, int minNumberCount = 1, int minSpecialCharCount = 1)
+        public static bool IsStrongPassword(this string password, string allowedChars, byte minLength = 6, byte maxLength = 16, byte minUpperCaseCount = 1, byte minLowerCaseCount = 1, byte minNumberCount = 1, byte minSpecialCharCount = 1)
         {
             if (password.Length < minLength || password.Length > maxLength)
                 return false;

@@ -224,7 +224,7 @@ namespace EasMe
         }
 
         /// <summary>
-        /// Executes a SQL query to backup database to the given folder path.
+        /// Executes a SQL query to backup database to the given folder path. Created directory if not exists
         /// </summary>
         /// <param name="Connection"></param>
         /// <param name="DatabaseName"></param>

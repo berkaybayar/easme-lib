@@ -19,12 +19,12 @@ namespace EasMe.Extensions
             {
                 StringReader reader = new(xElement.ToString().Replace("True", "true").Replace("False", "false"));
                 XmlSerializer xmlSerializer = new(typeof(T));
-                var item = (T)xmlSerializer.Deserialize(reader);
+                var item = (T?)xmlSerializer.Deserialize(reader);
                 return item;
             }
             catch (Exception ex)
             {
-                throw new FailedToParseException("XMLMarketManager.Init error, failed to parse Xml.", ex);
+                throw new FailedToDeserializeException("Deserialization of given XElement is failed. Check inner exception for details.", ex);
             }
         }
         /// <summary>
@@ -37,62 +37,22 @@ namespace EasMe.Extensions
         public static List<T> XmlDeserialize<T>(this IEnumerable<XElement> xElements)
         {
             var list = new List<T>();
-            foreach (var element in xElements)
+            Parallel.ForEach(xElements, el =>
             {
-                var item = element.XmlDeserialize<T>();
-                if (item != null) list.Add(item);
-            }
-            return list;
-        }
-
-
-        /// <summary>
-        /// Deserializes given IEnumerable of XElement to T type object.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="xElements"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static async Task<List<T>> XmlDeserializeAsync<T>(this IEnumerable<XElement> xElements)
-        {
-            var list = new List<T?>();
-            var tasks = new List<Task<T?>>();
-
-            foreach (var element in xElements)
-            {
-                tasks.Add(Task.Run(() =>
+                var item = el.XmlDeserialize<T>();
+                if (item != null) 
                 {
-                    var item = element.XmlDeserialize<T>();
+                    lock (list)
+                    {
+                        list.Add(item);
+                    }
+                }
 
-                    return item;
-
-                }));
-            }
-            var results = await Task.WhenAll(tasks);
-            list.AddRange(results);
-            list.RemoveAll(x => x == null);
+            });
             return list;
         }
-        /// <summary>
-        /// Deserializes given IEnumerable of XElement to T type object.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="xElements"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static HashSet<T> XmlDeserializeParallel<T>(this IEnumerable<XElement> xElements)
-        {
-            var array = new HashSet<T>();
 
-            var result = Parallel.ForEach(xElements, element =>
-            {
-                var item = element.XmlDeserialize<T>();
-                if (item != null) array.Add(item);
-            });
-        check:
-            if (result.IsCompleted) return array;
-            goto check;
-        }
+
 
     }
 }

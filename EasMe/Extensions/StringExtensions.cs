@@ -170,9 +170,26 @@ namespace EasMe.Extensions
             if (string.IsNullOrEmpty(value)) return false;
             if (value.ToLower().Trim() == "false") return false;
             if (value.ToLower().Trim() == "0") return false;
-            if (value.ToLower().Trim() == "true") return true;
-            if (value.ToLower().Trim() == "1") return true;
             return true;
+        }
+        /// <summary>
+        /// Returns false if string is equalt to false or null or empty. Returns true otherwise.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool ToBoolean(this string? value, byte val)
+        {
+            switch (val)
+            {
+                case 0:
+                    return value.ToBoolean();
+                case 1:
+                    if (string.IsNullOrEmpty(value)) return false;
+                    return true;
+                default:
+                    return value.ToBoolean();
+            }
+           
         }
 
         /// <summary>
