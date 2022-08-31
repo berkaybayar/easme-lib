@@ -15,17 +15,10 @@ namespace EasMe.Extensions
         /// <exception cref="EasException"></exception>
         public static T? XmlDeserialize<T>(this XElement xElement)
         {
-            try
-            {
-                StringReader reader = new(xElement.ToString().Replace("True", "true").Replace("False", "false"));
-                XmlSerializer xmlSerializer = new(typeof(T));
-                var item = (T?)xmlSerializer.Deserialize(reader);
-                return item;
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToDeserializeException("Deserialization of given XElement is failed. Check inner exception for details.", ex);
-            }
+            StringReader reader = new(xElement.ToString().Replace("True", "true").Replace("False", "false"));
+            XmlSerializer xmlSerializer = new(typeof(T));
+            var item = (T?)xmlSerializer.Deserialize(reader);
+            return item;
         }
         /// <summary>
         /// Deserializes given IEnumerable of XElement to T type object.

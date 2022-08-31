@@ -216,5 +216,39 @@ namespace EasMe.Extensions
                 return string.Empty;
             }
         }
+        /// <summary>
+        /// Capitalizes first char in given string and returns new string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string FirstToUpper(this string str) => char.ToUpper(str[0]) + str.Substring(1);
+        /// <summary>
+        /// Converts first char in given string to lowercase and returns new string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string FirstToLower(this string str) => char.ToLower(str[0]) + str.Substring(1);
+
+        /// <summary>
+        /// Capitalizes first char in given string and returns new string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string FirstToUpperRestToLower(this string str) => char.ToUpper(str[0]) + str.Substring(1).ToLower();
+
+        /// <summary>
+        /// Capitalizes first char in given string and returns new string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string LastToUpper(this string str) => char.ToUpper(str[^1]) + str[..^2];
+
+        /// <summary>
+        /// Converts last char in given string to lowercase and returns new string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string LastToLower(this string str) => char.ToLower(str[^1]) + str[..^2];
+        
     }
 }
