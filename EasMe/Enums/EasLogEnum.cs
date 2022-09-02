@@ -65,7 +65,7 @@
         Disconnected,
         NoOnlineNetwork,
         NotSet,
-        
+
         //Sql Errors
         SqlError,
         SqlNotFound,
@@ -135,7 +135,7 @@
 
         Blocked,
         AlreadyBlocked,
-        
+
 
 
 

@@ -1,5 +1,4 @@
-﻿using EasMe.Exceptions;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace EasMe.Extensions
@@ -33,7 +32,7 @@ namespace EasMe.Extensions
             Parallel.ForEach(xElements, el =>
             {
                 var item = el.XmlDeserialize<T>();
-                if (item != null) 
+                if (item != null)
                 {
                     lock (list)
                     {

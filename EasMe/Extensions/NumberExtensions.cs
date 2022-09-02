@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EasMe.Extensions
+﻿namespace EasMe.Extensions
 {
     public static class NumberExtensions
     {
@@ -20,7 +14,7 @@ namespace EasMe.Extensions
         public static bool IsInRange(this long value, long checkValue, long belowAndAboveCheck) => value > checkValue - belowAndAboveCheck && value < checkValue + belowAndAboveCheck;
         public static bool IsInRange(this decimal value, decimal checkValue, decimal belowAndAboveCheck) => value > checkValue - belowAndAboveCheck && value < checkValue + belowAndAboveCheck;
         public static bool IsInRange(this float value, float checkValue, float belowAndAboveCheck) => value > checkValue - belowAndAboveCheck && value < checkValue + belowAndAboveCheck;
-        
-        
+
+
     }
 }

@@ -189,7 +189,7 @@ namespace EasMe.Extensions
                 default:
                     return value.ToBoolean();
             }
-           
+
         }
 
         /// <summary>
@@ -249,6 +249,6 @@ namespace EasMe.Extensions
         /// <param name="str"></param>
         /// <returns></returns>
         public static string LastToLower(this string str) => char.ToLower(str[^1]) + str[..^2];
-        
+
     }
 }
