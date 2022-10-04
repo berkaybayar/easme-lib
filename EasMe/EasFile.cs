@@ -118,7 +118,7 @@ namespace EasMe
         /// <param name="destPath"></param>
         /// <param name="overwrite"></param>
         /// <param name="isLoggingEnabled"></param>
-        public static void CopyAll(string sourcePath, string destPath, bool overwrite, bool isLoggingEnabled = true)
+        public static void CopyAll(string sourcePath, string destPath)
         {
 
             if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
@@ -128,42 +128,18 @@ namespace EasMe
                 string[] subdirs = Directory.GetDirectories(sourcePath);
                 Parallel.ForEach(files, file =>
                 {
-                    try
-                    {
-                        File.Copy(file, destPath + "\\" + Path.GetFileName(file), true);
-                        if (isLoggingEnabled) SelfLog.Logger.Info("File copied: " + file);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (isLoggingEnabled) SelfLog.Logger.Exception("Error while copying file => Path: " + file, ex);
-                    }
+                    File.Copy(file, destPath + "\\" + Path.GetFileName(file), true);
                 });
                 Parallel.ForEach(subdirs, subdir =>
                 {
-                    try
-                    {
-                        CopyAll(subdir, destPath + "\\" + Path.GetFileName(subdir), overwrite, isLoggingEnabled);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (isLoggingEnabled) SelfLog.Logger.Exception("Error while copying file => Source:" + sourcePath + " Destination: " + destPath, ex);
-                    }
+                    CopyAll(subdir, destPath + "\\" + Path.GetFileName(subdir));
 
                 });
 
             }
             else if (File.Exists(sourcePath))
             {
-                try
-                {
-                    File.Copy(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
-                    if (isLoggingEnabled) SelfLog.Logger.Info("File copying => Source: " + sourcePath + " Destination: " + destPath);
-                }
-                catch (Exception ex)
-                {
-                    if (isLoggingEnabled) SelfLog.Logger.Exception("Error while copying file => Source:" + sourcePath + " Destination: " + destPath, ex);
-                }
-
+                File.Copy(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
             }
             else
             {

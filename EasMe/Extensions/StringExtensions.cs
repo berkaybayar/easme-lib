@@ -1,6 +1,7 @@
 ﻿using EasMe.Exceptions;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -16,6 +17,7 @@ namespace EasMe.Extensions
           "yes",
           "y"
         };
+        public static byte[] ConvertToByteArray(this string yourStr) => Encoding.UTF8.GetBytes(yourStr);
         /// <summary>
         /// Converts string to Type T.
         /// </summary>
@@ -249,6 +251,17 @@ namespace EasMe.Extensions
         /// <param name="str"></param>
         /// <returns></returns>
         public static string LastToLower(this string str) => char.ToLower(str[^1]) + str[..^2];
+
+        /// <summary>
+        /// Truncates the given string with the given value of max char and adds "..." to end
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="maxChars"></param>
+        /// <returns></returns>
+        public static string TruncateString(this string value, int maxChars)
+        {
+            return value.Length <= maxChars ? value : value.Substring(0, maxChars) + "...";
+        }
 
     }
 }

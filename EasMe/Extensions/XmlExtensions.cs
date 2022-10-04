@@ -43,8 +43,43 @@ namespace EasMe.Extensions
             });
             return list;
         }
+        public static string ToXML<T>(this T t)
+        {
+            using (var stringwriter = new StringWriter())
+            {
+                var serializer = new XmlSerializer(t.GetType());
+                serializer.Serialize(stringwriter, t);
+                return stringwriter.ToString();
+            }
+
+        }
+        public static XElement? ToXML<T>(this T t, string elementName, bool asAtrribute = false)
+        {
+
+            var docElement = new XElement(elementName);
+            var type = t?.GetType();
+            var properties = type?.GetProperties();
+            if (properties == null) return default;
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(t);
+                if (value != null)
+                {
+                    if (asAtrribute)
+                    {
+                        var element = new XAttribute(property.Name, value);
+                        docElement.Add(element);
+                    }
+                    else
+                    {
+                        var element = new XElement(property.Name, value);
+                        docElement.Add(element);
+                    }
 
 
-
+                }
+            }
+            return docElement;
+        }
     }
 }

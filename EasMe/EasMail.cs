@@ -39,7 +39,7 @@ namespace EasMe
         /// <param name="Body"></param>
         /// <param name="SendTo"></param>
         /// <param name="Subject"></param>
-        public void SendMail(string Subject, string Body, string SendTo)
+        public void SendMail(string Subject, string Body, string SendTo,bool isBodyHtml = false)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace EasMe
 
                 };
                 using var message = new MailMessage(fromAddress, toAddress) { Subject = Subject, Body = Body };
-                message.IsBodyHtml = true;
+                message.IsBodyHtml = isBodyHtml;
                 smtp.Send(message);
 
             }

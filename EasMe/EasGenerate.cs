@@ -12,12 +12,12 @@ namespace EasMe
         /// <returns></returns>
         static string GenerateString(string chars, int length)
         {
-            if (length > 1024) throw new TooBigValueException("Give length to create random string is too big. Max allowed length value is 1024.");
+            if (length > 1024) throw new TooBigValueException("Given length to create random string is too big. Max allowed length value is 1024.");
+            if (length < 1) throw new TooSmallValueException("Given length to create random string is too small. Min allowed length value is 1.");
             var random = new Random();
             string resultToken = new(
                Enumerable.Repeat(chars, length)
                .Select(token => token[random.Next(token.Length)]).ToArray());
-
             return resultToken;
         }
         /// <summary>
@@ -27,10 +27,10 @@ namespace EasMe
         /// <param name="allowedChars"></param>
         /// <param name="onlyLetter"></param>
         /// <returns></returns>
-        public static string GenerateRandomString(int length, string allowedChars = "", bool onlyLetter = false)
+        public static string GenerateRandomString(int length, bool onlyLetter = false, string allowedChars = "")
         {
             string lowerAll = "abcdefghijklmnoprstuvwxyz";
-            string upperAll = lowerAll.ToUpper();
+            string upperAll = "ABCDEFGHIJKLMNOPRSTUVWXYZ";
             string digits = "0123456789";
             string allChars;
             if (onlyLetter)
@@ -46,18 +46,9 @@ namespace EasMe
 
             }
         }
-        /// <summary>
-        /// Generates and returns random string that only contains letters. Max allowed length value is 1024.
-        /// </summary>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        public static string GenerateRandomLetters(int length)
-        {
-            string lowerAll = "abcdefghijklmnoprstuvwxyz";
-            string upperAll = lowerAll.ToUpper();
-            string allChars = lowerAll + upperAll;
-            return GenerateString(allChars, length);
-        }
+        public static string GenerateRandomString(int length, bool onlyLetter = false) => GenerateRandomString(length, onlyLetter, "");
+        public static string GenerateRandomString(int length) => GenerateRandomString(length, false, "");
+
         /// <summary>
         /// Generates and returns random string that only contains digits. Max allowed lengthvalue is 1024.
         /// </summary>

@@ -604,7 +604,7 @@ namespace EasMe
             List<string> newList = new();
             foreach (var item in list)
             {
-                var hashed = EasHash.BuildString(EasHash.MD5Hash(item)).ToUpper();
+                var hashed = EasHash.MD5Hash(item).BuildString().ToUpper();
                 newList.Add(hashed);
             }
 
