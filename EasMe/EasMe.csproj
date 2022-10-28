@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<Configurations>Debug;Release;TESTSERVER;REAL_RLS;TEST_RLS</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

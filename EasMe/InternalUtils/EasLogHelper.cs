@@ -76,9 +76,7 @@ namespace EasMe.InternalUtils
             //    throw new NotInitializedException("EasLog.Create() must be called before any other method.");
             try
             {
-
                 var logModel = new LogModel();
-
                 logModel.LogLevel = severity.ToString();
                 logModel.Source = source;
                 logModel.Log = log;
@@ -95,7 +93,8 @@ namespace EasMe.InternalUtils
                 }
                 if (exception != null)
                 {
-                    logModel.Exception = exception;
+                    if (IEasLog.Config.ExceptionHideSensitiveInfo) exception = new Exception(exception.Message);
+                    else logModel.Exception = exception;
                     logModel.LogType = (int)LogType.EXCEPTION;
                 }
                 return logModel;
@@ -136,36 +135,5 @@ namespace EasMe.InternalUtils
 
         }
 
-        ///// <summary>
-        ///// Converts System.Exception model to custom Exception model.
-        ///// </summary>
-        ///// <param name="ex"></param>
-        ///// <param name="ForceDebug"></param>
-        ///// <returns></returns>
-        ///// <exception cref="EasException"></exception>
-        //internal static ErrorLogModel ConvertExceptionToLogModel(Exception ex, bool ForceDebug = false)
-        //{
-        //    if (EasLog.Configuration == null) return new ErrorLogModel();
-        //    var model = new ErrorLogModel();
-        //    try
-        //    {
-        //        model.ExceptionMessage = ex.Message;
-        //        if (EasLog.Configuration.DebugMode || ForceDebug)
-        //        {
-        //            model.ExceptionSource = ex.Source;
-        //            model.ExceptionStackTrace = ex.StackTrace;
-        //            var inner = ex.InnerException;
-        //            if (inner != null)
-        //                model.ExceptionInner = inner.ToString();
-        //        }
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new FailedToConvertException("Failed to convert System.Exception model to Custom Exception model.", e);
-        //    }
-        //    return model;
-
-        //}
     }
 }

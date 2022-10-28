@@ -207,8 +207,10 @@ namespace EasMe
         /// <returns></returns>
         public void Debug(object logMessage)
         {
+#if DEBUG
             var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, null, true);
             WriteLog(model);
+#endif
         }
 
         /// <summary>
@@ -222,10 +224,10 @@ namespace EasMe
         /// <returns></returns>
         public void Debug(object logMessage, Exception ex)
         {
-            var t = ex.GetType().Name;
+#if DEBUG
             var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, ex, true);
             WriteLog(model);
-
+#endif
         }
         /// <summary>
         /// Creates log with given object. If its not string it will log serialized object.

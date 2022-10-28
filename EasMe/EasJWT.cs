@@ -1,4 +1,5 @@
 ﻿using EasMe.Exceptions;
+using EasMe.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -11,7 +12,7 @@ namespace EasMe
     public class EasJWT
     {
 
-        private readonly static JwtSecurityTokenHandler TokenHandler = new();
+        private readonly JwtSecurityTokenHandler TokenHandler = new();
         private static bool ValidateIssuer { get; set; } = false;
         private static bool ValidateAudience { get; set; } = false;
         private static string? Issuer { get; set; }
@@ -26,7 +27,6 @@ namespace EasMe
             if (!string.IsNullOrEmpty(Audience)) ValidateAudience = true;
             Secret = Encoding.ASCII.GetBytes(secret);
         }
-        public byte[]? GetSecretByteArray() => Secret;
 
         /// <summary>
         /// Generates a JWT token by ClaimsIdentity.
@@ -84,7 +84,6 @@ namespace EasMe
             {
                 throw new FailedToCreateException("EasJWT failed to create JWT token.", ex);
             }
-
         }
         /// <summary>
         /// Validates JWT token and returns ClaimsPrincipal.

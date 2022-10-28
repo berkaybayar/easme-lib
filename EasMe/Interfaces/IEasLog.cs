@@ -35,7 +35,6 @@ namespace EasMe
         /// <param name="config"></param>
         public static void LoadConfig(EasLogConfiguration config)
         {
-            SelfLog.Logger.Info("Logger config loaded: " + config.JsonSerialize());
             Config = config;
         }
 

@@ -117,6 +117,7 @@ namespace EasMe.Extensions
             }
 
         }
+        public static string FormatString(this string str, params object[] args) => string.Format(str, args);
         public static bool IsNullOrEmpty(this string? target) => string.IsNullOrEmpty(target);
 
         public static bool IsNullOrWhiteSpace(this string? target) => string.IsNullOrWhiteSpace(target);
@@ -159,7 +160,8 @@ namespace EasMe.Extensions
         /// <returns></returns>
         public static string TrimAbsolute(this string str)
         {
-            return str.Replace(" ", "");
+            var res = str.Replace(" ", "");
+            return res;
         }
 
         /// <summary>
@@ -260,7 +262,7 @@ namespace EasMe.Extensions
         /// <returns></returns>
         public static string TruncateString(this string value, int maxChars)
         {
-            return value.Length <= maxChars ? value : value.Substring(0, maxChars) + "...";
+            return value.Length <= maxChars ? value : value[..maxChars] + "...";
         }
 
     }

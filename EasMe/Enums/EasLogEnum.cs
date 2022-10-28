@@ -15,7 +15,8 @@
         ERROR = 3,
         DEBUG = 4,
         EXCEPTION = 5,
-        FATAL = 6
+        FATAL = 6,
+        TRACE = 7
     }
     public enum Error
     {
@@ -136,7 +137,10 @@
         Blocked,
         AlreadyBlocked,
 
-
+        InvalidOperation,
+        FailedToRun,
+        MaxValueReached,
+        MinValueReached,
 
 
     }

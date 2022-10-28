@@ -10,16 +10,6 @@
         public string LogFolderPath { get; set; } = ".\\Logs";
 
         /// <summary>
-        /// Max log file size, after this value is being reached creates new log file, default value is "10-MB".
-        /// </summary>
-        //public string MaxLogFileSize { get; set; } = "10-MB";
-
-        /// <summary>
-        /// Max log file count, after this value is being reached it will start deleting oldest log file. Default value is 10.
-        /// </summary>
-        //public int MaxLogFileCount { get; set; } = 10;
-
-        /// <summary>
         /// Formatting DateTime in log file name, default value is "MM.dd.yyyy". This is added after LogFileName variable.
         /// </summary>
         public string DateFormatString { get; set; } = "MM.dd.yyyy";
@@ -59,5 +49,10 @@
         /// This will disable logging completely.
         /// </summary>
         public bool DontLog { get; set; } = false;
+
+        /// <summary>
+        /// This hides sensitive information from being logged. Default value is true. If set to false, it will log sensitive information. Otherwise it will only print the exception message.
+        /// </summary>
+        public bool ExceptionHideSensitiveInfo { get; set; } = true;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EasMe.Exceptions;
+using System.Security.Cryptography;
 
 namespace EasMe
 {
@@ -185,7 +186,113 @@ namespace EasMe
         //        throw new NotExistException("Error in RenameAll: Given source folder path not exist.");
 
         //    }
-        //}        
+        //}
+        public static string GetFileExtension(string filename)
+        {
+            var res = string.Empty;
+            var index = filename.LastIndexOf('.');
+            if (index == -1) return res;
+            res = filename.Substring(index + 1);
+            return res;
+        }
+        public static string GetFileName(string filename)
+        {
+            var res = string.Empty;
+            var index = filename.LastIndexOf('.');
+            if (index == -1) return res;
+            res = filename[..index];
+            return res;
+        }
+        public static string GetFileNameWithExtension(string filename)
+        {
+            var res = string.Empty;
+            var index = filename.LastIndexOf('\\');
+            if (index == -1) return res;
+            res = filename.Substring(index + 1);
+            return res;
+        }
+        public static string Current()
+        {
+            return Directory.GetCurrentDirectory();
+        }
+       
+        public static string Current(params string[] path)
+        {
+            var newarray = path.Reverse().Append(Current()).Reverse().ToArray();
+            return Path.Combine(newarray);
+        }
+        public static string GetFileDirectory(string filename)
+        {
+            var res = string.Empty;
+            var index = filename.LastIndexOf('\\');
+            if (index == -1) return res;
+            res = filename.Substring(0, index);
+            return res;
+        }
+
+        const int BYTES_TO_READ = sizeof(Int64);
+        public static bool FilesAreEqual(FileInfo first, FileInfo second)
+        {
+            if (first.Length != second.Length)
+                return false;
+
+            if (string.Equals(first.FullName, second.FullName, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            int iterations = (int)Math.Ceiling((double)first.Length / BYTES_TO_READ);
+
+            using (FileStream fs1 = first.OpenRead())
+            using (FileStream fs2 = second.OpenRead())
+            {
+                byte[] one = new byte[BYTES_TO_READ];
+                byte[] two = new byte[BYTES_TO_READ];
+
+                for (int i = 0; i < iterations; i++)
+                {
+                    fs1.Read(one, 0, BYTES_TO_READ);
+                    fs2.Read(two, 0, BYTES_TO_READ);
+
+                    if (BitConverter.ToInt64(one, 0) != BitConverter.ToInt64(two, 0))
+                        return false;
+                }
+            }
+
+            return true;
+        }
+        public static bool FilesAreEqual_OneByte(FileInfo first, FileInfo second)
+        {
+            if (first.Length != second.Length)
+                return false;
+
+            if (string.Equals(first.FullName, second.FullName, StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            using (FileStream fs1 = first.OpenRead())
+            using (FileStream fs2 = second.OpenRead())
+            {
+                for (int i = 0; i < first.Length; i++)
+                {
+                    if (fs1.ReadByte() != fs2.ReadByte())
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool FilesAreEqual_Hash(FileInfo first, FileInfo second)
+        {
+            byte[] firstHash = MD5.Create().ComputeHash(first.OpenRead());
+            byte[] secondHash = MD5.Create().ComputeHash(second.OpenRead());
+
+            for (int i = 0; i < firstHash.Length; i++)
+            {
+                if (firstHash[i] != secondHash[i])
+                    return false;
+            }
+            return true;
+        }
+
     }
 
 }
