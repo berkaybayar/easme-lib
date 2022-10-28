@@ -39,7 +39,7 @@ namespace EasMe
         /// <param name="Body"></param>
         /// <param name="SendTo"></param>
         /// <param name="Subject"></param>
-        public void SendMail(string Subject, string Body, string SendTo,bool isBodyHtml = false)
+        public void SendMail(string Subject, string Body, string SendTo, bool isBodyHtml = false)
         {
             try
             {

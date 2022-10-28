@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO.Compression;
 
 namespace Domain.Utils
 {
@@ -27,6 +22,6 @@ namespace Domain.Utils
             var destinationFolder = extractFolder[..index];
             if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);
             ZipFile.ExtractToDirectory(sourceZip, extractFolder);
-        }        
+        }
     }
 }

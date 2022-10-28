@@ -38,7 +38,7 @@ namespace EasMe
                 }
                 catch (Exception ex)
                 {
-                    if (isLoggingEnabled) SelfLog.Logger.Exception("Error deleting file => Path: " + filePath, ex);
+                    if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error deleting file => Path: " + filePath);
                 }
 
             }
@@ -75,7 +75,7 @@ namespace EasMe
                     }
                     catch (Exception ex)
                     {
-                        if (isLoggingEnabled) SelfLog.Logger.Exception("Error while moving file => Path: " + file, ex);
+                        if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error while moving file => Path: " + file);
                     }
                 });
                 Parallel.ForEach(subdirs, subdir =>
@@ -86,7 +86,7 @@ namespace EasMe
                     }
                     catch (Exception ex)
                     {
-                        if (isLoggingEnabled) SelfLog.Logger.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                        if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error while moving file => Source:" + sourcePath + " Destination: " + destPath);
                     }
 
                 });
@@ -101,7 +101,7 @@ namespace EasMe
                 }
                 catch (Exception ex)
                 {
-                    if (isLoggingEnabled) SelfLog.Logger.Exception("Error while moving file => Source:" + sourcePath + " Destination: " + destPath, ex);
+                    if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error while moving file => Source:" + sourcePath + " Destination: " + destPath);
                 }
 
             }
@@ -215,7 +215,7 @@ namespace EasMe
         {
             return Directory.GetCurrentDirectory();
         }
-       
+
         public static string Current(params string[] path)
         {
             var newarray = path.Reverse().Append(Current()).Reverse().ToArray();

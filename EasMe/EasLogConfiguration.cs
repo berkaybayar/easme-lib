@@ -40,10 +40,6 @@
         /// </summary>
         public bool TraceLogging { get; set; } = false;
 
-        /// <summary>
-        /// Whether to throw Exceptions after it has been logged. 
-        /// </summary>
-        public bool ThrowException { get; set; } = false;
 
         /// <summary>
         /// This will disable logging completely.
@@ -54,5 +50,8 @@
         /// This hides sensitive information from being logged. Default value is true. If set to false, it will log sensitive information. Otherwise it will only print the exception message.
         /// </summary>
         public bool ExceptionHideSensitiveInfo { get; set; } = true;
+
+        public bool IsDebug { get; set; } = false;
+
     }
 }

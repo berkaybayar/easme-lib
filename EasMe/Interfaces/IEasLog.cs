@@ -1,6 +1,4 @@
-﻿using EasMe.Extensions;
-
-namespace EasMe
+﻿namespace EasMe
 {
     public interface IEasLog
     {

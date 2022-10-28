@@ -1,5 +1,4 @@
-﻿using EasMe.Extensions;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace LauncherModule
@@ -11,9 +10,9 @@ namespace LauncherModule
             _encryptKey = key;
         }
         private static string _encryptKey = null!;
-        
-      
-        public string Encrypt( string plainText)
+
+
+        public string Encrypt(string plainText)
         {
             byte[] iv = new byte[16];
             byte[] array;
@@ -46,7 +45,7 @@ namespace LauncherModule
             aes.Key = Encoding.UTF8.GetBytes(_encryptKey);
             aes.IV = iv;
             ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-            
+
             using MemoryStream memoryStream = new(buffer);
             using CryptoStream cryptoStream = new(memoryStream, decryptor, CryptoStreamMode.Read);
             using StreamReader streamReader = new(cryptoStream);

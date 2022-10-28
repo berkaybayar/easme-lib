@@ -1,4 +1,6 @@
-﻿namespace EasMe
+﻿using EasMe.Extensions;
+
+namespace EasMe
 {
     /// <summary>
     /// Basic console logger for heavy api request logging. 
@@ -88,24 +90,7 @@
                     break;
             }
         }
-        private static string ToLogString(this string[] param)
-        {
-            var paramStr = "";
-            foreach (var item in param)
-            {
-                paramStr += " [" + item + "]";
-            }
-            return paramStr;
-        }
-        private static string ToLogString(this string[] param,Severity severity)
-        {
-            var paramStr = $"[{severity.ToString().ToUpper()}] [{DateTime.Now:MM/dd/yyyy HH:mm:ss}]";
-            foreach (var item in param)
-            {
-                paramStr += " [" + item + "]";
-            }
-            return paramStr;
-        }
+
         public static void Error(string message, params string[] param)
         {
             Log(Severity.ERROR, message, param);

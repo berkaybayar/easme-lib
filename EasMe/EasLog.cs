@@ -15,19 +15,18 @@ namespace EasMe
     {
         //internal static EasLogConfiguration Configuration { get; set; } = IEasLog.Config;
         private static int? _OverSizeExt = 0;
-
         private static string ExactLogPath { get; set; } = GetExactLogPath();
 
         internal static bool _IsCreated = false;
         internal string _LogSource;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
         internal EasLog(string source)
         {
             _LogSource = source;
         }
         internal EasLog()
         {
-            _LogSource = "System";
+            _LogSource = "Sys";
         }
 
         private static string GetExactLogPath()
@@ -35,12 +34,12 @@ namespace EasMe
             return IEasLog.Config.LogFolderPath + "\\" + IEasLog.Config.LogFileName + DateTime.Now.ToString(IEasLog.Config.DateFormatString) + IEasLog.Config.LogFileExtension;
         }
 
-        public void Log(Severity severity, object log)
+        public void Log(Severity severity, string message, params string[] param)
         {
-            var model = EasLogHelper.LogModelCreate(severity, _LogSource, log, null, false);
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(severity, _LogSource, content, null, false);
             WriteLog(severity, model);
         }
-
         public void WriteAll(Severity severity, IEnumerable<string> logArray)
         {
             foreach (var log in logArray)
@@ -57,186 +56,85 @@ namespace EasMe
                 WriteLog(log.Severity, model);
             }
         }
-        /// <summary>
-        /// Creates log with Info severity and success state.
-        /// </summary>
-        /// <param name="log"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
 
-        public void Info(object log)
+        public void Info(string message, params string[] param)
         {
-
-            var model = EasLogHelper.LogModelCreate(Severity.INFO, _LogSource, log, null, false);
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.INFO, _LogSource, content, null, false);
             WriteLog(Severity.INFO, model);
         }
 
-
-        /// <summary>
-        /// Creates log with Error severity.
-        /// </summary>
-        /// <param name="logMessage"></param>
-        /// <param name="ErrorNo"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
-
-        public void Error(object logMessage, Exception? ex = null)
+        public void Error(string message, params string[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, logMessage, ex, false);
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, content, null, false);
             WriteLog(Severity.ERROR, model);
         }
 
-        /// <summary>
-        /// Creates log with Error severity.
-        /// </summary>
-        /// <param name="logMessage"></param>
-        /// <param name="ErrorNo"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
-
-        public void Error(Error err, object logMessage, Exception? ex = null)
+        public void Warn(string message, params string[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, err.ToString() + ": " + logMessage, ex, false);
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, content, null, false);
             WriteLog(Severity.WARN, model);
         }
 
-
-
-        /// <summary>
-        /// Creates log with warning severity.
-        /// </summary>
-        /// <param name="logMessage"></param>
-        /// <param name="ErrorNo"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
-        public void Warn(object logMessage, Exception? ex = null)
-        {
-            var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, logMessage, ex, false);
-            WriteLog(Severity.WARN, model);
-        }
-
-
-        /// <summary>
-        /// Creates log with Exception.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
         public void Exception(Exception ex)
         {
             var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, ex.Message, ex, false);
-            WriteLog(Severity.EXCEPTION, model);
-            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
+            Exception(ex, ex.Message);
         }
 
-        /// <summary>
-        /// Creates log with Exception.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
-
-        public void Exception(object logMessage, Exception ex)
+        public void Exception(Exception ex, string message, params string[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, logMessage, ex, false);
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, content, ex, false);
             WriteLog(Severity.EXCEPTION, model);
-            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
         }
-
-
-        /// <summary>
-        /// Creates log with Fatal severity.
-        /// </summary>
-        /// <param name="logMessage"></param>
-        /// <param name="ErrorNo"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
-
-        public void Fatal(object logMessage)
+        //public void Exception(object logMessage, Exception ex)
+        //{
+        //    var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, logMessage, ex, false);
+        //    WriteLog(Severity.EXCEPTION, model);
+        //    if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
+        //}
+        //public void Exception(string message, Exception ex,params string[] param)
+        //{
+        //    var content = param.ToLogString() + " " + message;
+        //    Exception(ex, content);
+        //}
+        public void Fatal(string message, params string[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, logMessage, null, false);
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, content, null, false);
             WriteLog(Severity.FATAL, model);
         }
-        /// <summary>
-        /// Creates log with Fatal severity.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
-
-        public void Fatal(object logMessage, Exception ex)
+        public void Fatal(Exception ex, string message, params string[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, logMessage, ex, false);
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, content, ex, false);
             WriteLog(Severity.FATAL, model);
-            if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
         }
 
-        /// <summary>
-        /// Creates log with Debug severity.
-        /// </summary>
-        /// <param name="logMessage"></param>
-        /// <param name="ErrorNo"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
-        public void Debug(object logMessage)
+        public void Debug(string message, params string[] param)
         {
-#if DEBUG
-            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, null, true);
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, content, null, false);
             WriteLog(Severity.DEBUG, model);
-#endif
+        }
+        public void Debug(Exception ex, string message, params string[] param)
+        {
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, content, ex, false);
+            WriteLog(Severity.DEBUG, model);
         }
 
-        /// <summary>
-        /// Creates log with Debug severity.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <returns></returns>
-        public void Debug(object logMessage, Exception ex)
+        public void Trace(string message, params string[] param)
         {
-#if DEBUG
-            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, ex, true);
-            WriteLog(Severity.DEBUG, model);
-            
-#endif
+            var content = param.ToLogString() + " " + message;
+            var model = EasLogHelper.LogModelCreate(Severity.TRACE, _LogSource, content, null, false);
+            WriteLog(Severity.TRACE, model);
         }
-        /// <summary>
-        /// Creates log with given object. If its not string it will log serialized object.
-        /// </summary>
-        /// <param name="LogContent"></param>
-        /// <param name="UseDefaultDate"></param>
-        /// <returns>LogContent</returns>
-        public void WriteLog(Severity severity,object obj)
+
+        public void WriteLog(Severity severity, object obj)
         {
             if (IEasLog.Config.DontLog) return;
             if (obj == null) throw new EasException(EasMe.Error.NullReference, "Log content is null");
@@ -245,17 +143,17 @@ namespace EasMe
                 var serialized = obj.JsonSerialize();
                 //Create log folder 
                 if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
-                lock (_lock) //To avoid multithread access and exceptions
+                //To avoid multithread access and exceptions
+                lock (_lock)
                 {
                     File.AppendAllText(ExactLogPath, serialized + "\n");
                 }
                 if (IEasLog.Config.ConsoleAppender) EasLogConsole.Log(severity, serialized);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 throw new LoggingFailedException("Exception occured while writing log to log file.", e);
             }
-
         }
 
 
