@@ -20,7 +20,7 @@ namespace EasMe
 
         internal static bool _IsCreated = false;
         internal string _LogSource;
-
+        private static object _lock = new object();
         internal EasLog(string source)
         {
             _LogSource = source;
@@ -38,7 +38,7 @@ namespace EasMe
         public void Log(Severity severity, object log)
         {
             var model = EasLogHelper.LogModelCreate(severity, _LogSource, log, null, false);
-            WriteLog(model);
+            WriteLog(severity, model);
         }
 
         public void WriteAll(Severity severity, IEnumerable<string> logArray)
@@ -46,7 +46,7 @@ namespace EasMe
             foreach (var log in logArray)
             {
                 var model = EasLogHelper.LogModelCreate(severity, _LogSource, log, null, false);
-                WriteLog(model);
+                WriteLog(severity, model);
             }
         }
         public void WriteAll(List<BulkLog> logs)
@@ -54,7 +54,7 @@ namespace EasMe
             foreach (var log in logs)
             {
                 var model = EasLogHelper.LogModelCreate(log.Severity, _LogSource, log.Log, log.Exception, false);
-                WriteLog(model);
+                WriteLog(log.Severity, model);
             }
         }
         /// <summary>
@@ -71,7 +71,7 @@ namespace EasMe
         {
 
             var model = EasLogHelper.LogModelCreate(Severity.INFO, _LogSource, log, null, false);
-            WriteLog(model);
+            WriteLog(Severity.INFO, model);
         }
 
 
@@ -89,7 +89,7 @@ namespace EasMe
         public void Error(object logMessage, Exception? ex = null)
         {
             var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, logMessage, ex, false);
-            WriteLog(model);
+            WriteLog(Severity.ERROR, model);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace EasMe
         public void Error(Error err, object logMessage, Exception? ex = null)
         {
             var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, err.ToString() + ": " + logMessage, ex, false);
-            WriteLog(model);
+            WriteLog(Severity.WARN, model);
         }
 
 
@@ -124,7 +124,7 @@ namespace EasMe
         public void Warn(object logMessage, Exception? ex = null)
         {
             var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, logMessage, ex, false);
-            WriteLog(model);
+            WriteLog(Severity.WARN, model);
         }
 
 
@@ -140,7 +140,7 @@ namespace EasMe
         public void Exception(Exception ex)
         {
             var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, ex.Message, ex, false);
-            WriteLog(model);
+            WriteLog(Severity.EXCEPTION, model);
             if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
         }
 
@@ -157,7 +157,7 @@ namespace EasMe
         public void Exception(object logMessage, Exception ex)
         {
             var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, logMessage, ex, false);
-            WriteLog(model);
+            WriteLog(Severity.EXCEPTION, model);
             if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
         }
 
@@ -176,7 +176,7 @@ namespace EasMe
         public void Fatal(object logMessage)
         {
             var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, logMessage, null, false);
-            WriteLog(model);
+            WriteLog(Severity.FATAL, model);
         }
         /// <summary>
         /// Creates log with Fatal severity.
@@ -191,7 +191,7 @@ namespace EasMe
         public void Fatal(object logMessage, Exception ex)
         {
             var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, logMessage, ex, false);
-            WriteLog(model);
+            WriteLog(Severity.FATAL, model);
             if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
         }
 
@@ -209,7 +209,7 @@ namespace EasMe
         {
 #if DEBUG
             var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, null, true);
-            WriteLog(model);
+            WriteLog(Severity.DEBUG, model);
 #endif
         }
 
@@ -226,7 +226,8 @@ namespace EasMe
         {
 #if DEBUG
             var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, logMessage, ex, true);
-            WriteLog(model);
+            WriteLog(Severity.DEBUG, model);
+            
 #endif
         }
         /// <summary>
@@ -235,7 +236,7 @@ namespace EasMe
         /// <param name="LogContent"></param>
         /// <param name="UseDefaultDate"></param>
         /// <returns>LogContent</returns>
-        public void WriteLog(object obj)
+        public void WriteLog(Severity severity,object obj)
         {
             if (IEasLog.Config.DontLog) return;
             if (obj == null) throw new EasException(EasMe.Error.NullReference, "Log content is null");
@@ -244,33 +245,11 @@ namespace EasMe
                 var serialized = obj.JsonSerialize();
                 //Create log folder 
                 if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
-
-                if (File.Exists(ExactLogPath))
+                lock (_lock) //To avoid multithread access and exceptions
                 {
-                    //var size = File.ReadAllBytes(ExactLogPath).Length;
-                    //if (size > EasLogHelper.ConvertConfigFileSize(IEasLog.Config.MaxLogFileSize))
-                    //{
-                    //    _OverSizeExt++;                        
-                    //    //var logFileCount = Directory.GetFiles(IEasLog.Config.LogFolderPath).Length;
-                    //    //var oldestLogFileName = ExactLogPath.Replace(IEasLog.Config.LogFileExtension, "") + "_" + _OverSizeExt + IEasLog.Config.LogFileExtension;
-                    //    //if (logFileCount >= IEasLog.Config.MaxLogFileCount && File.Exists())
-                    //    File.Move(ExactLogPath, ExactLogPath.Replace(IEasLog.Config.LogFileExtension, "") + "_" + _OverSizeExt + IEasLog.Config.LogFileExtension);
-                    //    ExactLogPath = ExactLogPath.Replace(IEasLog.Config.LogFileExtension, $"_{_OverSizeExt}{IEasLog.Config.LogFileExtension}");
-
-                    //    for (int i = 1; i < IEasLog.Config.MaxLogFileCount; i++)
-                    //    {
-                    //        var oldLogPath = ExactLogPath.Replace(".log", "(" + i + ").log");
-                    //        if (File.Exists(oldLogPath))
-                    //        {
-                    //            File.Delete(oldLogPath);
-                    //        }
-                    //    }
-
-                    //}
+                    File.AppendAllText(ExactLogPath, serialized + "\n");
                 }
-                File.AppendAllText(ExactLogPath, serialized + "\n");
-                if (IEasLog.Config.ConsoleAppender)
-                    Console.WriteLine(serialized);
+                if (IEasLog.Config.ConsoleAppender) EasLogConsole.Log(severity, serialized);
             }
             catch (System.Exception e)
             {

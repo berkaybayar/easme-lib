@@ -7,13 +7,13 @@
     /// </summary>
     public static class EasLogConsole
     {
-        private static ConsoleColor FatalColor = ConsoleColor.DarkBlue;
+        private static ConsoleColor FatalColor = ConsoleColor.Magenta;
         private static ConsoleColor ErrorColor = ConsoleColor.Red;
         private static ConsoleColor BaseColor = ConsoleColor.White;
-        private static ConsoleColor WarningColor = ConsoleColor.DarkYellow;
+        private static ConsoleColor WarningColor = ConsoleColor.Yellow;
         private static ConsoleColor InfoColor = ConsoleColor.Green;
         private static ConsoleColor DebugColor = ConsoleColor.Blue;
-        private static ConsoleColor TraceColor = ConsoleColor.Magenta;
+        private static ConsoleColor TraceColor = ConsoleColor.Cyan;
         public static void Log(string message)
         {
             Console.WriteLine(message);
@@ -60,6 +60,9 @@
                     break;
                 case Severity.TRACE:
                     Log(message, TraceColor);
+                    break;
+                case Severity.FATAL:
+                    Log(message, FatalColor);
                     break;
                 default:
                     Log(message, BaseColor);
