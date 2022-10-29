@@ -2,6 +2,7 @@
 using EasMe.Exceptions;
 using EasMe.Extensions;
 using EasMe.Models.LogModels;
+using System.Configuration;
 using System.Diagnostics;
 namespace EasMe.InternalUtils
 {
@@ -92,10 +93,12 @@ namespace EasMe.InternalUtils
                     logModel.LogType = (int)LogType.WEB;
                     if (IEasLog.Config.AddRequestUrlToStart)
                     {
-                        var conAndAction = logModel.WebLog?.RequestUrl?.Replace("/api/", "");
-                        if(conAndAction != null)
+                        var conAndAction = logModel.WebLog?.RequestUrl?.Replace("/api", "");
+                        if (conAndAction != null)
                         {
-                            logModel.Log = $"[{conAndAction ?? "UnkownUrl"}]";
+                            if (conAndAction.StartsWith("/")) conAndAction = conAndAction[1..];
+                            if(conAndAction.Length != 0)
+                                logModel.Log = $"[{conAndAction ?? "UnkownUrl"}] " + logModel.Log;
                             //var index = conAndAction?.LastIndexOf("/", StringComparison.Ordinal);
                             //if(index != null)
                             //{

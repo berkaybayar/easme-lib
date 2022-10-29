@@ -56,7 +56,7 @@
         /// <summary>
         /// In order this to work you must configure EasMe.HttpContext and enable web logging. This will add request url to log message start.
         /// </summary>
-        public bool AddRequestUrlToStart { get; set; } = false;
+        public bool AddRequestUrlToStart { get; set; } = true;
 
     }
 }
