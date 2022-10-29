@@ -3,9 +3,19 @@ using EasMe.Exceptions;
 using EasMe.Extensions;
 using EasMe.InternalUtils;
 using EasMe.Models.LogModels;
-
+using System.Reflection;
+using System.Runtime.CompilerServices;
 namespace EasMe
 {
+
+    /*
+     Things to keep note;
+    1. This class is not thread safe.
+    2. This logger will work on multiple threads
+    3. For .NET Web projects it is better to initialize HttpContext in the constructor. 
+        This will print out the request information. 
+        Which contains request url etc. so you dont really need to put method name in log
+     */
 
     //private static readonly EasLog logger = IEasLog.CreateLogger(typeof(AdminManager).Namespace + "." + typeof(AdminManager).Name);
     /// <summary>
@@ -34,10 +44,9 @@ namespace EasMe
             return IEasLog.Config.LogFolderPath + "\\" + IEasLog.Config.LogFileName + DateTime.Now.ToString(IEasLog.Config.DateFormatString) + IEasLog.Config.LogFileExtension;
         }
 
-        public void Log(Severity severity, string message, params string[] param)
+        public void Log(Severity severity, params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(severity, _LogSource, content, null, false);
+            var model = EasLogHelper.LogModelCreate(severity, _LogSource, param.ToLogString(), null, false);
             WriteLog(severity, model);
         }
         public void WriteAll(Severity severity, IEnumerable<string> logArray)
@@ -57,24 +66,21 @@ namespace EasMe
             }
         }
 
-        public void Info(string message, params string[] param)
+        public void Info(params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.INFO, _LogSource, content, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.INFO, _LogSource, param.ToLogString(), null, false);
             WriteLog(Severity.INFO, model);
         }
 
-        public void Error(string message, params string[] param)
+        public void Error(params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, content, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, param.ToLogString(), null, false);
             WriteLog(Severity.ERROR, model);
         }
 
-        public void Warn(string message, params string[] param)
+        public void Warn(params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, content, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, param.ToLogString(), null, false);
             WriteLog(Severity.WARN, model);
         }
 
@@ -84,10 +90,9 @@ namespace EasMe
             Exception(ex, ex.Message);
         }
 
-        public void Exception(Exception ex, string message, params string[] param)
+        public void Exception(Exception ex, params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, content, ex, false);
+            var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, param.ToLogString(), ex, false);
             WriteLog(Severity.EXCEPTION, model);
         }
         //public void Exception(object logMessage, Exception ex)
@@ -101,36 +106,31 @@ namespace EasMe
         //    var content = param.ToLogString() + " " + message;
         //    Exception(ex, content);
         //}
-        public void Fatal(string message, params string[] param)
+        public void Fatal( params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, content, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, param.ToLogString(), null, false);
             WriteLog(Severity.FATAL, model);
         }
-        public void Fatal(Exception ex, string message, params string[] param)
+        public void Fatal(Exception ex, params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, content, ex, false);
+            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, param.ToLogString(), ex, false);
             WriteLog(Severity.FATAL, model);
         }
 
-        public void Debug(string message, params string[] param)
+        public void Debug( params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, content, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, param.ToLogString(), null, false);
             WriteLog(Severity.DEBUG, model);
         }
-        public void Debug(Exception ex, string message, params string[] param)
+        public void Debug(Exception ex, params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, content, ex, false);
+            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, param.ToLogString(), ex, false);
             WriteLog(Severity.DEBUG, model);
         }
 
-        public void Trace(string message, params string[] param)
+        public void Trace( params object[] param)
         {
-            var content = param.ToLogString() + " " + message;
-            var model = EasLogHelper.LogModelCreate(Severity.TRACE, _LogSource, content, null, false);
+            var model = EasLogHelper.LogModelCreate(Severity.TRACE, _LogSource, param.ToLogString(), null, false);
             WriteLog(Severity.TRACE, model);
         }
 

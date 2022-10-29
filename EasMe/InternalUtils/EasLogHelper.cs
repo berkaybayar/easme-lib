@@ -90,6 +90,22 @@ namespace EasMe.InternalUtils
                 {
                     logModel.WebLog = WebModelCreate();
                     logModel.LogType = (int)LogType.WEB;
+                    if (IEasLog.Config.AddRequestUrlToStart)
+                    {
+                        var conAndAction = logModel.WebLog?.RequestUrl?.Replace("/api/", "");
+                        if(conAndAction != null)
+                        {
+                            logModel.Log = $"[{conAndAction ?? "UnkownUrl"}]";
+                            //var index = conAndAction?.LastIndexOf("/", StringComparison.Ordinal);
+                            //if(index != null)
+                            //{
+                            //    var action = conAndAction?[(index.Value + 1)..];
+                            //    logModel.Source += "." + action;
+                            //}
+                        }
+                       
+                    }
+                    
                 }
                 if (exception != null)
                 {

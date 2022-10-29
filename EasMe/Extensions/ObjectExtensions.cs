@@ -46,5 +46,25 @@ namespace EasMe.Extensions
                 return default;
             }
         }
+        /// <summary>
+        /// Converts object to string with its properties. Name:Value
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string ToLineString<T>(this T obj)
+        {
+            if (obj is null)
+                return "null";
+            Type? t = obj.GetType();
+            var text = "";
+            foreach (var prop in t.GetProperties())
+            {
+                var value = prop.GetValue(obj, null);
+                var name = prop.Name;
+                text += $"{name}:{value?.ToString() ?? "null"} ";
+            }
+            return text.TrimEnd();
+        }
     }
 }

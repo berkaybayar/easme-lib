@@ -9,13 +9,14 @@ namespace EasMe
     /// </summary>
     public static class EasLogConsole
     {
-        private static ConsoleColor FatalColor = ConsoleColor.Magenta;
+        private static ConsoleColor FatalColor = ConsoleColor.DarkMagenta;
         private static ConsoleColor ErrorColor = ConsoleColor.Red;
         private static ConsoleColor BaseColor = ConsoleColor.White;
         private static ConsoleColor WarningColor = ConsoleColor.Yellow;
         private static ConsoleColor InfoColor = ConsoleColor.Green;
         private static ConsoleColor DebugColor = ConsoleColor.Blue;
         private static ConsoleColor TraceColor = ConsoleColor.Cyan;
+        private static ConsoleColor ExceptionColor = ConsoleColor.Magenta;
         public static void Log(string message)
         {
             Console.WriteLine(message);
@@ -65,6 +66,9 @@ namespace EasMe
                     break;
                 case Severity.FATAL:
                     Log(message, FatalColor);
+                    break;
+                case Severity.EXCEPTION:
+                    Log(message, ExceptionColor);
                     break;
                 default:
                     Log(message, BaseColor);

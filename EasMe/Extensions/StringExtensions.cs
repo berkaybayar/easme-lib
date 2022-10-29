@@ -265,16 +265,23 @@ namespace EasMe.Extensions
             return value.Length <= maxChars ? value : value[..maxChars] + "...";
         }
 
-        internal static string ToLogString(this string[] param)
+        internal static string ToLogString(this object[] param)
         {
-            var paramStr = "";
-            foreach (var item in param)
+            var paramStr =  "";
+            for (int i = 0; i < param.Length; i++)
             {
-                paramStr += " [" + item + "]";
+                if (param.Length == i + 1)
+                {
+                    paramStr += " " + param[i].ToString();
+                }
+                else
+                {
+                    paramStr += " [" + param[i].ToString() + "]";
+                }
             }
-            return paramStr;
+            return paramStr.Trim();
         }
-        internal static string ToLogString(this string[] param, Severity severity)
+        internal static string ToLogString(this object[] param, Severity severity)
         {
             var paramStr = $"[{severity.ToString().ToUpper()}] [{DateTime.Now:MM/dd/yyyy HH:mm:ss}]";
             foreach (var item in param)
