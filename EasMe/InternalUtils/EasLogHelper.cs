@@ -73,8 +73,6 @@ namespace EasMe.InternalUtils
         /// <returns>EasMe.Models.BaseLogModel</returns>
         internal static LogModel LogModelCreate(Severity severity, string source, object log, Exception? exception = null, bool forceDebug = false)
         {
-            //if (!EasLog._IsCreated)
-            //    throw new NotInitializedException("EasLog.Create() must be called before any other method.");
             try
             {
                 var logModel = new LogModel();
@@ -99,20 +97,12 @@ namespace EasMe.InternalUtils
                             if (conAndAction.StartsWith("/")) conAndAction = conAndAction[1..];
                             if(conAndAction.Length != 0)
                                 logModel.Log = $"[{conAndAction ?? "UnkownUrl"}] " + logModel.Log;
-                            //var index = conAndAction?.LastIndexOf("/", StringComparison.Ordinal);
-                            //if(index != null)
-                            //{
-                            //    var action = conAndAction?[(index.Value + 1)..];
-                            //    logModel.Source += "." + action;
-                            //}
                         }
-                       
                     }
-                    
                 }
                 if (exception != null)
                 {
-                    if (IEasLog.Config.ExceptionHideSensitiveInfo) exception = new Exception(exception.Message);
+                    if (IEasLog.Config.ExceptionHideSensitiveInfo) logModel.Exception = new Exception(exception.Message);
                     else logModel.Exception = exception;
                     logModel.LogType = (int)LogType.EXCEPTION;
                 }
