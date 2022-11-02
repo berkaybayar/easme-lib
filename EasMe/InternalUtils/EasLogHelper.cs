@@ -144,7 +144,7 @@ namespace EasMe.InternalUtils
                 log.Ip = EasHttpContext.Current.Request.GetRemoteIpAddress();
                 log.HttpMethod = EasHttpContext.Current.Request.Method;
                 log.RequestUrl = EasHttpContext.Current.Request.GetRequestQuery();
-                log.Headers = EasHttpContext.Current.Request.GetHeaderValues().JsonSerialize();
+                log.Headers = EasHttpContext.Current.Request.Headers.JsonSerialize().RemoveLineEndings();
                 return log;
             }
             catch (Exception e)

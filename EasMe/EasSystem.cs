@@ -452,6 +452,19 @@ namespace EasMe
                 throw new FailedToReadException("GetMotherboardSerial", ex);
             }
         }
+        public static string GetMotherboardName()
+        {
+            try
+            {
+                var serial = GetIdentifier("Win32_BaseBoard", "Product");
+                return serial;
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToReadException("GetMotherboardSerial", ex);
+            }
+        }
+        
         public static string GetProcessorId()
         {
             try
@@ -578,13 +591,13 @@ namespace EasMe
         /// Returns List of Hardware Ids, first two is reliable for general usage.
         /// </summary>
         /// <returns></returns>
-        private static List<string> GetHardwareIds()
+        public static List<string> GetHardwareIds()
         {
             List<string> list = new();
             var model = GetHardwareModel();
             var id1 = $"{model.ProcessorId}:{model.MotherboardId}:{model.BiosId}:{model.MACAddresses}";
             list.Add(id1.TrimAbsolute());
-            var id2 = $"{model.DiskUUID}:{model.MachineGuid}:{model.MachineName}";
+            var id2 = $"{model.DiskUUID}:{model.MachineGuid}";
             list.Add(id2.TrimAbsolute());
             var id3 = $"{model.GPU}";
             list.Add(id3.TrimAbsolute());
@@ -598,7 +611,7 @@ namespace EasMe
         /// Returns list of Hardware Ids MD5Hashed Ids first two is reliable for general usage.
         /// </summary>
         /// <returns></returns>
-        private static List<string> GetHashedHardwareIds()
+        public static List<string> GetHashedHardwareIds()
         {
             List<string> list = GetHardwareIds();
             List<string> newList = new();
@@ -618,58 +631,49 @@ namespace EasMe
         /// <exception cref="EasException"></exception>
         public static HWIDModel GetHardwareModel()
         {
-            try
+            if (Hwid != null) return Hwid;
+            var processor = GetProcessor();
+            var bios = GetBIOS();
+            var mainboard = GetMotherboard();
+            var gpuList = GetGPUList();
+            var diskList = GetDiskList();
+            var ramList = GetRamList();
+
+            HWIDModel hwidModel = new();
+            hwidModel.MachineName = GetMachineName().RemoveLineEndings().TrimAbsolute();
+            hwidModel.MACAddresses = GetMACAddress().RemoveLineEndings().TrimAbsolute();
+            hwidModel.DiskUUID = GetDiskUUID().RemoveLineEndings().TrimAbsolute();
+            hwidModel.MachineGuid = GetMachineGuid().RemoveLineEndings().TrimAbsolute();
+            hwidModel.OSVersion = GetOSVersion().RemoveLineEndings().TrimAbsolute();
+            
+            var processorIdentifier = $"{processor.Name}|{processor.Manufacturer}|{processor.ProcessorId}".RemoveLineEndings().TrimAbsolute();
+            hwidModel.ProcessorId = processorIdentifier;
+
+            var biosIdentifier = $"{bios.Manufacturer}|{bios.SMBIOSBIOSVersion}|{bios.SerialNumber}".RemoveLineEndings().TrimAbsolute();
+            hwidModel.BiosId = biosIdentifier;
+
+            var mainboardIdentifier = $"{mainboard.Product}|{mainboard.Manufacturer}|{mainboard.SerialNumber}".RemoveLineEndings().TrimAbsolute();
+            hwidModel.MotherboardId = mainboardIdentifier;
+            
+            if (ramList != null || ramList?.Count > 0)
             {
-                if (Hwid != null) return Hwid;
-                var processor = GetProcessor();
-                var bios = GetBIOS();
-                var mainboard = GetMotherboard();
-                var gpuList = GetGPUList();
-                var diskList = GetDiskList();
-                var ramList = GetRamList();
-
-                var hwidModel = new HWIDModel();
-                hwidModel.MachineName = GetMachineName();
-                hwidModel.MACAddresses = GetMACAddress();
-                hwidModel.DiskUUID = GetDiskUUID();
-                hwidModel.MachineGuid = GetMachineGuid();
-
-                var processorIdentifier = $"{processor.Name}:{processor.Manufacturer}:{processor.ProcessorId}";
-                hwidModel.ProcessorId = processorIdentifier;
-
-                //var ramIdentifier = string.Join("::", ramList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}"));
-                //var gpuIdentifier = string.Join("::", gpuList.Select(x => $"{x.Name}"));                
-                //var diskIdentifier = string.Join("::", diskList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}:{x.Size}"));
-                if (ramList != null || ramList.Count > 0)
-                {
-                    var ramIdentifier = string.Join("::", ramList.Select(x => $"{x.Name}:{x.Manufacturer}:{x.SerialNumber}"));
-                    hwidModel.Ram = ramIdentifier;
-                }
-                if (gpuList != null || gpuList.Count > 0)
-                {
-                    var gpuIdentifier = string.Join("::", gpuList.Select(x => $"{x.Name}"));
-                    hwidModel.GPU = gpuIdentifier;
-                }
-                if (diskList != null || diskList.Count > 0)
-                {
-                    var diskIdentifier = string.Join("::", diskList.Select(x => $"{x.SerialNumber}:{x.Size}"));
-                    hwidModel.Disk = diskIdentifier;
-                }
-
-                var biosIdentifier = $"{bios.Manufacturer}:{bios.SMBIOSBIOSVersion}:{bios.SerialNumber}";
-                hwidModel.BiosId = biosIdentifier;
-
-                var mainboardIdentifier = $"{mainboard.Manufacturer}:{mainboard.SerialNumber}";
-                hwidModel.MotherboardId = mainboardIdentifier;
-
-
-                Hwid = hwidModel;
-                return hwidModel;
+                var ramIdentifier = string.Join("||", ramList.Select(x => $"{x.Name}|{x.Manufacturer}|{x.SerialNumber}".RemoveLineEndings().TrimAbsolute()));
+                hwidModel.Ram = ramIdentifier;
             }
-            catch (Exception ex)
+            if (gpuList != null || gpuList?.Count > 0)
             {
-                throw new FailedToReadException("Getting machine ids", ex);
+                var gpuIdentifier = string.Join("||", gpuList.Select(x => $"{x.Name}".RemoveLineEndings().TrimAbsolute()));
+                hwidModel.GPU = gpuIdentifier;
             }
+            if (diskList != null || diskList?.Count > 0)
+            {
+                var diskIdentifier = string.Join("||", diskList.Select(x => $"{x.SerialNumber}|{x.Size}".RemoveLineEndings().TrimAbsolute()));
+                hwidModel.Disk = diskIdentifier;
+            }
+            
+
+            Hwid = hwidModel;
+            return hwidModel;
         }
         public static string GetMachineIdHashed()
         {

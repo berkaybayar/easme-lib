@@ -36,7 +36,10 @@
             Config = config;
         }
 
-        public static void ConfigureHttpContext(Microsoft.AspNetCore.Http.IHttpContextAccessor? httpContextAccessor) => EasHttpContext.Configure(httpContextAccessor);
+        public static void ConfigureHttpContext(Microsoft.AspNetCore.Http.IHttpContextAccessor? httpContextAccessor)
+        {
+            EasHttpContext.Configure(httpContextAccessor);
+        }
 
     }
 }

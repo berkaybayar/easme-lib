@@ -267,7 +267,7 @@ namespace EasMe.Extensions
 
         internal static string ToLogString(this object[] param)
         {
-            var paramStr =  "";
+            var paramStr = "";
             for (int i = 0; i < param.Length; i++)
             {
                 if (param.Length == i + 1)
@@ -289,6 +289,12 @@ namespace EasMe.Extensions
                 paramStr += " [" + item + "]";
             }
             return paramStr;
+        }
+
+        public static string RemoveLineEndings(this string str)
+        {
+
+            return str.Replace("\n","").Replace("\r", "").Replace("\t", "");
         }
     }
 }

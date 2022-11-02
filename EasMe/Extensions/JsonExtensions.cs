@@ -38,7 +38,7 @@ namespace EasMe.Extensions
         public static string JsonSerialize(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
             if (obj == null) return "null";
-            return JsonConvert.SerializeObject(obj, formatting);
+            return JsonConvert.SerializeObject(obj, formatting).Replace("\n", "").Replace("\r", "");
         }
 
         /// <summary>
