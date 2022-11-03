@@ -189,26 +189,23 @@ namespace EasMe
         //}
         public static string GetFileExtension(string filename)
         {
-            var res = string.Empty;
             var index = filename.LastIndexOf('.');
-            if (index == -1) return res;
-            res = filename.Substring(index + 1);
+            if (index == -1) return filename;
+            var res = filename[(index + 1)..];
             return res;
         }
         public static string GetFileName(string filename)
         {
-            var res = string.Empty;
             var index = filename.LastIndexOf('.');
-            if (index == -1) return res;
-            res = filename[..index];
+            if (index == -1) return filename;
+            var res = filename[..index];
             return res;
         }
         public static string GetFileNameWithExtension(string filename)
         {
-            var res = string.Empty;
             var index = filename.LastIndexOf('\\');
-            if (index == -1) return res;
-            res = filename.Substring(index + 1);
+            if (index == -1) return filename;
+            var res = filename[(index + 1)..];
             return res;
         }
         public static string Current()
@@ -223,10 +220,9 @@ namespace EasMe
         }
         public static string GetFileDirectory(string filename)
         {
-            var res = string.Empty;
             var index = filename.LastIndexOf('\\');
-            if (index == -1) return res;
-            res = filename.Substring(0, index);
+            if (index == -1) return String.Empty;
+            var res = filename[..index];
             return res;
         }
 
