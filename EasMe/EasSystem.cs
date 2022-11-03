@@ -10,26 +10,14 @@ namespace EasMe
 {
     public static class EasSystem
     {
-        //private  ManagementObjectSearcher baseboardSearcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_BaseBoard");
-        //private  ManagementObjectSearcher motherboardSearcher = new ManagementObjectSearcher("root\\CIMV2", "SELECT * FROM Win32_MotherboardDevice");
-        internal static HWIDModel Hwid { get; set; }
-        internal static string HashedHwid { get; set; }
 
-        enum HardwareType
-        {
-            EthernetMAC = 0,
-            Baseboard = 1,
-            CPU = 2,
-            Disk = 3,
-        }
         #region Read System.Management
         private static string GetIdentifier(string wmiClass, string wmiProperty)
         {
             var result = "";
-            ManagementClass mc =
-                       new ManagementClass(wmiClass);
+            ManagementClass mc =new ManagementClass(wmiClass);
             ManagementObjectCollection moc = mc.GetInstances();
-            foreach (ManagementObject mo in moc)
+            foreach (ManagementObject mo in moc.Cast<ManagementObject>())
             {
                 //Only get the first one
                 if (string.IsNullOrEmpty(result))
@@ -348,33 +336,6 @@ namespace EasMe
             return model;
         }
 
-
-        public static string GetMotherboardSerial()
-        {
-            var serial = GetIdentifier("Win32_BaseBoard", "SerialNumber");
-            return serial;
-        }
-        public static string GetMotherboardName()
-        {
-            var serial = GetIdentifier("Win32_BaseBoard", "Product");
-            return serial;
-        }
-        
-        public static string GetProcessorId()
-        {
-            var id = GetIdentifier("Win32_Processor", "ProcessorId");
-            return id;
-        }
-        public static string GetDiskSerial()
-        {
-            var id = GetIdentifier("Win32_DiskDrive", "SerialNumber");
-            return id;
-        }
-        public static string GetVideoProcessorName()
-        {
-            var id = GetIdentifier("Win32_VideoController", "VideoProcessor");
-            return id;
-        }
         public static string GetTimezone()
         {
             return TimeZoneInfo.Local.StandardName;
@@ -444,101 +405,10 @@ namespace EasMe
             var result = oProcess.StandardOutput.ReadToEnd();
             return result.TrimAbsolute();
         }
-        /// <summary>
-        /// Returns List of Hardware Ids, first two is reliable for general usage.
-        /// </summary>
-        /// <returns></returns>
-        public static List<string> GetHardwareIds()
-        {
-            List<string> list = new();
-            var model = GetHardwareModel();
-            var id1 = $"{model.ProcessorId}:{model.MotherboardId}:{model.BiosId}:{model.MACAddresses}";
-            list.Add(id1.TrimAbsolute());
-            var id2 = $"{model.DiskUUID}:{model.MachineGuid}";
-            list.Add(id2.TrimAbsolute());
-            var id3 = $"{model.GPU}";
-            list.Add(id3.TrimAbsolute());
-            var id4 = $"{model.Ram}";
-            list.Add(id4.TrimAbsolute());
-            var id5 = $"{model.Disk}";
-            list.Add(id5.TrimAbsolute());
-            return list;
-        }
-        /// <summary>
-        /// Returns list of Hardware Ids MD5Hashed Ids first two is reliable for general usage.
-        /// </summary>
-        /// <returns></returns>
-        public static List<string> GetHashedHardwareIds()
-        {
-            List<string> list = GetHardwareIds();
-            List<string> newList = new();
-            foreach (var item in list)
-            {
-                var hashed = EasHash.MD5Hash(item).BuildString().ToUpper();
-                newList.Add(hashed);
-            }
+       
+        
 
-            return newList;
-        }
-
-        /// <summary>
-        /// Returns this computers Hardware Model.
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static HWIDModel GetHardwareModel()
-        {
-            if (Hwid != null) return Hwid;
-            var processor = GetProcessor();
-            var bios = GetBIOS();
-            var mainboard = GetMotherboard();
-            var gpuList = GetGPUList();
-            var diskList = GetDiskList();
-            var ramList = GetRamList();
-
-            HWIDModel hwidModel = new();
-            hwidModel.MachineName = GetMachineName().RemoveLineEndings().TrimAbsolute();
-            hwidModel.MACAddresses = GetMACAddress().RemoveLineEndings().TrimAbsolute();
-            hwidModel.DiskUUID = GetDiskUUID().RemoveLineEndings().TrimAbsolute();
-            hwidModel.MachineGuid = GetMachineGuid().RemoveLineEndings().TrimAbsolute();
-            hwidModel.OSVersion = GetOSVersion().RemoveLineEndings().TrimAbsolute();
-            
-            var processorIdentifier = $"{processor.Name}|{processor.Manufacturer}|{processor.ProcessorId}".RemoveLineEndings().TrimAbsolute();
-            hwidModel.ProcessorId = processorIdentifier;
-
-            var biosIdentifier = $"{bios.Manufacturer}|{bios.SMBIOSBIOSVersion}|{bios.SerialNumber}".RemoveLineEndings().TrimAbsolute();
-            hwidModel.BiosId = biosIdentifier;
-
-            var mainboardIdentifier = $"{mainboard.Product}|{mainboard.Manufacturer}|{mainboard.SerialNumber}".RemoveLineEndings().TrimAbsolute();
-            hwidModel.MotherboardId = mainboardIdentifier;
-            
-            if (ramList != null || ramList?.Count > 0)
-            {
-                var ramIdentifier = string.Join("||", ramList.Select(x => $"{x.Name}|{x.Manufacturer}|{x.SerialNumber}".RemoveLineEndings().TrimAbsolute()));
-                hwidModel.Ram = ramIdentifier;
-            }
-            if (gpuList != null || gpuList?.Count > 0)
-            {
-                var gpuIdentifier = string.Join("||", gpuList.Select(x => $"{x.Name}".RemoveLineEndings().TrimAbsolute()));
-                hwidModel.GPU = gpuIdentifier;
-            }
-            if (diskList != null || diskList?.Count > 0)
-            {
-                var diskIdentifier = string.Join("||", diskList.Select(x => $"{x.SerialNumber}|{x.Size}".RemoveLineEndings().TrimAbsolute()));
-                hwidModel.Disk = diskIdentifier;
-            }
-            
-
-            Hwid = hwidModel;
-            return hwidModel;
-        }
-        public static string GetMachineIdHashed()
-        {
-            if (HashedHwid != null) return HashedHwid;
-            var hashed = GetHashedHardwareIds().FirstOrDefault();
-            if (string.IsNullOrEmpty(hashed)) return "NOT_FOUND";
-            HashedHwid = hashed;
-            return hashed;
-        }
+        
+       
     }
 }
