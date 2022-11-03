@@ -14,20 +14,13 @@ namespace EasMe.Extensions
         /// <returns></returns>
         public static string? ParseFromJson(this JObject jObject, string key)
         {
-            try
+            var isValid = jObject.TryGetValue(key, out var value);
+            if (isValid)
             {
-                var isValid = jObject.TryGetValue(key, out var value);
-                if (isValid)
-                {
-                    if (value != null)
-                        return value.ToString();
-                }
-                return null;
+                if (value != null)
+                    return value.ToString();
             }
-            catch (Exception ex)
-            {
-                throw new FailedToParseException("Failed to parse from Json.", ex);
-            }
+            return null;
         }
         /// <summary>
         /// Serializes given object to json string. Returns "null" string if object is null
@@ -59,16 +52,9 @@ namespace EasMe.Extensions
         /// <returns></returns>
         public static string? ParseFromJson(this string jsonStr, string key)
         {
-            try
-            {
-                var jObj = JObject.Parse(jsonStr.ToString());
-                if (jObj == null) return null;
-                return jObj.ParseFromJson(key);
-            }
-            catch (Exception ex)
-            {
-                throw new FailedToParseException("Failed to parse from Json response.", ex);
-            }
+            var jObj = JObject.Parse(jsonStr.ToString());
+            if (jObj == null) return null;
+            return jObj.ParseFromJson(key);
         }
     }
 }

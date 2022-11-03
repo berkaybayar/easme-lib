@@ -10,7 +10,7 @@
             foreach (var item in source)
             {
                 someObjectType
-                    .GetProperty(item.Key)
+                    .GetProperty(item.Key)?
                     .SetValue(someObject, item.Value, null);
             }
 

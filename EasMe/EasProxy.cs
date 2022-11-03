@@ -127,7 +127,6 @@ namespace EasMe
         }
         public static string GetStatusCodeLongMessage(int httpStatusCode)
         {
-            throw new NotImplementedException();
             return httpStatusCode switch
             {
                 100 => "Continue",

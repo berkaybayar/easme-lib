@@ -8,8 +8,7 @@
         }
         public static bool IsValidDate(this string date)
         {
-
-            return DateTime.TryParse(date, out DateTime result);
+            return DateTime.TryParse(date, out DateTime _);
         }
         public static string ConvertToReadable(this DateTime datetime)
         {

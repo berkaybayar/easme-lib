@@ -14,22 +14,17 @@ namespace EasMe.Extensions
         /// <exception cref="FailedToConvertException"></exception>
         public static ClaimsIdentity ToClaimsIdentity<T>(this T Model)
         {
-            try
+            var claimsIdentity = new ClaimsIdentity();
+            var props = Model?.GetType().GetProperties();
+            if (props == null) throw new FailedToConvertException("Failed to convert model to claims identity. Model has no properties");
+            foreach (var property in props)
             {
-                var claimsIdentity = new ClaimsIdentity();
-                foreach (var property in Model.GetType().GetProperties())
-                {
-                    if (property == null) continue;
-                    var value = property.GetValue(Model);
-                    if (value == null) continue;
-                    claimsIdentity.AddClaim(new Claim(property.Name, value.ToString()));
-                }
-                return claimsIdentity;
+                if (property == null) continue;
+                var value = property.GetValue(Model);
+                if (value == null) continue;
+                claimsIdentity.AddClaim(new Claim(property.Name, value.ToString()));
             }
-            catch (Exception ex)
-            {
-                throw new FailedToConvertException("EasJWT failed to convert model to claims identity.", ex);
-            }
+            return claimsIdentity;
 
         }
         /// <summary>
@@ -70,22 +65,14 @@ namespace EasMe.Extensions
 
             ExceptionMessages = new();
             var model = Activator.CreateInstance<T>();
-            foreach (var property in model.GetType().GetProperties())
+            var props = model?.GetType().GetProperties();
+            if (props == null) throw new FailedToConvertException("Failed to convert claims identity to model. Model has no properties");
+            foreach (var property in props)
             {
-
-                try
-                {
-
-                    if (property == null) continue;
-                    var value = claimsIdentity.FindFirst(property.Name);
-                    if (value == null) continue;
-                    property.SetValue(model, value.Value.StringConversion<T>());
-                }
-                catch (Exception ex)
-                {
-                    ExceptionMessages.Add(ex);
-
-                }
+                if (property == null) continue;
+                var value = claimsIdentity.FindFirst(property.Name);
+                if (value == null) continue;
+                property.SetValue(model, value.Value.StringConversion<T>());
             }
             return model;
 
@@ -93,23 +80,17 @@ namespace EasMe.Extensions
 
         public static T ToModel<T>(this ClaimsIdentity claimsIdentity)
         {
-            try
+            var model = Activator.CreateInstance<T>();
+            var props = model?.GetType().GetProperties();
+            if (props == null) throw new FailedToConvertException("Failed to convert claims identity to model. Model has no properties");
+            foreach (var property in props)
             {
-                var model = Activator.CreateInstance<T>();
-                foreach (var property in model.GetType().GetProperties())
-                {
-                    if (property == null) continue;
-                    var value = claimsIdentity.FindFirst(property.Name);
-                    if (value == null) continue;
-                    property.SetValue(model, value.Value.StringConversion<T>());
-                }
-                return model;
-
+                if (property == null) continue;
+                var value = claimsIdentity.FindFirst(property.Name);
+                if (value == null) continue;
+                property.SetValue(model, value.Value.StringConversion<T>());
             }
-            catch (Exception ex)
-            {
-                throw new FailedToConvertException("EasJWT failed to convert claims identity to model.", ex);
-            }
+            return model;
         }
     }
 }
