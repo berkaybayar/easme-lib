@@ -12,7 +12,7 @@ namespace EasMe
         /// <returns></returns>
         static string GenerateString(string chars, int length)
         {
-            if (length > 1024) throw new TooBigValueException("Given length to create random string is too big. Max allowed length value is 1024.");
+            if (length > 2048) throw new TooBigValueException("Given length to create random string is too big. Max allowed length value is 1024.");
             if (length < 1) throw new TooSmallValueException("Given length to create random string is too small. Min allowed length value is 1.");
             var random = new Random();
             string resultToken = new(

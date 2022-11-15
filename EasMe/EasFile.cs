@@ -103,7 +103,6 @@ namespace EasMe
                 {
                     if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error while moving file => Source:" + sourcePath + " Destination: " + destPath);
                 }
-
             }
             else
             {
@@ -119,7 +118,7 @@ namespace EasMe
         /// <param name="destPath"></param>
         /// <param name="overwrite"></param>
         /// <param name="isLoggingEnabled"></param>
-        public static void CopyAll(string sourcePath, string destPath)
+        public static void CopyAll(string sourcePath, string destPath,bool overWrite = false)
         {
 
             if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
@@ -129,7 +128,7 @@ namespace EasMe
                 string[] subdirs = Directory.GetDirectories(sourcePath);
                 Parallel.ForEach(files, file =>
                 {
-                    File.Copy(file, destPath + "\\" + Path.GetFileName(file), true);
+                    File.Copy(file, destPath + "\\" + Path.GetFileName(file), overWrite);
                 });
                 Parallel.ForEach(subdirs, subdir =>
                 {
@@ -140,7 +139,7 @@ namespace EasMe
             }
             else if (File.Exists(sourcePath))
             {
-                File.Copy(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
+                File.Copy(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), overWrite);
             }
             else
             {
@@ -150,43 +149,6 @@ namespace EasMe
         }
 
 
-
-        /// <summary>
-        /// Moves all file(s) to destination folder path. If source path is folder moves all files and sub folders inside not the actual folder.
-        /// </summary>
-        /// <param name="sourceFolderPath"></param>
-        /// <param name="destPath"></param>
-        /// <param name="overwrite"></param>
-        /// <param name="isLoggingEnabled"></param>
-        //public static void RenameAll(string sourceFolderPath,bool overwrite, bool isLoggingEnabled = true)
-        //{
-
-        //    if (Directory.Exists(sourceFolderPath))
-        //    {
-        //        string[] files = Directory.GetFiles(sourceFolderPath);
-        //        //string[] subdirs = Directory.GetDirectories(sourcePath);
-        //        long count = 0;
-        //        Parallel.ForEach(files, file =>
-        //        {
-        //            try
-        //            {
-        //                var destPath = sourceFolderPath + "\\" + Path.GetFileName(file).Replace(".", "_" + count + ".");
-        //                File.Move(file, destPath, true);
-        //                if (isLoggingEnabled) SelfLog.Logger.Info("File renamed: " + destPath);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                if (isLoggingEnabled) SelfLog.Logger.Exception("Error while renaming file => Path: " + file, ex);
-        //            }
-        //        });
-
-        //    }
-        //    else
-        //    {
-        //        throw new NotExistException("Error in RenameAll: Given source folder path not exist.");
-
-        //    }
-        //}
         public static string GetFileExtension(string filename)
         {
             var index = filename.LastIndexOf('.');

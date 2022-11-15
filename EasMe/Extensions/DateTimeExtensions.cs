@@ -101,5 +101,10 @@
             dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dateTime;
         }
+        public static long ToUnixTime(this DateTime date)
+        {
+           return ((DateTimeOffset)date).ToUnixTimeSeconds();
+           //return (long)(date - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+        }
     }
 }

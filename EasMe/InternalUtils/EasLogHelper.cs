@@ -2,6 +2,7 @@
 using EasMe.Exceptions;
 using EasMe.Extensions;
 using EasMe.Models.LogModels;
+using Microsoft.AspNetCore.Http;
 using System.Configuration;
 using System.Diagnostics;
 namespace EasMe.InternalUtils
@@ -134,7 +135,7 @@ namespace EasMe.InternalUtils
                 log.Ip = EasHttpContext.Current.Request.GetRemoteIpAddress();
                 log.HttpMethod = EasHttpContext.Current.Request.Method;
                 log.RequestUrl = EasHttpContext.Current.Request.GetRequestQuery();
-                log.Headers = EasHttpContext.Current.Request.Headers.JsonSerialize().RemoveLineEndings();
+                log.Headers = GetHeadersJson(EasHttpContext.Current);
                 return log;
             }
             catch (Exception e)
@@ -142,6 +143,14 @@ namespace EasMe.InternalUtils
                 throw new FailedToCreateException("WebLogModel creation failed.", e);
             }
 
+        }
+        private static string GetHeadersJson(HttpContext ctx)
+        {
+            var headers = ctx.Request.Headers;
+            headers.Remove("Authorization");
+            var res = headers.JsonSerialize().RemoveLineEndings();
+
+            return res;
         }
 
     }

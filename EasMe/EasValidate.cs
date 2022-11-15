@@ -82,10 +82,10 @@ namespace EasMe
         /// </summary>
         /// <param name="port"></param>
         /// <returns></returns>
-        public static bool IsValidPort(this string port)
+        public static bool IsValidPort(this int port)
         {
             var PortRegex = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
-            if (!Regex.IsMatch(port, PortRegex))
+            if (!Regex.IsMatch(port.ToString(), PortRegex))
                 return false;
             return true;
         }

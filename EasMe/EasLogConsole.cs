@@ -81,16 +81,16 @@ namespace EasMe
             switch (severity)
             {
                 case Severity.ERROR:
-                    Log(paramStr, ErrorColor);
+                    Log(paramStr + " " + message, ErrorColor);
                     break;
                 case Severity.WARN:
-                    Log(paramStr, WarningColor);
+                    Log(paramStr + " " + message, WarningColor);
                     break;
                 case Severity.INFO:
-                    Log(paramStr, InfoColor);
+                    Log(paramStr + " " + message, InfoColor);
                     break;
                 default:
-                    Log(paramStr, BaseColor);
+                    Log(paramStr + " " + message, BaseColor);
                     break;
             }
         }
