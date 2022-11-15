@@ -3,7 +3,9 @@ using System.Net;
 using System.Net.Mail;
 namespace EasMe
 {
-
+    /// <summary>
+    /// Simple mail sender
+    /// </summary>
     public class EasMail
     {
         private string Host { get; set; }

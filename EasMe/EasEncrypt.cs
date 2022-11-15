@@ -3,6 +3,9 @@ using System.Text;
 
 namespace LauncherModule
 {
+    /// <summary>
+    /// Basic string encryption and decryption class.
+    /// </summary>
     public class EasEncrypt
     {
         public EasEncrypt(string key)
@@ -10,7 +13,6 @@ namespace LauncherModule
             _encryptKey = key;
         }
         private static string _encryptKey = null!;
-
 
         public string Encrypt(string plainText)
         {
