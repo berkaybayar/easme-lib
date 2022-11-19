@@ -128,6 +128,7 @@ namespace EasMe
                 {
                     var dateStr = DateTime.Now.ToString(IEasLog.Config.DateFormatString);
                     text = $"[{dateStr}] [{severity}] " + paramToLog;
+                    if (exception != null) text = text + " Exception:" + exception.Message;
                 }
                 WriteLog(severity, text);
             });
