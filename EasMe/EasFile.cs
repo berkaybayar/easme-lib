@@ -251,6 +251,44 @@ namespace EasMe
             return true;
         }
 
+
+        static ReaderWriterLock _locker = new();
+
+        /// <summary>
+        /// Reads file with given path and returns byte array. This does support multiple threading. Uses ReaderWriterLock by System.Threading. Allows multiple readers and a single writer
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static byte[] ReadBytesSafe(string path)
+        {
+            try
+            {
+                _locker.AcquireReaderLock(int.MaxValue);
+                return File.ReadAllBytes(path);
+            }
+            finally
+            {
+                _locker.ReleaseWriterLock();
+            }
+        }
+        /// <summary>
+        /// Reads file with given path and returns BaseStream. This does support multiple threading. Uses ReaderWriterLock by System.Threading. Allows multiple readers and a single writer
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static Stream ReadStreamSafe(string path)
+        {
+            try
+            {
+                _locker.AcquireReaderLock(int.MaxValue);
+                var reader = new StreamReader(path);
+                return reader.BaseStream;
+            }
+            finally
+            {
+                _locker.ReleaseWriterLock();
+            }
+        }
     }
 
 }

@@ -46,114 +46,108 @@ namespace EasMe
 
         public void Log(Severity severity, params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(severity, _LogSource, param.ToLogString(), null, false);
-            WriteLog(severity, model);
+            WriteLog(severity, null, param);
         }
         public void WriteAll(Severity severity, IEnumerable<string> logArray)
         {
             foreach (var log in logArray)
             {
-                var model = EasLogHelper.LogModelCreate(severity, _LogSource, log, null, false);
-                WriteLog(severity, model);
+                var model = EasLogHelper.LogModelCreate(severity, _LogSource, log, null);
+                WriteLog(severity, model.JsonSerialize());
             }
         }
         public void WriteAll(List<BulkLog> logs)
         {
             foreach (var log in logs)
             {
-                var model = EasLogHelper.LogModelCreate(log.Severity, _LogSource, log.Log, log.Exception, false);
-                WriteLog(log.Severity, model);
+                var model = EasLogHelper.LogModelCreate(log.Severity, _LogSource, log.Log, log.Exception);
+                WriteLog(log.Severity, model.JsonSerialize());
             }
         }
 
         public void Info(params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.INFO, _LogSource, param.ToLogString(), null, false);
-            WriteLog(Severity.INFO, model);
+            WriteLog(Severity.INFO, null, param);
         }
 
         public void Error(params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.ERROR, _LogSource, param.ToLogString(), null, false);
-            WriteLog(Severity.ERROR, model);
+            WriteLog(Severity.ERROR, null, param);
         }
 
         public void Warn(params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.WARN, _LogSource, param.ToLogString(), null, false);
-            WriteLog(Severity.WARN, model);
+            WriteLog(Severity.WARN, null, param);
         }
 
         public void Exception(Exception ex)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, ex.Message, ex, false);
-            Exception(ex, ex.Message);
+            WriteLog(Severity.EXCEPTION, ex);
         }
 
         public void Exception(Exception ex, params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, param.ToLogString(), ex, false);
-            WriteLog(Severity.EXCEPTION, model);
+            WriteLog(Severity.EXCEPTION, ex, param);
         }
-        //public void Exception(object logMessage, Exception ex)
-        //{
-        //    var model = EasLogHelper.LogModelCreate(Severity.EXCEPTION, _LogSource, logMessage, ex, false);
-        //    WriteLog(Severity.EXCEPTION, model);
-        //    if (IEasLog.Config.ThrowException) throw new EasException(EasMe.Error.Exception, ex.Message, ex);
-        //}
-        //public void Exception(string message, Exception ex,params string[] param)
-        //{
-        //    var content = param.ToLogString() + " " + message;
-        //    Exception(ex, content);
-        //}
-        public void Fatal( params object[] param)
+
+        public void Fatal(params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, param.ToLogString(), null, false);
-            WriteLog(Severity.FATAL, model);
+            WriteLog(Severity.FATAL, null, param);
         }
         public void Fatal(Exception ex, params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.FATAL, _LogSource, param.ToLogString(), ex, false);
-            WriteLog(Severity.FATAL, model);
+            WriteLog(Severity.FATAL, ex, param);
+
         }
 
-        public void Debug( params object[] param)
+        public void Debug(params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, param.ToLogString(), null, false);
-            WriteLog(Severity.DEBUG, model);
+            WriteLog(Severity.DEBUG, null, param);
         }
         public void Debug(Exception ex, params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.DEBUG, _LogSource, param.ToLogString(), ex, false);
-            WriteLog(Severity.DEBUG, model);
+            WriteLog(Severity.DEBUG, ex, param);
         }
 
-        public void Trace( params object[] param)
+        public void Trace(params object[] param)
         {
-            var model = EasLogHelper.LogModelCreate(Severity.TRACE, _LogSource, param.ToLogString(), null, false);
-            WriteLog(Severity.TRACE, model);
+            WriteLog(Severity.TRACE, null, param);
         }
-
-        public void WriteLog(Severity severity, object obj)
+        private void WriteLog(Severity severity, Exception? exception = null, params object[] param)
         {
-            if (IEasLog.Config.DontLog) return;
-            if (obj == null) throw new EasException(EasMe.Error.NullReference, "Log content is null");
-            try
+            Task.Run(() =>
             {
-                var serialized = obj.JsonSerialize();
-                //Create log folder 
-                if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
-                //To avoid multithread access and exceptions
-                lock (_lock)
+                var text = "";
+                var paramToLog = param.ToLogString();
+                if (IEasLog.Config.IsLogJson)
                 {
-                    File.AppendAllText(ExactLogPath, serialized + "\n");
+                    var model = EasLogHelper.LogModelCreate(severity, _LogSource, paramToLog, exception);
+                    text = model.JsonSerialize();
                 }
-                if (IEasLog.Config.ConsoleAppender) EasLogConsole.Log(severity, serialized);
-            }
-            catch (Exception e)
+                else
+                {
+                    var dateStr = DateTime.Now.ToString(IEasLog.Config.DateFormatString);
+                    text = $"[{dateStr}] [{severity}] " + paramToLog;
+                }
+                WriteLog(severity, text);
+            });
+        }
+        public void WriteLog(Severity severity, string log)
+        {
+            Task.Run(() =>
             {
-                throw new LoggingFailedException("Exception occured while writing log to log file.", e);
-            }
+                if (IEasLog.Config.DontLog) return;
+                try
+                {
+                    if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
+                    lock (_lock)
+                    {
+                        File.AppendAllText(ExactLogPath, log + "\n");
+                    }
+                    if (IEasLog.Config.ConsoleAppender) EasLogConsole.Log(severity, log);
+                }
+                catch { }
+            });
         }
 
 

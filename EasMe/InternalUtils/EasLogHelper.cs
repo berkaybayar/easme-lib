@@ -72,7 +72,7 @@ namespace EasMe.InternalUtils
         /// <param name="logMessage"></param>
         /// <param name="ErrorNo"></param>
         /// <returns>EasMe.Models.BaseLogModel</returns>
-        internal static LogModel LogModelCreate(Severity severity, string source, object log, Exception? exception = null, bool forceDebug = false)
+        internal static LogModel LogModelCreate(Severity severity, string source, object log, Exception? exception = null)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace EasMe.InternalUtils
                 logModel.Source = source;
                 logModel.Log = log;
                 logModel.LogType = (int)LogType.BASE;
-                if (IEasLog.Config.TraceLogging || forceDebug)
+                if (IEasLog.Config.TraceLogging || IEasLog.Config.IsDebug)
                 {
                     logModel.TraceMethod = GetActionName();
                     logModel.TraceClass = GetClassName();
