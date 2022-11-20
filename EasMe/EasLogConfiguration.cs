@@ -77,5 +77,13 @@
         /// If set false set LogFileExtension as well.
         /// </summary>
         public bool IsLogJson { get; set; } = true;
+
+        /// <summary>
+        /// Logger will stack this amount of logs in memory and once the amount is reached it will print all logs to file. 
+        /// By default this number is 0. Which mean it is disabled and will not cache any log in memory.
+        /// Use EasLog.Flush() to save all logs in memory. This must be used before application exists. 
+        /// In order to not lose any last second logs.
+        /// </summary>
+        public int StackLogCount { get; set; } = 0;
     }
 }

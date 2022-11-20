@@ -3,6 +3,7 @@ using EasMe.Exceptions;
 using EasMe.Extensions;
 using EasMe.InternalUtils;
 using EasMe.Models.LogModels;
+using log4net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 namespace EasMe
@@ -29,7 +30,7 @@ namespace EasMe
 
         internal static bool _IsCreated = false;
         internal string _LogSource;
-        private static readonly object _lock = new object();
+        private static readonly object _fileLock = new object();
         internal EasLog(string source)
         {
             _LogSource = source;
@@ -140,17 +141,62 @@ namespace EasMe
                 if (IEasLog.Config.DontLog) return;
                 try
                 {
-                    if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
-                    lock (_lock)
-                    {
-                        File.AppendAllText(ExactLogPath, log + "\n");
-                    }
                     if (IEasLog.Config.ConsoleAppender) EasLogConsole.Log(severity, log);
+                    if(IEasLog.Config.StackLogCount > 0)
+                    {
+                        if(IEasLog.Config.StackLogCount >= _stackLogs.Count)
+                        {
+                            WriteLines(_stackLogs);
+                            _stackLogs.Clear();
+                        }
+                        else
+                        {
+                            lock (_stackLogs)
+                            {
+                                _stackLogs.Add(log);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        WriteToFile(log);
+                    }
                 }
-                catch { }
+                catch(Exception ex) 
+                {
+                    lock (Errors)
+                    {
+                        Errors.Add(ex);
+                    }
+                }
             });
         }
+        private void WriteLines(List<string> logs)
+        {
+            if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
+            lock (_fileLock)
+            {
+                File.WriteAllLines(ExactLogPath, logs);
+            }
+        }
+        private void WriteToFile(string log)
+        {
+            if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
+            lock (_fileLock)
+            {
+                File.AppendAllText(ExactLogPath, log + "\n");
+            }
+        }
+        private static List<string> _stackLogs = new();
+        public static List<Exception> Errors { get; set; } = new();
 
+        /// <summary>
+        /// This method must be called before application exit. If 
+        /// </summary>
+        public void Flush()
+        {
+            WriteLines(_stackLogs);
+        }
 
     }
 

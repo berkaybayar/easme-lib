@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe.Test\\EasMe.Test.csproj": {}
+    "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe.Test\\EasMe.Test.csproj": {}
   },
   "projects": {
-    "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe.Test\\EasMe.Test.csproj": {
+    "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe.Test\\EasMe.Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe.Test\\EasMe.Test.csproj",
+        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe.Test\\EasMe.Test.csproj",
         "projectName": "EasMe.Test",
-        "projectPath": "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe.Test\\EasMe.Test.csproj",
-        "packagesPath": "C:\\Users\\berka\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe.Test\\obj\\",
+        "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe.Test\\EasMe.Test.csproj",
+        "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe.Test\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\berka\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\kkass\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,15 +26,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe\\EasMe.csproj": {
-                "projectPath": "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe\\EasMe.csproj"
+              "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj": {
+                "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj"
               }
             }
           }
@@ -64,24 +63,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe\\EasMe.csproj": {
+    "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe\\EasMe.csproj",
+        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj",
         "projectName": "EasMe",
-        "projectPath": "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe\\EasMe.csproj",
-        "packagesPath": "C:\\Users\\berka\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\berka\\source\\repos\\EasMe\\EasMe\\obj\\",
+        "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj",
+        "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\berka\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\kkass\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -90,7 +89,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -166,7 +164,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
