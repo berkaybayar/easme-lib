@@ -5,14 +5,37 @@ namespace EasMe.Extensions
 {
     public static class ClaimsExtensions
     {
-        /// <summary>
-        /// Converts given model to claims identity.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="Model"></param>
-        /// <returns></returns>
-        /// <exception cref="FailedToConvertException"></exception>
-        public static ClaimsIdentity ToClaimsIdentity<T>(this T Model)
+		/// <summary>
+		/// Converts given model to claims identity.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="Model"></param>
+		/// <returns></returns>
+		/// <exception cref="FailedToConvertException"></exception>
+		public static Dictionary<string,object> AsDictionary(this IEnumerable<Claim> claims)
+		{
+            var dic = new Dictionary<string, object>();  
+            //var type = claims.GetType();
+            //var props = type.GetProperties();
+            foreach(var item in claims)
+            {
+                var name = item.Type;
+                var value = item.Value;
+                dic[name] = value;
+            }
+            return dic;
+
+		}
+
+
+		/// <summary>
+		/// Converts given model to claims identity.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="Model"></param>
+		/// <returns></returns>
+		/// <exception cref="FailedToConvertException"></exception>
+		public static ClaimsIdentity ToClaimsIdentity<T>(this T Model)
         {
             var claimsIdentity = new ClaimsIdentity();
             var props = Model?.GetType().GetProperties();
@@ -92,5 +115,22 @@ namespace EasMe.Extensions
             }
             return model;
         }
-    }
+		public static T ToModel<T>(this ClaimsPrincipal principal)
+		{
+			var model = Activator.CreateInstance<T>();
+			var props = model?.GetType().GetProperties();
+			if (props == null) throw new FailedToConvertException("Failed to convert claims identity to model. Model has no properties");
+			foreach (var property in props)
+			{
+				if (property == null) continue;
+				var value = principal.FindFirst(property.Name);
+				if (value == null) continue;
+				property.SetValue(model, value.Value.StringConversion<T>());
+			}
+			return model;
+		}
+
+
+	}
+
 }

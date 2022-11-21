@@ -4,3 +4,9 @@ C:\Users\berka\source\repos\EasMe\EasBox\obj\Debug\EasBox.csproj.AssemblyReferen
 C:\Users\berka\source\repos\EasMe\EasBox\obj\Debug\EasBox.csproj.CoreCompileInputs.cache
 C:\Users\berka\source\repos\EasMe\EasBox\obj\Debug\EasBox.dll
 C:\Users\berka\source\repos\EasMe\EasBox\obj\Debug\EasBox.pdb
+C:\Users\kkass\source\repos\easme-lib\EasBox\bin\Debug\EasBox.dll
+C:\Users\kkass\source\repos\easme-lib\EasBox\bin\Debug\EasBox.pdb
+C:\Users\kkass\source\repos\easme-lib\EasBox\obj\Debug\EasBox.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\easme-lib\EasBox\obj\Debug\EasBox.csproj.CoreCompileInputs.cache
+C:\Users\kkass\source\repos\easme-lib\EasBox\obj\Debug\EasBox.dll
+C:\Users\kkass\source\repos\easme-lib\EasBox\obj\Debug\EasBox.pdb

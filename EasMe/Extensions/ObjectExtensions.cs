@@ -33,19 +33,19 @@ namespace EasMe.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static T? ToModel<T>(this object? obj)
-        {
-            try
-            {
-                if (obj.IsNull())
-                    return default;
-                return (T?)obj;
-            }
-            catch
-            {
-                return default;
-            }
-        }
+        //public static T? ToModel<T>(this object? obj)
+        //{
+        //    try
+        //    {
+        //        if (obj.IsNull())
+        //            return default;
+        //        return (T?)obj;
+        //    }
+        //    catch
+        //    {
+        //        return default;
+        //    }
+        //}
         /// <summary>
         /// Converts object to string with its properties. Name:Value
         /// </summary>

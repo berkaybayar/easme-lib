@@ -195,7 +195,8 @@ namespace EasMe
         /// </summary>
         public void Flush()
         {
-            WriteLines(_stackLogs);
+            if(IEasLog.Config.StackLogCount> 0) 
+                WriteLines(_stackLogs);
         }
 
     }

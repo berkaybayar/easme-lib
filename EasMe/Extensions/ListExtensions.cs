@@ -28,5 +28,26 @@ namespace EasMe.Extensions
             }
             return table;
         }
+        public static T SelectRandom<T>(this IEnumerable<T> list) where T : class 
+        {
+            var random = new Random();
+            var maxIdx = list.Count();
+            var num = random.Next(maxIdx);
+            return list.ElementAt(num);
+        }
+        public static T SelectRandom<T>(this List<T> list) 
+        {
+            var random = new Random();
+            var maxIdx = list.Count;
+            var num = random.Next(maxIdx);
+            return list.ElementAt(num);
+        }
+        public static T SelectRandom<T>(this T[] list)
+        {
+            var random = new Random();
+            var maxIdx = list.Length;
+            var num = random.Next(maxIdx);
+            return list.ElementAt(num);
+        }
     }
 }

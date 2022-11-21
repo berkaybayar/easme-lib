@@ -126,9 +126,9 @@ namespace EasMe.InternalUtils
         /// <param name="Headers"></param>
         /// <param name="ex"></param>
         /// <returns>EasMe.Models.WebLogModel</returns>
-        internal static WebLogModel? WebModelCreate()
+        internal static WebLogModel WebModelCreate()
         {
-            if (EasHttpContext.Current == null) return null;
+            if (EasHttpContext.Current == null) return new();
             try
             {
                 var log = new WebLogModel();
@@ -140,7 +140,7 @@ namespace EasMe.InternalUtils
             }
             catch (Exception e)
             {
-                throw new FailedToCreateException("WebLogModel creation failed.", e);
+                return new();
             }
 
         }
@@ -148,8 +148,8 @@ namespace EasMe.InternalUtils
         {
             var headers = ctx.Request.Headers;
             headers.Remove("Authorization");
+            headers.Remove("Cookie");
             var res = headers.JsonSerialize().RemoveLineEndings();
-
             return res;
         }
 
