@@ -118,6 +118,10 @@ namespace EasMe
         {
             Task.Run(() =>
             {
+                if(severity == Severity.DEBUG && !IEasLog.Config.IsDebug) 
+                {
+                    return;
+                }
                 var text = "";
                 var paramToLog = param.ToLogString();
                 if (IEasLog.Config.IsLogJson)

@@ -183,7 +183,8 @@ namespace EasMe
         public static string GetFileDirectory(string filename)
         {
             var index = filename.LastIndexOf('\\');
-            if (index == -1) return String.Empty;
+            if (index == -1) index = filename.LastIndexOf("/");
+            if (index == -1) return string.Empty;
             var res = filename[..index];
             return res;
         }

@@ -29,8 +29,8 @@ namespace EasMe
         /// <returns></returns>
         public static string GenerateRandomString(int length, bool onlyLetter = false, string allowedChars = "")
         {
-            string lowerAll = "abcdefghijklmnoprstuvwxyz";
-            string upperAll = "ABCDEFGHIJKLMNOPRSTUVWXYZ";
+            string lowerAll = "abcdefghijklmnoprstuvwxyzq";
+            string upperAll = "ABCDEFGHIJKLMNOPRSTUVWXYZQ";
             string digits = "0123456789";
             string allChars;
             if (onlyLetter)
