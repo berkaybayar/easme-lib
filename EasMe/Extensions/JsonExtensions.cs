@@ -23,23 +23,38 @@ namespace EasMe.Extensions
             return null;
         }
         /// <summary>
-        /// Serializes given object to json string. Returns "null" string if object is null
+        /// Serializes given object to json string.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
+        [Obsolete("Use AsJson instead")]
         public static string JsonSerialize(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
-            if (obj == null) return "null";
+            return obj.AsJson(formatting);
+        }
+        public static string AsJson(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
+        {
+            if (obj == null) return default;
             return JsonConvert.SerializeObject(obj, formatting).Replace("\n", "").Replace("\r", "");
         }
-
         /// <summary>
         /// Deserializes given json string to T model. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
+        public static T? As<T>(this string str)
+        {
+            return JsonConvert.DeserializeObject<T>(str);
+        }
+        /// <summary>
+        /// Deserializes given json string to T model. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        /// <exception cref="EasException"></exception>
+        [Obsolete()]
         public static T? JsonDeserialize<T>(this string str)
         {
             return JsonConvert.DeserializeObject<T>(str);

@@ -390,7 +390,7 @@ namespace EasMe
         /// Returns Disk UUID from Win32_ComputerSystemProduct
         /// </summary>
         /// <returns></returns>
-        private static string GetDiskUUID()
+        public static string GetDiskUUID()
         {
             string run = "get-wmiobject Win32_ComputerSystemProduct  | Select-Object -ExpandProperty UUID";
             var oProcess = new Process();

@@ -10,14 +10,13 @@
 
     public enum Severity
     {
-        BASE = 0,
-        INFO = 1,
-        WARN = 2,
-        ERROR = 3,
-        DEBUG = 4,
+        TRACE = 0,
+        DEBUG = 1,
+        INFO = 2,
+        WARN = 3,
+        ERROR = 4,
         EXCEPTION = 5,
         FATAL = 6,
-        TRACE = 7
     }
     public enum Error
     {
@@ -28,6 +27,7 @@
         Failed,
         Timeout,
         Internal,
+        
 
         InvalidValue,
         InvalidModel,
@@ -68,27 +68,28 @@
         NoOnlineNetwork,
         NotSet,
 
-        //Sql Errors
-        SqlError,
-        SqlNotFound,
-        SqlSelect,
-        SqlAddFailed,
-        SqlUpdateFailed,
-        SqlInsertFailed,
-        SqlDeleteFailed,
-        SqlCreateFailed,
-        SqlTruncateFailed,
-        SqlExecNonQueryFailed,
-        SqlExecScalarFailed,
-        SqlBackupFailed,
-        SqlShrinkFailed,
-        SqlDropFailed,
-        SqlRestoreFailed,
-        SqlNoPermission,
-        SqlNoRowsFound,
-        SqlNoRowsAffected,
-        SqlMultipleRows,
-        SqlAlreadyExists,
+		//Sql Errors
+		DbSuccess,
+		DbError,
+        DbNotFound,
+        DbSelect,
+        DbAddFailed,
+        DbUpdateFailed,
+        DbInsertFailed,
+        DbDeleteFailed,
+        DbCreateFailed,
+        DbTruncateFailed,
+        DbExecNonQueryFailed,
+        DbExecScalarFailed,
+        DbBackupFailed,
+        DbShrinkFailed,
+        DbDropFailed,
+        DbRestoreFailed,
+        DbNoPermission,
+        DbNoRowsFound,
+        DbNoRowsAffected,
+        DbMultipleRows,
+		DbAlreadyExists,
 
         //ApiErrors
         FailedToSend,

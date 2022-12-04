@@ -3,6 +3,10 @@
     public class EasLogConfiguration
     {
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to log the request body.
+        /// </summary>
+        public Severity MinimumLogLevel { get; set; } = Severity.INFO;
 
         /// <summary>
         /// Set logs folder path to be stored. Defualt is current directory, adds folder named Logs.
@@ -42,6 +46,7 @@
         /// Whether to enable Trace logging. Default value is false. 
         /// If set true, it will print which class and method log method is called from. 
         /// This is useful for debugging.
+        /// This will be force enabled for Trace method calls even if this value is set to false. 
         /// </summary>
         public bool TraceLogging { get; set; } = false;
         
@@ -58,12 +63,6 @@
         /// </summary>
         public bool ExceptionHideSensitiveInfo { get; set; } = true;
 
-        /// <summary>
-        /// Whether to log debug loggings.
-        /// Default value is false. 
-        /// If set to true, it will log debug loggings.
-        /// </summary>
-        public bool IsDebug { get; set; } = false;
 
         /// <summary>
         /// In order this to work you must configure EasMe.HttpContext and enable web logging. 
@@ -85,5 +84,6 @@
         /// In order to not lose any last second logs.
         /// </summary>
         public int StackLogCount { get; set; } = 0;
+        public bool SeperateLogLevelToFolder { get; set; } = false;
     }
 }

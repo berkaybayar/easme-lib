@@ -81,7 +81,7 @@ namespace EasMe.InternalUtils
                 logModel.Source = source;
                 logModel.Log = log;
                 logModel.LogType = (int)LogType.BASE;
-                if (IEasLog.Config.TraceLogging || IEasLog.Config.IsDebug)
+                if (IEasLog.Config.TraceLogging || severity == Severity.TRACE)
                 {
                     logModel.TraceMethod = GetActionName();
                     logModel.TraceClass = GetClassName();
@@ -126,31 +126,70 @@ namespace EasMe.InternalUtils
         /// <param name="Headers"></param>
         /// <param name="ex"></param>
         /// <returns>EasMe.Models.WebLogModel</returns>
+        //internal static WebLogModel WebModelCreate()
+        //{
+        //    if (EasHttpContext.Current is null) return new();
+        //    try
+        //    {
+        //        var log = new WebLogModel();
+        //        log.Ip = EasHttpContext.Current.Request.GetRemoteIpAddress();
+        //        log.HttpMethod = EasHttpContext.Current.Request.Method;
+        //        log.RequestUrl = EasHttpContext.Current.Request.GetRequestQuery();
+        //        log.Headers = GetHeadersJson(EasHttpContext.Current);
+        //        return log;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return new();
+        //    }
+
+        //}
         internal static WebLogModel WebModelCreate()
         {
-            if (EasHttpContext.Current == null) return new();
+            if (LogHttpContext.Current is null) return new();
             try
             {
                 var log = new WebLogModel();
-                log.Ip = EasHttpContext.Current.Request.GetRemoteIpAddress();
-                log.HttpMethod = EasHttpContext.Current.Request.Method;
-                log.RequestUrl = EasHttpContext.Current.Request.GetRequestQuery();
-                log.Headers = GetHeadersJson(EasHttpContext.Current);
+                log.Ip = LogHttpContext.Current.Request.GetRemoteIpAddress();
+                log.HttpMethod = LogHttpContext.Current.Request.Method;
+                log.RequestUrl = LogHttpContext.Current.Request.GetRequestQuery();
+                log.Headers = GetHeadersJson(LogHttpContext.Current);
                 return log;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new();
             }
-
         }
         private static string GetHeadersJson(HttpContext ctx)
         {
-            var headers = ctx.Request.Headers;
-            headers.Remove("Authorization");
-            headers.Remove("Cookie");
-            var res = headers.JsonSerialize().RemoveLineEndings();
-            return res;
+            try
+            {
+                var req = ctx.Request;
+				var headers = req.Headers;
+                if (headers is null) return string.Empty;
+				headers.Remove("Authorization");
+				headers.Remove("Cookie");
+				var res = headers.JsonSerialize()?.RemoveLineEndings() ?? "";
+				return res;
+			}
+            catch { return string.Empty; }
+        }
+        internal static List<Severity> GetLoggableLevels()
+        {
+            var list = new List<Severity>();
+            var min = IEasLog.Config.MinimumLogLevel;
+            var num = (int)min;
+            foreach (var item in Enum.GetValues(typeof(Severity)))
+            {
+                if ((int)item >= num) list.Add((Severity)item);
+            }
+            return list;
+        }
+        internal static bool IsLoggable(this Severity severity)
+        {
+            var list = GetLoggableLevels();
+            return list.Contains(severity);
         }
 
     }

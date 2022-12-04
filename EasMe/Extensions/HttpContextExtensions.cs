@@ -10,7 +10,7 @@ namespace EasMe.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static string[] _HeaderList = new string[22]
+        public static string[] _HeaderList = new string[21]
 {
               "HOST",
               "ORIGIN",
@@ -31,12 +31,20 @@ namespace EasMe.Extensions
               "X-ORIGINAL-IP",
               "X-FORWARDED-PORT",
               "X-FORWARDED-PROTO",
-              "X-PA-IP",
               "PC-Real-IP",
               "CF-Connecting-IP",
               "X-Real-IP",
 };
+        public static readonly string[] _realIpHeaderList = new string[6]
+{
+                "CF-Connecting-IP",
+              "X-FORWARDED-FOR",
+              "X-ORIGINAL-IP",
+              "X-FORWARDED-FOR",
+              "PC-Real-IP",
 
+              "X-Real-IP",
+};
 
 
         /// <summary>
@@ -89,13 +97,32 @@ namespace EasMe.Extensions
         {
             try
             {
-
+                foreach (var item in httpRequest.Headers)
+                {
+                    if (_realIpHeaderList.Any(x => x == item.Key))
+                    {
+                        if (item.Value.ToString() != null || item.Value != "")
+                        {
+                            return item.Value.ToString() ?? "";
+                        }
+                    }
+                }
                 return httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
 
             }
             catch { return "N/A"; }
         }
 
+        public static string GetUserAgent(this HttpRequest httpRequest)
+        {
+            {
+                try
+                {
+                    return httpRequest.Headers["User-Agent"].ToString();
+                }
+                catch { return "N/A"; }
+            }
+        }
         /// <summary>
         ///     Gets request URL by HttpRequest.
         /// </summary>

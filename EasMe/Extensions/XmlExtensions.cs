@@ -1,4 +1,6 @@
-﻿using System.Xml.Linq;
+﻿using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace EasMe.Extensions
@@ -45,14 +47,38 @@ namespace EasMe.Extensions
         }
         public static string ToXML<T>(this T t)
         {
-            using (var stringwriter = new StringWriter())
-            {
-                var serializer = new XmlSerializer(t.GetType());
-                serializer.Serialize(stringwriter, t);
-                return stringwriter.ToString();
-            }
-
+            using var stringwriter = new StringWriter();
+            var serializer = new XmlSerializer(t.GetType());
+            serializer.Serialize(stringwriter, t);
+            return stringwriter.ToString();
+            
         }
+        public static string ToCleanXml<T>(this T value)
+        {
+            var emptyNamespaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
+            var serializer = new XmlSerializer(value.GetType());
+            var settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.OmitXmlDeclaration = true;
+
+            using var stream = new StringWriter();
+            using var writer = XmlWriter.Create(stream, settings);
+            serializer.Serialize(writer, value, emptyNamespaces);
+            return stream.ToString();
+        }
+        public static XElement ToXElement<T>(this T obj)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                using (TextWriter streamWriter = new StreamWriter(memoryStream))
+                {
+                    var xmlSerializer = new XmlSerializer(typeof(T));
+                    xmlSerializer.Serialize(streamWriter, obj);
+                    return XElement.Parse(Encoding.ASCII.GetString(memoryStream.ToArray()));
+                }
+            }
+        }
+
         public static XElement? ToXML<T>(this T t, string elementName, bool asAtrribute = false)
         {
 
