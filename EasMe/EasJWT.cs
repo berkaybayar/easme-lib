@@ -33,7 +33,7 @@ namespace EasMe
 		/// <param name="claimsIdentity"></param>
 		/// <param name="expireMinutes"></param>
 		/// <returns></returns>
-		public string GenerateJWTToken(ClaimsIdentity claimsIdentity, int expireMinutes)
+		public string GenerateJwtToken(ClaimsIdentity claimsIdentity, int expireMinutes)
 		{
 			try
 			{
@@ -62,7 +62,7 @@ namespace EasMe
 		/// <param name="claimsIdentity"></param>
 		/// <param name="expireMinutes"></param>
 		/// <returns></returns>
-		public string GenerateJWTToken(Dictionary<string, object?> claims, int expireMinutes)
+		public string GenerateJwtToken(Dictionary<string, object?> claims, int expireMinutes)
 		{
 			try
 			{
@@ -91,7 +91,7 @@ namespace EasMe
 		/// <param name="validateIssuer"></param>
 		/// <param name="validateAudience"></param>
 		/// <returns></returns>
-		public ClaimsPrincipal? ValidateJWTToken(string token)
+		public ClaimsPrincipal? ValidateJwtToken(string token)
 		{
 			try
 			{
@@ -100,7 +100,10 @@ namespace EasMe
 					ValidateIssuerSigningKey = true,
 					IssuerSigningKey = new SymmetricSecurityKey(Secret),
 					ValidateIssuer = ValidateIssuer,
-					ValidateAudience = ValidateAudience
+					ValidateAudience = ValidateAudience,
+					ValidateLifetime = true,
+					RequireExpirationTime = true,
+					ClockSkew = TimeSpan.Zero,
 
 				};
 				var claims = TokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);

@@ -156,29 +156,13 @@ namespace EasMe
             var res = filename[(index + 1)..];
             return res;
         }
-        public static string GetFileName(string filename)
-        {
-            var index = filename.LastIndexOf('.');
-            if (index == -1) return filename;
-            var res = filename[..index];
-            return res;
-        }
+       
         public static string GetFileNameWithExtension(string filename)
         {
             var index = filename.LastIndexOf('\\');
             if (index == -1) return filename;
             var res = filename[(index + 1)..];
             return res;
-        }
-        public static string Current()
-        {
-            return Directory.GetCurrentDirectory();
-        }
-
-        public static string Current(params string[] path)
-        {
-            var newarray = path.Reverse().Append(Current()).Reverse().ToArray();
-            return Path.Combine(newarray);
         }
         public static string GetFileDirectory(string filename)
         {

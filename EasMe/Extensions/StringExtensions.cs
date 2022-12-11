@@ -267,17 +267,16 @@ namespace EasMe.Extensions
 
         internal static string ToLogString(this object[] param)
         {
+            var last = param.Last();
             var paramStr = "";
-            for (int i = 0; i < param.Length; i++)
+            foreach (var item in param)
             {
-                if (param.Length == i + 1)
+                if (item is null) continue;
+                if (last != item)
                 {
-                    paramStr += " " + param[i].ToString();
+                    paramStr += " [" + item.ToString() + "]";
                 }
-                else
-                {
-                    paramStr += " [" + param[i].ToString() + "]";
-                }
+                else paramStr += " " + item.ToString();
             }
             return paramStr.Trim();
         }
@@ -294,7 +293,40 @@ namespace EasMe.Extensions
         public static string RemoveLineEndings(this string str)
         {
 
-            return str.Replace("\n","").Replace("\r", "").Replace("\t", "");
+            return str.Replace("\n", "").Replace("\r", "").Replace("\t", "");
+        }
+
+        public static string ToHexString(this string str)
+        {
+            var sb = new StringBuilder();
+
+            var bytes = Encoding.Unicode.GetBytes(str);
+            foreach (var t in bytes)
+            {
+                sb.Append(t.ToString("X2"));
+            }
+
+            return sb.ToString(); // returns: "48656C6C6F20776F726C64" for "Hello world"
+        }
+
+        public static string FromHexString(this string hexString)
+        {
+            var bytes = new byte[hexString.Length / 2];
+            for (var i = 0; i < bytes.Length; i++)
+            {
+                bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            }
+            return Encoding.Unicode.GetString(bytes); // returns: "Hello world" for "48656C6C6F20776F726C64"
+        }
+        public static string ToBase64String(this string base64String)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(base64String);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+        public static string FromBase64String(this string base64String)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64String);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace LauncherModule
+namespace EasMe
 {
     /// <summary>
     /// Basic string encryption and decryption class.

@@ -1,4 +1,5 @@
-﻿using EasMe.Models;
+﻿using Azure.Core;
+using EasMe.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -35,15 +36,14 @@ namespace EasMe.Extensions
               "CF-Connecting-IP",
               "X-Real-IP",
 };
-        public static readonly string[] _realIpHeaderList = new string[6]
+        public static readonly string[] _realIpHeaderList = new string[5]
 {
-                "CF-Connecting-IP",
               "X-FORWARDED-FOR",
-              "X-ORIGINAL-IP",
-              "X-FORWARDED-FOR",
-              "PC-Real-IP",
-
               "X-Real-IP",
+              "X-ORIGINAL-IP",
+              "PC-Real-IP",
+                "CF-Connecting-IP",
+
 };
 
 
@@ -73,14 +73,15 @@ namespace EasMe.Extensions
         /// </summary>
         /// <param name="httpRequest"></param>
         /// <returns></returns>
-        public static List<string> GetHeaderRealIPs(this HttpRequest httpRequest)
+        public static List<string> GetIpAddresses(this HttpRequest httpRequest)
         {
             var list = new List<string>();
             var headers = httpRequest.GetHeaderValues();
-            list.Add(httpRequest.HttpContext.Connection.RemoteIpAddress.ToString());
+            var remoteIp = httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
+            list.Add(remoteIp);
             foreach (var item in headers)
             {
-                if (item.Key == "X-FORWARDED-FOR" || item.Key == "X-ORIGINAL-HOST" || item.Key == "PC-Real-IP" || item.Key == "X-Real-IP" || item.Key == "CF-Connecting-IP")
+                if (item.Key == "X-FORWARDED-FOR" || item.Key == "PC-Real-IP" || item.Key == "X-Real-IP")
                 {
                     list.Add(item.Value);
                 }

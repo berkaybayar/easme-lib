@@ -22,7 +22,7 @@ namespace EasMe
     /// <summary>
     /// Simple static json and console logger with useful options.
     /// </summary>
-    public sealed class EasLog : IEasLog
+    public sealed class EasLog
     {
         //internal static EasLogConfiguration Configuration { get; set; } = IEasLog.Config;
         private static int? _OverSizeExt = 0;
@@ -38,40 +38,23 @@ namespace EasMe
         {
             _LogSource = "Sys";
         }
-
         private static string GetExactLogPath()
         {
-            return IEasLog.Config.LogFolderPath + "\\" + IEasLog.Config.LogFileName + DateTime.Now.ToString(IEasLog.Config.DateFormatString) + IEasLog.Config.LogFileExtension;
+            return EasLogFactory.Config.LogFolderPath + "\\" + EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension;
         }
         private static string GetExactLogPath(Severity severity)
         {
-            if (IEasLog.Config.SeperateLogLevelToFolder)
+            if (EasLogFactory.Config.SeperateLogLevelToFolder)
             {
-                return IEasLog.Config.LogFolderPath + "\\" + severity + "\\" + IEasLog.Config.LogFileName + DateTime.Now.ToString(IEasLog.Config.DateFormatString) + IEasLog.Config.LogFileExtension;
+                return EasLogFactory.Config.LogFolderPath + "\\" + severity + "\\" + EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension;
             }
-            return IEasLog.Config.LogFolderPath + "\\" + IEasLog.Config.LogFileName + DateTime.Now.ToString(IEasLog.Config.DateFormatString) + IEasLog.Config.LogFileExtension;
+            return EasLogFactory.Config.LogFolderPath + "\\" + EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension;
         }
         public void Log(Severity severity, params object[] param)
         {
             WriteLog(severity, null, param);
         }
-        //public void WriteAll(Severity severity, IEnumerable<string> logArray)
-        //{
-        //    foreach (var log in logArray)
-        //    {
-        //        var model = EasLogHelper.LogModelCreate(severity, _LogSource, log, null);
-        //        WriteLog(severity, null ,model.JsonSerialize());
-        //    }
-        //}
-        //public void WriteAll(List<BulkLog> logs)
-        //{
-        //    foreach (var log in logs)
-        //    {
-        //        var model = EasLogHelper.LogModelCreate(log.Severity, _LogSource, log.Log, log.Exception);
-        //        WriteLog(log.Severity, null, model.JsonSerialize());
-        //    }
-        //}
-
+ 
         public void Info(params object[] param)
         {
             WriteLog(Severity.INFO, null, param);
@@ -124,27 +107,27 @@ namespace EasMe
         {
             Task.Run(() =>
             {
-                if (IEasLog.Config.DontLog) return;
+                if (EasLogFactory.Config.DontLog) return;
                 if (!severity.IsLoggable()) return;
                 var log = "";
                 var paramToLog = param.ToLogString();
-                if (IEasLog.Config.IsLogJson)
+                if (EasLogFactory.Config.IsLogJson)
                 {
                     var model = EasLogHelper.LogModelCreate(severity, _LogSource, paramToLog, exception);
                     log = model.JsonSerialize();
                 }
                 else
                 {
-                    var dateStr = DateTime.Now.ToString(IEasLog.Config.DateFormatString);
+                    var dateStr = DateTime.Now.ToString(EasLogFactory.Config.DateFormatString);
                     log = $"[{dateStr}] [{severity}] " + paramToLog;
                     if (exception != null) log = log + " Exception:" + exception.Message;
                 }
                 try
                 {
-                    if (IEasLog.Config.ConsoleAppender) EasLogConsole.Log(severity, log);
-                    if (IEasLog.Config.StackLogCount > 0)
+                    if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(severity, log);
+                    if (EasLogFactory.Config.StackLogCount > 0)
                     {
-                        if (IEasLog.Config.StackLogCount >= _stackLogs.Count)
+                        if (EasLogFactory.Config.StackLogCount >= _stackLogs.Count)
                         {
                             WriteLines(_stackLogs);
                             _stackLogs.Clear();
@@ -181,16 +164,16 @@ namespace EasMe
                 }
             }
         }
-       
+
         private void WriteLines(List<string> logs)
         {
-            if (!Directory.Exists(IEasLog.Config.LogFolderPath)) Directory.CreateDirectory(IEasLog.Config.LogFolderPath);
+            if (!Directory.Exists(EasLogFactory.Config.LogFolderPath)) Directory.CreateDirectory(EasLogFactory.Config.LogFolderPath);
             lock (_fileLock)
             {
                 File.WriteAllLines(GetExactLogPath(), logs);
             }
         }
-        
+
         private static List<string> _stackLogs = new();
         public static List<Exception> Errors { get; set; } = new();
 
@@ -199,7 +182,7 @@ namespace EasMe
         /// </summary>
         public void Flush()
         {
-            if (IEasLog.Config.StackLogCount > 0)
+            if (EasLogFactory.Config.StackLogCount > 0)
                 WriteLines(_stackLogs);
         }
 

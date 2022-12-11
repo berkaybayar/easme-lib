@@ -81,16 +81,16 @@ namespace EasMe.InternalUtils
                 logModel.Source = source;
                 logModel.Log = log;
                 logModel.LogType = (int)LogType.BASE;
-                if (IEasLog.Config.TraceLogging || severity == Severity.TRACE)
+                if (EasLogFactory.Config.TraceLogging || severity == Severity.TRACE)
                 {
                     logModel.TraceMethod = GetActionName();
                     logModel.TraceClass = GetClassName();
                 }
-                if (IEasLog.Config.WebInfoLogging)
+                if (EasLogFactory.Config.WebInfoLogging)
                 {
                     logModel.WebLog = WebModelCreate();
                     logModel.LogType = (int)LogType.WEB;
-                    if (IEasLog.Config.AddRequestUrlToStart)
+                    if (EasLogFactory.Config.AddRequestUrlToStart)
                     {
                         var conAndAction = logModel.WebLog?.RequestUrl?.Replace("/api", "");
                         if (conAndAction != null)
@@ -103,7 +103,7 @@ namespace EasMe.InternalUtils
                 }
                 if (exception != null)
                 {
-                    if (IEasLog.Config.ExceptionHideSensitiveInfo) logModel.Exception = new Exception(exception.Message);
+                    if (EasLogFactory.Config.ExceptionHideSensitiveInfo) logModel.Exception = new Exception(exception.Message);
                     else logModel.Exception = exception;
                     logModel.LogType = (int)LogType.EXCEPTION;
                 }
@@ -114,46 +114,17 @@ namespace EasMe.InternalUtils
                 throw new FailedToCreateException("LogModel creation failed.", e);
             }
         }
-        /// <summary>
-        /// Converts given parameters to WebLogModel.
-        /// </summary>
-        /// <param name="Severity"></param>
-        /// <param name="logMessage"></param>
-        /// <param name="ErrorNo"></param>
-        /// <param name="ip"></param>
-        /// <param name="HttpMethod"></param>
-        /// <param name="RequestUrl"></param>
-        /// <param name="Headers"></param>
-        /// <param name="ex"></param>
-        /// <returns>EasMe.Models.WebLogModel</returns>
-        //internal static WebLogModel WebModelCreate()
-        //{
-        //    if (EasHttpContext.Current is null) return new();
-        //    try
-        //    {
-        //        var log = new WebLogModel();
-        //        log.Ip = EasHttpContext.Current.Request.GetRemoteIpAddress();
-        //        log.HttpMethod = EasHttpContext.Current.Request.Method;
-        //        log.RequestUrl = EasHttpContext.Current.Request.GetRequestQuery();
-        //        log.Headers = GetHeadersJson(EasHttpContext.Current);
-        //        return log;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return new();
-        //    }
 
-        //}
         internal static WebLogModel WebModelCreate()
         {
-            if (LogHttpContext.Current is null) return new();
+            if (HttpContextAccessor.Current is null) return new();
             try
             {
                 var log = new WebLogModel();
-                log.Ip = LogHttpContext.Current.Request.GetRemoteIpAddress();
-                log.HttpMethod = LogHttpContext.Current.Request.Method;
-                log.RequestUrl = LogHttpContext.Current.Request.GetRequestQuery();
-                log.Headers = GetHeadersJson(LogHttpContext.Current);
+                log.Ip = HttpContextAccessor.Current.Request.GetRemoteIpAddress();
+                log.HttpMethod = HttpContextAccessor.Current.Request.Method;
+                log.RequestUrl = HttpContextAccessor.Current.Request.GetRequestQuery();
+                log.Headers = GetHeadersJson(HttpContextAccessor.Current);
                 return log;
             }
             catch (Exception)
@@ -178,7 +149,7 @@ namespace EasMe.InternalUtils
         internal static List<Severity> GetLoggableLevels()
         {
             var list = new List<Severity>();
-            var min = IEasLog.Config.MinimumLogLevel;
+            var min = EasLogFactory.Config.MinimumLogLevel;
             var num = (int)min;
             foreach (var item in Enum.GetValues(typeof(Severity)))
             {
