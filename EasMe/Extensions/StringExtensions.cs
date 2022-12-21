@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -265,9 +266,10 @@ namespace EasMe.Extensions
             return value.Length <= maxChars ? value : value[..maxChars] + "...";
         }
 
-      
 
-        public static string RemoveLineEndings(this string str)
+		
+        
+		public static string RemoveLineEndings(this string str)
         {
 
             return str.Replace("\n", "").Replace("\r", "").Replace("\t", "");
