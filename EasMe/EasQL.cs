@@ -2,6 +2,7 @@
 using EasMe.Extensions;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Threading;
 
 namespace EasMe
 {
@@ -42,6 +43,13 @@ namespace EasMe
             return ExecNonQuery(Connection, cmd, Timeout);
         }
 
+        public async Task<int> ExecNonQueryAsync(SqlCommand cmd, int timeout = 0)
+        {
+            return await Task.Run(() =>
+            {
+                return ExecNonQuery(Connection, cmd, timeout);
+            });
+		}
         /// <summary>
         /// Exectues SQL query and returns the first column of first row in the result set returned by query. Additional columns or rows ignored.
         /// </summary>
@@ -50,69 +58,102 @@ namespace EasMe
         /// <param name="Timeout"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static object ExecScalar(SqlCommand cmd, int Timeout = 0)
+        public object ExecScalar(SqlCommand cmd, int Timeout = 0)
         {
             return ExecScalar(Connection, cmd, Timeout);
         }
-
-        /// <summary>
-        /// Executes a SQL query to backup database to the given folder path.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <param name="BackupFolderPath"></param>
-        /// <param name="Timeout"></param>
-        /// <exception cref="EasException"></exception>
-        public void BackupDatabase(string BackupPath, int Timeout = 0)
+		public async Task<object> ExecScalarAsync(SqlCommand cmd, int timeout = 0)
+		{
+			return await Task.Run(() =>
+			{
+				return ExecScalar(Connection, cmd, timeout);
+			});
+		}
+		/// <summary>
+		/// Executes a SQL query to backup database to the given folder path.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="DatabaseName"></param>
+		/// <param name="BackupFolderPath"></param>
+		/// <param name="Timeout"></param>
+		/// <exception cref="EasException"></exception>
+		public void BackupDatabase(string BackupPath, int Timeout = 0)
         {
             BackupDatabase(Connection, BackupPath, Timeout);
         }
-        /// <summary>
-        /// Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but still you should backup first.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <param name="DatabaseLogName"></param>
-        /// <exception cref="EasException"></exception>
-        public void ShrinkDatabase(string DatabaseLogName = "_log")
+
+		public async Task BackupDatabaseAsync(string BackupPath, int Timeout = 0)
+		{
+			await Task.Run(() =>
+			{
+			    BackupDatabase(BackupPath,Timeout);
+			});
+		}
+        
+		/// <summary>
+		/// Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but still you should backup first.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="DatabaseName"></param>
+		/// <param name="DatabaseLogName"></param>
+		/// <exception cref="EasException"></exception>
+		public void ShrinkDatabase(string DatabaseLogName = "_log")
         {
             ShrinkDatabase(Connection, DatabaseLogName);
         }
+		public async Task ShrinkDatabaseAsync(string DatabaseLogName = "_log")
+		{
+			await Task.Run(() =>
+            {
+				ShrinkDatabase( DatabaseLogName);
+			});
+		}
 
 
-
-        /// <summary>
-        /// Deletes all records in given table but keeps the table. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="TableName"></param>
-        /// <exception cref="EasException"></exception>
-        public void TruncateTable(string TableName)
+		/// <summary>
+		/// Deletes all records in given table but keeps the table. This action can not be undone, be aware of the risks before running this.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="TableName"></param>
+		/// <exception cref="EasException"></exception>
+		public void TruncateTable(string TableName)
         {
             TruncateTable(Connection, TableName);
         }
+		public async Task TruncateTableAsync(string TableName)
+		{
+			await Task.Run(() =>
+			{
+				TruncateTable(TableName);
+			});
+		}
 
 
-
-        /// <summary>
-        /// Deletes all records in the table and the table from database. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="TableName"></param>
-        /// <exception cref="EasException"></exception>
-        public void DropTable(string TableName)
+		/// <summary>
+		/// Deletes all records in the table and the table from database. This action can not be undone, be aware of the risks before running this.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="TableName"></param>
+		/// <exception cref="EasException"></exception>
+		public void DropTable(string TableName)
         {
             DropTable(Connection, TableName);
         }
 
-
-        /// <summary>
-        /// Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <exception cref="EasException"></exception>
-        public void DropDatabase(string DatabaseName)
+		public async Task DropTableAsync(string TableName)
+		{
+			await Task.Run(() =>
+			{
+				DropTable(TableName);
+			});
+		}
+		/// <summary>
+		/// Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks before running this.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="DatabaseName"></param>
+		/// <exception cref="EasException"></exception>
+		public void DropDatabase(string DatabaseName)
         {
             DropDatabase(Connection, DatabaseName);
         }
@@ -133,32 +174,39 @@ namespace EasMe
         /// <summary>
         /// Executes SQL query and returns DataTable.
         /// </summary>
-        /// <param name="Connection"></param>
+        /// <param name="connection"></param>
         /// <param name="cmd"></param>
-        /// <param name="Timeout"></param>
+        /// <param name="timeout"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static DataTable GetTable(string Connection, SqlCommand cmd, int Timeout = 0)
+        public static DataTable GetTable(string connection, SqlCommand cmd, int timeout = 0)
         {
             DataTable dt = new();
-            using SqlConnection conn = new SqlConnection(Connection);
+            using SqlConnection conn = new SqlConnection(connection);
             conn.Open();
             cmd.Connection = conn;
             SqlDataAdapter da = new SqlDataAdapter(cmd);
-            da.SelectCommand.CommandTimeout = Timeout;
+            da.SelectCommand.CommandTimeout = timeout;
             da.Fill(dt);
             return dt;
         }
 
-        /// <summary>
-        /// Exectues SQL query and returns affected row count.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="cmd"></param>
-        /// <param name="Timeout"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static int ExecNonQuery(string Connection, SqlCommand cmd, int Timeout = 0)
+		public static async Task<DataTable> GetTableAsync(string connection, SqlCommand cmd, int timeout = 0)
+		{
+			return await Task<DataTable>.Run(() =>
+			{
+				return EasQL.GetTable(connection, cmd, timeout);
+			});
+		}
+		/// <summary>
+		/// Exectues SQL query and returns affected row count.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="cmd"></param>
+		/// <param name="Timeout"></param>
+		/// <returns></returns>
+		/// <exception cref="EasException"></exception>
+		public static int ExecNonQuery(string Connection, SqlCommand cmd, int Timeout = 0)
         {
             using SqlConnection conn = new(Connection);
             cmd.Connection = conn;
@@ -166,15 +214,23 @@ namespace EasMe
             conn.Open();
             return cmd.ExecuteNonQuery();
         }
-        /// <summary>
-        /// Exectues SQL query and returns the first column of first row in the result set returned by query. Additional columns or rows ignored.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="cmd"></param>
-        /// <param name="Timeout"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0)
+
+		public static async Task<int> ExecNonQueryAsync(string connection, SqlCommand cmd, int timeout = 0)
+		{
+			return await Task<int>.Run(() =>
+			{
+				return EasQL.ExecNonQuery(connection, cmd, timeout);
+			});
+		}
+		/// <summary>
+		/// Exectues SQL query and returns the first column of first row in the result set returned by query. Additional columns or rows ignored.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="cmd"></param>
+		/// <param name="Timeout"></param>
+		/// <returns></returns>
+		/// <exception cref="EasException"></exception>
+		public static object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0)
         {
             using SqlConnection conn = new(Connection);
             cmd.Connection = conn;
@@ -182,32 +238,33 @@ namespace EasMe
             conn.Open();
             return cmd.ExecuteScalar();
         }
+		public static async Task<object> ExecScalarAsync(string connection, SqlCommand cmd, int timeout = 0)
+		{
+			return await Task<object>.Run(() =>
+			{
+				return EasQL.ExecScalar(connection, cmd, timeout);
+			});
+		}
 
-        /// <summary>
-        /// Executes a SQL query to backup database to the given folder path. Created directory if not exists
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <param name="BackupFolderPath"></param>
-        /// <param name="Timeout"></param>
-        /// <exception cref="EasException"></exception>
-        public static void BackupDatabase(string Connection, string BackupFolderPath, int Timeout = 0)
+		public static void BackupDatabase(string connection, string backupFolderPath, int timeout = 0)
         {
-            var dbName = Connection.ParseDatabaseName();
-            if (!Directory.Exists(BackupFolderPath)) Directory.CreateDirectory(BackupFolderPath);
-            var bkPath = BackupFolderPath + "\\bk_" + dbName + ".bak";
+            var dbName = connection.ParseDatabaseName();
+            if (!Directory.Exists(backupFolderPath)) Directory.CreateDirectory(backupFolderPath);
+            var bkPath = backupFolderPath + "\\bk_" + dbName + ".bak";
             string query = $@"BACKUP DATABASE {dbName} TO DISK = '{bkPath}'";
             var cmd = new SqlCommand(query);
-            ExecNonQuery(Connection, cmd, Timeout);
+            ExecNonQuery(connection, cmd, timeout);
         }
-        /// <summary>
-        /// Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but still you should backup first.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <param name="DatabaseLogName"></param>
-        /// <exception cref="EasException"></exception>
-        public static void ShrinkDatabase(string Connection, string DatabaseLogName = "_log")
+
+		public static async Task BackupDatabaseAsync(string connection, string backupFolderPath, int timeout = 0)
+		{
+		    await Task.Run(() =>
+			{
+				EasQL.BackupDatabase(connection, backupFolderPath, timeout);
+			});
+		}
+
+		public static void ShrinkDatabase(string Connection, string DatabaseLogName = "_log")
         {
             var DatabaseName = Connection.ParseDatabaseName();
             if (DatabaseLogName == "_log") DatabaseLogName = DatabaseName + DatabaseLogName;
@@ -224,50 +281,70 @@ namespace EasMe
             var cmd = new SqlCommand(query);
             ExecNonQuery(Connection, cmd);
         }
-        /// <summary>
-        /// Deletes all records in given table but keeps the table. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="TableName"></param>
-        /// <exception cref="EasException"></exception>
-        public static void TruncateTable(string Connection, string TableName)
+		public static async Task ShrinkDatabaseAsync(string Connection, string DatabaseLogName = "_log")
+		{
+			await Task.Run(() =>
+			{
+				EasQL.ShrinkDatabase(Connection, DatabaseLogName);
+			});
+		}
+
+		
+		public static void TruncateTable(string Connection, string TableName)
         {
             string query = $@"TRUNCATE TABLE {TableName}";
             var cmd = new SqlCommand(query);
             ExecNonQuery(Connection, cmd);
         }
-        /// <summary>
-        /// Deletes all records in the table and the table from database. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="TableName"></param>
-        /// <exception cref="EasException"></exception>
-        public static void DropTable(string Connection, string TableName)
+
+		public static async Task TruncateTableAsync(string Connection, string TableName)
+		{
+			await Task.Run(() =>
+			{
+				EasQL.TruncateTable(Connection, TableName);
+			});
+		}
+		/// <summary>
+		/// Deletes all records in the table and the table from database. This action can not be undone, be aware of the risks before running this.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="TableName"></param>
+		/// <exception cref="EasException"></exception>
+		public static void DropTable(string Connection, string TableName)
         {
             string query = $@"DROP TABLE {TableName}";
             var cmd = new SqlCommand(query);
             ExecNonQuery(Connection, cmd);
         }
-        /// <summary>
-        /// Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks before running this.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <param name="DatabaseName"></param>
-        /// <exception cref="EasException"></exception>
-        public static void DropDatabase(string Connection, string DatabaseName)
+		public static async Task DropTableAsync(string Connection, string TableName)
+		{
+			await Task.Run(() =>
+			{
+				EasQL.DropTable(Connection, TableName);
+			});
+		}
+		/// <summary>
+		/// Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks before running this.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <param name="DatabaseName"></param>
+		/// <exception cref="EasException"></exception>
+		public static void DropDatabase(string Connection, string DatabaseName)
         {
             string query = $@"DROP DATABASE {DatabaseName}";
             var cmd = new SqlCommand(query);
             ExecNonQuery(Connection, cmd);
         }
 
-        /// <summary>
-        /// Gets all table names in SQL database and returns.
-        /// </summary>
-        /// <param name="Connection"></param>
-        /// <returns></returns>
-        /// <exception cref="EasException"></exception>
-        public static List<string> GetAllTableName(string Connection)
+		
+
+		/// <summary>
+		/// Gets all table names in SQL database and returns.
+		/// </summary>
+		/// <param name="Connection"></param>
+		/// <returns></returns>
+		/// <exception cref="EasException"></exception>
+		public static List<string> GetAllTableName(string Connection)
         {
             string query = $@"SELECT '['+SCHEMA_NAME(schema_id)+'].['+name+']' FROM sys.tables";
             var list = new List<string>();

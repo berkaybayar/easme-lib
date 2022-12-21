@@ -15,7 +15,7 @@ namespace EasMe
         /// <returns></returns>
         public static bool IsValidEmail(this string str)
         {
-            var trimmedEmail = str.Trim();
+            var trimmedEmail = str.Replace(" ","");
             if (trimmedEmail.EndsWith("."))
                 return false;
             try

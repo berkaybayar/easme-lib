@@ -40,15 +40,16 @@ namespace EasMe
         }
         private static string GetExactLogPath()
         {
-            return EasLogFactory.Config.LogFolderPath + "\\" + EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension;
+            return Path.Combine(EasLogFactory.Config.LogFolderPath, EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension);
         }
         private static string GetExactLogPath(Severity severity)
         {
             if (EasLogFactory.Config.SeperateLogLevelToFolder)
             {
-                return EasLogFactory.Config.LogFolderPath + "\\" + severity + "\\" + EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension;
+				return Path.Combine(EasLogFactory.Config.LogFolderPath, severity.ToString(), EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension);
+				
             }
-            return EasLogFactory.Config.LogFolderPath + "\\" + EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension;
+			return Path.Combine(EasLogFactory.Config.LogFolderPath, EasLogFactory.Config.LogFileName + DateTime.Now.ToString(EasLogFactory.Config.DateFormatString) + EasLogFactory.Config.LogFileExtension);
         }
         public void Log(Severity severity, params object[] param)
         {
