@@ -212,8 +212,9 @@ namespace EasMe
             }
         }
 
-		public static bool IsCreditCardInfoValid(string cardNo, string expiryDate, string cvv)
+        public static bool IsCreditCardInfoValid(string cardNo, string expiryDate, string cvv)
 		{
+			//Source: https://stackoverflow.com/questions/32959273/c-sharp-validating-user-input-like-a-credit-card-number
 			var cardCheck = new Regex(@"^(1298|1267|4512|4567|8901|8933)([\-\s]?[0-9]{4}){3}$");
 			var monthCheck = new Regex(@"^(0[1-9]|1[0-2])$");
 			var yearCheck = new Regex(@"^20[0-9]{2}$");
@@ -236,5 +237,5 @@ namespace EasMe
 			//check expiry greater than today & within next 6 years <7, 8>>
 			return (cardExpiry > DateTime.Now && cardExpiry < DateTime.Now.AddYears(6));
 		}
-	}
+    }
 }

@@ -1,14 +1,16 @@
-﻿namespace EasMe
+﻿using Microsoft.AspNetCore.Http;
+
+namespace EasMe
 {
     /*
         [PROGRAM.CS] => FOR WEB APPLICATIONS 
         builder.Services.AddHttpContextAccessor();
      */
-    internal static class HttpContextAccessor
+    internal static class HttpContextHelper
     {
-        private static Microsoft.AspNetCore.Http.HttpContextAccessor? _accessor = new Microsoft.AspNetCore.Http.HttpContextAccessor();
+        private static readonly HttpContextAccessor? _accessor = new();
 
-        internal static Microsoft.AspNetCore.Http.HttpContext? Current
+        internal static HttpContext? Current
         {
             get
             {

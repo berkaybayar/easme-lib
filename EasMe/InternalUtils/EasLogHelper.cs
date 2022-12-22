@@ -117,14 +117,14 @@ namespace EasMe.InternalUtils
 
         internal static WebLogModel WebModelCreate()
         {
-            if (HttpContextAccessor.Current is null) return new();
+            if (HttpContextHelper.Current is null) return new();
             try
             {
                 var log = new WebLogModel();
-                log.Ip = HttpContextAccessor.Current.Request.GetRemoteIpAddress();
-                log.HttpMethod = HttpContextAccessor.Current.Request.Method;
-                log.RequestUrl = HttpContextAccessor.Current.Request.GetRequestQuery();
-                log.Headers = GetHeadersJson(HttpContextAccessor.Current);
+                log.Ip = HttpContextHelper.Current.Request.GetRemoteIpAddress();
+                log.HttpMethod = HttpContextHelper.Current.Request.Method;
+                log.RequestUrl = HttpContextHelper.Current.Request.GetRequestQuery();
+                log.Headers = GetHeadersJson(HttpContextHelper.Current);
                 return log;
             }
             catch (Exception)

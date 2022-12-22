@@ -70,7 +70,7 @@
             },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[13.0.1, )"
+              "version": "[9.0.1, )"
             },
             "System.Drawing.Common": {
               "target": "Package",

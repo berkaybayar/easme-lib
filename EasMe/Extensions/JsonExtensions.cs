@@ -31,9 +31,9 @@ namespace EasMe.Extensions
         [Obsolete("Use AsJson instead")]
         public static string JsonSerialize(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
-            return obj.AsJson(formatting);
+            return obj.ToJsonString(formatting);
         }
-        public static string AsJson(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
+        public static string ToJsonString(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
             if (obj == null) return default;
             return JsonConvert.SerializeObject(obj, formatting).Replace("\n", "").Replace("\r", "");
@@ -44,7 +44,7 @@ namespace EasMe.Extensions
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static T? As<T>(this string str)
+        public static T? FromJsonString<T>(this string str)
         {
             return JsonConvert.DeserializeObject<T>(str);
         }
@@ -54,7 +54,6 @@ namespace EasMe.Extensions
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        [Obsolete()]
         public static T? JsonDeserialize<T>(this string str)
         {
             return JsonConvert.DeserializeObject<T>(str);
