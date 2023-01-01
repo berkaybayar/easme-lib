@@ -1,5 +1,9 @@
 ﻿using EasMe.Extensions;
+using System.Collections;
+using System.Data.HashFunction;
+using System.Data.HashFunction.xxHash;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace EasMe
 {
@@ -44,5 +48,43 @@ namespace EasMe
         public static byte[] SHA512Hash(this string rawData) => ComputeHash(SHA512.Create(), rawData);
         public static byte[] SHA512HashSalted(this string rawData, string salt) => ComputeSaltedHash(SHA512.Create(), rawData, salt);
 
+
+        public static string FileMD5Hash(string path)
+        {
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(path);
+            return Convert.ToHexString(md5.ComputeHash(stream));
+        }
+        public static string FileXXHash(string path)
+        {
+            var factory = xxHashFactory.Instance.Create();
+            using var stream = File.OpenRead(path);
+            var hashed = factory.ComputeHash(stream).AsHexString();
+            return hashed;
+        }
+        public static IHashValue XXHash(string input)
+        {
+            var factory = xxHashFactory.Instance.Create();
+            var hashed = factory.ComputeHash(Encoding.UTF8.GetBytes(input));
+            return hashed;
+        }
+        public static string XXHashAsHexString(string input)
+        {
+            var factory = xxHashFactory.Instance.Create();
+            var hashed = factory.ComputeHash(Encoding.UTF8.GetBytes(input)).AsHexString();
+            return hashed;
+        }
+        public static string XXHashAsBase64String(string input)
+        {
+            var factory = xxHashFactory.Instance.Create();
+            var hashed = factory.ComputeHash(Encoding.UTF8.GetBytes(input)).AsBase64String();
+            return hashed;
+        }
+        public static BitArray XXHashAsBitArray(string input)
+        {
+            var factory = xxHashFactory.Instance.Create();
+            var hashed = factory.ComputeHash(Encoding.UTF8.GetBytes(input)).AsBitArray();
+            return hashed;
+        }
     }
 }

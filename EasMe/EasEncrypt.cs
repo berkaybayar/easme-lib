@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Data.HashFunction.xxHash;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace EasMe
@@ -53,5 +54,7 @@ namespace EasMe
             using StreamReader streamReader = new(cryptoStream);
             return streamReader.ReadToEnd();
         }
+
+
     }
 }

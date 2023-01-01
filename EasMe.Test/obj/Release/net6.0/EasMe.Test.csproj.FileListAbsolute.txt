@@ -156,3 +156,6 @@ C:\Users\kkass\source\repos\easme-lib\EasMe.Test\obj\Release\net6.0\refint\EasMe
 C:\Users\kkass\source\repos\easme-lib\EasMe.Test\obj\Release\net6.0\EasMe.Test.pdb
 C:\Users\kkass\source\repos\easme-lib\EasMe.Test\obj\Release\net6.0\EasMe.Test.genruntimeconfig.cache
 C:\Users\kkass\source\repos\easme-lib\EasMe.Test\obj\Release\net6.0\ref\EasMe.Test.dll
+C:\Users\kkass\source\repos\easme-lib\EasMe.Test\bin\Release\net6.0\System.Data.HashFunction.Core.dll
+C:\Users\kkass\source\repos\easme-lib\EasMe.Test\bin\Release\net6.0\System.Data.HashFunction.Interfaces.dll
+C:\Users\kkass\source\repos\easme-lib\EasMe.Test\bin\Release\net6.0\System.Data.HashFunction.xxHash.dll

@@ -1,4 +1,6 @@
 ﻿using EasMe.Exceptions;
+using System.Data.HashFunction.xxHash;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace EasMe
@@ -173,15 +175,11 @@ namespace EasMe
             return res;
         }
 
-        const int BYTES_TO_READ = sizeof(Int64);
+        private const int BYTES_TO_READ = sizeof(Int64);
         public static bool FilesAreEqual(FileInfo first, FileInfo second)
         {
             if (first.Length != second.Length)
                 return false;
-
-            if (string.Equals(first.FullName, second.FullName, StringComparison.OrdinalIgnoreCase))
-                return true;
-
             int iterations = (int)Math.Ceiling((double)first.Length / BYTES_TO_READ);
 
             using (FileStream fs1 = first.OpenRead())
@@ -223,7 +221,7 @@ namespace EasMe
             return true;
         }
 
-        public static bool FilesAreEqual_Hash(FileInfo first, FileInfo second)
+        public static bool FilesAreEqual_MD5Hash(FileInfo first, FileInfo second)
         {
             byte[] firstHash = MD5.Create().ComputeHash(first.OpenRead());
             byte[] secondHash = MD5.Create().ComputeHash(second.OpenRead());
@@ -235,7 +233,16 @@ namespace EasMe
             }
             return true;
         }
-
+        
+        public static bool FilesAreEqual_XXHash(FileInfo first, FileInfo second)
+        {
+            var factory = xxHashFactory.Instance.Create();
+            using var firstStream = File.OpenRead(first.FullName);
+            var firstHash = factory.ComputeHash(firstStream).AsHexString();
+            using var secondStream = File.OpenRead(second.FullName);
+            var secondHash = factory.ComputeHash(secondStream).AsHexString();
+            return firstHash == secondHash;
+        }
 
         static ReaderWriterLock _locker = new();
 
@@ -273,6 +280,41 @@ namespace EasMe
             {
                 _locker.ReleaseWriterLock();
             }
+        }
+
+
+       
+        public static int DeleteDirectoryWhere(this string dirPath, Func<DirectoryInfo, bool> condition,bool recurisive)
+        {
+            if (!Directory.Exists(dirPath)) throw new InvalidOperationException("Directory does not exist");
+            var dirs = Directory.GetDirectories(dirPath);
+            var deleted = 0;
+            foreach (var path in dirs)
+            {
+                var dir = new DirectoryInfo(path);
+                if (condition(dir))
+                {
+                    dir.Delete(recurisive);
+                    deleted++;
+                }
+            }
+            return deleted;
+        }
+        public static int DeleteFileWhere(this string dirPath, Func<FileInfo, bool> condition)
+        {
+            if (!Directory.Exists(dirPath)) throw new InvalidOperationException("Directory does not exist");
+            var files = Directory.GetFiles(dirPath);
+            var deleted = 0;
+            foreach(var path in files)
+            {
+                var file = new FileInfo(path);
+                if (condition(file))
+                {
+                    file.Delete();
+                    deleted++;
+                }
+            }
+            return deleted;
         }
     }
 

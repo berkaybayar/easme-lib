@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EasMe.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EasMe.Extensions
 {
@@ -13,5 +14,27 @@ namespace EasMe.Extensions
         {
             dbSet.RemoveRange(dbSet);
         }
+
+        
+        public static void ClearAndSaveChanges<T>(this DbSet<T> dbSet, DbContext context) where T : class
+        {
+            dbSet.RemoveRange(dbSet);
+            context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Saves changes to db context, if no rows affected throws exception
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <exception cref="InternalDbException"></exception>
+        public static int SaveChangesOrThrow(this DbContext dbContext, string message = "No changes were applied to the database.")
+        {
+            var affected = dbContext.SaveChanges();
+            if (affected == 0)
+                throw new InternalDbException(message);
+            return affected;
+
+        }
+       
     }
 }
