@@ -49,11 +49,6 @@
         /// This will be force enabled for Trace method calls even if this value is set to false. 
         /// </summary>
         public bool TraceLogging { get; set; } = false;
-        
-        /// <summary>
-        /// This will disable logging completely.
-        /// </summary>
-        public bool DontLog { get; set; } = false;
 
         /// <summary>
         /// Whether to hide sensitive information from being logged. 
@@ -77,13 +72,6 @@
         /// </summary>
         public bool IsLogJson { get; set; } = true;
 
-        /// <summary>
-        /// Logger will stack this amount of logs in memory and once the amount is reached it will print all logs to file. 
-        /// By default this number is 0. Which mean it is disabled and will not cache any log in memory.
-        /// Use EasLog.Flush() to save all logs in memory. This must be used before application exists. 
-        /// In order to not lose any last second logs.
-        /// </summary>
-        public int StackLogCount { get; set; } = 0;
         public bool SeperateLogLevelToFolder { get; set; } = false;
     }
 }

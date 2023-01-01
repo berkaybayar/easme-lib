@@ -127,7 +127,7 @@ namespace EasMe.InternalUtils
                 log.Headers = GetHeadersJson(HttpContextHelper.Current);
                 return log;
             }
-            catch (Exception)
+            catch
             {
                 return new();
             }
@@ -141,7 +141,7 @@ namespace EasMe.InternalUtils
                 if (headers is null) return string.Empty;
 				headers.Remove("Authorization");
 				headers.Remove("Cookie");
-				var res = headers.JsonSerialize()?.RemoveLineEndings() ?? "";
+				var res = headers.ToJsonString()?.RemoveLineEndings() ?? "";
 				return res;
 			}
             catch { return string.Empty; }
