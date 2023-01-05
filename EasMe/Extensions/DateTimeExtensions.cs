@@ -115,5 +115,30 @@
            return ((DateTimeOffset)date).ToUnixTimeSeconds();
            //return (long)(date - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
         }
+
+        public static bool IsDayOlder(this DateTime date, int day)
+        {
+            return date.AddDays(day) < DateTime.Now;
+        }
+        public static bool IsMinutesOlder(this DateTime date, int mins)
+        {
+            return date.AddMinutes(mins) < DateTime.Now;
+        }
+        public static bool IsSecondOlder(this DateTime date, int seconds)
+        {
+            return date.AddSeconds(seconds) < DateTime.Now;
+        }
+        public static bool IsHoursOlder(this DateTime date, int hours)
+        {
+            return date.AddHours(hours) < DateTime.Now;
+        }
+        public static bool IsMonthOlder(this DateTime date, int months)
+        {
+            return date.AddMonths(months) < DateTime.Now;
+        }
+        public static bool IsYearOlder(this DateTime date, int years)
+        {
+            return date.AddYears(years) < DateTime.Now;
+        }
     }
 }

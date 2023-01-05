@@ -12,7 +12,7 @@ namespace EasMe.Extensions
         /// <param name="response"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static string? ParseFromJson(this JObject jObject, string key)
+        public static string? FromJObject(this JObject jObject, string key)
         {
             var isValid = jObject.TryGetValue(key, out var value);
             if (isValid)
@@ -28,11 +28,11 @@ namespace EasMe.Extensions
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        [Obsolete("Use AsJson instead")]
-        public static string JsonSerialize(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
-        {
-            return obj.ToJsonString(formatting);
-        }
+        //[Obsolete("Use AsJson instead")]
+        //public static string JsonSerialize(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
+        //{
+        //    return obj.ToJsonString(formatting);
+        //}
         public static string ToJsonString(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
             if (obj == null) return default;
@@ -68,7 +68,7 @@ namespace EasMe.Extensions
         {
             var jObj = JObject.Parse(jsonStr.ToString());
             if (jObj == null) return null;
-            return jObj.ParseFromJson(key);
+            return jObj.FromJObject(key);
         }
     }
 }
