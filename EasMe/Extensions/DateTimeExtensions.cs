@@ -6,6 +6,14 @@
         {
             return date >= start && date <= end;
         }
+        public static bool IsInPass(this DateTime date)
+        {
+            return date <= DateTime.Now;
+        }
+        public static bool IsInFuture(this DateTime date)
+        {
+            return date >= DateTime.Now;
+        }
         public static bool IsValidDate(this string date)
         {
             return DateTime.TryParse(date, out DateTime _);

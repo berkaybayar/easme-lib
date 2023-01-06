@@ -70,7 +70,21 @@ namespace EasMe
             return "NOT_FOUND";
 
         }
-
+        public static List<string> GetMACAddresses_Active()
+        {
+            return NetworkInterface.GetAllNetworkInterfaces()
+                .Where(x => x.OperationalStatus == OperationalStatus.Up)
+                .Select(x => x.GetPhysicalAddress().ToString())
+                .Where(x => !x.IsNullOrEmpty())
+                .ToList();
+        }
+        public static List<string> GetMACAddresses_All()
+        {
+            return NetworkInterface.GetAllNetworkInterfaces()
+                .Select(x => x.GetPhysicalAddress().ToString())
+                .Where(x => !x.IsNullOrEmpty())
+                .ToList();
+        }
         /// <summary>
         /// Returns this computers Ram information as a list of RamModel object.
         /// </summary>
@@ -360,9 +374,16 @@ namespace EasMe
 
         public static string GetRemoteIPAddress()
         {
-            var httpClient = new HttpClient();
-            var response = httpClient.GetAsync("https://api.ipify.org/").Result;
-            return response.Content.ReadAsStringAsync().Result;
+            try
+            {
+                var httpClient = new HttpClient();
+                var response = httpClient.GetAsync("https://api.ipify.org/").Result;
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch(Exception ex)
+            {
+                return "N/A";
+            }
         }
         /// <summary>
         /// Gets MachineGUID assigned by Windows.

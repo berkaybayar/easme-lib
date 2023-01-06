@@ -1,6 +1,26 @@
 ﻿
 using EasMe;
 using EasMe.Extensions;
+using System.Net.Sockets;
+using System.Net;
+using System.Text;
+var mac = "D8BBC11DE939";
 
-var datetime = Convert.ToDateTime("1/5/2023 4:54:24 PM");
-Console.WriteLine(datetime.IsHoursOlder(3));
+Console.WriteLine(FixMac(mac));
+
+ static string FixMac(string mac)
+{
+    var sb = new StringBuilder();
+    var count = 0;
+    foreach (var item in mac)
+    {
+        if (count == 2)
+        {
+            sb.Append('-');
+            count = 0;
+        }
+        sb.Append(item);
+        count++;
+    }
+    return sb.ToString();
+}
