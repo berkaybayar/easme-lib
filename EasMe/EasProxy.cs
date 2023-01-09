@@ -1,4 +1,6 @@
-﻿using EasMe.Models;
+﻿using EasMe.Extensions;
+using EasMe.Models;
+using EasMe.Models.SystemModels;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 
@@ -11,7 +13,32 @@ namespace EasMe
     {
 
 
+        public static NetworkInfoModel GetNetworkInfo_Client()
+        {
+            try
+            {
+                var resp = EasAPI.SendGetRequest("https://cloudflare.com/cdn-cgi/trace", null, 3);
+                if (!resp.IsSuccessStatusCode) return new();
+                var bodyText = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+				var bodyLines = bodyText.Split("\n");
+				var ip = bodyLines[2].Split("=")[1];
+				var loc = bodyLines[9].Split("=")[1];
+				var warp = bodyLines[12].Split("=")[1].StringConversion<bool>();
+				var gateway = bodyLines[13].Split("=")[1].StringConversion<bool>();
+				return new NetworkInfoModel
+				{
+					IpAddress = ip,
+					IsGatewayOn = gateway,
+					IsWarpOn = warp,
+					Location = loc,
+				};
 
+			}
+            catch(Exception)
+            {
+                return new();
+            }
+        }
         
 
         public static string GetStatusCodeShortMessage(uint httpStatusCode)

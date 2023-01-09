@@ -15,14 +15,14 @@ namespace EasMe
         }
         private static string _encryptKey = null!;
 
-        public string Encrypt(string plainText)
+        public string EncryptString(string plainText)
         {
             byte[] iv = new byte[16];
             byte[] array;
 
             using (Aes aes = Aes.Create())
             {
-                aes.Key = Encoding.UTF8.GetBytes(_encryptKey);
+				aes.Key = Encoding.UTF8.GetBytes(_encryptKey);
                 aes.IV = iv;
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);

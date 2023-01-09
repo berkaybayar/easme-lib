@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using EasMe.Models;
+using log4net.Plugin;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace EasMe.Extensions
               "X-Real-IP",
               "X-ORIGINAL-IP",
               "PC-Real-IP",
-                "CF-Connecting-IP",
+              "CF-Connecting-IP",
 
 };
 
@@ -65,8 +66,34 @@ namespace EasMe.Extensions
             }
             return headerValues;
         }
-
-
+		
+		public static string GetXForwardedForOrRemoteIp(this HttpRequest req)
+        {
+			var ip = req.Headers["X-Forwarded-For"].FirstOrDefault();
+			if (string.IsNullOrEmpty(ip))
+			{
+				ip = req.HttpContext.Connection.RemoteIpAddress.ToString();
+			}
+			return ip;
+		}
+        public static string[] GetIpAddressList(this HttpRequest req)
+        {
+			var ipList = new List<string>();
+			foreach (var item in _realIpHeaderList)
+			{
+                try
+                {
+                    var ip = req.Headers[item].ToString();
+                    if (ip != null && ip != "")
+                    {
+                        ipList.Add(ip);
+                    }
+                }
+                catch { }
+			}
+			ipList.Add(req.HttpContext.Connection.RemoteIpAddress.ToString());
+			return ipList.ToArray();
+		}
 
         /// <summary>
         /// Gets IP's in http request headers by HttpRequest.

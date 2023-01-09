@@ -4,23 +4,13 @@ using EasMe.Extensions;
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
-var mac = "D8BBC11DE939";
+using System.Diagnostics;
 
-Console.WriteLine(FixMac(mac));
 
- static string FixMac(string mac)
-{
-    var sb = new StringBuilder();
-    var count = 0;
-    foreach (var item in mac)
-    {
-        if (count == 2)
-        {
-            sb.Append('-');
-            count = 0;
-        }
-        sb.Append(item);
-        count++;
-    }
-    return sb.ToString();
-}
+var stopwatch = new Stopwatch();
+stopwatch.Start();
+
+Console.WriteLine(EasProxy.GetNetworkInfo_Client().ToJsonString());
+stopwatch.Stop();
+Console.WriteLine($"Elapsed time: {stopwatch.ElapsedMilliseconds} ms");
+
