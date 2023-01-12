@@ -10,7 +10,10 @@ using System.Diagnostics;
 var stopwatch = new Stopwatch();
 stopwatch.Start();
 
-Console.WriteLine(EasProxy.GetNetworkInfo_Client().ToJsonString());
+var enc = "MKHrRzfF9DZwPnnoGgy7lj/Pp8Nz2OGRM+JYUkTdSv/0aixC+vso9eU/k4zEivWSUQTdxap9TaVhv7MKKICHBg+nfr9Smt4pw0AXULZ0Ei6eNlJcsnn/1m37pzrcvg7yna1MZpCoeIkcfHP2SvXJTPm9q7nR0HKFxwmFu+g4+UkHMPHyrRR3p+/MdXybWYyW3T0WxIgqyzgXqQ4WOVnKwNPRp8xKExww1+kiPALJn9Xdu1dnO4vyzWQlMVy8ehNwgFWZG8kmZIDZyNfim3IdgvgqAb2p+kBzEsANN46R6wxEgvujojk0O/AtC8Kn9ULXDAqScxHGQ4yHCseC02A+RPTqKrAA/4d4pP+Clg1X3SCplSAZvKrZXKWHdTFVlX6nV4g+I0+SGRtfuasD9ZIj4QNkchTsn9lGQkbpNwXk9sDUSmjB9K2UW1LpRzdJ+EzMtg4Ui+ljYoaKeRXd2S4UBHV4Ify1lBWhgVZMk4xiKF4nQYoMLLIdalpypccevyGDVvfeJxsM37xzllopZOEgmGmQpaC1nyyHj0/2PMSDU1DC0EW/J8ufeHt+QF8B6uW/vJ9yI3virEwbPZkvHbnHpac/tCUBYHpYyoVPOVKzs/60eYnF1GdijXHLllzlFerJbFxtjUASPIDGz12F32lodAKh2Ls1xQz8n1hhI1/1kfemkQ9uhbJqYjJX7G7n5nlitFcfrf51jaFXXslpaC9PGEBEtQWQFBAvfFdqg7roxXlBXrmQenVFsEDwng8fyw49bZLz+NFwVDq3ei5CZ82jgU0CQZvrUSft8GRhcu5cLOHla2J4FboeqreQl9brxeUXDQo47PKXMsGhXwA2f+u5JjSNAvNfH3RMjki0Pw2wGj3hpq7JfZiWNdPatGrHSwSP";
+
+var ex = new EasEncrypt("2S3EWJ4VSWU9EY3TJDEWVNP5TM6QYJHG");
+Console.WriteLine(ex.DecryptString(enc));
 stopwatch.Stop();
 Console.WriteLine($"Elapsed time: {stopwatch.ElapsedMilliseconds} ms");
 

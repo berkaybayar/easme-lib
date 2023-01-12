@@ -265,9 +265,7 @@ namespace EasMe.Extensions
         {
             return value.Length <= maxChars ? value : value[..maxChars] + "...";
         }
-
-
-		
+        
         
 		public static string RemoveLineEndings(this string str)
         {
@@ -306,6 +304,10 @@ namespace EasMe.Extensions
         {
             var base64EncodedBytes = System.Convert.FromBase64String(base64String);
             return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+        public static string TruncateLongString(this string str, int maxLength)
+        {
+            return str[0..Math.Min(str.Length, maxLength)];
         }
     }
 }
