@@ -309,5 +309,9 @@ namespace EasMe.Extensions
         {
             return str[0..Math.Min(str.Length, maxLength)];
         }
+        public static string Replace_Reverse(this string value, string? newValue, string oldValue)
+        {
+            return value.Replace(oldValue, newValue);
+        }
     }
 }

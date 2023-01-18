@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasMe.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,18 @@ namespace EasMe.Models.SystemModels
 {
 	public class NetworkInfoModel
 	{
-		public string IpAddress { get; set; } = string.Empty;
-		public string Location { get; set; } = string.Empty;
+		private string? _IpAddress;
+
+		public string? IpAddress
+        {
+			get { return _IpAddress; }
+			set 
+			{
+				_IpAddress = value.IsNullOrEmpty() ? null : value;
+            }
+		}
+
+		public string? Location { get; set; } 
 		public bool IsWarpOn { get; set; } = false;
 		public bool IsGatewayOn { get; set; } = false;
 	}
