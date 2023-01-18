@@ -6,13 +6,18 @@ namespace EasMe
     /// <summary>
     /// Simple task static task runner thread safe. It will run one task at a time.
     /// </summary>
-    public static class EasTask
+    public class EasTask
     {
-       
-        public static List<Task> InQueue { get; private set; } = new();
-        public static List<Task> Running { get; private set; } = new();
-        public static long CompletedTaskCount { get; set; }
-        public static void AddToQueue(Task task)
+        public EasTask(byte parallelism = 1)
+        {
+            _parallelism = parallelism;
+        }  
+        public List<Task> InQueue { get; private set; } = new();
+        public List<Task> Running { get; private set; } = new();
+        public long CompletedTaskCount { get; private set; }
+        private bool _isCalledOnStart = false;
+        private byte _parallelism = 1;
+        public void AddToQueue(Task task)
         {
             lock (InQueue)
             {
@@ -20,7 +25,14 @@ namespace EasMe
             }
         }
         
-        public static void CallOnStart()
+        public void CallOnStart()
+        {
+            if (_isCalledOnStart) throw new Exception("AlreadyCalled");
+            _isCalledOnStart = true;
+            if (_parallelism == 1) _CallOnStart_Single();
+            else _CallOnStart_Multi();
+        }
+        private void _CallOnStart_Single()
         {
             Task.Run(() =>
             {
@@ -41,15 +53,17 @@ namespace EasMe
                 }
             });
         }
-        public static void CallOnStart(byte max)
+        private void _CallOnStart_Multi()
         {
+
             Task.Run(() =>
             {
+            
                 while (true)
                 {
-                    if (InQueue.Count > max)
+                    if (InQueue.Count > _parallelism)
                     {
-                        for (int i = 0; i < max; i++)
+                        for (int i = 0; i < _parallelism; i++)
                         {
                             var task = InQueue[i];
                             if (task is null) continue;
@@ -65,27 +79,7 @@ namespace EasMe
                 }
             });
         }
-        //public static void CallOnStart_NoLimit()
-        //{
-        //    Task.Run(() =>
-        //    {
-        //        while (true)
-        //        {
-        //            if (InQueue.Count > 0)
-        //            {
-        //                foreach(var task in InQueue)
-        //                {
-        //                    Running.Add(task);
-        //                    task.Start();
-        //                }
-        //                Task.WhenAll(Running);
-        //                CompletedTaskCount += Running.Count;
-        //                Running.Clear();
-        //                Trace.WriteLine(CompletedTaskCount + " Task Complete");
-        //            }
-        //        }
-        //    });
-        //}
+      
     }
 }
 
