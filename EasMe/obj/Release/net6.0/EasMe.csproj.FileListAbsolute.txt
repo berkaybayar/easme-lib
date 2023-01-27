@@ -35,3 +35,15 @@ C:\Users\kkass\source\repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.dll
 C:\Users\kkass\source\repos\easme-lib\EasMe\obj\Release\net6.0\refint\EasMe.dll
 C:\Users\kkass\source\repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.pdb
 C:\Users\kkass\source\repos\easme-lib\EasMe\obj\Release\net6.0\ref\EasMe.dll
+E:\Repos\easme-lib\EasMe\bin\Release\net6.0\EasMe.deps.json
+E:\Repos\easme-lib\EasMe\bin\Release\net6.0\EasMe.dll
+E:\Repos\easme-lib\EasMe\bin\Release\net6.0\EasMe.pdb
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.csproj.AssemblyReference.cache
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.GeneratedMSBuildEditorConfig.editorconfig
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.AssemblyInfoInputs.cache
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.AssemblyInfo.cs
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.csproj.CoreCompileInputs.cache
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.dll
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\refint\EasMe.dll
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\EasMe.pdb
+E:\Repos\easme-lib\EasMe\obj\Release\net6.0\ref\EasMe.dll

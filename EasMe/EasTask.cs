@@ -3,20 +3,21 @@ using System.Diagnostics;
 
 namespace EasMe
 {
-    /// <summary>
-    /// Simple task static task runner thread safe. It will run one task at a time.
-    /// </summary>
+ 
     public class EasTask
     {
-        public EasTask(byte parallelism = 1)
+
+        public EasTask(byte parallelism = 1,int checkInterval = 250)
         {
             _parallelism = parallelism;
+            _checkInterval = checkInterval;
         }  
         public List<Task> InQueue { get; private set; } = new();
         public List<Task> Running { get; private set; } = new();
         public long CompletedTaskCount { get; private set; }
         private bool _isCalledOnStart = false;
-        private byte _parallelism = 1;
+        private readonly byte _parallelism = 1;
+        private readonly int _checkInterval = 250;
         public void AddToQueue(Task task)
         {
             lock (InQueue)
@@ -47,9 +48,10 @@ namespace EasMe
                         task.Wait();
                         Running.Remove(task);
                         CompletedTaskCount++;
-                        Trace.WriteLine(CompletedTaskCount + " Task Complete");
-
+                        //Trace.WriteLine(CompletedTaskCount + " Task Complete");
                     }
+                    else
+                        Thread.Sleep((int)_checkInterval);
                 }
             });
         }
@@ -74,8 +76,10 @@ namespace EasMe
                         Task.WaitAll(Running.ToArray());
                         CompletedTaskCount += Running.Count;
                         Running.Clear();
-                        Trace.WriteLine(CompletedTaskCount + " Task Complete");
+                        //Trace.WriteLine(CompletedTaskCount + " Task Complete");
                     }
+                    else
+                        Thread.Sleep((int)_checkInterval);
                 }
             });
         }

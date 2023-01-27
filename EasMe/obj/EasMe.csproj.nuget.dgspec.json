@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj": {}
+    "E:\\Repos\\easme-lib\\EasMe\\EasMe.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj": {
+    "E:\\Repos\\easme-lib\\EasMe\\EasMe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj",
+        "projectUniqueName": "E:\\Repos\\easme-lib\\EasMe\\EasMe.csproj",
         "projectName": "EasMe",
-        "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\EasMe.csproj",
+        "projectPath": "E:\\Repos\\easme-lib\\EasMe\\EasMe.csproj",
         "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\EasMe\\obj\\",
+        "outputPath": "E:\\Repos\\easme-lib\\EasMe\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -113,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,7 +1,6 @@
 ﻿using EasMe.Exceptions;
 using System.ComponentModel;
 using System.Data;
-using System.Runtime.CompilerServices;
 
 namespace EasMe.Extensions
 {
@@ -119,6 +118,58 @@ namespace EasMe.Extensions
             if (item is null)
                 throw new NoEntryFoundException(message);
             return item;
+           
+        }
+        public static void UpdateAll<T>(this IQueryable<T> list,Action<T> action)
+        {
+            foreach (var item in list)
+            {
+                action(item);
+            }
+        }
+        public static void UpdateAll<T>(this List<T> list, Action<T> action)
+        {
+            foreach (var item in list)
+            {
+                action(item);
+            }
+        }
+        public static void UpdateAll<T>(this T[] array, Action<T> action)
+        {
+            foreach (var item in array)
+            {
+                action(item);
+            }
+        }
+        public static void UpdateAllWhere<T>(this List<T> list, Func<T,bool> predicate, Action<T> action)
+        {
+            foreach (var item in list)
+            {
+                if (predicate(item))
+                {
+                    action(item);
+                }
+            }
+        }
+        public static void UpdateAllWhere<T>(this IQueryable<T> list, Func<T, bool> predicate, Action<T> action)
+        {
+            foreach (var item in list)
+            {
+                if (predicate(item))
+                {
+                    action(item);
+                }
+            }
+        }
+        public static void UpdateAllWhere<T>(this T[] list, Func<T, bool> predicate, Action<T> action)
+        {
+            foreach (var item in list)
+            {
+                if (predicate(item))
+                {
+                    action(item);
+                }
+            }
         }
     }
 }
