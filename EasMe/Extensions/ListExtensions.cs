@@ -88,9 +88,6 @@ namespace EasMe.Extensions
             return item;
         }
 
-
-
-
         public static T FirstOrThrow<T>(this IEnumerable<T> list, string message = "Item not found")
         {
             var item = list.FirstOrDefault();
@@ -141,7 +138,7 @@ namespace EasMe.Extensions
                 action(item);
             }
         }
-        public static void UpdateAllWhere<T>(this List<T> list, Func<T,bool> predicate, Action<T> action)
+        public static void UpdateAllWhere<T>(this List<T> list, Predicate<T> predicate, Action<T> action)
         {
             foreach (var item in list)
             {
@@ -151,7 +148,7 @@ namespace EasMe.Extensions
                 }
             }
         }
-        public static void UpdateAllWhere<T>(this IQueryable<T> list, Func<T, bool> predicate, Action<T> action)
+        public static void UpdateAllWhere<T>(this IQueryable<T> list, Predicate<T> predicate, Action<T> action)
         {
             foreach (var item in list)
             {
@@ -161,7 +158,7 @@ namespace EasMe.Extensions
                 }
             }
         }
-        public static void UpdateAllWhere<T>(this T[] list, Func<T, bool> predicate, Action<T> action)
+        public static void UpdateAllWhere<T>(this T[] list, Predicate<T> predicate, Action<T> action)
         {
             foreach (var item in list)
             {
@@ -171,5 +168,6 @@ namespace EasMe.Extensions
                 }
             }
         }
+       
     }
 }

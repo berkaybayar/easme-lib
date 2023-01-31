@@ -162,16 +162,5 @@ namespace EasMe.Extensions
         }
 
 
-        /// <summary>
-        /// Gets request GeoLocation by HttpRequest.
-        /// </summary>
-        /// <param name="accuracyInMeters"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        private static GeoLocationModel GetGeolocation(this HttpRequest httpRequest, uint accuracyInMeters = 50)
-        {
-            throw new NotImplementedException();
-
-        }
     }
 }

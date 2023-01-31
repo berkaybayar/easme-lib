@@ -143,7 +143,6 @@ namespace EasMe
 		/// Returns this computers Motherboard information as a MotherboardModel object.
 		/// </summary>
 		/// <returns></returns>
-		/// <exception cref="EasException"></exception>
 		public static MotherboardModel GetMotherboard()
 		{
 			var motherboardModel = new MotherboardModel();
@@ -167,7 +166,6 @@ namespace EasMe
 			motherboardModel.Tag = item["Tag"].ToString();
 			motherboardModel.Version = item["Version"].ToString();
 			return motherboardModel;
-
 
 		}
 

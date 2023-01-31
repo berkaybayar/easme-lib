@@ -12,11 +12,11 @@ namespace EasMe
 	{
 
 		private readonly JwtSecurityTokenHandler TokenHandler = new();
-		private static bool ValidateIssuer { get; set; } = false;
-		private static bool ValidateAudience { get; set; } = false;
-		private static string? Issuer { get; set; }
-		private static string? Audience { get; set; }
-		private static byte[]? Secret { get; set; }
+		private bool ValidateIssuer { get; set; } = false;
+		private bool ValidateAudience { get; set; } = false;
+		private string? Issuer { get; set; }
+		private string? Audience { get; set; }
+		private byte[]? Secret { get; set; }
 
 		public EasJWT(string secret, string? issuer = null, string? audience = null)
 		{
@@ -35,86 +35,72 @@ namespace EasMe
 		/// <returns></returns>
 		public string GenerateJwtToken(ClaimsIdentity claimsIdentity, int expireMinutes)
 		{
-			try
-			{
-				var tokenHandler = new JwtSecurityTokenHandler();
-				var tokenDescriptor = new SecurityTokenDescriptor
-				{
-					Subject = claimsIdentity,
-					Expires = DateTime.Now.AddMinutes(expireMinutes),
-					SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
-					Issuer = Issuer,
-					Audience = Audience
+            return GenerateJwtToken(claimsIdentity, DateTime.Now.AddMinutes(expireMinutes));
+        }
+        public string GenerateJwtToken(ClaimsIdentity claimsIdentity, DateTime expire)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claimsIdentity,
+                Expires = expire,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = Issuer,
+                Audience = Audience
 
-				};
-				var token = tokenHandler.CreateToken(tokenDescriptor);
-				return tokenHandler.WriteToken(token);
-			}
-			catch (Exception ex)
-			{
-				throw new FailedToCreateException("EasJWT failed to create JWT token.", ex);
-			}
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
 
-		}
-		/// <summary>
-		/// Generates a JWT token by claims as IDictionary.
-		/// </summary>
-		/// <param name="claimsIdentity"></param>
-		/// <param name="expireMinutes"></param>
-		/// <returns></returns>
-		public string GenerateJwtToken(Dictionary<string, object?> claims, int expireMinutes)
+        }
+        /// <summary>
+        /// Generates a JWT token by claims as IDictionary.
+        /// </summary>
+        /// <param name="claimsIdentity"></param>
+        /// <param name="expireMinutes"></param>
+        /// <returns></returns>
+        public string GenerateJwtToken(Dictionary<string, object?> claims, int expireMinutes)
 		{
-			try
-			{
-				var tokenHandler = new JwtSecurityTokenHandler();
-				var tokenDescriptor = new SecurityTokenDescriptor
-				{
-					Claims = claims,
-					Expires = DateTime.Now.AddMinutes(expireMinutes),
-					SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
-					Issuer = Issuer,
-					Audience = Audience
+            return GenerateJwtToken(claims, DateTime.Now.AddMinutes(expireMinutes));
+        }
+        public string GenerateJwtToken(Dictionary<string, object?> claims, DateTime expire)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Claims = claims,
+                Expires = expire,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = Issuer,
+                Audience = Audience
 
-				};
-				var token = tokenHandler.CreateToken(tokenDescriptor);
-				return tokenHandler.WriteToken(token);
-			}
-			catch (Exception ex)
-			{
-				throw new FailedToCreateException("EasJWT failed to create JWT token.", ex);
-			}
-		}
-		/// <summary>
-		/// Validates JWT token and returns ClaimsPrincipal.
-		/// </summary>
-		/// <param name="token"></param>
-		/// <param name="validateIssuer"></param>
-		/// <param name="validateAudience"></param>
-		/// <returns></returns>
-		public ClaimsPrincipal? ValidateJwtToken(string token)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+        /// <summary>
+        /// Validates JWT token and returns ClaimsPrincipal.
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="validateIssuer"></param>
+        /// <param name="validateAudience"></param>
+        /// <returns></returns>
+        public ClaimsPrincipal? ValidateJwtToken(string token)
 		{
-			try
-			{
-				var tokenValidationParameters = new TokenValidationParameters
-				{
-					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(Secret),
-					ValidateIssuer = ValidateIssuer,
-					ValidateAudience = ValidateAudience,
-					ValidateLifetime = true,
-					RequireExpirationTime = true,
-					ClockSkew = TimeSpan.Zero,
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Secret),
+                ValidateIssuer = ValidateIssuer,
+                ValidateAudience = ValidateAudience,
+                ValidateLifetime = true,
+                RequireExpirationTime = true,
+                ClockSkew = TimeSpan.Zero,
 
-				};
-				var claims = TokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-				return claims;
-
-			}
-			catch (Exception ex)
-			{
-				throw new FailedToValidateException("EasJWT failed to validate JWT token.", ex);
-			}
-		}
+            };
+            var claims = TokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+            return claims;
+        }
 
 
 	}
