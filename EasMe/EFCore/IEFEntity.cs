@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasMe.EFCore
 {
-    public interface IEFEntity
+    public interface IEfEntity
     {
     }
 }

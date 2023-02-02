@@ -36,7 +36,13 @@ namespace EasMe.Extensions
         public static string ToJsonString(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
             if (obj == null) return default;
-            return JsonConvert.SerializeObject(obj, formatting).Replace("\n", "").Replace("\r", "");
+            return JsonConvert.SerializeObject(
+                obj, 
+                formatting, 
+                new JsonSerializerSettings
+			{
+				PreserveReferencesHandling = PreserveReferencesHandling.Objects
+			}).Replace("\n", "").Replace("\r", "");
         }
         /// <summary>
         /// Deserializes given json string to T model. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.

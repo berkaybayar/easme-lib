@@ -20,7 +20,7 @@ namespace EasMe.Extensions
             return builder.ToString();
         }
 
-        public static string ConvertToString(this byte[] byteArray) => Encoding.Default.GetString(byteArray);
+        public static string ConvertToString(this byte[] byteArray) => Encoding.ASCII.GetString(byteArray);
 
         public static string BytesToHexString(this byte[] bt)
         {
