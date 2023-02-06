@@ -1,4 +1,5 @@
-﻿using EasMe.Extensions;
+﻿using EasMe.Enums;
+using EasMe.Extensions;
 
 namespace EasMe
 {
@@ -45,29 +46,29 @@ namespace EasMe
             }
             Console.ResetColor();
         }
-        public static void Log(Severity severity, string message)
+        public static void Log(LogSeverity severity, string message)
         {
             switch (severity)
             {
-                case Severity.ERROR:
+                case LogSeverity.ERROR:
                     Log(message, ErrorColor);
                     break;
-                case Severity.WARN:
+                case LogSeverity.WARN:
                     Log(message, WarningColor);
                     break;
-                case Severity.INFO:
+                case LogSeverity.INFO:
                     Log(message, InfoColor);
                     break;
-                case Severity.DEBUG:
+                case LogSeverity.DEBUG:
                     Log(message, DebugColor);
                     break;
-                case Severity.TRACE:
+                case LogSeverity.TRACE:
                     Log(message, TraceColor);
                     break;
-                case Severity.FATAL:
+                case LogSeverity.FATAL:
                     Log(message, FatalColor);
                     break;
-                case Severity.EXCEPTION:
+                case LogSeverity.EXCEPTION:
                     Log(message, ExceptionColor);
                     break;
                 default:
@@ -75,18 +76,18 @@ namespace EasMe
                     break;
             }
         }
-        public static void Log(Severity severity, string message, params string[] param)
+        public static void Log(LogSeverity severity, string message, params string[] param)
         {
             var paramStr = param.ToLogString(severity);
             switch (severity)
             {
-                case Severity.ERROR:
+                case LogSeverity.ERROR:
                     Log(paramStr + " " + message, ErrorColor);
                     break;
-                case Severity.WARN:
+                case LogSeverity.WARN:
                     Log(paramStr + " " + message, WarningColor);
                     break;
-                case Severity.INFO:
+                case LogSeverity.INFO:
                     Log(paramStr + " " + message, InfoColor);
                     break;
                 default:
@@ -97,27 +98,27 @@ namespace EasMe
 
         public static void Error(string message, params string[] param)
         {
-            Log(Severity.ERROR, message, param);
+            Log(LogSeverity.ERROR, message, param);
         }
         public static void Fatal(string message, params string[] param)
         {
-            Log(Severity.FATAL, message, param);
+            Log(LogSeverity.FATAL, message, param);
         }
         public static void Warn(string message, params string[] param)
         {
-            Log(Severity.WARN, message, param);
+            Log(LogSeverity.WARN, message, param);
         }
         public static void Info(string message, params string[] param)
         {
-            Log(Severity.INFO, message, param);
+            Log(LogSeverity.INFO, message, param);
         }
         public static void Debug(string message, params string[] param)
         {
-            Log(Severity.DEBUG, message, param);
+            Log(LogSeverity.DEBUG, message, param);
         }
         public static void Trace(string message, params string[] param)
         {
-            Log(Severity.TRACE, message, param);
+            Log(LogSeverity.TRACE, message, param);
         }
     }
 }

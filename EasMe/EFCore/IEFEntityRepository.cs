@@ -12,7 +12,8 @@ namespace EasMe.EFCore
     public interface IEfEntityRepository<T>
     where T : class, IEfEntity, new()
     {
-        public IQueryable<T> GetWhere(Expression<Func<T, bool>> filter);
+        public IQueryable<T> Get(Expression<Func<T, bool>>? filter = null);
+        public List<T> GetList(Expression<Func<T, bool>>? filter = null);
         public bool Any(Expression<Func<T, bool>> filter);
         public bool Any();
         public T? GetFirstOrDefault(Expression<Func<T, bool>> filter);
@@ -26,8 +27,10 @@ namespace EasMe.EFCore
         public bool Update(T entity);
         public bool Update(T entity, Action<T> updateAction);
         public int UpdateRange(IEnumerable<T> entities);
-        public int UpdateWhere(Expression<Func<T, bool>> wherefilter, Action<T> updateAction);
+        public int UpdateWhere(Expression<Func<T, bool>> filter, Action<T> updateAction);
+        public int DeleteWhere(Expression<Func<T, bool>> filter);
         public bool UpdateWhereSingle(Expression<Func<T, bool>> filter, Action<T> updateAction);
+        public bool DeleteWhereSingle(Expression<Func<T, bool>> filter);
 		public bool Delete(T entity);
         public bool Delete(int id);
         public int DeleteRange(IEnumerable<T> entities);

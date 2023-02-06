@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.NetworkInformation;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,15 +14,22 @@ namespace EasMe.EFCore
         where TEntity : class, IEfEntity, new()
         where TContext : DbContext, new()
     {
-        public IQueryable<TEntity> GetWhere(Expression<Func<TEntity, bool>> filter)
+
+        public IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null)
         {
-            using var context = new TContext();
+            var context = new TContext();
             return filter == null
                 ? context.Set<TEntity>()
                 : context.Set<TEntity>().Where(filter);
         }
-
-        public TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>> filter)
+		public List<TEntity> GetList(Expression<Func<TEntity, bool>>? filter = null)
+		{
+			using var context = new TContext();
+			return filter == null
+				? context.Set<TEntity>().ToList()
+				: context.Set<TEntity>().Where(filter).ToList();
+		}
+		public TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>> filter)
         {
             using var context = new TContext();
             return context.Set<TEntity>().FirstOrDefault(filter);
@@ -173,6 +181,26 @@ namespace EasMe.EFCore
             var data = Find(id);
             if (data is null) return false;
             return Delete(data);
+		}
+
+		public int DeleteWhere(Expression<Func<TEntity, bool>> filter)
+        {
+			using var context = new TContext();
+			var entities = context.Set<TEntity>().Where(filter).ToList();
+			if (entities.Count == 0) return 0;
+			var updatedEntities = context.Entry(entities);
+			updatedEntities.State = EntityState.Deleted;
+			return context.SaveChanges();
+		}
+
+		public bool DeleteWhereSingle(Expression<Func<TEntity, bool>> filter)
+		{
+			using var context = new TContext();
+			var entity = context.Set<TEntity>().Where(filter).SingleOrDefault();
+			if (entity is null) return false;
+			var updatedEntity = context.Entry(entity);
+			updatedEntity.State = EntityState.Deleted;
+			return context.SaveChanges() == 1;
 		}
 	}
 }

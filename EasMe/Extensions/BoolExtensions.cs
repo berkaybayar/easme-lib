@@ -1,4 +1,5 @@
-﻿namespace EasMe.Extensions
+﻿
+namespace EasMe.Extensions
 {
     public static class BoolExtensions
     {

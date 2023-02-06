@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasMe.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace EasMe.Extensions
 			}
 			return paramStr.Trim();
 		}
-		internal static string ToLogString(this object[] param, Severity severity)
+		internal static string ToLogString(this object[] param, LogSeverity severity)
 		{
 			var paramStr = $"[{severity.ToString().ToUpper()}] [{DateTime.Now:MM/dd/yyyy HH:mm:ss}]";
 			foreach (var item in param)

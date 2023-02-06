@@ -1,6 +1,8 @@
 ﻿
+using EasMe.Enums;
 using EasMe.Exceptions;
 using EasMe.Extensions;
+using EasMe.Helpers;
 using EasMe.Models.LogModels;
 using Microsoft.AspNetCore.Http;
 using System.Configuration;
@@ -72,7 +74,7 @@ namespace EasMe.InternalUtils
         /// <param name="logMessage"></param>
         /// <param name="ErrorNo"></param>
         /// <returns>EasMe.Models.BaseLogModel</returns>
-        internal static LogModel LogModelCreate(Severity severity, string source, object log, Exception? exception = null)
+        internal static LogModel LogModelCreate(LogSeverity severity, string source, object log, Exception? exception = null)
         {
             try
             {
@@ -81,7 +83,7 @@ namespace EasMe.InternalUtils
                 logModel.Source = source;
                 logModel.Log = log;
                 logModel.LogType = (int)LogType.BASE;
-                if (EasLogFactory.Config.TraceLogging || severity == Severity.TRACE)
+                if (EasLogFactory.Config.TraceLogging || severity == LogSeverity.TRACE)
                 {
                     logModel.TraceMethod = GetActionName();
                     logModel.TraceClass = GetClassName();
@@ -146,18 +148,18 @@ namespace EasMe.InternalUtils
 			}
             catch { return string.Empty; }
         }
-        internal static List<Severity> GetLoggableLevels()
+        internal static List<LogSeverity> GetLoggableLevels()
         {
-            var list = new List<Severity>();
+            var list = new List<LogSeverity>();
             var min = EasLogFactory.Config.MinimumLogLevel;
             var num = (int)min;
-            foreach (var item in Enum.GetValues(typeof(Severity)))
+            foreach (var item in Enum.GetValues(typeof(LogSeverity)))
             {
-                if ((int)item >= num) list.Add((Severity)item);
+                if ((int)item >= num) list.Add((LogSeverity)item);
             }
             return list;
         }
-        internal static bool IsLoggable(this Severity severity)
+        internal static bool IsLoggable(this LogSeverity severity)
         {
             var list = GetLoggableLevels();
             return list.Contains(severity);

@@ -1,4 +1,6 @@
-﻿namespace EasMe
+﻿using EasMe.Enums;
+
+namespace EasMe
 {
     public class EasLogConfiguration
     {
@@ -6,7 +8,7 @@
         /// <summary>
         /// Gets or sets a value indicating whether to log the request body.
         /// </summary>
-        public Severity MinimumLogLevel { get; set; } = Severity.INFO;
+        public LogSeverity MinimumLogLevel { get; set; } = LogSeverity.INFO;
 
         /// <summary>
         /// Set logs folder path to be stored. Defualt is current directory, adds folder named Logs.

@@ -38,11 +38,7 @@ namespace EasMe.Extensions
             if (obj == null) return default;
             return JsonConvert.SerializeObject(
                 obj, 
-                formatting, 
-                new JsonSerializerSettings
-			{
-				PreserveReferencesHandling = PreserveReferencesHandling.Objects
-			}).Replace("\n", "").Replace("\r", "");
+                formatting).Replace("\n", "").Replace("\r", "");
         }
         /// <summary>
         /// Deserializes given json string to T model. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.

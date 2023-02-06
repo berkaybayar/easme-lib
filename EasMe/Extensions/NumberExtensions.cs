@@ -15,6 +15,15 @@
         public static bool IsInRange(this decimal value, decimal checkValue, decimal belowAndAboveCheck) => value > checkValue - belowAndAboveCheck && value < checkValue + belowAndAboveCheck;
         public static bool IsInRange(this float value, float checkValue, float belowAndAboveCheck) => value > checkValue - belowAndAboveCheck && value < checkValue + belowAndAboveCheck;
 
-
-    }
+        public static int ToNotNullInt(this int? value)
+        {
+            if(value is null) return default;
+            return value.Value;
+        }
+		public static long ToNotNullLong(this long? value)
+		{
+			if (value is null) return default;
+			return value.Value;
+		}
+	}
 }

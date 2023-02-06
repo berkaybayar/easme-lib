@@ -1,4 +1,4 @@
-﻿namespace EasMe
+﻿namespace EasMe.Enums
 {
     public enum LogType
     {
@@ -8,7 +8,7 @@
 
     }
 
-    public enum Severity
+    public enum LogSeverity
     {
         TRACE = 0,
         DEBUG = 1,

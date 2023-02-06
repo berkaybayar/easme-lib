@@ -1,4 +1,5 @@
-﻿using log4net.Appender;
+﻿using EasMe.Enums;
+using log4net.Appender;
 
 namespace EasMe
 {
@@ -42,7 +43,7 @@ namespace EasMe
 			_isConfigured = true;
 		}
 		
-		public static void LoadConfig_WebLogging(Severity severity, string name, bool traceLogging, bool seperateLogLevelToFolder)
+		public static void LoadConfig_WebLogging(LogSeverity severity, string name, bool traceLogging, bool seperateLogLevelToFolder)
 		{
 			if (_isConfigured) throw new InvalidOperationException("EasLog configuration already loaded.");
 			Config = new EasLogConfiguration
@@ -60,7 +61,7 @@ namespace EasMe
 			_isConfigured = true;
 		}
 		public static void LoadConfig_Logging(
-			Severity severity, 
+			LogSeverity severity, 
 			string name, 
 			bool traceLogging = false, 
 			bool seperateLogLevelToFolder = false,
@@ -93,7 +94,7 @@ namespace EasMe
 				ExceptionHideSensitiveInfo = false,
 				IsLogJson = true,
 				LogFileName = "Debug_",
-				MinimumLogLevel = Severity.TRACE,
+				MinimumLogLevel = LogSeverity.TRACE,
 				WebInfoLogging = isWeb,
 				TraceLogging = true,
 				SeperateLogLevelToFolder = false,
