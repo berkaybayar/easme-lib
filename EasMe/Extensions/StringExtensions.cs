@@ -317,7 +317,6 @@ namespace EasMe.Extensions
             return value.Replace(oldValue, newValue);
         }
 
-
         public static bool SecureStringEqual(this SecureString s1, SecureString s2)
         {
             if (s1 == null)

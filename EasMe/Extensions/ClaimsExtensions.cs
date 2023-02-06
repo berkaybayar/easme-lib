@@ -1,4 +1,5 @@
 ﻿using EasMe.Exceptions;
+using System.ComponentModel;
 using System.Security.Claims;
 
 namespace EasMe.Extensions
@@ -83,53 +84,7 @@ namespace EasMe.Extensions
 
 
         }
-        public static T ToModel<T>(this ClaimsIdentity claimsIdentity, out List<Exception> ExceptionMessages)
-        {
-
-            ExceptionMessages = new();
-            var model = Activator.CreateInstance<T>();
-            var props = model?.GetType().GetProperties();
-            if (props == null) throw new FailedToConvertException("Failed to convert claims identity to model. Model has no properties");
-            foreach (var property in props)
-            {
-                if (property == null) continue;
-                var value = claimsIdentity.FindFirst(property.Name);
-                if (value == null) continue;
-                property.SetValue(model, value.Value.StringConversion<T>());
-            }
-            return model;
-
-        }
-
-        public static T ToModel<T>(this ClaimsIdentity claimsIdentity)
-        {
-            var model = Activator.CreateInstance<T>();
-            var props = model?.GetType().GetProperties();
-            if (props == null) throw new FailedToConvertException("Failed to convert claims identity to model. Model has no properties");
-            foreach (var property in props)
-            {
-                if (property == null) continue;
-                var value = claimsIdentity.FindFirst(property.Name);
-                if (value == null) continue;
-                property.SetValue(model, value.Value.StringConversion<T>());
-            }
-            return model;
-        }
-		public static T ToModel<T>(this ClaimsPrincipal principal)
-		{
-			var model = Activator.CreateInstance<T>();
-			var props = model?.GetType().GetProperties();
-			if (props == null) throw new FailedToConvertException("Failed to convert claims identity to model. Model has no properties");
-			foreach (var property in props)
-			{
-				if (property == null) continue;
-				var value = principal.FindFirst(property.Name);
-				if (value == null) continue;
-				property.SetValue(model, value.Value.StringConversion<T>());
-			}
-			return model;
-		}
-
+    
 
 	}
 

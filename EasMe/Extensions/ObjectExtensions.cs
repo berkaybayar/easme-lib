@@ -27,7 +27,21 @@ namespace EasMe.Extensions
             );
 
         }
-       
+        public static object? ChangeType(this object value, Type t)
+        {
+            if (t.IsGenericType && t.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                if (value == null)
+                {
+                    return default;
+                }
+
+                t = Nullable.GetUnderlyingType(t);
+            }
+
+            return Convert.ChangeType(value, t);
+        }
+
         /// <summary>
         /// Converts object to string with its properties. Name:Value
         /// </summary>
