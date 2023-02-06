@@ -24,25 +24,15 @@ namespace EasMe
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="isLog"></param>
-        public static void DeleteAll(string filePath, bool isLoggingEnabled = true)
+        public static void DeleteAll(string filePath)
         {
             if (Directory.Exists(filePath))
             {
                 Directory.Delete(filePath, true);
-                if (isLoggingEnabled) SelfLog.Logger.Info("Folder deleted: " + filePath);
             }
             else if (File.Exists(filePath))
             {
-                try
-                {
-                    File.Delete(filePath);
-                    if (isLoggingEnabled) SelfLog.Logger.Info("File deleted: " + filePath);
-                }
-                catch (Exception ex)
-                {
-                    if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error deleting file => Path: " + filePath);
-                }
-
+                File.Delete(filePath);
             }
             else
             {
@@ -60,7 +50,7 @@ namespace EasMe
         /// <param name="destPath"></param>
         /// <param name="overwrite"></param>
         /// <param name="isLoggingEnabled"></param>
-        public static void MoveAll(string sourcePath, string destPath, bool overwrite, bool isLoggingEnabled = true)
+        public static void MoveAll(string sourcePath, string destPath, bool overwrite)
         {
 
             if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
@@ -70,46 +60,24 @@ namespace EasMe
                 string[] subdirs = Directory.GetDirectories(sourcePath);
                 Parallel.ForEach(files, file =>
                 {
-                    try
-                    {
-                        File.Move(file, destPath + "\\" + Path.GetFileName(file), true);
-                        if (isLoggingEnabled) SelfLog.Logger.Info("File moved: " + file);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error while moving file => Path: " + file);
-                    }
+                    File.Move(file, destPath + "\\" + Path.GetFileName(file), true);
+
                 });
                 Parallel.ForEach(subdirs, subdir =>
                 {
-                    try
-                    {
-                        MoveAll(subdir, destPath + "\\" + Path.GetFileName(subdir), overwrite, isLoggingEnabled);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error while moving file => Source:" + sourcePath + " Destination: " + destPath);
-                    }
+                    MoveAll(subdir, destPath + "\\" + Path.GetFileName(subdir), overwrite);
+
 
                 });
 
             }
             else if (File.Exists(sourcePath))
             {
-                try
-                {
-                    File.Move(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
-                    if (isLoggingEnabled) SelfLog.Logger.Info("File moved => Source:" + sourcePath + " Destination: " + destPath);
-                }
-                catch (Exception ex)
-                {
-                    if (isLoggingEnabled) SelfLog.Logger.Exception(ex, "Error while moving file => Source:" + sourcePath + " Destination: " + destPath);
-                }
+                File.Move(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
             }
             else
             {
                 throw new NotExistException("Error in MoveAll: Given source path not exist.");
-                //if (isLoggingEnabled) EasLog.Error("Error while moving file. File or Directory not exist => Source:" + sourcePath + " Destination: " + destPath);
             }
         }
 

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "EasMe.Core": {
+    "EasMe": {
       "commandName": "Project"
     }
   }

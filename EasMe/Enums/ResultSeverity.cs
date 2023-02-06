@@ -11,7 +11,6 @@ namespace EasMe.Enums
         INFO,
         WARN,
         ERROR,
-        EXCEPTION,
         FATAL
     }
 }

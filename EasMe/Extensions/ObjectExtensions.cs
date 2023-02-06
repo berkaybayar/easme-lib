@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace EasMe.Extensions
@@ -38,7 +39,16 @@ namespace EasMe.Extensions
 
                 t = Nullable.GetUnderlyingType(t);
             }
+            bool isJson = false;
+            try
+            {
+               
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
             return Convert.ChangeType(value, t);
         }
 
