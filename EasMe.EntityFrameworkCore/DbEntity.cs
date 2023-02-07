@@ -1,17 +1,11 @@
-﻿using EasMe.EntityFramework.Abstract;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using EasMe.EntityFrameworkCore.Abstract;
 
-namespace EasMe.EfCore
+namespace EasMe.EntityFrameworkCore
 {
-    public abstract class EfEntity : IEfEntity
+    public abstract class DbEntity : IDbEntity
     {
-        protected EfEntity(Guid guid) 
+        protected DbEntity(Guid guid) 
         { 
             Id = guid;
         }
@@ -20,16 +14,16 @@ namespace EasMe.EfCore
         public Guid Id { get; init; }
 
 
-        public static bool operator ==(EfEntity left, EfEntity right)
+        public static bool operator ==(DbEntity? left, DbEntity? right)
         { 
             return left is not null && right is not null && left.Equals(right); 
         }
-        public static bool operator !=(EfEntity left, EfEntity right)
+        public static bool operator !=(DbEntity? left, DbEntity? right)
         { 
-            return !left.Equals(right); 
+            return left?.Equals(right) == true; 
         }
 
-        public bool Equals(EfEntity? other)
+        public bool Equals(DbEntity? other)
         {
             if(other is null ) return false;
             if(GetType() != other.GetType()) return false;
@@ -39,7 +33,7 @@ namespace EasMe.EfCore
         {
             if (obj is null) return false;
             if (GetType() != obj.GetType()) return false;
-            if(obj is not EfEntity entity) return false;
+            if(obj is not DbEntity entity) return false;
             return Id == entity.Id;
         }
         public override int GetHashCode()

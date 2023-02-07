@@ -1,17 +1,11 @@
-﻿using EasMe.EntityFramework.Abstract;
+﻿using EasMe.EntityFrameworkCore.Abstract;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Net.NetworkInformation;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EasMe.EFCore
+namespace EasMe.EntityFrameworkCore
 {
-    public class EfEntityRepositoryBase<TEntity, TContext> : IEfEntityRepository<TEntity>
+    public class EfEntityRepositoryBase<TEntity, TContext> 
+        : IEfEntityRepository<TEntity>
         where TEntity : class, IEfEntity, new()
         where TContext : DbContext, new()
     {
