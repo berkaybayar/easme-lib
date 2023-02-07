@@ -8,9 +8,9 @@ namespace EasMe.Enums
 {
     public enum ResultSeverity
     {
-        INFO,
-        WARN,
-        ERROR,
-        FATAL
+        Info,
+        Warn,
+        Error,
+        Fatal
     }
 }

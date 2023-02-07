@@ -3,47 +3,48 @@ using EasMe.Enums;
 
 namespace EasMe.Models
 {
+    /// <summary>
+    /// A readonly struct Result to be used in Domain Driven Design mainly.
+    /// <br/>
+    /// In order to avoid using <see cref="Exception"/>'s and the performance downside from it.
+    /// </summary>
     public readonly struct Result : IResult
     {
-        private Result(ResultSeverity severity, ushort rv, object errCode, params string[] parameters)
+        private Result(ResultSeverity severity, ushort rv, object errCode)
         {
             Rv = rv;
             ErrorCode = errCode.ToString() ?? "None";
             Severity = severity;
-            Parameters = parameters;
         }
 
-        public readonly ushort Rv { get; init; } = ushort.MaxValue;
-        public readonly bool IsSuccess { get => Rv == 0; }
-        public readonly string ErrorCode { get; init; } = "None";
-        public readonly string[] Parameters { get; init; }
+        public ushort Rv { get; init; } = ushort.MaxValue;
+        public bool IsSuccess => Rv == 0;
+        public bool IsFailure => !IsSuccess;
+        public string ErrorCode { get; init; } = "None";
 
-        public readonly ResultSeverity Severity { get; init; }
+        public ResultSeverity Severity { get; init; }
 
-        public static Result Success(params string[] parameters)
-        {
-            return new Result(ResultSeverity.INFO, 0, "Success", parameters);
-        }
         public static Result Success()
         {
-            return new Result();
+            return new Result(ResultSeverity.Info, 0, "Success");
         }
-        public static Result Error(ushort rv, object errorCode, params string[] parameters)
+        public static Result Success(string operationName)
         {
-            return new Result(ResultSeverity.ERROR, rv, errorCode, parameters);
+            return new Result(ResultSeverity.Info,0,operationName);
         }
-        public static Result Warn(ushort rv, object errorCode, params string[] parameters)
+        public static Result Error(ushort rv, object errorCode)
         {
-            return new Result(ResultSeverity.WARN, rv, errorCode, parameters);
+            return new Result(ResultSeverity.Error, rv, errorCode);
         }
-        public static Result Fatal(ushort rv, object errorCode, params string[] parameters)
+        public static Result Warn(ushort rv, object errorCode)
         {
-            return new Result(ResultSeverity.FATAL, rv, errorCode, parameters);
+            return new Result(ResultSeverity.Warn, rv, errorCode);
+        }
+        public static Result Fatal(ushort rv, object errorCode)
+        {
+            return new Result(ResultSeverity.Fatal, rv, errorCode);
         }
 
-        public static Result DbInternal(ushort rv, params string[] parameters)
-        {
-            return new Result(ResultSeverity.FATAL, rv, Enums.ErrorCode.DbInternal.ToString(), parameters);
-        }
+        
     }
 }
