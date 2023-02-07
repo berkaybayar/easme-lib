@@ -1,4 +1,4 @@
-﻿using EasMe.DDD.Abstract;
+﻿using EasMe.Abstract;
 using EasMe.Enums;
 
 namespace EasMe.Models

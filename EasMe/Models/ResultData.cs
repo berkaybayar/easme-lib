@@ -1,7 +1,7 @@
-﻿using EasMe.DDD.Abstract;
+﻿using EasMe.Abstract;
 using EasMe.Enums;
 
-namespace EasMe.DDD
+namespace EasMe.Models
 {
     public readonly struct ResultData<T> : IResultData<T>
     {
