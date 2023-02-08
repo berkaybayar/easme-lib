@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace EasMe.Authorization.Filters
 {
@@ -15,27 +18,41 @@ namespace EasMe.Authorization.Filters
     /// </summary>
     public class EndPointAuthorizationFilterAttribute : ActionFilterAttribute
     {
-        public EndPointAuthorizationFilterAttribute(object uniqueActionCode)
+        public EndPointAuthorizationFilterAttribute(object actionCode)
         {
-            _uniqueActionCode = uniqueActionCode.ToString();
-            if (string.IsNullOrEmpty(_uniqueActionCode))
-                throw new ArgumentNullException(nameof(uniqueActionCode) + " can not be null or empty");
+            _actionCode = actionCode.ToString() ?? "";
+            if (string.IsNullOrEmpty(_actionCode))
+                throw new ArgumentNullException(nameof(actionCode));
         }
         
-        private readonly string _uniqueActionCode;
+        private readonly string _actionCode;
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.HttpContext.User.Identity is { IsAuthenticated: true })
             {
+                Trace.WriteLine("Not authorized");
                 return;
             }
             var endPointPermissionString = context.HttpContext.User.FindFirst(EasMeClaimType.EndPointPermissions)?.Value ?? "";
-            var permList = AuthorizationHelper.SplitPermissions(endPointPermissionString);
-            if (permList.Length == 0 || !permList.Contains(_uniqueActionCode))
+            if (string.IsNullOrEmpty(endPointPermissionString))
             {
                 context.Result = new ForbidResult();
+                return;
             }
-          
+            Trace.WriteLine(endPointPermissionString);
+            var permList = AuthorizationHelper.SplitPermissions(endPointPermissionString);
+            Trace.WriteLine("Permission List" + JsonConvert.SerializeObject(permList));
+            if (permList.Length == 0)
+            {
+                context.Result = new ForbidResult();
+                return;
+            }
+            if (!permList.Contains(_actionCode))
+            {
+                context.Result = new ForbidResult();
+                return;
+            }
         }
     }
 }

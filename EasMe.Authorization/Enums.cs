@@ -1,4 +1,5 @@
-﻿using EasMe.Authorization.Middlewares;
+﻿using EasMe.Authorization.Filters;
+using EasMe.Authorization.Middlewares;
 
 namespace EasMe.Authorization
 {
@@ -30,7 +31,7 @@ namespace EasMe.Authorization
         public static string HttpMethodPermissions => "EasMe.Authorization::Permissions";
 
         /// <summary>
-        /// Claim Type for initializing User authorization in order to use <see cref="EndPointAuthorizationMiddleware"/>.
+        /// Claim Type for initializing User authorization in order to use <see cref="EndPointAuthorizationFilterAttribute.
         /// <br/>
         /// Value must contain <see cref="HttpMethod"/> strings merged with "," 
         /// </summary>

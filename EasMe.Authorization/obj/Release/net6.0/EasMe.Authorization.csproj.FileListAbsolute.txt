@@ -10,3 +10,6 @@ E:\Repos\easme-lib\EasMe.Authorization\obj\Release\net6.0\EasMe.Authorization.dl
 E:\Repos\easme-lib\EasMe.Authorization\obj\Release\net6.0\refint\EasMe.Authorization.dll
 E:\Repos\easme-lib\EasMe.Authorization\obj\Release\net6.0\EasMe.Authorization.pdb
 E:\Repos\easme-lib\EasMe.Authorization\obj\Release\net6.0\ref\EasMe.Authorization.dll
+E:\Repos\easme-lib\bin\Release\net6.0\EasMe.Authorization.deps.json
+E:\Repos\easme-lib\bin\Release\net6.0\EasMe.Authorization.dll
+E:\Repos\easme-lib\bin\Release\net6.0\EasMe.Authorization.pdb
