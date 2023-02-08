@@ -1,24 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace EasMe.Authorization.Filters
 {
     /// <summary>
     /// EndPointAuthorizationFilter to select permission to each endpoint for <see cref="HttpContext.User"/> must be authorized before this.
     /// If user authorization is not true it will not check
+    /// <br/>
+    /// <example>
+    /// <br/>
+    /// Example: Add ActionCode to <see cref="HttpContext.User"/> claims with <see cref="EasMeClaimType.EndPointPermissions"/> claim type and
+    /// separate multiple ActionCode with ","
+    /// <br/>
+    /// <br/>
+    /// It is recommended to use Enum types for ActionCodes and add the intended permissions to <see cref="HttpContext.User"/> claims.
+    /// </example>
     /// </summary>
-    public class EndPointAuthorizationFilterAttribute : ActionFilterAttribute
+    public class HasPermissionAttribute : ActionFilterAttribute
     {
-        public EndPointAuthorizationFilterAttribute(object actionCode)
+        public HasPermissionAttribute(object actionCode)
         {
             _actionCode = actionCode.ToString() ?? "";
             if (string.IsNullOrEmpty(_actionCode))
@@ -29,7 +32,7 @@ namespace EasMe.Authorization.Filters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.HttpContext.User.Identity is { IsAuthenticated: true })
+            if (context.HttpContext.User.Identity is not { IsAuthenticated: true })
             {
                 Trace.WriteLine("Not authorized");
                 return;

@@ -31,7 +31,7 @@ namespace EasMe.Authorization
         public static string HttpMethodPermissions => "EasMe.Authorization::Permissions";
 
         /// <summary>
-        /// Claim Type for initializing User authorization in order to use <see cref="EndPointAuthorizationFilterAttribute.
+        /// Claim Type for initializing User authorization in order to use <see cref="HasPermissionAttribute"/>.
         /// <br/>
         /// Value must contain <see cref="HttpMethod"/> strings merged with "," 
         /// </summary>

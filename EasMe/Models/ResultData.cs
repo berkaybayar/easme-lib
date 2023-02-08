@@ -1,5 +1,6 @@
 ﻿using EasMe.Abstract;
 using EasMe.Enums;
+using Newtonsoft.Json.Linq;
 
 namespace EasMe.Models
 {
@@ -10,21 +11,22 @@ namespace EasMe.Models
     /// </summary>
     public readonly struct ResultData<T> : IResultData<T>
     {
-        private ResultData(T? data, ResultSeverity severity, ushort rv, object errCode)
+        public ResultData(T? data, ResultSeverity severity, ushort rv, object errCode,params string[] errors)
         {
             Rv = rv;
             ErrorCode = errCode.ToString() ?? "None";
             Severity = severity;
             Data = data;
+            Errors = errors;
         }
 
     
-        [System.Text.Json.Serialization.JsonIgnore] 
         public ushort Rv { get; init; } = ushort.MaxValue;
         public ResultSeverity Severity { get; init; }
         public bool IsSuccess => Rv == 0 && Data is not null;
         public bool IsFailure => !IsSuccess;
         public string ErrorCode { get; init; } = "None";
+        public string[] Errors { get; init; }
         public T? Data { get; init; }
 
         public static ResultData<T> Success(T data)
@@ -35,20 +37,24 @@ namespace EasMe.Models
         {
             return new ResultData<T>(data, ResultSeverity.Info, 0, operationName);
         }
-        public static ResultData<T> Error(ushort rv, object errorCode)
+        public static ResultData<T> Error(ushort rv, object errorCode,params string[] errors)
         {
-            return new ResultData<T>(default, ResultSeverity.Error, rv, errorCode);
+            return new ResultData<T>(default, ResultSeverity.Error, rv, errorCode, errors);
         }
-        public static ResultData<T> Warn(ushort rv, object errorCode)
+        public static ResultData<T> Warn(ushort rv, object errorCode, params string[] errors)
         {
-            return new ResultData<T>(default, ResultSeverity.Warn, rv, errorCode);
+            return new ResultData<T>(default, ResultSeverity.Warn, rv, errorCode, errors);
         }
-        public static ResultData<T> Fatal(ushort rv, object errorCode)
+        public static ResultData<T> Fatal(ushort rv, object errorCode, params string[] errors)
         {
-            return new ResultData<T>(default, ResultSeverity.Fatal, rv, errorCode);
+            return new ResultData<T>(default, ResultSeverity.Fatal, rv, errorCode, errors);
         }
 
-      
+
+       
+
+
+
         public static implicit operator ResultData<T>(T? value)
         {
             return value is null 
@@ -57,46 +63,34 @@ namespace EasMe.Models
         }
 
         /// <summary>
-        /// %100 it is going to be failure
+        /// Implicit operator for <see cref="Result"/> to <see cref="ResultData{T}"/>
+        /// <br/>
+        /// If <see cref="Result"/> status is success conversion t
         /// </summary>
         /// <param name="result"></param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static implicit operator ResultData<T>(Result result)
+        /// <exception cref="InvalidOperationException"></exception>
+        public static implicit operator ResultData<T>(Result result) 
         {
-            return result.Severity switch
+            if (result.IsSuccess)
             {
-                ResultSeverity.Warn => Warn(result.Rv, result.ErrorCode),
-                ResultSeverity.Error => Error(result.Rv, result.ErrorCode),
-                ResultSeverity.Fatal => Fatal(result.Rv, result.ErrorCode),
-                ResultSeverity.Info => 
-                    throw new Exception("Implicit conversion from Result to ResultData<T> is not possible if Result state is Success"),
-                _ => throw  new ArgumentOutOfRangeException(nameof(Result))
-
-            };
+                throw new InvalidOperationException(
+                    "Implicit conversion from Result to ResultData<T> is not possible if ResultState is success");
+            }
+            return new ResultData<T>((T?)default,result.Severity,result.Rv,result.ErrorCode);
         }
 
+        public ResultData<T> WithoutRv()
+        {
+            return new ResultData<T>(Data,Severity,ushort.MaxValue,ErrorCode);
+        }
         public Result ToResult()
         {
-            return Severity switch
-            {
-                ResultSeverity.Warn => Result.Warn(Rv, ErrorCode),
-                ResultSeverity.Error => Result.Error(Rv, ErrorCode),
-                ResultSeverity.Fatal => Result.Fatal(Rv, ErrorCode),
-                ResultSeverity.Info => Result.Success(),
-                _ => throw new ArgumentOutOfRangeException(nameof(ResultData<T>))
-            };
+            return new Result(Severity, Rv, ErrorCode);
         }
-
         public Result ToResult(byte multiplyRv)
         {
-            return Severity switch
-            {
-                ResultSeverity.Warn => Result.Warn(Convert.ToUInt16(Rv * multiplyRv), ErrorCode),
-                ResultSeverity.Error => Result.Error(Convert.ToUInt16(Rv * multiplyRv), ErrorCode),
-                ResultSeverity.Fatal => Result.Fatal(Convert.ToUInt16(Rv * multiplyRv), ErrorCode),
-                ResultSeverity.Info => Result.Success(),
-                _ => throw new ArgumentOutOfRangeException(nameof(ResultData<T>))
-            };
+            return new Result(Severity, Convert.ToUInt16(Rv * multiplyRv), ErrorCode);
         }
+    
     }
 }

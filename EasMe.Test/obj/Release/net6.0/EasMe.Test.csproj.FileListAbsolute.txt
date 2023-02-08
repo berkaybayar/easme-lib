@@ -90,3 +90,12 @@ E:\Repos\easme-lib\EasMe.Test\obj\Release\net6.0\refint\EasMe.Test.dll
 E:\Repos\easme-lib\EasMe.Test\obj\Release\net6.0\EasMe.Test.pdb
 E:\Repos\easme-lib\EasMe.Test\obj\Release\net6.0\EasMe.Test.genruntimeconfig.cache
 E:\Repos\easme-lib\EasMe.Test\obj\Release\net6.0\ref\EasMe.Test.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Authorization.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Authorization.Policy.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Mvc.Abstractions.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Mvc.Core.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.ResponseCaching.Abstractions.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Routing.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Routing.Abstractions.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+E:\Repos\easme-lib\EasMe.Test\bin\Release\net6.0\Microsoft.Extensions.DependencyModel.dll

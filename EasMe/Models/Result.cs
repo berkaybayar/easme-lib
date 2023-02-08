@@ -10,19 +10,26 @@ namespace EasMe.Models
     /// </summary>
     public readonly struct Result : IResult
     {
-        private Result(ResultSeverity severity, ushort rv, object errCode)
+        public Result(ResultSeverity severity, ushort rv, object errCode,params string[] errors)
         {
             Rv = rv;
             ErrorCode = errCode.ToString() ?? "None";
             Severity = severity;
+            Errors = errors;
         }
 
         public ushort Rv { get; init; } = ushort.MaxValue;
         public bool IsSuccess => Rv == 0;
         public bool IsFailure => !IsSuccess;
         public string ErrorCode { get; init; } = "None";
-
+        public string[] Errors { get; init; }
         public ResultSeverity Severity { get; init; }
+
+        public Result WithoutRv()
+        {
+            return new Result(Severity, ushort.MaxValue, ErrorCode);
+        }
+
 
         public static Result Success()
         {
@@ -32,19 +39,18 @@ namespace EasMe.Models
         {
             return new Result(ResultSeverity.Info,0,operationName);
         }
-        public static Result Error(ushort rv, object errorCode)
+        public static Result Error(ushort rv, object errorCode, params string[] errors)
         {
-            return new Result(ResultSeverity.Error, rv, errorCode);
+            return new Result(ResultSeverity.Error, rv, errorCode, errors);
         }
-        public static Result Warn(ushort rv, object errorCode)
+        public static Result Warn(ushort rv, object errorCode, params string[] errors)
         {
-            return new Result(ResultSeverity.Warn, rv, errorCode);
+            return new Result(ResultSeverity.Warn, rv, errorCode, errors);
         }
-        public static Result Fatal(ushort rv, object errorCode)
+        public static Result Fatal(ushort rv, object errorCode, params string[] errors)
         {
-            return new Result(ResultSeverity.Fatal, rv, errorCode);
+            return new Result(ResultSeverity.Fatal, rv, errorCode, errors);
         }
 
-        
     }
 }

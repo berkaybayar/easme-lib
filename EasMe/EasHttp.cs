@@ -3,16 +3,11 @@ using System.Net;
 
 namespace EasMe
 {
-    /// <summary>
-    /// Web helper
-    /// </summary>
+
     public static class EasHttp
     {
 
-
-       
         
-
         public static string GetStatusCodeShortMessage(uint httpStatusCode)
         {
             var statusCode = (HttpStatusCode)httpStatusCode;

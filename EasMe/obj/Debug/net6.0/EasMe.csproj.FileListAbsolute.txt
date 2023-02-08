@@ -34,3 +34,6 @@ E:\Repos\easme-lib\EasMe\obj\Debug\net6.0\EasMe.dll
 E:\Repos\easme-lib\EasMe\obj\Debug\net6.0\refint\EasMe.dll
 E:\Repos\easme-lib\EasMe\obj\Debug\net6.0\EasMe.pdb
 E:\Repos\easme-lib\EasMe\obj\Debug\net6.0\ref\EasMe.dll
+E:\Repos\easme-lib\bin\Debug\net6.0\EasMe.deps.json
+E:\Repos\easme-lib\bin\Debug\net6.0\EasMe.dll
+E:\Repos\easme-lib\bin\Debug\net6.0\EasMe.pdb

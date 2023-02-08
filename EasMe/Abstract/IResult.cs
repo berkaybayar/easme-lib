@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasMe.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -20,11 +21,7 @@ namespace EasMe.Abstract
         /// it is recommended to multiply the incoming <see cref="Rv"/> value before returning exact result
         /// <br/>
         /// It is recommended to multiply the <see cref="Rv"/> from another method by 100 or multiples of 100
-        /// <br/><br/>
-        /// Serialization of <see cref="Rv"/> is disabled for "System.Text.Json.Serialization" due to security reasons.
-        /// <br/>In order to see it in logs, must use "Newtonsoft.Json" library
         /// </summary>
-        [JsonIgnore]
         ushort Rv { get; init; }
 
         /// <summary>
@@ -38,7 +35,6 @@ namespace EasMe.Abstract
         bool IsFailure => Rv != 0;
 
         string ErrorCode { get; init; }
-
 
 
     }
