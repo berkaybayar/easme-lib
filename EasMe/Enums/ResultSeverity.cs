@@ -12,5 +12,6 @@ namespace EasMe.Enums
         Warn,
         Error,
         Fatal
+
     }
 }

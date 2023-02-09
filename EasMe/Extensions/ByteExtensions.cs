@@ -20,6 +20,10 @@ namespace EasMe.Extensions
             return builder.ToString();
         }
 
+        public static string ToBase64String(this byte[] bytes)
+        {
+            return Convert.ToBase64String(bytes);
+        }
         public static string ConvertToString(this byte[] byteArray) => Encoding.ASCII.GetString(byteArray);
 
         public static string BytesToHexString(this byte[] bt)

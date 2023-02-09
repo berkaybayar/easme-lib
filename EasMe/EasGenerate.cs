@@ -1,8 +1,23 @@
-﻿using EasMe.Exceptions;
+﻿using System.Security.Cryptography;
+using System.Text;
+using EasMe.Exceptions;
 namespace EasMe
 {
     public static class EasGenerate
     {
+        public static string GetUniqueKey(ushort length)
+        {
+            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
+            StringBuilder result = new StringBuilder(length);
+            for (int i = 0; i < length; i++)
+            {
+                var random = RandomNumberGenerator.GetInt32(chars.Length);
+                var randomChar = chars[random];
+                result.Append(randomChar);
+            }
+            return result.ToString();
+        }
+
         /// <summary>
         /// Generate a random string with a given length and characters. Max allowed length value is 1024.
         /// </summary>

@@ -21,6 +21,8 @@ namespace EasMe.Extensions
           "yes",
           "y"
         };
+
+        
         public static byte[] ConvertToByteArray(this string yourStr) => Encoding.UTF8.GetBytes(yourStr);
         /// <summary>
         /// Converts string to Type T.

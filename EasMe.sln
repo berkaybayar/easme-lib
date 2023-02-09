@@ -13,9 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasMe.EntityFrameworkCore",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasMe.Box", "EasMe.Box\EasMe.Box.csproj", "{A34014DE-E353-44E7-874F-CFD7E3F16137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasMe.Test", "EasMe.Test\EasMe.Test.csproj", "{3C5F5E28-7EEE-4CA8-84BA-78B57B5ED789}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasMe.Test", "EasMe.Test\EasMe.Test.csproj", "{3C5F5E28-7EEE-4CA8-84BA-78B57B5ED789}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasMe.Authorization", "EasMe.Authorization\EasMe.Authorization.csproj", "{83E0C4AB-DCDA-4918-A5B9-76F4A95DC815}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasMe.Authorization", "EasMe.Authorization\EasMe.Authorization.csproj", "{83E0C4AB-DCDA-4918-A5B9-76F4A95DC815}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A0EE42E2-3395-4E73-B63E-BE52291E8498}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

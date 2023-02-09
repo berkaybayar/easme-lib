@@ -49,7 +49,7 @@ namespace EasMe
         public static byte[] SHA512HashSalted(this string rawData, string salt) => ComputeSaltedHash(SHA512.Create(), rawData, salt);
 
 
-        public static string FileMD5Hash(string path)
+        public static string FileMD5Hash( string path)
         {
             using var md5 = MD5.Create();
             using var stream = File.OpenRead(path);
@@ -62,19 +62,19 @@ namespace EasMe
             var hashed = factory.ComputeHash(stream).AsHexString();
             return hashed;
         }
-        public static IHashValue XXHash(string input)
+        public static IHashValue XXHash(this string input)
         {
             var factory = xxHashFactory.Instance.Create();
             var hashed = factory.ComputeHash(Encoding.UTF8.GetBytes(input));
             return hashed;
         }
-        public static string XXHashAsHexString(string input)
+        public static string XXHashAsHexString(this string input)
         {
             var factory = xxHashFactory.Instance.Create();
             var hashed = factory.ComputeHash(Encoding.UTF8.GetBytes(input)).AsHexString();
             return hashed;
         }
-        public static string XXHashAsBase64String(string input)
+        public static string XXHashAsBase64String(this string input)
         {
             var factory = xxHashFactory.Instance.Create();
             var hashed = factory.ComputeHash(Encoding.UTF8.GetBytes(input)).AsBase64String();
