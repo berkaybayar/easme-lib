@@ -1,0 +1,13 @@
+E:\Repos\easme-lib\bin\Debug\net6.0\EasMe.System.deps.json
+E:\Repos\easme-lib\bin\Debug\net6.0\EasMe.System.dll
+E:\Repos\easme-lib\bin\Debug\net6.0\EasMe.System.pdb
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\EasMe.System.csproj.AssemblyReference.cache
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\EasMe.System.GeneratedMSBuildEditorConfig.editorconfig
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\EasMe.System.AssemblyInfoInputs.cache
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\EasMe.System.AssemblyInfo.cs
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\EasMe.System.csproj.CoreCompileInputs.cache
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\EasMe.System.csproj.CopyComplete
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\EasMe.System.dll
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\refint\EasMe.System.dll
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\EasMe.System.pdb
+E:\Repos\easme-lib\EasMe.System\obj\Debug\net6.0\ref\EasMe.System.dll

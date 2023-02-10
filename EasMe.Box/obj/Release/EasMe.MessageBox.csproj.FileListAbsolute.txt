@@ -1,4 +1,0 @@
-E:\Repos\easme-lib\EasMe.MessageBox\obj\Release\EasMe.MessageBox.csproj.AssemblyReference.cache
-E:\Repos\easme-lib\EasMe.MessageBox\obj\Release\EasMe.MessageBox.csproj.CoreCompileInputs.cache
-E:\Repos\easme-lib\EasMe.MessageBox\obj\Release\EasBox.dll
-E:\Repos\easme-lib\EasMe.MessageBox\obj\Release\EasBox.pdb
