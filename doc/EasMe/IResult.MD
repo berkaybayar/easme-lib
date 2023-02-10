@@ -7,7 +7,8 @@ A readonly struct to implement Result
 //ReturnValue indicating where exactly method is ended
 //It is used to replace Exception StackTrace 
 //Every Fail Result a method returns each one should have different Rv
-//This is needed in case where returning same Result Error for different if statements. So Dev Team can keep track of where exactly problem come from inside Logs 
+//This is needed in case where returning same Result Error for different if statements. 
+//So Dev Team can keep track of where exactly problem come from inside Logs 
 //This value should NOT be given to client, it may cause security leaks
 public ushort Rv { get; init; } = ushort.MaxValue;
 

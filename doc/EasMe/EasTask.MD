@@ -1,6 +1,8 @@
 # EasTask
 Async background task runner with options.
+
 It will check new Tasks in Queue with given interval.
+
 When parallelism is higher than 1, it will wait that number of Tasks to be added to the Queue and then will run all at once and will wait all.
 
 ## Definition
