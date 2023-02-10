@@ -1,4 +1,5 @@
-﻿using EasMe.Models;
+﻿using EasMe.Enums;
+using EasMe.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,10 +33,12 @@ namespace EasMe.Abstract
         /// <summary>
         /// Indicates fail status of <see cref="IResult"/>. 
         /// </summary>
-        bool IsFailure => Rv != 0;
+        bool IsFailure => !IsSuccess;
 
         string ErrorCode { get; init; }
 
+        string[] Errors { get; init; }
 
+        ResultSeverity Severity { get; init; }
     }
 }
