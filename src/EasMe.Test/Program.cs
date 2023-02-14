@@ -6,6 +6,7 @@ using EasMe;
 using EasMe.Extensions;
 using EasMe.Logging;
 using EasMe.Models;
+using EasMe.Test;
 
 //var dic = new Dictionary<int,int>
 //{
@@ -64,28 +65,11 @@ using EasMe.Models;
 //    Trace.WriteLine(x);
 //});
 
-EasLogFactory.LoadConfig(x =>
+EasLogFactory.Configure(x =>
 {
     x.ConsoleAppender = true;
 });
-var logger = EasLogFactory.CreateLogger("Test");
 
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
-logger.Info("test");
+Class1.Test();
 
 Console.Read();

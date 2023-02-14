@@ -1,6 +1,7 @@
 ﻿using EasMe.Enums;
 using EasMe.Extensions;
 using EasMe.Logging.Internal;
+using System.Reflection.Metadata;
 
 namespace EasMe.Logging
 {
@@ -11,14 +12,14 @@ namespace EasMe.Logging
     /// </summary>
     public static class EasLogConsole
     {
-        private static ConsoleColor FatalColor = ConsoleColor.DarkMagenta;
-        private static ConsoleColor ErrorColor = ConsoleColor.Red;
-        private static ConsoleColor BaseColor = ConsoleColor.White;
-        private static ConsoleColor WarningColor = ConsoleColor.Yellow;
-        private static ConsoleColor InfoColor = ConsoleColor.Green;
-        private static ConsoleColor DebugColor = ConsoleColor.Blue;
-        private static ConsoleColor TraceColor = ConsoleColor.Cyan;
-        private static ConsoleColor ExceptionColor = ConsoleColor.Magenta;
+        private const ConsoleColor FatalColor = ConsoleColor.DarkMagenta;
+        private const ConsoleColor ErrorColor = ConsoleColor.Red;
+        private const ConsoleColor BaseColor = ConsoleColor.White;
+        private const ConsoleColor WarningColor = ConsoleColor.Yellow;
+        private const ConsoleColor InfoColor = ConsoleColor.Green;
+        private const ConsoleColor DebugColor = ConsoleColor.Blue;
+        private const ConsoleColor TraceColor = ConsoleColor.Cyan;
+        private const ConsoleColor ExceptionColor = ConsoleColor.Magenta;
         public static void Log(string message)
         {
             Console.WriteLine(message);
@@ -77,22 +78,34 @@ namespace EasMe.Logging
                     break;
             }
         }
-        public static void Log(LogSeverity severity, string message, params string[] param)
+        public static void Log(LogSeverity severity, string message, params object[] param)
         {
-            var paramStr = param.ToLogString(severity);
+            var logStr = param.ToLogString(severity) + " " + message;
             switch (severity)
             {
                 case LogSeverity.ERROR:
-                    Log(paramStr + " " + message, ErrorColor);
+                    Log(logStr, ErrorColor);
                     break;
                 case LogSeverity.WARN:
-                    Log(paramStr + " " + message, WarningColor);
+                    Log(logStr, WarningColor);
                     break;
                 case LogSeverity.INFO:
-                    Log(paramStr + " " + message, InfoColor);
+                    Log(logStr, InfoColor);
+                    break;
+                case LogSeverity.TRACE:
+                    Log(logStr,TraceColor);
+                    break;
+                case LogSeverity.DEBUG:
+                    Log(logStr, DebugColor);
+                    break;
+                case LogSeverity.EXCEPTION:
+                    Log(logStr, ExceptionColor);
+                    break;
+                case LogSeverity.FATAL:
+                    Log(logStr, FatalColor);
                     break;
                 default:
-                    Log(paramStr + " " + message, BaseColor);
+                    Log(logStr, BaseColor);
                     break;
             }
         }

@@ -4,7 +4,10 @@ namespace EasMe.Logging
 {
     public class EasLogConfiguration
     {
-
+        internal EasLogConfiguration()
+        {
+            
+        }
         /// <summary>
         /// Gets or sets a value indicating whether to log the request body.
         /// </summary>

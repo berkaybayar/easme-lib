@@ -3,32 +3,30 @@ using EasMe.Logging.Internal;
 using System;
 using EasMe.Logging.Models;
 using Microsoft.Extensions.Hosting;
+using log4net;
 
 namespace EasMe.Logging
 {
 
 
-	//private static readonly EasLog logger = IEasLog.CreateLogger(typeof(AdminManager).Namespace + "." + typeof(AdminManager).Name);
 	/// <summary>
 	/// Simple static json and console logger with useful options.
 	/// </summary>
-	public sealed class EasLog : AsyncThreadLogger<LogModel>
-	{
-		//internal static EasLogConfiguration Configuration { get; set; } = IEasLog.Config;
-		//private static int? _OverSizeExt = 0;
+	public class EasLog : IEasLog
+    {
 
-		//internal static bool _IsCreated = false;
 		internal string _LogSource;
 		private static readonly object _fileLock = new();
-		internal EasLog(string source)
+
+        private static readonly EasTask EasTask = new ();
+        private static readonly List<Exception> _exceptions = new();
+        public static IReadOnlyCollection<Exception> Exceptions => _exceptions;
+
+        internal EasLog(string source)
 		{
 			_LogSource = source;
 		}
-		internal EasLog()
-		{
-			_LogSource = "Sys";
-		}
-		
+	
 		private static string GetExactLogPath(LogSeverity severity)
 		{
 			var date = DateTime.Now.ToString(EasLogFactory.Config.DateFormatString);
@@ -475,50 +473,50 @@ namespace EasMe.Logging
 			if (!LogSeverity.TRACE.IsLoggable()) return;
 			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
-
-
-		private void WriteLog(string source, LogSeverity severity, Exception? exception = null, params object[] param)
-		{
-            var paramToLog = param.ToLogString();
-            var model = new LogModel(severity, source, paramToLog, exception);
-			LogMessage(model);
-        }
 		
-	    
-		public static List<Exception> Errors { get; } = new();
-
-    
-        protected override void AsyncLogMessage(LogModel log)
+        public void Flush()
         {
-            if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(log.Severity, log.ToJsonString() ?? "");
-            var logFilePath = GetExactLogPath(log.Severity);
-            try
-            {
+			EasTask.Flush();
+        }
 
-                var folderPath = Path.GetDirectoryName(logFilePath);
-                if (folderPath is not null)
+
+        private static void WriteLog(string source, LogSeverity severity, Exception? exception = null, params object[] param)
+        {
+            var loggingAction = new Action(() =>
+            {
+                var paramToLog = param.ToLogString();
+                var log = new LogModel(severity, source, paramToLog, exception);
+                if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(log.Severity, log.ToJsonString() ?? "");
+                var logFilePath = GetExactLogPath(log.Severity);
+                try
                 {
-                    if (!Directory.Exists(folderPath))
+
+                    var folderPath = Path.GetDirectoryName(logFilePath);
+                    if (folderPath is not null)
                     {
-                        Directory.CreateDirectory(folderPath);
+                        if (!Directory.Exists(folderPath))
+                        {
+                            Directory.CreateDirectory(folderPath);
+                        }
+                    }
+
+                    lock (_fileLock)
+                    {
+                        File.AppendAllText(logFilePath, log.ToJsonString() + "\n");
                     }
                 }
-                lock (_fileLock)
+                catch (Exception ex)
                 {
-                    File.AppendAllText(logFilePath, log.ToJsonString() + "\n");
+                    lock (_exceptions)
+                    {
+                        _exceptions.Add(ex);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                lock (Errors)
-                {
-                    Errors.Add(ex);
-                }
-            }
-
-
+            });
+            EasTask.AddToQueue(loggingAction);
         }
     }
 
+  
 }
 

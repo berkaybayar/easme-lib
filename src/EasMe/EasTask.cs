@@ -1,91 +1,75 @@
 ﻿
-using System.Diagnostics;
 
-namespace EasMe
+namespace EasMe;
+
+/// <summary>
+/// Runs a queue of Tasks in the background with a single thread 
+/// </summary>
+public class EasTask : IDisposable
 {
- 
-    public class EasTask
-    {
+    private readonly Queue<Action> _queue = new();
+    private readonly ManualResetEvent _hasNewItems = new(false);
+    private readonly ManualResetEvent _terminate = new(false);
+    private readonly ManualResetEvent _waiting = new(false);
 
-        public EasTask(byte parallelism = 1,int checkInterval = 250)
+    private readonly Thread _thread;
+
+    public EasTask()
+    {
+        _thread = new Thread(ProcessQueue)
         {
-            _parallelism = parallelism;
-            _checkInterval = checkInterval;
-        }  
-        public List<Task> InQueue { get; private set; } = new();
-        public List<Task> Running { get; private set; } = new();
-        public long CompletedTaskCount { get; private set; }
-        private bool _isCalledOnStart = false;
-        private readonly byte _parallelism = 1;
-        private readonly int _checkInterval = 250;
-        public void AddToQueue(Task task)
+            IsBackground = true
+        };
+        // this is performed from a bg thread, to ensure the queue is serviced from a single thread
+        _thread.Start();
+    }
+
+
+    private void ProcessQueue()
+    {
+        while (true)
         {
-            lock (InQueue)
+            _waiting.Set();
+            var i = WaitHandle.WaitAny(new WaitHandle[] { _hasNewItems, _terminate });
+            
+            if (i == 1) return; // terminate was signaled 
+            _hasNewItems.Reset();
+            _waiting.Reset();
+
+            Queue<Action> queueCopy;
+            lock (_queue)
             {
-                InQueue.Add(task);
+                queueCopy = new Queue<Action>(_queue);
+                _queue.Clear();
+            }
+
+            foreach (var action in queueCopy)
+            {
+                action();
             }
         }
-        public void CallOnExit(){
-            //TODO: Run all tasks
-        }
-        public void CallOnStart()
-        {
-            if (_isCalledOnStart) throw new Exception("AlreadyCalled");
-            _isCalledOnStart = true;
-            if (_parallelism == 1) _CallOnStart_Single();
-            else _CallOnStart_Multi();
-        }
-        private void _CallOnStart_Single()
-        {
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    if (InQueue.Count > 0)
-                    {
-                        var task = InQueue.First();
-                        InQueue.RemoveAt(0);
-                        Running.Add(task);
-                        task.Start();
-                        task.Wait();
-                        Running.Remove(task);
-                        CompletedTaskCount++;
-                        //Trace.WriteLine(CompletedTaskCount + " Task Complete");
-                    }
-                    else
-                        Thread.Sleep((int)_checkInterval);
-                }
-            });
-        }
-        private void _CallOnStart_Multi()
-        {
+    }
 
-            Task.Run(() =>
-            {
-            
-                while (true)
-                {
-                    if (InQueue.Count > _parallelism)
-                    {
-                        for (int i = 0; i < _parallelism; i++)
-                        {
-                            var task = InQueue[i];
-                            if (task is null) continue;
-                            InQueue.Remove(task);
-                            task.Start();
-                            Running.Add(task);
-                        }
-                        Task.WaitAll(Running.ToArray());
-                        CompletedTaskCount += Running.Count;
-                        Running.Clear();
-                        //Trace.WriteLine(CompletedTaskCount + " Task Complete");
-                    }
-                    else
-                        Thread.Sleep((int)_checkInterval);
-                }
-            });
+    public void AddToQueue(Action action)
+    {
+        lock (_queue)
+        {
+            _queue.Enqueue(action);
         }
-      
+        _hasNewItems.Set();
+    }
+    
+
+    public void Flush()
+    {
+        _waiting.WaitOne();
+    }
+
+
+    public void Dispose()
+    {
+        _terminate.Set();
+        _thread.Join();
+        GC.SuppressFinalize(this);
     }
 }
-
