@@ -1,5 +1,8 @@
 ﻿using EasMe.Extensions;
 using EasMe.Logging.Internal;
+using System;
+using EasMe.Logging.Models;
+using Microsoft.Extensions.Hosting;
 
 namespace EasMe.Logging
 {
@@ -9,7 +12,7 @@ namespace EasMe.Logging
 	/// <summary>
 	/// Simple static json and console logger with useful options.
 	/// </summary>
-	public sealed class EasLog
+	public sealed class EasLog : AsyncThreadLogger<LogModel>
 	{
 		//internal static EasLogConfiguration Configuration { get; set; } = IEasLog.Config;
 		//private static int? _OverSizeExt = 0;
@@ -29,7 +32,7 @@ namespace EasMe.Logging
 		private static string GetExactLogPath(LogSeverity severity)
 		{
 			var date = DateTime.Now.ToString(EasLogFactory.Config.DateFormatString);
-			string path = EasLogFactory.Config.SeperateLogLevelToFolder
+			string path = EasLogFactory.Config.SeparateLogLevelToFolder
 				? Path.Combine(EasLogFactory.Config.LogFolderPath, date , severity.ToString() + "_" + EasLogFactory.Config.LogFileName  + date + EasLogFactory.Config.LogFileExtension)
 				: Path.Combine(EasLogFactory.Config.LogFolderPath, EasLogFactory.Config.LogFileName + date + EasLogFactory.Config.LogFileExtension);
 			return path;
@@ -474,57 +477,48 @@ namespace EasMe.Logging
 		}
 
 
-		private static void WriteLog(string source, LogSeverity severity, Exception? exception = null, params object[] param)
+		private void WriteLog(string source, LogSeverity severity, Exception? exception = null, params object[] param)
 		{
-			Task.Run(() =>
-			{
-				try
-				{
-					var log = CreateLogString(source, severity, exception, param);
-					if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(severity, log);
-					var logFilePath = GetExactLogPath(severity);
-					var folderPath = Path.GetDirectoryName(logFilePath);
-					if (folderPath is not null) CheckAndCreateLogFolder(folderPath);
-					WriteFile_Safe_NoCheck(logFilePath, log);
-				}
-				catch (Exception ex)
-				{
-					lock (Errors)
-					{
-						Errors.Add(ex);
-					}
-				}
-			});
-			string CreateLogString(string source, LogSeverity severity, Exception? ex, params object[] param)
-			{
-				var paramToLog = param.ToLogString();
-				if (EasLogFactory.Config.IsLogJson)
-				{
-					var model = EasLogHelper.LogModelCreate(severity, source, paramToLog, ex);
-					return model.ToJsonString();
-				}
-				var dateStr = DateTime.Now.ToString(EasLogFactory.Config.DateFormatString);
-				var log = $"[{dateStr}] [{severity}] " + paramToLog;
-				if (ex != null) log = log + " Exception:" + ex.Message;
-				return log;
-			}
-			void WriteFile_Safe_NoCheck(string logFilePath, string log)
-			{
-				lock (_fileLock)
-				{
-					File.AppendAllText(logFilePath, log + "\n");
-				}
-			}
-			void CheckAndCreateLogFolder(string folderPath)
-			{
-				if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
-			}
-		}
+            var paramToLog = param.ToLogString();
+            var model = new LogModel(severity, source, paramToLog, exception);
+			LogMessage(model);
+        }
 		
 	    
-		public static List<Exception> Errors { get; set; } = new();
+		public static List<Exception> Errors { get; } = new();
 
-	}
+    
+        protected override void AsyncLogMessage(LogModel log)
+        {
+            if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(log.Severity, log.ToJsonString() ?? "");
+            var logFilePath = GetExactLogPath(log.Severity);
+            try
+            {
+
+                var folderPath = Path.GetDirectoryName(logFilePath);
+                if (folderPath is not null)
+                {
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+                }
+                lock (_fileLock)
+                {
+                    File.AppendAllText(logFilePath, log.ToJsonString() + "\n");
+                }
+            }
+            catch (Exception ex)
+            {
+                lock (Errors)
+                {
+                    Errors.Add(ex);
+                }
+            }
+
+
+        }
+    }
 
 }
 

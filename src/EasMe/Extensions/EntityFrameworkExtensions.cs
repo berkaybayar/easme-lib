@@ -16,14 +16,14 @@ namespace EasMe.Extensions
         }
 
         
-        public static void ClearAndSaveChanges<T>(this DbSet<T> dbSet, DbContext context) where T : class
+        public static void ClearAndSaveChanges<T>(this DbSet<T> dbSet, DbContext _dbContext) where T : class
         {
             dbSet.RemoveRange(dbSet);
-            context.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
         /// <summary>
-        /// Saves changes to db context, if no rows affected throws exception
+        /// Saves changes to db _dbContext, if no rows affected throws exception
         /// </summary>
         /// <param name="dbContext"></param>
         /// <exception cref="InternalDbException"></exception>

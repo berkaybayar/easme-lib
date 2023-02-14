@@ -81,6 +81,9 @@ namespace EasMe.Models
 
         public ResultData<T> WithoutRv()
         {
+            return this;
+            //TODO: Check this later rv makes it always false
+            var rv = Rv == 0;
             return new ResultData<T>(Data,Severity,ushort.MaxValue,ErrorCode);
         }
         public Result ToResult()

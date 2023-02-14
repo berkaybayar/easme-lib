@@ -3,9 +3,9 @@ using EasMe.EntityFrameworkCore.Abstract;
 
 namespace EasMe.EntityFrameworkCore
 {
-    public abstract class Entity : IEntity
+    public abstract class BaseEntity : IBaseEntity
     {
-        protected Entity(Guid guid) 
+        protected BaseEntity(Guid guid) 
         { 
             Id = guid;
         }
@@ -14,16 +14,16 @@ namespace EasMe.EntityFrameworkCore
         public Guid Id { get; init; }
 
 
-        public static bool operator ==(Entity? left, Entity? right)
+        public static bool operator ==(BaseEntity? left, BaseEntity? right)
         { 
             return left is not null && right is not null && left.Equals(right); 
         }
-        public static bool operator !=(Entity? left, Entity? right)
+        public static bool operator !=(BaseEntity? left, BaseEntity? right)
         { 
             return left?.Equals(right) == true; 
         }
 
-        public bool Equals(Entity? other)
+        public bool Equals(BaseEntity? other)
         {
             if(other is null ) return false;
             if(GetType() != other.GetType()) return false;
@@ -33,7 +33,7 @@ namespace EasMe.EntityFrameworkCore
         {
             if (obj is null) return false;
             if (GetType() != obj.GetType()) return false;
-            if(obj is not Entity entity) return false;
+            if(obj is not BaseEntity entity) return false;
             return Id == entity.Id;
         }
         public override int GetHashCode()

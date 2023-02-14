@@ -30,17 +30,17 @@ namespace EasMe.Authorization.Filters
         
         private readonly string _actionCode;
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext _dbContext)
         {
-            if (context.HttpContext.User.Identity is not { IsAuthenticated: true })
+            if (_dbContext.HttpContext.User.Identity is not { IsAuthenticated: true })
             {
                 Trace.WriteLine("Not authorized");
                 return;
             }
-            var endPointPermissionString = context.HttpContext.User.FindFirst(EasMeClaimType.EndPointPermissions)?.Value ?? "";
+            var endPointPermissionString = _dbContext.HttpContext.User.FindFirst(EasMeClaimType.EndPointPermissions)?.Value ?? "";
             if (string.IsNullOrEmpty(endPointPermissionString))
             {
-                context.Result = new ForbidResult();
+                _dbContext.Result = new ForbidResult();
                 return;
             }
             Trace.WriteLine(endPointPermissionString);
@@ -48,12 +48,12 @@ namespace EasMe.Authorization.Filters
             Trace.WriteLine("Permission List" + JsonConvert.SerializeObject(permList));
             if (permList.Length == 0)
             {
-                context.Result = new ForbidResult();
+                _dbContext.Result = new ForbidResult();
                 return;
             }
             if (!permList.Contains(_actionCode))
             {
-                context.Result = new ForbidResult();
+                _dbContext.Result = new ForbidResult();
                 return;
             }
         }

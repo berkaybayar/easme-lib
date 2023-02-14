@@ -2817,6 +2817,20 @@
         "runtime": {
           "bin/placeholder/EasMe.dll": {}
         }
+      },
+      "EasMe.Logging/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "EasMe": "1.0.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "bin/placeholder/EasMe.Logging.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EasMe.Logging.dll": {}
+        }
       }
     }
   },
@@ -8238,11 +8252,17 @@
       "type": "project",
       "path": "../EasMe/EasMe.csproj",
       "msbuildProject": "../EasMe/EasMe.csproj"
+    },
+    "EasMe.Logging/1.0.0": {
+      "type": "project",
+      "path": "../EasMe.Logging/EasMe.Logging.csproj",
+      "msbuildProject": "../EasMe.Logging/EasMe.Logging.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "EasMe >= 1.0.0"
+      "EasMe >= 1.0.0",
+      "EasMe.Logging >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -8277,6 +8297,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
+            "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj": {
+              "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj"
+            },
             "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
               "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj"
             }

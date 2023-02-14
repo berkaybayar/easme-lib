@@ -51,12 +51,11 @@ namespace EasMe.Logging
 				AddRequestUrlToStart = true,
 				ConsoleAppender = false,
 				ExceptionHideSensitiveInfo = false,
-				IsLogJson = true,
 				LogFileName = name,
 				MinimumLogLevel = severity,
 				WebInfoLogging = true,
 				TraceLogging = traceLogging,
-				SeperateLogLevelToFolder = seperateLogLevelToFolder,
+				SeparateLogLevelToFolder = seperateLogLevelToFolder,
 			};
 			_isConfigured = true;
 		}
@@ -75,12 +74,11 @@ namespace EasMe.Logging
 				AddRequestUrlToStart = false,
 				ConsoleAppender = consoleAppender,
 				ExceptionHideSensitiveInfo = exceptionHideSensitiveInfo,
-				IsLogJson = isJson,
 				LogFileName = name,
 				MinimumLogLevel = severity,
 				WebInfoLogging = false,
 				TraceLogging = traceLogging,
-				SeperateLogLevelToFolder = seperateLogLevelToFolder,
+				SeparateLogLevelToFolder = seperateLogLevelToFolder,
 			};
 			_isConfigured = true;
 		}
@@ -92,12 +90,11 @@ namespace EasMe.Logging
 				AddRequestUrlToStart = isWeb,
 				ConsoleAppender = true,
 				ExceptionHideSensitiveInfo = false,
-				IsLogJson = true,
 				LogFileName = "Debug_",
 				MinimumLogLevel = LogSeverity.TRACE,
 				WebInfoLogging = isWeb,
 				TraceLogging = true,
-				SeperateLogLevelToFolder = false,
+				SeparateLogLevelToFolder = false,
 			};
 			_isConfigured = true;
 		}

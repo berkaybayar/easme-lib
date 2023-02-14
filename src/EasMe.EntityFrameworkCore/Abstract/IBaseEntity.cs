@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace EasMe.EntityFrameworkCore.Abstract
 {
-    public interface IEfEntity
+    public interface IBaseEntity : IEquatable<BaseEntity>
     {
+        Guid Id { get; init; }
     }
 }

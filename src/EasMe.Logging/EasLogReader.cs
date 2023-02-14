@@ -66,7 +66,7 @@ namespace EasMe.Logging
         public static List<LogModel> GetLogFileContent(string logLevel)
         {
             var list = GetLogFileContent();
-            return list.Where(x => x.LogLevel == logLevel).ToList();
+            return list.Where(x => x.SeverityStr == logLevel).ToList();
         }
         /// <summary>
         /// Gets filtered logs by LogType.

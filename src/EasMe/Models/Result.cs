@@ -27,6 +27,8 @@ namespace EasMe.Models
 
         public Result WithoutRv()
         {
+            return this;
+            //TODO: Check same as resultdata
             return new Result(Severity, ushort.MaxValue, ErrorCode);
         }
 

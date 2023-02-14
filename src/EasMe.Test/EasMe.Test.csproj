@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EasMe.Logging\EasMe.Logging.csproj" />
     <ProjectReference Include="..\EasMe\EasMe.csproj" />
   </ItemGroup>
 

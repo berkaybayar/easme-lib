@@ -1,8 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.CodeDom;
 using System.Diagnostics;
 using EasMe;
 using EasMe.Extensions;
+using EasMe.Logging;
 using EasMe.Models;
 
 //var dic = new Dictionary<int,int>
@@ -42,22 +44,48 @@ using EasMe.Models;
 
 
 
-var list = new List<string>();
-var length = 6;
+//var list = new List<string>();
+//var length = 6;
 
 
-Parallel.For(0L,100_000_000L, x =>
+//Parallel.For(0L,100_000_000L, x =>
+//{
+//    var guid = EasGenerate.GetUniqueKey(5);
+//    if (list.Contains(guid))
+//    {
+//        Console.WriteLine("AlreadyExists: " + guid + " x: " + x);
+//        return;
+//    }
+
+//    lock (list)
+//    {
+//        list.Add(guid);
+//    }
+//    Trace.WriteLine(x);
+//});
+
+EasLogFactory.LoadConfig(x =>
 {
-    var guid = EasGenerate.GetUniqueKey(5);
-    if (list.Contains(guid))
-    {
-        Console.WriteLine("AlreadyExists: " + guid + " x: " + x);
-        return;
-    }
-
-    lock (list)
-    {
-        list.Add(guid);
-    }
-    Trace.WriteLine(x);
+    x.ConsoleAppender = true;
 });
+var logger = EasLogFactory.CreateLogger("Test");
+
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+logger.Info("test");
+
+Console.Read();

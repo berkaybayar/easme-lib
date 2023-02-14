@@ -67,13 +67,13 @@ namespace EasMe.Logging
         /// </summary>
         public bool AddRequestUrlToStart { get; set; } = true;
 
-        /// <summary>
-        /// Whether to use default log model and print logs as json. 
-        /// Default value is true. If set to false, it will print logs as string. 
-        /// If set false set LogFileExtension as well.
-        /// </summary>
-        public bool IsLogJson { get; set; } = true;
+        ///// <summary>
+        ///// Whether to use default log model and print logs as json. 
+        ///// Default value is true. If set to false, it will print logs as string. 
+        ///// If set false set LogFileExtension as well.
+        ///// </summary>
+        //public bool IsLogJson { get; set; } = true;
 
-        public bool SeperateLogLevelToFolder { get; set; } = false;
+        public bool SeparateLogLevelToFolder { get; set; } = false;
     }
 }

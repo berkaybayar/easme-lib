@@ -8,9 +8,9 @@ namespace EasMe.Extensions
     {
         public static bool ValidateModel<T>(this T model)
         {
-            var context = new ValidationContext(model);
+            var _dbContext = new ValidationContext(model);
             var results = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(model, context, results, true);
+            var isValid = Validator.TryValidateObject(model, _dbContext, results, true);
             return isValid;
         }
         public static bool IsNull(this object? target) => target.IsNull<object>();

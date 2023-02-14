@@ -20,28 +20,28 @@ namespace EasMe.Authorization.Middlewares
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext _dbContext)
         {
-            if (context.User.Identity is not { IsAuthenticated: true })
+            if (_dbContext.User.Identity is not { IsAuthenticated: true })
             {
-                await _next(context);
+                await _next(_dbContext);
                 return;
             }
 
-            var permissionString = context.User.FindFirst(EasMeClaimType.HttpMethodPermissions)?.Value ?? "";
+            var permissionString = _dbContext.User.FindFirst(EasMeClaimType.HttpMethodPermissions)?.Value ?? "";
             var permList = AuthorizationHelper.SplitPermissions(permissionString);
             if (permList.Length == 0)
             {
-                context.Response.StatusCode = 403;
+                _dbContext.Response.StatusCode = 403;
                 return;
             }
-            var httpMethod = context.Request.Method;
+            var httpMethod = _dbContext.Request.Method;
             if(!permList.Contains(httpMethod))
             {
-                context.Response.StatusCode = 403;
+                _dbContext.Response.StatusCode = 403;
                 return;
             }
-            await _next(context);
+            await _next(_dbContext);
         }
     }
 }
