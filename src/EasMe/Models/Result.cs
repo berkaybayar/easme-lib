@@ -54,5 +54,20 @@ namespace EasMe.Models
             return new Result(ResultSeverity.Fatal, rv, errorCode, errors);
         }
 
+        public static implicit operator Result(bool value)
+        {
+            if (!value)
+            {
+                return Result.Error(ushort.MaxValue, "UnsetError");
+            }
+
+            return Result.Success();
+
+        }
+
+        public ResultData<T> ToResultData<T>(T? data = default)
+        {
+            return new ResultData<T>(data,Severity,Rv,ErrorCode,Errors);
+        }
     }
 }

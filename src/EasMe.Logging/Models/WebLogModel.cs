@@ -1,4 +1,5 @@
-﻿using EasMe.Extensions;
+﻿using System.Diagnostics;
+using EasMe.Extensions;
 using EasMe.Helpers;
 using EasMe.Logging.Internal;
 
@@ -10,11 +11,17 @@ namespace EasMe.Logging.Models
         public WebLogModel()
         {
             if (HttpContextHelper.Current is null) return;
-            var log = new WebLogModel();
-            log.Ip = HttpContextHelper.Current.Request.GetRemoteIpAddress();
-            log.HttpMethod = HttpContextHelper.Current.Request.Method;
-            log.RequestUrl = HttpContextHelper.Current.Request.GetRequestQuery();
-            log.Headers = EasLogHelper.GetHeadersJson(HttpContextHelper.Current);
+            try
+            {
+                Ip = HttpContextHelper.Current.Request.GetRemoteIpAddress();
+                HttpMethod = HttpContextHelper.Current.Request.Method;
+                RequestUrl = HttpContextHelper.Current.Request.GetRequestQuery();
+                Headers = EasLogHelper.GetHeadersJson(HttpContextHelper.Current);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
         public string? Ip { get; set; }
         public string? HttpMethod { get; set; }
