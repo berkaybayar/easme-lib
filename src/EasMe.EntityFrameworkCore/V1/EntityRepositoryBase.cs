@@ -88,6 +88,7 @@ namespace EasMe.EntityFrameworkCore.V1
         {
             var updatedEntity = _dbContext.Entry(entity);
             updatedEntity.State = EntityState.Modified;
+
         }
 
         public void UpdateRange(IEnumerable<TEntity> entities)

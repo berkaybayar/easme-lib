@@ -22,7 +22,6 @@ namespace EasMe.EntityFrameworkCore.V1
         void Update(T entity);
         void Update(T entity, Action<T> updateAction);
         void UpdateRange(IEnumerable<T> entities);
-
         void Delete(T entity);
         void Delete(int id);
         void DeleteRange(IEnumerable<T> entities);

@@ -6,6 +6,10 @@ namespace EasMe.Extensions
 {
     public static class ObjectExtensions
     {
+        public static TDestination SelectAs<TSource, TDestination>(this TSource source,Func<TSource, TDestination> action)
+        {
+            return action(source);
+        }
         public static bool ValidateModel<T>(this T model)
         {
             var _dbContext = new ValidationContext(model);
