@@ -35,8 +35,8 @@ namespace EasMe.EntityFrameworkCore.V2
 
         public IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>>? filter = null, 
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, 
-            params string[] includeProperties)
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            params Expression<Func<TEntity, object>>[] includeExpressions)
         {
             var query = Table.AsQueryable();
 
@@ -45,7 +45,7 @@ namespace EasMe.EntityFrameworkCore.V2
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties)
+            foreach (var includeProperty in includeExpressions)
             {
                 query = query.Include(includeProperty);
             }
@@ -57,18 +57,8 @@ namespace EasMe.EntityFrameworkCore.V2
             return query.ToList();
         }
 
-        public virtual IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>>? filter = null,
-            params string[] includeProperties)
-        {
-            return Get(filter, null, includeProperties);
-        }
-        public virtual IEnumerable<TEntity> GetPaging(
-            int page,
-            int pageSize = 15,
-            Expression<Func<TEntity, bool>>? filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-            params string[] includeProperties)
+        public IEnumerable<TEntity> GetPaging(int page, int pageSize = 15, Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            params Expression<Func<TEntity, object>>[] includeExpressions)
         {
             var query = Table.AsQueryable();
 
@@ -77,10 +67,11 @@ namespace EasMe.EntityFrameworkCore.V2
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties)
+            foreach (var func in includeExpressions)
             {
-                query = query.Include(includeProperty);
+                query = query.Include(func);
             }
+
 
             if (orderBy != null)
             {
@@ -91,7 +82,10 @@ namespace EasMe.EntityFrameworkCore.V2
                 .Skip(skipItemIndex)
                 .Take(pageSize)
                 .ToList();
+            return query.ToList();
         }
+
+  
         public virtual TEntity? GetById(object id)
         {
             return Table.Find(id);

@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Ardalis.Result/4.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Ardalis.Result.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Ardalis.Result.dll": {}
+        }
+      },
       "Azure.Core/1.24.0": {
         "type": "package",
         "dependencies": {
@@ -2817,24 +2826,24 @@
         "runtime": {
           "bin/placeholder/EasMe.dll": {}
         }
-      },
-      "EasMe.Logging/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "EasMe": "1.0.0",
-          "Newtonsoft.Json": "9.0.1"
-        },
-        "compile": {
-          "bin/placeholder/EasMe.Logging.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/EasMe.Logging.dll": {}
-        }
       }
     }
   },
   "libraries": {
+    "Ardalis.Result/4.2.0": {
+      "sha512": "VqcMTMQufYa7U4ZdlXMTq9X2BBndpvDuRWCt2ZBekth+QIV392c+SWJTne7qpoz4vHS9xZz/19K8W1ROskcoXQ==",
+      "type": "package",
+      "path": "ardalis.result/4.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ardalis.result.4.2.0.nupkg.sha512",
+        "ardalis.result.nuspec",
+        "icon.png",
+        "lib/net6.0/Ardalis.Result.dll",
+        "lib/netstandard2.0/Ardalis.Result.dll"
+      ]
+    },
     "Azure.Core/1.24.0": {
       "sha512": "+/qI1j2oU1S4/nvxb2k/wDsol00iGf1AyJX5g3epV7eOpQEP/2xcgh/cxgKMeFgn3U2fmgSiBnQZdkV+l5y0Uw==",
       "type": "package",
@@ -8252,17 +8261,12 @@
       "type": "project",
       "path": "../EasMe/EasMe.csproj",
       "msbuildProject": "../EasMe/EasMe.csproj"
-    },
-    "EasMe.Logging/1.0.0": {
-      "type": "project",
-      "path": "../EasMe.Logging/EasMe.Logging.csproj",
-      "msbuildProject": "../EasMe.Logging/EasMe.Logging.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "EasMe >= 1.0.0",
-      "EasMe.Logging >= 1.0.0"
+      "Ardalis.Result >= 4.2.0",
+      "EasMe >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -8297,9 +8301,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj": {
-              "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj"
-            },
             "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
               "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj"
             }
@@ -8315,6 +8316,12 @@
     "frameworks": {
       "net6.0": {
         "targetAlias": "net6.0",
+        "dependencies": {
+          "Ardalis.Result": {
+            "target": "Package",
+            "version": "[4.2.0, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

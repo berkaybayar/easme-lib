@@ -1,7 +1,4 @@
-﻿using EasMe.Enums;
-using log4net.Appender;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
 
 namespace EasMe.Logging
 {

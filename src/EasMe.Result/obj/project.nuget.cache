@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "WHhHsnQGyl7iGZL/H/CelV1GwmZnvZXjhHIeohntdS046E8LqUJJsd0uCj/FruuukcR8L6P4xlm5AK5ZIVX1ZQ==",
+  "success": true,
+  "projectFilePath": "E:\\Repos\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\kkass\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -4,14 +4,14 @@
     "E:\\Repos\\easme-lib\\src\\EasMe.Test\\EasMe.Test.csproj": {}
   },
   "projects": {
-    "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj": {
+    "E:\\Repos\\easme-lib\\src\\EasMe.Test\\EasMe.Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj",
-        "projectName": "EasMe.Logging",
-        "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj",
+        "projectUniqueName": "E:\\Repos\\easme-lib\\src\\EasMe.Test\\EasMe.Test.csproj",
+        "projectName": "EasMe.Test",
+        "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe.Test\\EasMe.Test.csproj",
         "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-        "outputPath": "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\obj\\",
+        "outputPath": "E:\\Repos\\easme-lib\\src\\EasMe.Test\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -48,77 +48,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Newtonsoft.Json": {
+            "Ardalis.Result": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[4.2.0, )"
             }
           },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "E:\\Repos\\easme-lib\\src\\EasMe.Test\\EasMe.Test.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "E:\\Repos\\easme-lib\\src\\EasMe.Test\\EasMe.Test.csproj",
-        "projectName": "EasMe.Test",
-        "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe.Test\\EasMe.Test.csproj",
-        "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-        "outputPath": "E:\\Repos\\easme-lib\\src\\EasMe.Test\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\kkass\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net6.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net6.0": {
-            "targetAlias": "net6.0",
-            "projectReferences": {
-              "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj": {
-                "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj"
-              },
-              "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
-                "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        }
-      },
-      "frameworks": {
-        "net6.0": {
-          "targetAlias": "net6.0",
           "imports": [
             "net461",
             "net462",

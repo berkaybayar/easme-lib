@@ -200,5 +200,4 @@ E:\Repos\easme-lib\src\EasMe.Test\obj\Release\net6.0\refint\EasMe.Test.dll
 E:\Repos\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.pdb
 E:\Repos\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.genruntimeconfig.cache
 E:\Repos\easme-lib\src\EasMe.Test\obj\Release\net6.0\ref\EasMe.Test.dll
-E:\Repos\easme-lib\src\EasMe.Test\bin\Release\net6.0\EasMe.Logging.dll
-E:\Repos\easme-lib\src\EasMe.Test\bin\Release\net6.0\EasMe.Logging.pdb
+E:\Repos\easme-lib\src\EasMe.Test\bin\Release\net6.0\Ardalis.Result.dll

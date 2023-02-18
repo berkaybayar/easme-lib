@@ -1,6 +1,4 @@
-﻿using EasMe.Enums;
-
-namespace EasMe.Logging
+﻿namespace EasMe.Logging
 {
     public class EasLogConfiguration
     {

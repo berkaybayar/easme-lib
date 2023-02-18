@@ -31,3 +31,4 @@ E:\Repos\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.Entity
 E:\Repos\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\refint\EasMe.EntityFrameworkCore.dll
 E:\Repos\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.pdb
 E:\Repos\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\ref\EasMe.EntityFrameworkCore.dll
+E:\Repos\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.csproj.CopyComplete

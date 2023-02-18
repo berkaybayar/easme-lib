@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace EasMe.Helpers
+namespace EasMe
 {
     /*
         [PROGRAM.CS] => FOR WEB APPLICATIONS 

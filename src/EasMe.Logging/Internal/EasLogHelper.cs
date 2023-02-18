@@ -1,7 +1,5 @@
 ﻿using EasMe.Exceptions;
 using EasMe.Extensions;
-using EasMe.Helpers;
-using EasMe.Logging.Models;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
 namespace EasMe.Logging.Internal

@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasMe.Enums
+namespace EasMe.Result
 {
     public enum ErrorCode
     {
-        UnexpectedError,
+		Ok,
+        Warning,
+        Error,
         Exception,
         Fatal,
-		Error,
-        Warning,
-		DbInternal,
+        DbInternal,
+        Forbidden,
+		Unauthorized,
 		ValidationError,
 		NullReference,
 		Deleted,

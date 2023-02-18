@@ -1,7 +1,4 @@
-﻿using EasMe.Enums;
-using EasMe.Extensions;
-using EasMe.Logging.Internal;
-using System.Reflection.Metadata;
+﻿using EasMe.Logging.Internal;
 
 namespace EasMe.Logging
 {

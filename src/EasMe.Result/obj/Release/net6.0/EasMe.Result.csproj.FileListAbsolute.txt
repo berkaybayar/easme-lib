@@ -1,0 +1,12 @@
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\EasMe.Result.csproj.AssemblyReference.cache
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\EasMe.Result.GeneratedMSBuildEditorConfig.editorconfig
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\EasMe.Result.AssemblyInfoInputs.cache
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\EasMe.Result.AssemblyInfo.cs
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\EasMe.Result.csproj.CoreCompileInputs.cache
+E:\Repos\easme-lib\src\EasMe.Result\bin\Release\net6.0\EasMe.Result.deps.json
+E:\Repos\easme-lib\src\EasMe.Result\bin\Release\net6.0\EasMe.Result.dll
+E:\Repos\easme-lib\src\EasMe.Result\bin\Release\net6.0\EasMe.Result.pdb
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\EasMe.Result.dll
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\refint\EasMe.Result.dll
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\EasMe.Result.pdb
+E:\Repos\easme-lib\src\EasMe.Result\obj\Release\net6.0\ref\EasMe.Result.dll

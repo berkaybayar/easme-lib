@@ -8,11 +8,19 @@
     ".NETCoreApp,Version=v6.0": {
       "EasMe.Test/1.0.0": {
         "dependencies": {
-          "EasMe": "1.0.0",
-          "EasMe.Logging": "1.0.0"
+          "Ardalis.Result": "4.2.0",
+          "EasMe": "1.0.0"
         },
         "runtime": {
           "EasMe.Test.dll": {}
+        }
+      },
+      "Ardalis.Result/4.2.0": {
+        "runtime": {
+          "lib/net6.0/Ardalis.Result.dll": {
+            "assemblyVersion": "4.2.0.0",
+            "fileVersion": "4.2.0.0"
+          }
         }
       },
       "Azure.Core/1.24.0": {
@@ -1686,15 +1694,6 @@
         "runtime": {
           "EasMe.dll": {}
         }
-      },
-      "EasMe.Logging/1.0.0": {
-        "dependencies": {
-          "EasMe": "1.0.0",
-          "Newtonsoft.Json": "9.0.1"
-        },
-        "runtime": {
-          "EasMe.Logging.dll": {}
-        }
       }
     }
   },
@@ -1703,6 +1702,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Ardalis.Result/4.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VqcMTMQufYa7U4ZdlXMTq9X2BBndpvDuRWCt2ZBekth+QIV392c+SWJTne7qpoz4vHS9xZz/19K8W1ROskcoXQ==",
+      "path": "ardalis.result/4.2.0",
+      "hashPath": "ardalis.result.4.2.0.nupkg.sha512"
     },
     "Azure.Core/1.24.0": {
       "type": "package",
@@ -2804,11 +2810,6 @@
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
     "EasMe/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "EasMe.Logging/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -4,14 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasMe.Enums
+namespace EasMe.Result
 {
-    public enum ResultSeverity
+    public interface IResultData<T> : IResult
     {
-        Info,
-        Warn,
-        Error,
-        Fatal
-
+        T? Data { get; init; }
     }
 }

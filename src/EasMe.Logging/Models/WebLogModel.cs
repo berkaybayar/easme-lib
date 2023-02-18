@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using EasMe.Extensions;
-using EasMe.Helpers;
 using EasMe.Logging.Internal;
 
 namespace EasMe.Logging.Models

@@ -1,8 +1,4 @@
-﻿using EasMe.Abstract;
-using EasMe.Enums;
-using Newtonsoft.Json.Linq;
-
-namespace EasMe.Models
+﻿namespace EasMe.Result
 {
     /// <summary>
     /// A readonly struct Result with Data of T type to be used in Domain Driven Design mainly.
@@ -11,18 +7,24 @@ namespace EasMe.Models
     /// </summary>
     public readonly struct ResultData<T> : IResultData<T>
     {
-        public ResultData(T? data, ResultSeverity severity, ushort rv, object errCode,params string[] errors)
+        public ResultData(T? data, ResultSeverity severity, int rv, object errCode,params string[] errors)
         {
             Rv = rv;
             ErrorCode = errCode.ToString() ?? "None";
             Severity = severity;
             Data = data;
             Errors = errors;
+            if (IsSuccess)
+            {
+                Severity = ResultSeverity.Info;
+            }
         }
 
     
-        public ushort Rv { get; init; } = ushort.MaxValue;
+        public int Rv { get; init; } = ushort.MaxValue;
         public ResultSeverity Severity { get; init; }
+        
+
         public bool IsSuccess => Rv == 0 && Data is not null;
         public bool IsFailure => !IsSuccess;
         public string ErrorCode { get; init; } = "None";
@@ -52,7 +54,10 @@ namespace EasMe.Models
 
 
 
-
+        public static implicit operator T?(ResultData<T> res)
+        {
+            return res.Data;
+        }
 
         public static implicit operator ResultData<T>(T? value)
         {
@@ -80,19 +85,23 @@ namespace EasMe.Models
 
         public ResultData<T> WithoutRv()
         {
-            return this;
-            //TODO: Check this later rv makes it always false
-            var rv = Rv == 0;
-            return new ResultData<T>(Data,Severity,ushort.MaxValue,ErrorCode);
+            ushort rv = 0;
+            if (IsFailure) rv = ushort.MaxValue;
+            return new ResultData<T>(Data,Severity, rv, ErrorCode);
         }
         public Result ToResult()
         {
             return new Result(Severity, Rv, ErrorCode);
         }
-        public Result ToResult(byte multiplyRv)
+        public Result ToResult(ushort value)
         {
-            return new Result(Severity, Convert.ToUInt16(Rv * multiplyRv), ErrorCode);
+            return new Result(Severity, Convert.ToInt32(Rv * value), ErrorCode);
         }
-    
+
+        public ResultData<T> MultiplyRv(ushort value)
+        {
+            return new ResultData<T>(Data,Severity, Convert.ToInt32(Rv * value), ErrorCode);
+        }
+
     }
 }
