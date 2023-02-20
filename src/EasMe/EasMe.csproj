@@ -7,7 +7,7 @@
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	<Configurations>Debug;Release;TESTSERVER;REAL_RLS;TEST_RLS</Configurations>
-	<BaseOutputPath>E:\Repos\easme-lib\bin</BaseOutputPath>
+	<BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

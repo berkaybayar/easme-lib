@@ -33,7 +33,7 @@ namespace EasMe.EntityFrameworkCore.V2
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<TEntity> Get(
+        public IEnumerable<TEntity> GetOrdered(
             Expression<Func<TEntity, bool>>? filter = null, 
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
             params Expression<Func<TEntity, object>>[] includeExpressions)
@@ -55,6 +55,11 @@ namespace EasMe.EntityFrameworkCore.V2
                 query = orderBy(query);
             }
             return query.ToList();
+        }
+
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null, params Expression<Func<TEntity, object>>[] includeExpressions)
+        {
+            return GetOrdered(filter, null, includeExpressions);
         }
 
         public IEnumerable<TEntity> GetPaging(int page, int pageSize = 15, Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,

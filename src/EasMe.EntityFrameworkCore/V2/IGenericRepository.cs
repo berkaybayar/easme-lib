@@ -8,11 +8,14 @@ public interface IGenericRepository<TEntity>
 
     TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>>? filter = null,params string[] includeProperties);
 
-    IEnumerable<TEntity> Get(
+    IEnumerable<TEntity> GetOrdered(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params Expression<Func<TEntity, object>>[] includeExpressions);
 
+    IEnumerable<TEntity> Get(
+        Expression<Func<TEntity, bool>>? filter = null,
+        params Expression<Func<TEntity, object>>[] includeExpressions);
     IEnumerable<TEntity> GetPaging(
         int page,
         int pageSize = 15,
