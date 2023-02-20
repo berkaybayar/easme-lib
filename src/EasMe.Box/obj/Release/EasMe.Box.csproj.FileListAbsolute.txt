@@ -10,3 +10,9 @@ E:\Repos\easme-lib\src\EasMe.Box\obj\Release\EasMe.Box.csproj.AssemblyReference.
 E:\Repos\easme-lib\src\EasMe.Box\obj\Release\EasMe.Box.csproj.CoreCompileInputs.cache
 E:\Repos\easme-lib\src\EasMe.Box\obj\Release\EasMe.MessageBox.dll
 E:\Repos\easme-lib\src\EasMe.Box\obj\Release\EasMe.MessageBox.pdb
+C:\Users\kkass\source\repos\easme-lib\src\bin\EasMe.MessageBox.dll
+C:\Users\kkass\source\repos\easme-lib\src\bin\EasMe.MessageBox.pdb
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Box\obj\Release\EasMe.Box.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Box\obj\Release\EasMe.Box.csproj.CoreCompileInputs.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Box\obj\Release\EasMe.MessageBox.dll
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Box\obj\Release\EasMe.MessageBox.pdb

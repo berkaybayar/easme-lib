@@ -21,3 +21,13 @@ E:\Repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.dll
 E:\Repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\refint\EasMe.Logging.dll
 E:\Repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.pdb
 E:\Repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\ref\EasMe.Logging.dll
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.AssemblyInfoInputs.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.AssemblyInfo.cs
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.csproj.CoreCompileInputs.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.csproj.CopyComplete
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.dll
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\refint\EasMe.Logging.dll
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\EasMe.Logging.pdb
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\obj\Release\net6.0\ref\EasMe.Logging.dll

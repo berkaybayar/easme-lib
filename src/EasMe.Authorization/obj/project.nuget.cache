@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mkNsPbjYFRZEd9cKw+2p33iypogdmKrZBDXl4Jq+0uubF4sZ5/ciHjT+s0giNCD2Kh9eLouxNmZnn2hu+urHnw==",
+  "dgSpecHash": "WsnDxFgTejZCOfWbH++rLyCS3GxEzm0XlCfzMO9yS9Qje8vV6Okf/cv5GEODViEUCcQVHW6/6djfttZk21SyAA==",
   "success": true,
-  "projectFilePath": "E:\\Repos\\easme-lib\\src\\EasMe.Authorization\\EasMe.Authorization.csproj",
+  "projectFilePath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Authorization\\EasMe.Authorization.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kkass\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\kkass\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",

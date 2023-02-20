@@ -8234,11 +8234,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
+      "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
       "projectName": "EasMe",
-      "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
+      "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
       "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-      "outputPath": "E:\\Repos\\easme-lib\\src\\EasMe\\obj\\",
+      "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -21,3 +21,13 @@ E:\Repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.dll
 E:\Repos\easme-lib\src\EasMe.System\obj\Release\net6.0\refint\EasMe.System.dll
 E:\Repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.pdb
 E:\Repos\easme-lib\src\EasMe.System\obj\Release\net6.0\ref\EasMe.System.dll
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.AssemblyInfoInputs.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.AssemblyInfo.cs
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.csproj.CoreCompileInputs.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.csproj.CopyComplete
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.dll
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\refint\EasMe.System.dll
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\EasMe.System.pdb
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Release\net6.0\ref\EasMe.System.dll

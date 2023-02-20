@@ -16,7 +16,10 @@ namespace EasMe.Logging
             var className = methodInfo?.ReflectedType?.FullName;
             return new EasLog(className ?? "Sys");
         }
-
+        public static IEasLog CreateLogger(string name)
+        {
+            return new EasLog(name);
+        }
 
         /// <summary>
         /// EasLog logging configuration. Call this method in your startup. If you don't call it it will use default values.

@@ -1,4 +1,6 @@
-﻿namespace EasMe.Result
+﻿using System.Runtime.CompilerServices;
+
+namespace EasMe.Result
 {
 
     public interface IResult
@@ -34,6 +36,6 @@
         string[] Errors { get; init; }
 
         ResultSeverity Severity { get; init; }
-
+        
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\EasMe.EntityFrameworkCore.csproj": {}
+    "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\EasMe.EntityFrameworkCore.csproj": {}
   },
   "projects": {
-    "E:\\Repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\EasMe.EntityFrameworkCore.csproj": {
+    "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\EasMe.EntityFrameworkCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\EasMe.EntityFrameworkCore.csproj",
+        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\EasMe.EntityFrameworkCore.csproj",
         "projectName": "EasMe.EntityFrameworkCore",
-        "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\EasMe.EntityFrameworkCore.csproj",
+        "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\EasMe.EntityFrameworkCore.csproj",
         "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-        "outputPath": "E:\\Repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\obj\\",
+        "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.EntityFrameworkCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
-                "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj"
+              "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
+                "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj"
               }
             }
           }
@@ -73,14 +73,14 @@
         }
       }
     },
-    "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
+    "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
+        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
         "projectName": "EasMe",
-        "projectPath": "E:\\Repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
+        "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
         "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-        "outputPath": "E:\\Repos\\easme-lib\\src\\EasMe\\obj\\",
+        "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
