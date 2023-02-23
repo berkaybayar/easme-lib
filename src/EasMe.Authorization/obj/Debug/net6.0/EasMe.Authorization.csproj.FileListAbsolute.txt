@@ -28,3 +28,6 @@ C:\Users\kkass\source\repos\easme-lib\src\EasMe.Authorization\obj\Debug\net6.0\E
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Authorization\obj\Debug\net6.0\refint\EasMe.Authorization.dll
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Authorization\obj\Debug\net6.0\EasMe.Authorization.pdb
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Authorization\obj\Debug\net6.0\ref\EasMe.Authorization.dll
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.Authorization.deps.json
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.Authorization.dll
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.Authorization.pdb

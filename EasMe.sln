@@ -30,7 +30,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{AC7492E3-F05
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasMe.Result", "src\EasMe.Result\EasMe.Result.csproj", "{2B338206-21FC-4A5D-AB60-1E8BF2186CDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasMe.Result", "src\EasMe.Result\EasMe.Result.csproj", "{2B338206-21FC-4A5D-AB60-1E8BF2186CDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasMe.PostSharp", "src\EasMe.PostSharp\EasMe.PostSharp.csproj", "{3B7E4CD4-EFB3-4687-81B9-996D6C68F107}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{2B338206-21FC-4A5D-AB60-1E8BF2186CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B338206-21FC-4A5D-AB60-1E8BF2186CDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B338206-21FC-4A5D-AB60-1E8BF2186CDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B7E4CD4-EFB3-4687-81B9-996D6C68F107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B7E4CD4-EFB3-4687-81B9-996D6C68F107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B7E4CD4-EFB3-4687-81B9-996D6C68F107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B7E4CD4-EFB3-4687-81B9-996D6C68F107}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{3949256E-4A81-4CEB-BD17-F24C876B2113} = {AEF10A31-FBEA-481A-BF1A-4343A8DE45A0}
 		{EB7007B1-55FB-4C40-8BA1-966046B78851} = {AEF10A31-FBEA-481A-BF1A-4343A8DE45A0}
 		{2B338206-21FC-4A5D-AB60-1E8BF2186CDF} = {AEF10A31-FBEA-481A-BF1A-4343A8DE45A0}
+		{3B7E4CD4-EFB3-4687-81B9-996D6C68F107} = {AEF10A31-FBEA-481A-BF1A-4343A8DE45A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F5DC2F52-31AB-4DBB-BA3C-5B6CE6C0B70A}

@@ -1,0 +1,5 @@
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.PostSharp\obj\Release\net6.0\EasMe.PostSharp.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.PostSharp\obj\Release\net6.0\EasMe.PostSharp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.PostSharp\obj\Release\net6.0\EasMe.PostSharp.AssemblyInfoInputs.cache
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.PostSharp\obj\Release\net6.0\EasMe.PostSharp.AssemblyInfo.cs
+C:\Users\kkass\source\repos\easme-lib\src\EasMe.PostSharp\obj\Release\net6.0\EasMe.PostSharp.csproj.CoreCompileInputs.cache

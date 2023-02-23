@@ -84,5 +84,6 @@ public interface IEasLog
     void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6);
     void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7);
     void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8);
-    void Flush();
+
+    bool IsSeverityEnabled(LogSeverity logSeverity);
 }

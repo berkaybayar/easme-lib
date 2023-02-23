@@ -5,14 +5,20 @@ namespace EasMe
 {
     public static class EasGenerate
     {
-        public static string GetUniqueKey(ushort length)
+        const string CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        /// <summary>
+        /// Generates and returns a random GUID string without "-"
+        /// </summary>
+        /// <returns></returns>
+        public static string GenerateGuidString() => System.Guid.NewGuid().ToString().Replace("-","");
+        public static string GetRandomString(ushort length)
         {
-            var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
+            var charArray = CHARACTERS.ToCharArray();
             StringBuilder result = new StringBuilder(length);
             for (int i = 0; i < length; i++)
             {
-                var random = RandomNumberGenerator.GetInt32(chars.Length);
-                var randomChar = chars[random];
+                var random = RandomNumberGenerator.GetInt32(charArray.Length);
+                var randomChar = charArray[random];
                 result.Append(randomChar);
             }
             return result.ToString();
@@ -62,7 +68,6 @@ namespace EasMe
             }
         }
         public static string GenerateRandomString(int length, bool onlyLetter = false) => GenerateRandomString(length, onlyLetter, "");
-        public static string GenerateRandomString(int length) => GenerateRandomString(length, false, "");
 
         /// <summary>
         /// Generates and returns random string that only contains digits. Max allowed lengthvalue is 1024.
@@ -73,8 +78,8 @@ namespace EasMe
         {
             string digits = "0123456789";
             var random = GenerateString(digits, digitCount);
-            var RandomStringAsInt32 = Convert.ToInt32(random);
-            return RandomStringAsInt32;
+            var RandomNumberStringAsInt32 = Convert.ToInt32(random);
+            return RandomNumberStringAsInt32;
 
         }
     }

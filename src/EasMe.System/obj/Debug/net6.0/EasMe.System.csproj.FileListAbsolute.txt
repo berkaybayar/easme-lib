@@ -31,3 +31,6 @@ C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Debug\net6.0\EasMe.Sy
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Debug\net6.0\refint\EasMe.System.dll
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Debug\net6.0\EasMe.System.pdb
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.System\obj\Debug\net6.0\ref\EasMe.System.dll
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.System.deps.json
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.System.dll
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.System.pdb

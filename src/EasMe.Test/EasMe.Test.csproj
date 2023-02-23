@@ -12,6 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EasMe.Authorization\EasMe.Authorization.csproj" />
+    <ProjectReference Include="..\EasMe.EntityFrameworkCore\EasMe.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\EasMe.Logging\EasMe.Logging.csproj" />
+    <ProjectReference Include="..\EasMe.PostSharp\EasMe.PostSharp.csproj" />
+    <ProjectReference Include="..\EasMe.Result\EasMe.Result.csproj" />
+    <ProjectReference Include="..\EasMe.System\EasMe.System.csproj" />
     <ProjectReference Include="..\EasMe\EasMe.csproj" />
   </ItemGroup>
 

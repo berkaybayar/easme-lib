@@ -9,7 +9,13 @@
       "EasMe.Test/1.0.0": {
         "dependencies": {
           "Ardalis.Result": "4.2.0",
-          "EasMe": "1.0.0"
+          "EasMe": "1.0.0",
+          "EasMe.Authorization": "1.0.0",
+          "EasMe.EntityFrameworkCore": "1.0.0",
+          "EasMe.Logging": "1.0.0",
+          "EasMe.PostSharp": "1.0.0",
+          "EasMe.Result": "1.0.0",
+          "EasMe.System": "1.0.0"
         },
         "runtime": {
           "EasMe.Test.dll": {}
@@ -54,6 +60,14 @@
           "lib/netstandard2.0/Azure.Identity.dll": {
             "assemblyVersion": "1.6.0.0",
             "fileVersion": "1.600.22.20503"
+          }
+        }
+      },
+      "FluentValidation/11.5.1": {
+        "runtime": {
+          "lib/net6.0/FluentValidation.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.5.1.0"
           }
         }
       },
@@ -508,7 +522,7 @@
       "Microsoft.Extensions.DependencyModel/2.1.0": {
         "dependencies": {
           "Microsoft.DotNet.PlatformAbstractions": "2.1.0",
-          "Newtonsoft.Json": "9.0.1",
+          "Newtonsoft.Json": "13.0.2",
           "System.Diagnostics.Debug": "4.3.0",
           "System.Dynamic.Runtime": "4.3.0",
           "System.Linq": "4.3.0"
@@ -802,35 +816,24 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json/9.0.1": {
-        "dependencies": {
-          "Microsoft.CSharp": "4.5.0",
-          "System.Collections": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Dynamic.Runtime": "4.3.0",
-          "System.Globalization": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.Linq": "4.3.0",
-          "System.Linq.Expressions": "4.3.0",
-          "System.ObjectModel": "4.3.0",
-          "System.Reflection": "4.3.0",
-          "System.Reflection.Extensions": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Runtime.Serialization.Primitives": "4.1.1",
-          "System.Text.Encoding": "4.3.0",
-          "System.Text.Encoding.Extensions": "4.3.0",
-          "System.Text.RegularExpressions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Threading.Tasks": "4.3.0",
-          "System.Xml.ReaderWriter": "4.3.0",
-          "System.Xml.XDocument": "4.3.0"
-        },
+      "Newtonsoft.Json/13.0.2": {
         "runtime": {
-          "lib/netstandard1.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.1.19813"
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.2.27524"
+          }
+        }
+      },
+      "PostSharp/2023.0.3": {
+        "dependencies": {
+          "PostSharp.Redist": "2023.0.3"
+        }
+      },
+      "PostSharp.Redist/2023.0.3": {
+        "runtime": {
+          "lib/net6.0/PostSharp.dll": {
+            "assemblyVersion": "2023.0.3.0",
+            "fileVersion": "2023.0.3.0"
           }
         }
       },
@@ -1387,12 +1390,6 @@
           "System.Runtime.Extensions": "4.3.0"
         }
       },
-      "System.Runtime.Serialization.Primitives/4.1.1": {
-        "dependencies": {
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0"
-        }
-      },
       "System.Security.AccessControl/5.0.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "5.0.0",
@@ -1683,7 +1680,7 @@
           "Microsoft.Data.SqlClient": "5.0.1",
           "Microsoft.EntityFrameworkCore": "7.0.0",
           "Microsoft.IdentityModel.Tokens": "6.23.1",
-          "Newtonsoft.Json": "9.0.1",
+          "Newtonsoft.Json": "13.0.2",
           "System.Data.HashFunction.xxHash": "2.0.0",
           "System.Drawing.Common": "6.0.0",
           "System.Dynamic.Runtime": "4.3.0",
@@ -1693,6 +1690,61 @@
         },
         "runtime": {
           "EasMe.dll": {}
+        }
+      },
+      "EasMe.Authorization/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
+          "Microsoft.AspNetCore.Mvc.Core": "2.2.5"
+        },
+        "runtime": {
+          "EasMe.Authorization.dll": {}
+        }
+      },
+      "EasMe.EntityFrameworkCore/1.0.0": {
+        "dependencies": {
+          "EasMe": "1.0.0",
+          "Microsoft.EntityFrameworkCore": "7.0.0"
+        },
+        "runtime": {
+          "EasMe.EntityFrameworkCore.dll": {}
+        }
+      },
+      "EasMe.Logging/1.0.0": {
+        "dependencies": {
+          "EasMe": "1.0.0",
+          "Newtonsoft.Json": "13.0.2"
+        },
+        "runtime": {
+          "EasMe.Logging.dll": {}
+        }
+      },
+      "EasMe.PostSharp/1.0.0": {
+        "dependencies": {
+          "EasMe.Logging": "1.0.0",
+          "FluentValidation": "11.5.1",
+          "PostSharp": "2023.0.3"
+        },
+        "runtime": {
+          "EasMe.PostSharp.dll": {}
+        }
+      },
+      "EasMe.Result/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.2"
+        },
+        "runtime": {
+          "EasMe.Result.dll": {}
+        }
+      },
+      "EasMe.System/1.0.0": {
+        "dependencies": {
+          "EasMe": "1.0.0",
+          "EasMe.PostSharp": "1.0.0",
+          "System.Management": "6.0.0"
+        },
+        "runtime": {
+          "EasMe.System.dll": {}
         }
       }
     }
@@ -1723,6 +1775,13 @@
       "sha512": "sha512-EycyMsb6rD2PK9P0SyibFfEhvWWttdrYhyPF4f41uzdB/44yQlV+2Wehxyg489Rj6gbPvSPgbKq0xsHJBhipZA==",
       "path": "azure.identity/1.6.0",
       "hashPath": "azure.identity.1.6.0.nupkg.sha512"
+    },
+    "FluentValidation/11.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-0h1Q5lNOLLyYTWMJmyNoMqhY4CBRvvUWvJP1R4F2CnmmzuWwvB0A8aVmw5+lOuwYnwUwCRrdeMLbc81F38ahNQ==",
+      "path": "fluentvalidation/11.5.1",
+      "hashPath": "fluentvalidation.11.5.1.nupkg.sha512"
     },
     "log4net/2.0.15": {
       "type": "package",
@@ -2137,12 +2196,26 @@
       "path": "netstandard.library/1.6.1",
       "hashPath": "netstandard.library.1.6.1.nupkg.sha512"
     },
-    "Newtonsoft.Json/9.0.1": {
+    "Newtonsoft.Json/13.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
-      "path": "newtonsoft.json/9.0.1",
-      "hashPath": "newtonsoft.json.9.0.1.nupkg.sha512"
+      "sha512": "sha512-R2pZ3B0UjeyHShm9vG+Tu0EBb2lC8b0dFzV9gVn50ofHXh9Smjk6kTn7A/FdAsC8B5cKib1OnGYOXxRBz5XQDg==",
+      "path": "newtonsoft.json/13.0.2",
+      "hashPath": "newtonsoft.json.13.0.2.nupkg.sha512"
+    },
+    "PostSharp/2023.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-+z9jYvidgWGvWyeX9GB+rt6gD9s+d3zje48XTS3VlV3PdO7UXVOoRPk6mWBpMHQEUdArv4E/bH4nRW4PNE+beg==",
+      "path": "postsharp/2023.0.3",
+      "hashPath": "postsharp.2023.0.3.nupkg.sha512"
+    },
+    "PostSharp.Redist/2023.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7syfgCJ9sLqwl54n1nVwWR2kpp3XF7F9fAUFVLibZI5v1emfZYX3JWPHQFwm5qQHrGook5GNHTD1s/wSLAuMtw==",
+      "path": "postsharp.redist/2023.0.3",
+      "hashPath": "postsharp.redist.2023.0.3.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",
@@ -2620,13 +2693,6 @@
       "path": "system.runtime.numerics/4.3.0",
       "hashPath": "system.runtime.numerics.4.3.0.nupkg.sha512"
     },
-    "System.Runtime.Serialization.Primitives/4.1.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-HZ6Du5QrTG8MNJbf4e4qMO3JRAkIboGT5Fk804uZtg3Gq516S7hAqTm2UZKUHa7/6HUGdVy3AqMQKbns06G/cg==",
-      "path": "system.runtime.serialization.primitives/4.1.1",
-      "hashPath": "system.runtime.serialization.primitives.4.1.1.nupkg.sha512"
-    },
     "System.Security.AccessControl/5.0.0": {
       "type": "package",
       "serviceable": true,
@@ -2810,6 +2876,36 @@
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
     "EasMe/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EasMe.Authorization/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EasMe.EntityFrameworkCore/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EasMe.Logging/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EasMe.PostSharp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EasMe.Result/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EasMe.System/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

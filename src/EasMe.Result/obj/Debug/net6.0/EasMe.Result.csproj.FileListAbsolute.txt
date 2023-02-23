@@ -10,3 +10,6 @@ C:\Users\kkass\source\repos\easme-lib\src\EasMe.Result\obj\Debug\net6.0\EasMe.Re
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Result\obj\Debug\net6.0\refint\EasMe.Result.dll
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Result\obj\Debug\net6.0\EasMe.Result.pdb
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Result\obj\Debug\net6.0\ref\EasMe.Result.dll
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.Result.deps.json
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.Result.dll
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.Result.pdb

@@ -473,8 +473,13 @@ namespace EasMe.Logging
 			if (!LogSeverity.TRACE.IsLoggable()) return;
 			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
-		
-        public void Flush()
+
+        public bool IsSeverityEnabled(LogSeverity logSeverity)
+        {
+			return logSeverity.IsLoggable();
+        }
+
+        public static void Flush()
         {
 			EasTask.Flush();
         }

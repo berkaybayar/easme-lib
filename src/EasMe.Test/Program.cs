@@ -1,22 +1,18 @@
 ﻿
 
+using System.Diagnostics;
 using Ardalis.Result;
+using EasMe;
 using EasMe.Extensions;
+using EasMe.Logging;
+using EasMe.PostSharp.CacheAspects;
+using EasMe.PostSharp.ExceptionAspects;
+using EasMe.PostSharp.PerformanceAspects;
+using EasMe.Test;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
-Console.WriteLine("");
-var test = TEst();
-Console.WriteLine(test.ToJsonString());
+var asd = 0;
+EasMemoryCache.This.Set("test",asd);
+var asd2 = EasMemoryCache.This.Get<int>("test");
 Console.Read();
-
-
- Result TEst()
-{
-    if (true == true)
-    {
-        return Result.SuccessWithMessage("Error");
-    }
-    else
-    {
-        return Result.Unauthorized();
-    }
-}

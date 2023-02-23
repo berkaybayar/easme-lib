@@ -55,3 +55,6 @@ C:\Users\kkass\source\repos\easme-lib\src\EasMe\obj\Debug\net6.0\EasMe.dll
 C:\Users\kkass\source\repos\easme-lib\src\EasMe\obj\Debug\net6.0\refint\EasMe.dll
 C:\Users\kkass\source\repos\easme-lib\src\EasMe\obj\Debug\net6.0\EasMe.pdb
 C:\Users\kkass\source\repos\easme-lib\src\EasMe\obj\Debug\net6.0\ref\EasMe.dll
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.deps.json
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.dll
+C:\Users\kkass\source\build\easme\Debug\net6.0\EasMe.pdb

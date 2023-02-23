@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EasMe.PostSharp\EasMe.PostSharp.csproj" />
     <ProjectReference Include="..\EasMe\EasMe.csproj" />
   </ItemGroup>
 
