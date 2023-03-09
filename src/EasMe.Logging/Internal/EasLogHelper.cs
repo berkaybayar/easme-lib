@@ -2,42 +2,34 @@
 using EasMe.Extensions;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
+using EasMe.Logging.Models;
+using Microsoft.Extensions.Logging;
+
 namespace EasMe.Logging.Internal
 {
     internal static class EasLogHelper
     {
-        /// <summary>
-        /// Gets the name of the function this function is called from.
-        /// </summary>
-        /// <param name="frame"></param>
-        /// <returns></returns>
-        internal static string GetActionName(int frame = 3)
-        {
+	    internal static TraceInfo GetTraceInfo()
+	    {
+            const int frame = 4;
+            var info = new TraceInfo();
             var trace = new StackTrace().GetFrame(frame);
-            if (trace == null) return "Unkown";
+            if (trace == null) return info;
             var method = trace.GetMethod();
-            if (method != null) return method.Name;
-            return "Unkown";
-        }
-
-        /// <summary>
-        /// Gets the name of the class this function is called from.
-        /// </summary>
-        /// <param name="frame"></param>
-        /// <returns></returns>
-        internal static string GetClassName(int frame = 3)
-        {
-            var trace = new StackTrace().GetFrame(frame);
-            if (trace == null) return "Unkown";
-            var method = trace.GetMethod();
-            if (method == null) return "Unkown";
-            var reflected = method.ReflectedType;
-            if (reflected != null) return reflected.Name;
+            if (method == null) return info;
+            info.MethodName = method.Name;
+			var reflected = method.ReflectedType;
+			if (reflected != null)
+			{
+				info.ClassName = reflected.Name;
+                return info;
+			}
             var declaring = method.DeclaringType;
-            if (declaring != null) return declaring.Name;
-            return "Unkown";
-        }
+            if (declaring != null) info.ClassName = declaring.Name;
+            return info;
 
+		}
+        
         internal static int ConvertConfigFileSize(string value)
         {
 
@@ -78,18 +70,18 @@ namespace EasMe.Logging.Internal
 			}
             catch { return string.Empty; }
         }
-        internal static List<LogSeverity> GetLoggableLevels()
+        internal static List<LogLevel> GetLoggableLevels()
         {
-            var list = new List<LogSeverity>();
+            var list = new List<LogLevel>();
             var min = EasLogFactory.Config.MinimumLogLevel;
             var num = (int)min;
-            foreach (var item in Enum.GetValues(typeof(LogSeverity)))
+            foreach (var item in Enum.GetValues(typeof(LogLevel)))
             {
-                if ((int)item >= num) list.Add((LogSeverity)item);
+                if ((int)item >= num) list.Add((LogLevel)item);
             }
             return list;
         }
-        internal static bool IsLoggable(this LogSeverity severity)
+        internal static bool IsLoggable(this LogLevel severity)
         {
             var list = GetLoggableLevels();
             return list.Contains(severity);

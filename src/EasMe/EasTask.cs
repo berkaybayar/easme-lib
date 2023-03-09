@@ -35,14 +35,13 @@ public class EasTask : IDisposable
             if (i == 1) return; // terminate was signaled 
             _hasNewItems.Reset();
             _waiting.Reset();
-
-            Queue<Action> queueCopy;
+            if (_queue.Count == 0) continue;
+			Queue<Action> queueCopy;
             lock (_queue)
             {
                 queueCopy = new Queue<Action>(_queue);
                 _queue.Clear();
             }
-
             foreach (var action in queueCopy)
             {
                 action();

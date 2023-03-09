@@ -4,6 +4,7 @@ using System;
 using EasMe.Logging.Models;
 using Microsoft.Extensions.Hosting;
 using log4net;
+using Microsoft.Extensions.Logging;
 
 namespace EasMe.Logging
 {
@@ -27,7 +28,7 @@ namespace EasMe.Logging
 			_LogSource = source;
 		}
 	
-		private static string GetExactLogPath(LogSeverity severity)
+		private static string GetExactLogPath(LogLevel severity)
 		{
 			var date = DateTime.Now.ToString(EasLogFactory.Config.DateFormatString);
 			string path = EasLogFactory.Config.SeparateLogLevelToFolder
@@ -39,194 +40,194 @@ namespace EasMe.Logging
 
 		public void Info(params object[] param)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, param);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, param);
 		}
 		public void Info(object obj1)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, obj1);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, obj1);
 		}
 		public void Info(object obj1, object obj2)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, obj1, obj2);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, obj1, obj2);
 		}
 		public void Info(object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, obj1, obj2, obj3);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, obj1, obj2, obj3);
 		}
 		public void Info(object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, obj1, obj2, obj3, obj4);
 		}
 		public void Info(object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Info(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Info(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Info(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.INFO.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.INFO, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Information.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Information, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 
 		public void Error(params object[] param)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, param);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, param);
 		}
 		public void Error(object obj1)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, obj1);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, obj1);
 		}
 		public void Error(object obj1, object obj2)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, obj1, obj2);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, obj1, obj2);
 		}
 		public void Error(object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, obj1, obj2, obj3);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, obj1, obj2, obj3);
 		}
 		public void Error(object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, obj1, obj2, obj3, obj4);
 		}
 		public void Error(object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Error(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Error(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Error(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.ERROR.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.ERROR, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Error.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Error, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 
 		public void Warn(params object[] param)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, param);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, param);
 		}
 
 		public void Warn(object obj1)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, obj1);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, obj1);
 		}
 		public void Warn(object obj1, object obj2)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, obj1, obj2);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, obj1, obj2);
 		}
 		public void Warn(object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, obj1, obj2, obj3);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, obj1, obj2, obj3);
 		}
 		public void Warn(object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, obj1, obj2, obj3, obj4);
 		}
 		public void Warn(object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Warn(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Warn(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Warn(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.WARN.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.WARN, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Warning.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Warning, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 
 
 		public void Exception(Exception ex)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex);
 		}
 
 		public void Exception(Exception ex, params object[] param)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, param);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, param);
 		}
 		public void Exception(Exception ex, object obj1)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, obj1);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1);
 		}
 		public void Exception(Exception ex, object obj1, object obj2)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, obj1, obj2);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2);
 		}
 		public void Exception(Exception ex, object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, obj1, obj2, obj3);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3);
 		}
 		public void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4);
 		}
 		public void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.EXCEPTION.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.EXCEPTION, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 
 
@@ -235,48 +236,48 @@ namespace EasMe.Logging
 
 		public void Fatal(params object[] param)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, param);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, param);
 		}
 		public void Fatal(object obj1)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, obj1);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, obj1);
 		}
 		public void Fatal(object obj1, object obj2)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, obj1, obj2);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, obj1, obj2);
 		}
 		public void Fatal(object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, obj1, obj2, obj3);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, obj1, obj2, obj3);
 		}
 		public void Fatal(object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, obj1, obj2, obj3, obj4);
 		}
 		public void Fatal(object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Fatal(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Fatal(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Fatal(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 
 
@@ -284,49 +285,49 @@ namespace EasMe.Logging
 
 		public void Fatal(Exception ex, params object[] param)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, param);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, param);
 
 		}
 		public void Fatal(Exception ex, object obj1)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, obj1);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1);
 		}
 		public void Fatal(Exception ex, object obj1, object obj2)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, obj1, obj2);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2);
 		}
 		public void Fatal(Exception ex, object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, obj1, obj2, obj3);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3);
 		}
 		public void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4);
 		}
 		public void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.FATAL.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.FATAL, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Critical.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Critical, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 
 
@@ -336,147 +337,147 @@ namespace EasMe.Logging
 
 		public void Debug(params object[] param)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, param);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, param);
 		}
 
 		public void Debug(object obj1)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, obj1);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, obj1);
 		}
 		public void Debug(object obj1, object obj2)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, obj1, obj2);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, obj1, obj2);
 		}
 		public void Debug(object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, obj1, obj2, obj3);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, obj1, obj2, obj3);
 		}
 		public void Debug(object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, obj1, obj2, obj3, obj4);
 		}
 		public void Debug(object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Debug(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Debug(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Debug(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 		public void Debug(Exception ex, params object[] param)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, param);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, param);
 		}
 		public void Debug(Exception ex, object obj1)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, obj1);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, obj1);
 		}
 		public void Debug(Exception ex, object obj1, object obj2)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, obj1, obj2);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, obj1, obj2);
 		}
 		public void Debug(Exception ex, object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, obj1, obj2, obj3);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, obj1, obj2, obj3);
 		}
 		public void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, obj1, obj2, obj3, obj4);
 		}
 		public void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.DEBUG.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.DEBUG, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Debug.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Debug, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 
 
 
 		public void Trace(params object[] param)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, param);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, param);
 		}
 		public void Trace(object obj1)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, obj1);
 		}
 		public void Trace(object obj1, object obj2)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, obj1, obj2);
 		}
 		public void Trace(object obj1, object obj2, object obj3)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2, obj3);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, obj1, obj2, obj3);
 		}
 		public void Trace(object obj1, object obj2, object obj3, object obj4)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2, obj3, obj4);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, obj1, obj2, obj3, obj4);
 		}
 		public void Trace(object obj1, object obj2, object obj3, object obj4, object obj5)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2, obj3, obj4, obj5);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, obj1, obj2, obj3, obj4, obj5);
 		}
 		public void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2, obj3, obj4, obj5, obj6);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, obj1, obj2, obj3, obj4, obj5, obj6);
 		}
 		public void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
 		}
 		public void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8)
 		{
-			if (!LogSeverity.TRACE.IsLoggable()) return;
-			WriteLog(_LogSource, LogSeverity.TRACE, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
+			if (!LogLevel.Trace.IsLoggable()) return;
+			WriteLog(_LogSource, LogLevel.Trace, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
 		}
 
-        public bool IsSeverityEnabled(LogSeverity logSeverity)
+        public bool IsLogLevelEnabled(LogLevel LogLevel)
         {
-			return logSeverity.IsLoggable();
+			return LogLevel.IsLoggable();
         }
 
         public static void Flush()
@@ -485,14 +486,18 @@ namespace EasMe.Logging
         }
 
 
-        private static void WriteLog(string source, LogSeverity severity, Exception? exception = null, params object[] param)
+        private static void WriteLog(string source, LogLevel severity, Exception? exception = null, params object[] param)
         {
+
+	        WebInfo? webInfo = null;
+			if(EasLogFactory.Config.WebInfoLogging) webInfo = new WebInfo();
             var loggingAction = new Action(() =>
             {
+
                 var paramToLog = param.ToLogString();
-                var log = new LogModel(severity, source, paramToLog, exception);
-                if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(log.Severity, log.ToJsonString() ?? "");
-                var logFilePath = GetExactLogPath(log.Severity);
+                var log = LogModel.Create(severity, source, paramToLog, exception, webInfo);
+                if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(log.Level, log.ToJsonString() ?? "");
+                var logFilePath = GetExactLogPath(log.Level);
                 try
                 {
 

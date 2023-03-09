@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace EasMe.Logging
 {
@@ -40,11 +41,10 @@ namespace EasMe.Logging
 			if (_isConfigured) throw new InvalidOperationException("EasLog configuration already loaded.");
 			Config = new EasLogConfiguration
 			{
-				AddRequestUrlToStart = isWeb,
 				ConsoleAppender = true,
 				ExceptionHideSensitiveInfo = false,
 				LogFileName = "Trace_",
-				MinimumLogLevel = LogSeverity.TRACE,
+				MinimumLogLevel = LogLevel.Trace,
 				WebInfoLogging = isWeb,
 				TraceLogging = true,
 				SeparateLogLevelToFolder = false,

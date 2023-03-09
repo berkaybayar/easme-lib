@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace EasMe.Logging.Internal
 {
@@ -23,9 +24,9 @@ namespace EasMe.Logging.Internal
             }
             return string.Empty;
         }
-		internal static string ToLogString(this object[] param, LogSeverity severity)
+		internal static string ToLogString(this object[] param, LogLevel logLevel)
 		{
-			var paramStr = $"[{severity.ToString().ToUpper()}] [{DateTime.Now:MM/dd/yyyy HH:mm:ss}]";
+			var paramStr = $"[{logLevel.ToString().ToUpper()}] [{DateTime.Now:MM/dd/yyyy HH:mm:ss}]";
 			foreach (var item in param)
 			{
 				paramStr += " [" + item + "]";

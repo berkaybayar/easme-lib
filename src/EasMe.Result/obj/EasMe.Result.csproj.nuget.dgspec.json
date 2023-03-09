@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj": {}
+    "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj": {
+    "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj",
+        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj",
         "projectName": "EasMe.Result",
-        "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj",
+        "projectPath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Result\\EasMe.Result.csproj",
         "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Result\\obj\\",
+        "outputPath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Result\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

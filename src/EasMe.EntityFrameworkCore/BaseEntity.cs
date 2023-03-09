@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace EasMe.EntityFrameworkCore
 {
@@ -9,8 +10,13 @@ namespace EasMe.EntityFrameworkCore
             Id = guid;
         }
 
+        protected BaseEntity()
+        {
+            
+        }
         [Key]
-        public Guid Id { get; init; }
+        public Guid Id { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
 
 
         public static bool operator ==(BaseEntity? left, BaseEntity? right)

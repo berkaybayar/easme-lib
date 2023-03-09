@@ -1,4 +1,6 @@
-﻿namespace EasMe.Logging;
+﻿using Microsoft.Extensions.Logging;
+
+namespace EasMe.Logging;
 
 public interface IEasLog
 {
@@ -85,5 +87,5 @@ public interface IEasLog
     void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7);
     void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7, object obj8);
 
-    bool IsSeverityEnabled(LogSeverity logSeverity);
+    bool IsLogLevelEnabled(LogLevel LogLevel);
 }

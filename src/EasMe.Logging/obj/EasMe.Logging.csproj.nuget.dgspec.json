@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj": {}
+    "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj": {
+    "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj",
+        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj",
         "projectName": "EasMe.Logging",
-        "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj",
+        "projectPath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj",
         "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe.Logging\\obj\\",
+        "outputPath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Logging\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
-                "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj"
+              "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\EasMe.csproj": {
+                "projectPath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\EasMe.csproj"
               }
             }
           }
@@ -73,14 +73,14 @@
         }
       }
     },
-    "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj": {
+    "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\EasMe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
+        "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\EasMe.csproj",
         "projectName": "EasMe",
-        "projectPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
+        "projectPath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\EasMe.csproj",
         "packagesPath": "C:\\Users\\kkass\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\obj\\",
+        "outputPath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

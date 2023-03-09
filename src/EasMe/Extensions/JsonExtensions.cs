@@ -1,18 +1,28 @@
 ﻿using EasMe.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace EasMe.Extensions
 {
     public static class JsonExtensions
     {
-        /// <summary>
-        /// Gets one of the values from Json Object.
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static string? FromJObject(this JObject jObject, string key)
+	    class Resolver : DefaultContractResolver
+	    {
+		    protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+		    {
+			    if (!typeof(Exception).IsAssignableFrom(type)) return base.CreateProperties(type, memberSerialization);
+			    IList<JsonProperty> props = base.CreateProperties(type, memberSerialization);
+			    return props.Where(p => p.PropertyName != "WatsonBuckets").ToList();
+		    }
+	    }
+		/// <summary>
+		/// Gets one of the values from Json Object.
+		/// </summary>
+		/// <param name="response"></param>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		public static string? FromJObject(this JObject jObject, string key)
         {
             var isValid = jObject.TryGetValue(key, out var value);
             if (isValid)
@@ -36,9 +46,13 @@ namespace EasMe.Extensions
         public static string ToJsonString(this object? obj, Newtonsoft.Json.Formatting formatting = Newtonsoft.Json.Formatting.None)
         {
             if (obj == null) return default;
-            return JsonConvert.SerializeObject(
-                obj, 
-                formatting).Replace("\n", "").Replace("\r", "");
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+	            ContractResolver = new Resolver(),
+                Formatting = formatting
+            };
+            string json = JsonConvert.SerializeObject(obj, settings);
+			return json.Replace("\n", "").Replace("\r", "");
         }
         /// <summary>
         /// Deserializes given json string to T model. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.

@@ -1,6 +1,7 @@
 ﻿using EasMe.Exceptions;
 using EasMe.Extensions;
 using EasMe.Logging.Models;
+using Microsoft.Extensions.Logging;
 
 namespace EasMe.Logging
 {
@@ -63,21 +64,12 @@ namespace EasMe.Logging
         /// <param name="logLevel"></param>
         /// <returns></returns>
         /// <exception cref="EasException"></exception>
-        public static List<LogModel> GetLogFileContent(string logLevel)
+        public static List<LogModel> GetLogFileContent(LogLevel logLevel)
         {
             var list = GetLogFileContent();
-            return list.Where(x => x.SeverityStr == logLevel).ToList();
+            return list.Where(x => x.Level == logLevel).ToList();
         }
-        /// <summary>
-        /// Gets filtered logs by LogType.
-        /// </summary>
-        /// <param name="LogType"></param>
-        /// <returns></returns>
-        public static List<LogModel> GetLogFileContent(int LogType)
-        {
-            var list = GetLogFileContent();
-            return list.Where(x => x.LogType == LogType).ToList();
-        }
+
         /// <summary>
         /// Gets filtered logs by TraceClass.
         /// </summary>

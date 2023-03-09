@@ -1,6 +1,7 @@
 ﻿using EasMe.Exceptions;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Drawing.Printing;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -22,7 +23,30 @@ namespace EasMe.Extensions
           "y"
         };
 
-        
+        public static string GetBefore(this string value, string endString)
+        {
+            var num = value.IndexOf(endString, StringComparison.Ordinal);
+            if (num == -1)
+				return string.Empty;
+            return value.Substring(0, num);
+        }
+        public static string GetAfter(this string value, string startString)
+        {
+            var startIndex = value.IndexOf(startString, StringComparison.Ordinal);
+            if (startIndex == -1)
+				return string.Empty;
+            return value.Substring(startIndex + startString.Length);
+        }
+        public static string GetBetween(this string value, string startString, string endString)
+        {
+            var startIndex = value.IndexOf(startString, StringComparison.Ordinal);
+            if (startIndex == -1)
+				return string.Empty;
+            var num = value.IndexOf(endString, startIndex + startString.Length, StringComparison.Ordinal);
+			if (num == -1)
+                return string.Empty;
+			return value.Substring(startIndex + startString.Length, num - startIndex - startString.Length);
+        }
         public static byte[] ConvertToByteArray(this string yourStr) => Encoding.UTF8.GetBytes(yourStr);
         /// <summary>
         /// Converts string to Type T.

@@ -45,3 +45,13 @@ C:\Users\kkass\source\repos\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\
 C:\Users\kkass\source\build\easme\Release\net6.0\EasMe.EntityFrameworkCore.deps.json
 C:\Users\kkass\source\build\easme\Release\net6.0\EasMe.EntityFrameworkCore.dll
 C:\Users\kkass\source\build\easme\Release\net6.0\EasMe.EntityFrameworkCore.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.AssemblyInfoInputs.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.AssemblyInfo.cs
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.csproj.CoreCompileInputs.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.csproj.CopyComplete
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\refint\EasMe.EntityFrameworkCore.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\EasMe.EntityFrameworkCore.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.EntityFrameworkCore\obj\Release\net6.0\ref\EasMe.EntityFrameworkCore.dll

@@ -1,4 +1,5 @@
 ﻿using EasMe.Logging.Internal;
+using Microsoft.Extensions.Logging;
 
 namespace EasMe.Logging
 {
@@ -9,14 +10,13 @@ namespace EasMe.Logging
     /// </summary>
     public static class EasLogConsole
     {
-        private const ConsoleColor FatalColor = ConsoleColor.DarkMagenta;
+        private const ConsoleColor FatalColor = ConsoleColor.Magenta;
         private const ConsoleColor ErrorColor = ConsoleColor.Red;
         private const ConsoleColor BaseColor = ConsoleColor.White;
         private const ConsoleColor WarningColor = ConsoleColor.Yellow;
         private const ConsoleColor InfoColor = ConsoleColor.Green;
         private const ConsoleColor DebugColor = ConsoleColor.Blue;
         private const ConsoleColor TraceColor = ConsoleColor.Cyan;
-        private const ConsoleColor ExceptionColor = ConsoleColor.Magenta;
         public static void Log(string message)
         {
             Console.WriteLine(message);
@@ -45,60 +45,54 @@ namespace EasMe.Logging
             }
             Console.ResetColor();
         }
-        public static void Log(LogSeverity severity, string message)
+        public static void Log(LogLevel level, string message)
         {
-            switch (severity)
+            switch (level)
             {
-                case LogSeverity.ERROR:
+                case LogLevel.Error:
                     Log(message, ErrorColor);
                     break;
-                case LogSeverity.WARN:
+                case LogLevel.Warning:
                     Log(message, WarningColor);
                     break;
-                case LogSeverity.INFO:
+                case LogLevel.Information:
                     Log(message, InfoColor);
                     break;
-                case LogSeverity.DEBUG:
+                case LogLevel.Debug:
                     Log(message, DebugColor);
                     break;
-                case LogSeverity.TRACE:
+                case LogLevel.Trace:
                     Log(message, TraceColor);
                     break;
-                case LogSeverity.FATAL:
+                case LogLevel.Critical:
                     Log(message, FatalColor);
-                    break;
-                case LogSeverity.EXCEPTION:
-                    Log(message, ExceptionColor);
                     break;
                 default:
                     Log(message, BaseColor);
                     break;
             }
         }
-        public static void Log(LogSeverity severity, string message, params object[] param)
+        public static void Log(LogLevel severity, string message, params object[] param)
         {
             var logStr = param.ToLogString(severity) + " " + message;
             switch (severity)
             {
-                case LogSeverity.ERROR:
+                case LogLevel.Error:
                     Log(logStr, ErrorColor);
                     break;
-                case LogSeverity.WARN:
+                case LogLevel.Warning:
                     Log(logStr, WarningColor);
                     break;
-                case LogSeverity.INFO:
+                case LogLevel.Information:
                     Log(logStr, InfoColor);
                     break;
-                case LogSeverity.TRACE:
+                case LogLevel.Trace:
                     Log(logStr,TraceColor);
                     break;
-                case LogSeverity.DEBUG:
+                case LogLevel.Debug:
                     Log(logStr, DebugColor);
                     break;
-                case LogSeverity.EXCEPTION:
-                    Log(logStr, ExceptionColor);
-                    break;
-                case LogSeverity.FATAL:
+                case LogLevel.Critical:
                     Log(logStr, FatalColor);
                     break;
                 default:
@@ -109,27 +103,27 @@ namespace EasMe.Logging
 
         public static void Error(string message, params string[] param)
         {
-            Log(LogSeverity.ERROR, message, param);
+            Log(LogLevel.Error, message, param);
         }
         public static void Fatal(string message, params string[] param)
         {
-            Log(LogSeverity.FATAL, message, param);
+            Log(LogLevel.Critical, message, param);
         }
         public static void Warn(string message, params string[] param)
         {
-            Log(LogSeverity.WARN, message, param);
+            Log(LogLevel.Warning, message, param);
         }
         public static void Info(string message, params string[] param)
         {
-            Log(LogSeverity.INFO, message, param);
+            Log(LogLevel.Information, message, param);
         }
         public static void Debug(string message, params string[] param)
         {
-            Log(LogSeverity.DEBUG, message, param);
+            Log(LogLevel.Debug, message, param);
         }
         public static void Trace(string message, params string[] param)
         {
-            Log(LogSeverity.TRACE, message, param);
+            Log(LogLevel.Trace, message, param);
         }
     }
 }

@@ -4,10 +4,10 @@ using EasMe.Logging.Internal;
 
 namespace EasMe.Logging.Models
 {
-    public class WebLogModel
+    public class WebInfo
     {
     
-        public WebLogModel()
+        public WebInfo()
         {
             if (HttpContextHelper.Current is null) return;
             try

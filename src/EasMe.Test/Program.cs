@@ -12,7 +12,7 @@ using EasMe.Test;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
-var asd = 0;
-EasMemoryCache.This.Set("test",asd);
-var asd2 = EasMemoryCache.This.Get<int>("test");
+string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+Console.WriteLine(desktopPath);
 Console.Read();

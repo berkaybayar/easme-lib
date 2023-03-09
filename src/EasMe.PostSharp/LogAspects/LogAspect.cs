@@ -3,6 +3,7 @@ using PostSharp.Extensibility;
 using System.Reflection;
 using EasMe.Extensions;
 using EasMe.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace EasMe.PostSharp.LogAspects
 {
@@ -22,7 +23,7 @@ namespace EasMe.PostSharp.LogAspects
 
         public override void OnEntry(MethodExecutionArgs args)
         {
-            if (!_logger.IsSeverityEnabled(LogSeverity.INFO))
+            if (!_logger.IsLogLevelEnabled(LogLevel.Information))
             {
                 return;
             }

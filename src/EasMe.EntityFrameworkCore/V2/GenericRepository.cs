@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace EasMe.EntityFrameworkCore.V2
 {
-    public abstract class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity> 
+    public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity> 
         where TEntity : class, IEntity
         where TContext : DbContext, new()
     {
@@ -11,7 +12,7 @@ namespace EasMe.EntityFrameworkCore.V2
 
         private DbSet<TEntity> Table { get; }
         
-        protected GenericRepository(TContext context)
+        public GenericRepository(TContext context)
         {
             this._dbContext = context;
             this.Table = context.Set<TEntity>();
@@ -33,10 +34,52 @@ namespace EasMe.EntityFrameworkCore.V2
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<TEntity> GetOrdered(
+        public virtual TEntity? GetFirstOrDefaultOrdered(
+            Expression<Func<TEntity, bool>>? filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            params string[] includeProperties)
+        {
+            var query = Table.AsQueryable();
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return query.FirstOrDefault();
+        }
+
+        public virtual TEntity? GetLastOrDefaultOrdered(
+            Expression<Func<TEntity, bool>>? filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            params string[] includeProperties)
+        {
+            var query = Table.AsQueryable();
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return query.LastOrDefault();
+        }
+
+        public virtual IEnumerable<TEntity> GetOrdered(
             Expression<Func<TEntity, bool>>? filter = null, 
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-            params Expression<Func<TEntity, object>>[] includeExpressions)
+            params string[] includeExpressions)
         {
             var query = Table.AsQueryable();
 
@@ -57,13 +100,58 @@ namespace EasMe.EntityFrameworkCore.V2
             return query.ToList();
         }
 
-        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null, params Expression<Func<TEntity, object>>[] includeExpressions)
+        public virtual IEnumerable<TResult> GetSelect<TResult>(
+            Expression<Func<TEntity, TResult>> select,
+            Expression<Func<TEntity, bool>>? filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            params string[] includeExpressions)
+        {
+            var query = Table.AsQueryable();
+            foreach (var includeProperty in includeExpressions)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return query.Select(select).ToList();
+        }
+
+        public TResult? GetFirstOrDefaultSelect<TResult>(Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            params string[] includeExpressions)
+        {
+            var query = Table.AsQueryable();
+            foreach (var includeProperty in includeExpressions)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            return query.Select(select).FirstOrDefault();
+        }
+
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null, params string[] includeExpressions)
         {
             return GetOrdered(filter, null, includeExpressions);
         }
 
-        public IEnumerable<TEntity> GetPaging(int page, int pageSize = 15, Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-            params Expression<Func<TEntity, object>>[] includeExpressions)
+        public virtual IEnumerable<TEntity> GetPaging(int page, int pageSize = 15, Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+            params string[] includeExpressions)
         {
             var query = Table.AsQueryable();
 
@@ -128,13 +216,13 @@ namespace EasMe.EntityFrameworkCore.V2
             Table.Attach(entityToUpdate);
             _dbContext.Entry(entityToUpdate).State = EntityState.Modified;
         }
-        public void UpdateRange(IEnumerable<TEntity> entities)
+        public virtual void UpdateRange(IEnumerable<TEntity> entities)
         {
             var enumerable = entities.ToList();
             Table.AttachRange(enumerable);
             _dbContext.Entry(enumerable).State = EntityState.Modified;
         }
-        public void DeleteRange(IEnumerable<TEntity> entities)
+        public virtual void DeleteRange(IEnumerable<TEntity> entities)
         {
             var enumerable = entities.ToList();
             if (_dbContext.Entry(enumerable).State == EntityState.Detached)
@@ -143,12 +231,12 @@ namespace EasMe.EntityFrameworkCore.V2
             }
             Table.RemoveRange(enumerable);
         }
-        public bool Any(Expression<Func<TEntity, bool>>? filter = null)
+        public virtual bool Any(Expression<Func<TEntity, bool>>? filter = null)
         {
             if (filter == null) return Table.Any();
             return Table.Any(filter);
         }
-        public int Count(Expression<Func<TEntity, bool>>? filter = null)
+        public virtual int Count(Expression<Func<TEntity, bool>>? filter = null)
         {
             if(filter == null) return Table.Count();
             return Table.Count(filter);

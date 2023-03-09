@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bhj6WTdq6m5we4D1MwgiR65dHkUhFjph3568/zlJizskd1Nj7CUyCF/NFe6gDHme49StQq2Iw30jm0oVnLilPQ==",
+  "dgSpecHash": "cy7cvja86iiozFfECC5SoCt/a5Ql3qp3njLvESoNFSBBaPqinzJLKJHGtZgEOFaCp44ed7woIJOB9L3VTThd/Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\kkass\\source\\repos\\easme-lib\\src\\EasMe\\EasMe.csproj",
+  "projectFilePath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\EasMe.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kkass\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\kkass\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

@@ -67,7 +67,6 @@ namespace EasMe
 
             }
         }
-        public static string GenerateRandomString(int length, bool onlyLetter = false) => GenerateRandomString(length, onlyLetter, "");
 
         /// <summary>
         /// Generates and returns random string that only contains digits. Max allowed lengthvalue is 1024.

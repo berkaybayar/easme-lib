@@ -1,4 +1,6 @@
-﻿namespace EasMe.Logging
+﻿using Microsoft.Extensions.Logging;
+
+namespace EasMe.Logging
 {
     public class EasLogConfiguration
     {
@@ -9,7 +11,7 @@
         /// <summary>
         /// Gets or sets a value indicating whether to log the request body.
         /// </summary>
-        public LogSeverity MinimumLogLevel { get; set; } = LogSeverity.INFO;
+        public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
 
         /// <summary>
         /// Set logs folder path to be stored. Defualt is current directory, adds folder named Logs.
@@ -61,12 +63,6 @@
         /// </summary>
         public bool ExceptionHideSensitiveInfo { get; set; } = true;
 
-
-        /// <summary>
-        /// In order this to work you must configure EasMe.HttpContext and enable web logging. 
-        /// This will add request url to log message start.
-        /// </summary>
-        public bool AddRequestUrlToStart { get; set; } = true;
 
         ///// <summary>
         ///// Whether to use default log model and print logs as json. 

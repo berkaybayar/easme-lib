@@ -16,8 +16,8 @@ namespace EasMe
 		{
 			INTERVAL = intervalMinutes;
 			_action = action;
-			_result = _action();
-			LAST_UPDATE = DateTime.Now;
+			//_result = _action();
+			LAST_UPDATE = DateTime.MinValue;
 		}
 		private readonly int INTERVAL;
 		private static readonly object _locker = new object();

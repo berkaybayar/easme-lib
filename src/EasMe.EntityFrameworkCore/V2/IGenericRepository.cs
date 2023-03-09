@@ -8,21 +8,44 @@ public interface IGenericRepository<TEntity>
 
     TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>>? filter = null,params string[] includeProperties);
 
+    List<TEntity> ToList()
+    {
+        return Get().ToList();
+    }
+
+    TEntity? GetFirstOrDefaultOrdered(
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeProperties);
+    TEntity? GetLastOrDefaultOrdered(
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeProperties);
     IEnumerable<TEntity> GetOrdered(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params Expression<Func<TEntity, object>>[] includeExpressions);
+        params string[] includeExpressions);
 
     IEnumerable<TEntity> Get(
         Expression<Func<TEntity, bool>>? filter = null,
-        params Expression<Func<TEntity, object>>[] includeExpressions);
+        params string[] includeExpressions);
     IEnumerable<TEntity> GetPaging(
         int page,
         int pageSize = 15,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params Expression<Func<TEntity, object>>[] includeExpressions);
+        params string[] includeExpressions);
 
+    IEnumerable<TResult> GetSelect<TResult>(
+        Expression<Func<TEntity, TResult>> select,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeExpressions);
+    TResult? GetFirstOrDefaultSelect<TResult>(
+        Expression<Func<TEntity, TResult>> select,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeExpressions);
     TEntity? GetById(object id);
     TEntity? GetById(params object[] id);
     void Insert(TEntity entity);
@@ -34,4 +57,5 @@ public interface IGenericRepository<TEntity>
     void DeleteRange(IEnumerable<TEntity> entities);
     bool Any(Expression<Func<TEntity, bool>>? filter = null);
     int Count(Expression<Func<TEntity, bool>>? filter = null);
+
 }
