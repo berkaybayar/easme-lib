@@ -23,19 +23,23 @@ namespace EasMe.Extensions
           "y"
         };
 
+        public static string RemoveText(this string value, string removeText)
+        {
+            return value.Replace(removeText, string.Empty);
+        }
         public static string GetBefore(this string value, string endString)
         {
             var num = value.IndexOf(endString, StringComparison.Ordinal);
             if (num == -1)
 				return string.Empty;
-            return value.Substring(0, num);
+            return value[..num];
         }
         public static string GetAfter(this string value, string startString)
         {
             var startIndex = value.IndexOf(startString, StringComparison.Ordinal);
             if (startIndex == -1)
 				return string.Empty;
-            return value.Substring(startIndex + startString.Length);
+            return value[(startIndex + startString.Length)..];
         }
         public static string GetBetween(this string value, string startString, string endString)
         {
@@ -43,9 +47,7 @@ namespace EasMe.Extensions
             if (startIndex == -1)
 				return string.Empty;
             var num = value.IndexOf(endString, startIndex + startString.Length, StringComparison.Ordinal);
-			if (num == -1)
-                return string.Empty;
-			return value.Substring(startIndex + startString.Length, num - startIndex - startString.Length);
+			return num == -1 ? string.Empty : value.Substring(startIndex + startString.Length, num - startIndex - startString.Length);
         }
         public static byte[] ConvertToByteArray(this string yourStr) => Encoding.UTF8.GetBytes(yourStr);
         /// <summary>

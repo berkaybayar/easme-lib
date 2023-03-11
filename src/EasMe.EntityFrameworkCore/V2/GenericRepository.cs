@@ -4,10 +4,15 @@ using System.Linq.Expressions;
 
 namespace EasMe.EntityFrameworkCore.V2
 {
+
     public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity> 
         where TEntity : class, IEntity
         where TContext : DbContext, new()
     {
+
+
+ 
+
         private readonly TContext _dbContext;
 
         private DbSet<TEntity> Table { get; }

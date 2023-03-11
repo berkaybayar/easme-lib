@@ -1,4 +1,7 @@
-﻿namespace EasMe.Result
+﻿using System.IO.Compression;
+using System.Runtime.CompilerServices;
+
+namespace EasMe.Result
 {
     /// <summary>
     /// A readonly struct Result to be used in Domain Driven Design mainly.
@@ -7,7 +10,7 @@
     /// </summary>
     public readonly struct Result : IResult
     {
-        public Result(ResultSeverity severity, int rv, object errCode,params string[] errors)
+        public Result(ResultSeverity severity, int rv, object errCode, params string[] errors)
         {
             Rv = rv;
             ErrorCode = errCode.ToString() ?? "None";
@@ -18,7 +21,7 @@
                 Severity = ResultSeverity.Info;
             }
         }
-        
+
         public int Rv { get; init; } = ushort.MaxValue;
         public bool IsSuccess => Rv == 0;
         public bool IsFailure => !IsSuccess;
@@ -30,12 +33,12 @@
         {
             ushort rv = 0;
             if (IsFailure) rv = ushort.MaxValue;
-            return new Result(Severity, rv, ErrorCode,Errors);
+            return new Result(Severity, rv, ErrorCode, Errors);
         }
 
         public Result MultiplyRv(ushort value)
         {
-            return new Result(Severity, Convert.ToInt32(value * Rv), ErrorCode,Errors);
+            return new Result(Severity, Convert.ToInt32(value * Rv), ErrorCode, Errors);
         }
 
         public ResultData<T> ToResultData<T>(T? data = default)
@@ -53,22 +56,22 @@
             return value.IsSuccess;
         }
 
-		
-		//CREATE METHODS
-		public static Result Create(ResultSeverity severityIfNotSuccess, int rv, object errCode, params string[] errors)
-		{
-			if (rv == 0) severityIfNotSuccess = ResultSeverity.Info; 
-			return new Result(severityIfNotSuccess, rv, errCode, errors);
-		}
-		public static Result Success()
+
+        //CREATE METHODS
+        public static Result Create(ResultSeverity severityIfNotSuccess, int rv, object errCode, params string[] errors)
         {
-            return new Result(ResultSeverity.Info, 0, "Success");
+            if (rv == 0) severityIfNotSuccess = ResultSeverity.Info;
+            return new Result(severityIfNotSuccess, rv, errCode, errors);
         }
-        public static Result Success(string operationName)
+        public static Result Success([CallerMemberName] string operationName = "")
         {
-            return new Result(ResultSeverity.Info,0,operationName);
+            return new Result(ResultSeverity.Info, 0, operationName);
         }
         public static Result Error(object errorCode)
+        {
+            return new Result(ResultSeverity.Error, ushort.MaxValue, errorCode);
+        }
+        public static Result Fail(object errorCode,ResultSeverity resultSeverity = ResultSeverity.Error)
         {
             return new Result(ResultSeverity.Error, ushort.MaxValue, errorCode);
         }
