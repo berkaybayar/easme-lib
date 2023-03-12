@@ -1,1 +1,1 @@
-C:\Users\kkass\source\repos\easme-lib\src\EasMe.PostSharp\obj\Debug\net6.0\PostSharp\PostSharp.Compiler.Engine.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.PostSharp\obj\Debug\net6.0\PostSharp\PostSharp.Compiler.Engine.dll

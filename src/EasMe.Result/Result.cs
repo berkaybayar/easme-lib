@@ -31,8 +31,7 @@ namespace EasMe.Result
 
         public Result WithoutRv()
         {
-            ushort rv = 0;
-            if (IsFailure) rv = ushort.MaxValue;
+            var rv = IsFailure ? ushort.MaxValue : 0;
             return new Result(Severity, rv, ErrorCode, Errors);
         }
 
@@ -57,6 +56,23 @@ namespace EasMe.Result
         }
 
 
+        public static Result operator *(int num,Result result)
+        {
+            return result.MultiplyRv((ushort)num);
+        }
+        public static Result operator *(Result result,int num)
+        {
+            return result.MultiplyRv((ushort)num);
+        }
+        
+        public static Result operator +(Result result1,Result result2)
+        {
+            return new List<Result>()
+            {
+                result1,
+                result2
+            }.ToSingleResult("MultipleErrors");
+        }
         //CREATE METHODS
         public static Result Create(ResultSeverity severityIfNotSuccess, int rv, object errCode, params string[] errors)
         {

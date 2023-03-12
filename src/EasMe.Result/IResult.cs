@@ -19,7 +19,7 @@ namespace EasMe.Result
         /// <br/>
         /// It is recommended to multiply the <see cref="Rv"/> from another method by 100 or multiples of 100
         /// </summary>
-        int Rv { get; init; }
+        int Rv { get; init; } 
 
         /// <summary>
         /// Indicates success status of <see cref="IResult"/>. 

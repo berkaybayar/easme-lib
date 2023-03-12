@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace EasMe.Result
 {
+	/// <summary>
+	/// Built-in Result Error Codes
+	/// </summary>
     public enum ErrorCode
     {
 		Ok,
