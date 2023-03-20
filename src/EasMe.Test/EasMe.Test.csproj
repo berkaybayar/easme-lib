@@ -1,24 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Version>3.4.1.0</Version>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Ardalis.Result" Version="4.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\EasMe.Authorization\EasMe.Authorization.csproj" />
-    <ProjectReference Include="..\EasMe.EntityFrameworkCore\EasMe.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\EasMe.Logging\EasMe.Logging.csproj" />
-    <ProjectReference Include="..\EasMe.PostSharp\EasMe.PostSharp.csproj" />
-    <ProjectReference Include="..\EasMe.Result\EasMe.Result.csproj" />
-    <ProjectReference Include="..\EasMe.System\EasMe.System.csproj" />
-    <ProjectReference Include="..\EasMe\EasMe.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Ardalis.Result" Version="4.2.0" />
+	</ItemGroup>
 
 </Project>

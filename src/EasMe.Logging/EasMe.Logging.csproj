@@ -5,13 +5,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
+	  <Version>3.4.1.0</Version>
+
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EasMe.Result\EasMe.Result.csproj" />
     <ProjectReference Include="..\EasMe\EasMe.csproj" />
   </ItemGroup>
 

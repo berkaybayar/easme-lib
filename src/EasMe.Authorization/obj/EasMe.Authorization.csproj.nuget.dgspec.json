@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Authorization\\EasMe.Authorization.csproj": {
-      "version": "1.0.0",
+      "version": "3.4.1",
       "restore": {
         "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Authorization\\EasMe.Authorization.csproj",
         "projectName": "EasMe.Authorization",
@@ -51,6 +51,10 @@
             "Microsoft.AspNetCore.Mvc.Core": {
               "target": "Package",
               "version": "[2.2.5, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             }
           },
           "imports": [

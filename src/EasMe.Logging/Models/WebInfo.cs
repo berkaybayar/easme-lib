@@ -2,33 +2,28 @@
 using EasMe.Extensions;
 using EasMe.Logging.Internal;
 
-namespace EasMe.Logging.Models
+namespace EasMe.Logging.Models;
+
+public class WebInfo
 {
-    public class WebInfo
+    public WebInfo()
     {
-    
-        public WebInfo()
+        if (HttpContextHelper.Current is null) return;
+        try
         {
-            if (HttpContextHelper.Current is null) return;
-            try
-            {
-                Ip = HttpContextHelper.Current.Request.GetRemoteIpAddress();
-                HttpMethod = HttpContextHelper.Current.Request.Method;
-                RequestUrl = HttpContextHelper.Current.Request.GetRequestQuery();
-                Headers = EasLogHelper.GetHeadersJson(HttpContextHelper.Current);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
+            Ip = HttpContextHelper.Current.Request.GetRemoteIpAddress();
+            HttpMethod = HttpContextHelper.Current.Request.Method;
+            RequestUrl = HttpContextHelper.Current.Request.GetRequestQuery();
+            Headers = EasLogHelper.GetHeadersJson(HttpContextHelper.Current);
         }
-        public string? Ip { get; set; }
-        public string? HttpMethod { get; set; }
-        public string? RequestUrl { get; set; }
-        public string? Headers { get; set; }
-
-
+        catch (Exception e)
+        {
+            Debug.WriteLine(e.Message);
+        }
     }
 
-
+    public string? Ip { get; set; }
+    public string? HttpMethod { get; set; }
+    public string? RequestUrl { get; set; }
+    public string? Headers { get; set; }
 }

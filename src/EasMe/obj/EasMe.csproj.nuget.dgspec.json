@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\EasMe.csproj": {
-      "version": "1.0.0",
+      "version": "3.4.1",
       "restore": {
         "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe\\EasMe.csproj",
         "projectName": "EasMe",
@@ -74,7 +74,7 @@
             },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[13.0.3, )"
             },
             "System.Data.HashFunction.xxHash": {
               "target": "Package",
@@ -91,10 +91,6 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.23.1, )"
-            },
-            "System.Management": {
-              "target": "Package",
-              "version": "[6.0.0, )"
             },
             "log4net": {
               "target": "Package",

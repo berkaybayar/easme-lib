@@ -1,107 +1,106 @@
-﻿using EasMe.Exceptions;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-namespace EasMe
+using Microsoft.IdentityModel.Tokens;
+
+namespace EasMe;
+
+/// <summary>
+///     JWT Authentication helper, generating and reading tokens.
+/// </summary>
+public class EasJWT
 {
-	/// <summary>
-	/// JWT Authentication helper, generating and reading tokens.
-	/// </summary>
-	public class EasJWT
-	{
+    private readonly JwtSecurityTokenHandler TokenHandler = new();
 
-		private readonly JwtSecurityTokenHandler TokenHandler = new();
-		private bool ValidateIssuer { get; set; } = false;
-		private bool ValidateAudience { get; set; } = false;
-		private string? Issuer { get; set; }
-		private string? Audience { get; set; }
-		private byte[]? Secret { get; set; }
+    public EasJWT(string secret, string? issuer = null, string? audience = null)
+    {
+        Issuer = issuer;
+        Audience = audience;
+        if (!string.IsNullOrEmpty(Issuer)) ValidateIssuer = true;
+        if (!string.IsNullOrEmpty(Audience)) ValidateAudience = true;
+        Secret = Encoding.ASCII.GetBytes(secret);
+    }
 
-		public EasJWT(string secret, string? issuer = null, string? audience = null)
-		{
-			Issuer = issuer;
-			Audience = audience;
-			if (!string.IsNullOrEmpty(Issuer)) ValidateIssuer = true;
-			if (!string.IsNullOrEmpty(Audience)) ValidateAudience = true;
-			Secret = Encoding.ASCII.GetBytes(secret);
-		}
+    private bool ValidateIssuer { get; }
+    private bool ValidateAudience { get; }
+    private string? Issuer { get; }
+    private string? Audience { get; }
+    private byte[]? Secret { get; }
 
-		/// <summary>
-		/// Generates a JWT token by ClaimsIdentity.
-		/// </summary>
-		/// <param name="claimsIdentity"></param>
-		/// <param name="expireMinutes"></param>
-		/// <returns></returns>
-		public string GenerateJwtToken(ClaimsIdentity claimsIdentity, int expireMinutes)
-		{
-            return GenerateJwtToken(claimsIdentity, DateTime.Now.AddMinutes(expireMinutes));
-        }
-        public string GenerateJwtToken(ClaimsIdentity claimsIdentity, DateTime expire)
+    /// <summary>
+    ///     Generates a JWT token by ClaimsIdentity.
+    /// </summary>
+    /// <param name="claimsIdentity"></param>
+    /// <param name="expireMinutes"></param>
+    /// <returns></returns>
+    public string GenerateJwtToken(ClaimsIdentity claimsIdentity, int expireMinutes)
+    {
+        return GenerateJwtToken(claimsIdentity, DateTime.Now.AddMinutes(expireMinutes));
+    }
+
+    public string GenerateJwtToken(ClaimsIdentity claimsIdentity, DateTime expire)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = claimsIdentity,
-                Expires = expire,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = Issuer,
-                Audience = Audience
+            Subject = claimsIdentity,
+            Expires = expire,
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
+            Issuer = Issuer,
+            Audience = Audience
+        };
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
 
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+    /// <summary>
+    ///     Generates a JWT token by claims as IDictionary.
+    /// </summary>
+    /// <param name="claimsIdentity"></param>
+    /// <param name="expireMinutes"></param>
+    /// <returns></returns>
+    public string GenerateJwtToken(Dictionary<string, object?> claims, int expireMinutes)
+    {
+        return GenerateJwtToken(claims, DateTime.Now.AddMinutes(expireMinutes));
+    }
 
-        }
-        /// <summary>
-        /// Generates a JWT token by claims as IDictionary.
-        /// </summary>
-        /// <param name="claimsIdentity"></param>
-        /// <param name="expireMinutes"></param>
-        /// <returns></returns>
-        public string GenerateJwtToken(Dictionary<string, object?> claims, int expireMinutes)
-		{
-            return GenerateJwtToken(claims, DateTime.Now.AddMinutes(expireMinutes));
-        }
-        public string GenerateJwtToken(Dictionary<string, object?> claims, DateTime expire)
+    public string GenerateJwtToken(Dictionary<string, object?> claims, DateTime expire)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Claims = claims,
-                Expires = expire,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
-                Issuer = Issuer,
-                Audience = Audience
+            Claims = claims,
+            Expires = expire,
+            SigningCredentials =
+                new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
+            Issuer = Issuer,
+            Audience = Audience
+        };
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
 
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-        /// <summary>
-        /// Validates JWT token and returns ClaimsPrincipal.
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="validateIssuer"></param>
-        /// <param name="validateAudience"></param>
-        /// <returns></returns>
-        public ClaimsPrincipal? ValidateJwtToken(string token)
-		{
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Secret),
-                ValidateIssuer = ValidateIssuer,
-                ValidateAudience = ValidateAudience,
-                ValidateLifetime = true,
-                RequireExpirationTime = true,
-                ClockSkew = TimeSpan.Zero,
-
-            };
-            var claims = TokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-            return claims;
-        }
-
-
-	}
+    /// <summary>
+    ///     Validates JWT token and returns ClaimsPrincipal.
+    /// </summary>
+    /// <param name="token"></param>
+    /// <param name="validateIssuer"></param>
+    /// <param name="validateAudience"></param>
+    /// <returns></returns>
+    public ClaimsPrincipal? ValidateJwtToken(string token)
+    {
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Secret),
+            ValidateIssuer = ValidateIssuer,
+            ValidateAudience = ValidateAudience,
+            ValidateLifetime = true,
+            RequireExpirationTime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+        var claims = TokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+        return claims;
+    }
 }

@@ -1,147 +1,330 @@
-﻿using System.IO.Compression;
-using System.Runtime.CompilerServices;
+﻿using EasMe.Models;
 
-namespace EasMe.Result
+namespace EasMe.Result;
+
+/// <summary>
+///     A readonly struct Result to be used in Domain Driven Design mainly.
+///     <br />
+///     In order to avoid using <see cref="Exception" />'s and the performance downside from it.
+/// </summary>
+public readonly struct Result : IResult
 {
-    /// <summary>
-    /// A readonly struct Result to be used in Domain Driven Design mainly.
-    /// <br/>
-    /// In order to avoid using <see cref="Exception"/>'s and the performance downside from it.
-    /// </summary>
-    public readonly struct Result : IResult
+    internal Result(bool isSuccess, ResultSeverity severity, object errCode, string[] errors)
     {
-        public Result(ResultSeverity severity, int rv, object errCode, params string[] errors)
-        {
-            Rv = rv;
-            ErrorCode = errCode.ToString() ?? "None";
-            Severity = severity;
-            Errors = errors;
-            if (IsSuccess)
-            {
-                Severity = ResultSeverity.Info;
-            }
-        }
-
-        public int Rv { get; init; } = ushort.MaxValue;
-        public bool IsSuccess => Rv == 0;
-        public bool IsFailure => !IsSuccess;
-        public string ErrorCode { get; init; }
-        public string[] Errors { get; init; }
-        public ResultSeverity Severity { get; init; }
-
-        public Result WithoutRv()
-        {
-            var rv = IsFailure ? ushort.MaxValue : 0;
-            return new Result(Severity, rv, ErrorCode, Errors);
-        }
-
-        public Result MultiplyRv(ushort value)
-        {
-            return new Result(Severity, Convert.ToInt32(value * Rv), ErrorCode, Errors);
-        }
-
-        public ResultData<T> ToResultData<T>(T? data = default)
-        {
-            return new ResultData<T>(data, Severity, Rv, ErrorCode, Errors);
-        }
-
-        public static implicit operator Result(bool value)
-        {
-            return !value ? Result.Error("UnsetError") : Result.Success();
-        }
-
-        public static implicit operator bool(Result value)
-        {
-            return value.IsSuccess;
-        }
-
-
-        public static Result operator *(int num,Result result)
-        {
-            return result.MultiplyRv((ushort)num);
-        }
-        public static Result operator *(Result result,int num)
-        {
-            return result.MultiplyRv((ushort)num);
-        }
-        
-        public static Result operator +(Result result1,Result result2)
-        {
-            return new List<Result>()
-            {
-                result1,
-                result2
-            }.ToSingleResult("MultipleErrors");
-        }
-        //CREATE METHODS
-        public static Result Create(ResultSeverity severityIfNotSuccess, int rv, object errCode, params string[] errors)
-        {
-            if (rv == 0) severityIfNotSuccess = ResultSeverity.Info;
-            return new Result(severityIfNotSuccess, rv, errCode, errors);
-        }
-        public static Result Success([CallerMemberName] string operationName = "")
-        {
-            return new Result(ResultSeverity.Info, 0, operationName);
-        }
-        public static Result Error(object errorCode)
-        {
-            return new Result(ResultSeverity.Error, ushort.MaxValue, errorCode);
-        }
-        public static Result Fail(object errorCode,ResultSeverity resultSeverity = ResultSeverity.Error)
-        {
-            return new Result(ResultSeverity.Error, ushort.MaxValue, errorCode);
-        }
-        public static Result Error(int rv, object errorCode)
-        {
-            return new Result(ResultSeverity.Error, rv, errorCode);
-        }
-        public static Result Warn(int rv, object errorCode)
-        {
-            return new Result(ResultSeverity.Warn, rv, errorCode);
-        }
-        public static Result Warn(object errorCode)
-        {
-            return new Result(ResultSeverity.Warn, ushort.MaxValue, errorCode);
-        }
-        public static Result Fatal(int rv, object errorCode)
-        {
-            return new Result(ResultSeverity.Fatal, rv, errorCode);
-        }
-        public static Result Fatal(object errorCode)
-        {
-            return new Result(ResultSeverity.Fatal, ushort.MaxValue, errorCode);
-        }
-        public static Result Unauthorized(int rv)
-        {
-            return new Result(ResultSeverity.Error, rv, "Unauthorized");
-        }
-        public static Result Unauthorized()
-        {
-            return new Result(ResultSeverity.Error, ushort.MaxValue, "Unauthorized");
-        }
-        public static Result Forbidden(int rv)
-        {
-            return new Result(ResultSeverity.Error, rv, "Forbidden");
-        }
-        public static Result Forbidden()
-        {
-            return new Result(ResultSeverity.Error, ushort.MaxValue, "Forbidden");
-        }
-        public static Result ValidationError(int rv, params string[] errors)
-        {
-            return new Result(ResultSeverity.Error, rv, EasMe.Result.ErrorCode.ValidationError, errors);
-        }
-        public static Result ValidationError(params string[] errors)
-        {
-            return new Result(ResultSeverity.Error, ushort.MaxValue, EasMe.Result.ErrorCode.ValidationError, errors);
-        }
-        public static Result MultipleErrors(int rv, params string[] errors)
-        {
-            return new Result(ResultSeverity.Error, rv, EasMe.Result.ErrorCode.ValidationError, errors);
-        }
-        public static Result MultipleErrors(params string[] errors)
-        {
-            return new Result(ResultSeverity.Error, ushort.MaxValue, EasMe.Result.ErrorCode.ValidationError, errors);
-        }
+        ErrorCode = errCode.ToString() ?? "None";
+        Severity = severity;
+        Errors = errors ?? Array.Empty<string>();
+        IsSuccess = isSuccess;
+        ExceptionInfo = null;
     }
+
+    internal Result(bool isSuccess, ResultSeverity severity, object errCode)
+    {
+        ErrorCode = errCode.ToString() ?? "None";
+        Severity = severity;
+        Errors = Array.Empty<string>();
+        IsSuccess = isSuccess;
+        ExceptionInfo = null;
+    }
+
+    internal Result(Exception exception, ResultSeverity severity, string[] errors)
+    {
+        ErrorCode = "ExceptionOccured";
+        Severity = severity;
+        Errors = errors ?? Array.Empty<string>();
+        IsSuccess = false;
+        ExceptionInfo = new CleanException(exception);
+    }
+
+    internal Result(Exception exception, ResultSeverity severity = ResultSeverity.Fatal)
+    {
+        ErrorCode = "ExceptionOccured";
+        Severity = severity;
+        Errors = Array.Empty<string>();
+        IsSuccess = false;
+        ExceptionInfo = new CleanException(exception);
+    }
+
+    public bool IsSuccess { get; init; }
+    public bool IsFailure => !IsSuccess;
+    public string ErrorCode { get; init; } = "UnsetError";
+    public string[] Errors { get; init; } = Array.Empty<string>();
+    public ResultSeverity Severity { get; init; }
+    public CleanException? ExceptionInfo { get; init; }
+
+
+    public ResultData<T> ToResultData<T>(T? data = default)
+    {
+        return new ResultData<T>(data, Severity, ErrorCode, Errors);
+    }
+
+    public static implicit operator Result(bool value)
+    {
+        return !value ? Error("UnsetError") : Success();
+    }
+
+    public static implicit operator bool(Result value)
+    {
+        return value.IsSuccess;
+    }
+    //CREATE METHODS
+
+    #region Success
+
+    public static Result Create(bool isSuccess, ResultSeverity severity, object errCode, string[] errors)
+    {
+        return new Result(isSuccess, severity, errCode, errors);
+    }
+
+    public static Result Success(string errorCode = "")
+    {
+        return new Result(true, ResultSeverity.Info, string.IsNullOrEmpty(errorCode) ? "Success" : errorCode);
+    }
+
+    public static ResultData<T> SuccessData<T>(T data, string? errorCode = "")
+    {
+        return new ResultData<T>(data,
+            ResultSeverity.Info,
+            string.IsNullOrEmpty(errorCode)
+                ? "Success"
+                : errorCode);
+    }
+
+    public static ResultData<T> SuccessData<T>(T data, string? errorCode, string[] errors)
+    {
+        return new ResultData<T>(data,
+            ResultSeverity.Info,
+            string.IsNullOrEmpty(errorCode)
+                ? "Success"
+                : errorCode,
+            errors);
+    }
+
+    public static Result Success(string errorCode, string[] errors)
+    {
+        return new Result(true, ResultSeverity.Info, string.IsNullOrEmpty(errorCode) ? "Success" : errorCode, errors);
+    }
+
+    #endregion
+
+    #region Exception
+
+    public static Result Exception(Exception exception, ResultSeverity severity = ResultSeverity.Fatal)
+    {
+        return new Result(exception, severity);
+    }
+
+    public static Result Exception(Exception exception, ResultSeverity severity, string[] errors)
+    {
+        return new Result(exception, severity, errors);
+    }
+
+    public static Result Exception(Exception exception, ResultSeverity severity, string error1)
+    {
+        var errors = new[] { error1 };
+        return new Result(exception, severity, errors);
+    }
+
+    public static Result Exception(Exception exception, ResultSeverity severity, string error1, string error2)
+    {
+        var errors = new[] { error1, error2 };
+        return new Result(exception, severity, errors);
+    }
+
+    public static Result Exception(Exception exception, ResultSeverity severity, string error1, string error2,
+        string error3)
+    {
+        var errors = new[] { error1, error2, error3 };
+        return new Result(exception, severity, errors);
+    }
+
+    public static Result Exception(Exception exception, string[] errors)
+    {
+        return new Result(exception, ResultSeverity.Fatal, errors);
+    }
+
+    public static Result Exception(Exception exception, string error1)
+    {
+        var errors = new[] { error1 };
+        return new Result(exception, ResultSeverity.Fatal, errors);
+    }
+
+    public static Result Exception(Exception exception, string error1, string error2)
+    {
+        var errors = new[] { error1, error2 };
+        return new Result(exception, ResultSeverity.Fatal, errors);
+    }
+
+    public static Result Exception(Exception exception, string error1, string error2, string error3)
+    {
+        var errors = new[] { error1, error2, error3 };
+        return new Result(exception, ResultSeverity.Fatal, errors);
+    }
+
+    #endregion
+
+    #region Warn
+
+    public static Result Warn(object errorCode)
+    {
+        return new Result(false, ResultSeverity.Warn, errorCode);
+    }
+
+    public static Result Warn(object errorCode, string[] errors)
+    {
+        return new Result(false, ResultSeverity.Warn, errorCode, errors);
+    }
+
+    public static Result Warn(object errorCode, string error1)
+    {
+        var errors = new[] { error1 };
+        return new Result(false, ResultSeverity.Warn, errorCode, errors);
+    }
+
+    public static Result Warn(object errorCode, string error1, string error2)
+    {
+        var errors = new[] { error1, error2 };
+        return new Result(false, ResultSeverity.Warn, errorCode, errors);
+    }
+
+    public static Result Warn(object errorCode, string error1, string error2, string error3)
+    {
+        var errors = new[] { error1, error2, error3 };
+        return new Result(false, ResultSeverity.Warn, errorCode, errors);
+    }
+
+    #endregion
+
+    #region Fatal
+
+    public static Result Fatal(object errorCode)
+    {
+        return new Result(false, ResultSeverity.Fatal, errorCode);
+    }
+
+    public static Result Fatal(object errorCode, string[] errors)
+    {
+        return new Result(false, ResultSeverity.Fatal, errorCode, errors);
+    }
+
+    public static Result Fatal(object errorCode, string error1)
+    {
+        var errors = new[] { error1 };
+        return new Result(false, ResultSeverity.Fatal, errorCode, errors);
+    }
+
+    public static Result Fatal(object errorCode, string error1, string error2)
+    {
+        var errors = new[] { error1, error2 };
+        return new Result(false, ResultSeverity.Fatal, errorCode, errors);
+    }
+
+    public static Result Fatal(object errorCode, string error1, string error2, string error3)
+    {
+        var errors = new[] { error1, error2, error3 };
+        return new Result(false, ResultSeverity.Fatal, errorCode, errors);
+    }
+
+    #endregion
+
+    #region Error
+
+    public static Result Error(object errorCode)
+    {
+        return new Result(false, ResultSeverity.Error, errorCode);
+    }
+
+    public static Result Error(object errorCode, string[] errors)
+    {
+        return new Result(false, ResultSeverity.Error, errorCode, errors);
+    }
+
+    public static Result Error(object errorCode, string error1)
+    {
+        var errors = new[] { error1 };
+        return new Result(false, ResultSeverity.Error, errorCode, errors);
+    }
+
+    public static Result Error(object errorCode, string error1, string error2)
+    {
+        var errors = new[] { error1, error2 };
+        return new Result(false, ResultSeverity.Error, errorCode, errors);
+    }
+
+    public static Result Error(object errorCode, string error1, string error2, string error3)
+    {
+        var errors = new[] { error1, error2, error3 };
+        return new Result(false, ResultSeverity.Error, errorCode, errors);
+    }
+
+    #endregion
+
+    #region Pre-defined
+
+    public static Result Unauthorized()
+    {
+        return new Result(false, ResultSeverity.Error, "Unauthorized");
+    }
+
+    public static Result Forbidden()
+    {
+        return new Result(false, ResultSeverity.Error, "Forbidden");
+    }
+
+    public static Result ValidationError(string[] errors)
+    {
+        return new Result(false, ResultSeverity.Error, EasMe.Result.ErrorCode.ValidationError, errors);
+    }
+
+    #endregion
+
+    #region Multiple-Error
+
+    public static Result MultipleErrors(object errorCode, string[] errors)
+    {
+        return new Result(false, ResultSeverity.Error, errorCode, errors);
+    }
+
+    public static Result MultipleErrors(object errorCode, string error1)
+    {
+        var errors = new[] { error1 };
+        return new Result(false, ResultSeverity.Error, errorCode, errors);
+    }
+
+    public static Result MultipleErrors(object errorCode, string error1, string error2)
+    {
+        var errors = new[] { error1, error2 };
+        return new Result(false, ResultSeverity.Error, errorCode, errors);
+    }
+
+    public static Result MultipleErrors(object errorCode, string error1, string error2, string error3)
+    {
+        var errors = new[] { error1, error2, error3 };
+        return new Result(false, ResultSeverity.Error, errorCode, errors);
+    }
+
+    public static Result MultipleErrors(string[] errors)
+    {
+        return new Result(false, ResultSeverity.Error, "MultipleErrors", errors);
+    }
+
+    public static Result MultipleErrors(string error1)
+    {
+        var errors = new[] { error1 };
+        return new Result(false, ResultSeverity.Error, "MultipleErrors", errors);
+    }
+
+    public static Result MultipleErrors(string error1, string error2)
+    {
+        var errors = new[] { error1, error2 };
+        return new Result(false, ResultSeverity.Error, "MultipleErrors", errors);
+    }
+
+    public static Result MultipleErrors(string error1, string error2, string error3)
+    {
+        var errors = new[] { error1, error2, error3 };
+        return new Result(false, ResultSeverity.Error, "MultipleErrors", errors);
+    }
+
+    #endregion
 }

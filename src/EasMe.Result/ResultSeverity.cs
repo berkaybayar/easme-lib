@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace EasMe.Result;
 
-namespace EasMe.Result
+public enum ResultSeverity
 {
-    public enum ResultSeverity
-    {
-        Info,
-        Warn,
-        Error,
-        Fatal
-
-    }
+    None,
+    Info,
+    Warn,
+    Error,
+    Fatal
 }

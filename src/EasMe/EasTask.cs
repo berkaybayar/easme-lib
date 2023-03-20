@@ -1,18 +1,16 @@
-﻿
-
-namespace EasMe;
+﻿namespace EasMe;
 
 /// <summary>
-/// Runs a queue of Tasks in the background with a single thread 
+///     Runs a queue of Tasks in the background with a single thread
 /// </summary>
 public class EasTask : IDisposable
 {
-    private readonly Queue<Action> _queue = new();
     private readonly ManualResetEvent _hasNewItems = new(false);
+    private readonly Queue<Action> _queue = new();
     private readonly ManualResetEvent _terminate = new(false);
-    private readonly ManualResetEvent _waiting = new(false);
 
     private readonly Thread _thread;
+    private readonly ManualResetEvent _waiting = new(false);
 
     public EasTask()
     {
@@ -25,27 +23,33 @@ public class EasTask : IDisposable
     }
 
 
+    public void Dispose()
+    {
+        _terminate.Set();
+        _thread.Join();
+        GC.SuppressFinalize(this);
+    }
+
+
     private void ProcessQueue()
     {
         while (true)
         {
             _waiting.Set();
             var i = WaitHandle.WaitAny(new WaitHandle[] { _hasNewItems, _terminate });
-            
+
             if (i == 1) return; // terminate was signaled 
             _hasNewItems.Reset();
             _waiting.Reset();
             if (_queue.Count == 0) continue;
-			Queue<Action> queueCopy;
+            Queue<Action> queueCopy;
             lock (_queue)
             {
                 queueCopy = new Queue<Action>(_queue);
                 _queue.Clear();
             }
-            foreach (var action in queueCopy)
-            {
-                action();
-            }
+
+            foreach (var action in queueCopy) action();
         }
     }
 
@@ -55,20 +59,13 @@ public class EasTask : IDisposable
         {
             _queue.Enqueue(action);
         }
+
         _hasNewItems.Set();
     }
-    
+
 
     public void Flush()
     {
         _waiting.WaitOne();
-    }
-
-
-    public void Dispose()
-    {
-        _terminate.Set();
-        _thread.Join();
-        GC.SuppressFinalize(this);
     }
 }

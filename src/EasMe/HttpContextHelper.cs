@@ -1,23 +1,21 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace EasMe
+namespace EasMe;
+
+/*
+    [PROGRAM.CS] => FOR WEB APPLICATIONS 
+    builder.Services.AddHttpContextAccessor();
+ */
+public static class HttpContextHelper
 {
-    /*
-        [PROGRAM.CS] => FOR WEB APPLICATIONS 
-        builder.Services.AddHttpContextAccessor();
-     */
-    public static class HttpContextHelper
+    private static readonly HttpContextAccessor? _accessor = new();
+
+    public static HttpContext? Current
     {
-        private static readonly HttpContextAccessor? _accessor = new();
-
-        public static HttpContext? Current
+        get
         {
-            get
-            {
-                if (_accessor == null) return null;
-                return _accessor.HttpContext;
-            }
+            if (_accessor == null) return null;
+            return _accessor.HttpContext;
         }
-
     }
 }

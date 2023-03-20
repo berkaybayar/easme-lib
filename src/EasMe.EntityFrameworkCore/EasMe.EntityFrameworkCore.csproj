@@ -5,14 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
+	  <Version>3.4.1.0</Version>
+
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\EasMe\EasMe.csproj" />
   </ItemGroup>
 
 </Project>

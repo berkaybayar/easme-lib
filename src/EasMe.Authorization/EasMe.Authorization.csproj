@@ -1,15 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
+		<Version>3.4.1.0</Version>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
 
 </Project>

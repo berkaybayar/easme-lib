@@ -1,3 +1,1 @@
-﻿using EasMe.Extensions;
-
-Console.WriteLine();
+﻿Console.WriteLine();

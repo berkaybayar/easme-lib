@@ -1,0 +1,4 @@
+C:\Users\kkass\source\build\easme\Publish\EasMe.Result.dll
+C:\Users\kkass\source\build\easme\Publish\EasMe.Result.deps.json
+C:\Users\kkass\source\build\easme\Publish\EasMe.Result.pdb
+C:\Users\kkass\source\build\easme\Publish\Newtonsoft.Json.dll

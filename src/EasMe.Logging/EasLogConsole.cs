@@ -1,129 +1,134 @@
 ﻿using EasMe.Logging.Internal;
 using Microsoft.Extensions.Logging;
 
-namespace EasMe.Logging
-{
-    /// <summary>
-    /// Basic console logger for heavy api request logging. 
-    /// File logging with heavy api request sometime creating errors. 
-    /// With this you only log to console but if error happens you log with EasLog or some other library to a file.
-    /// </summary>
-    public static class EasLogConsole
-    {
-        private const ConsoleColor FatalColor = ConsoleColor.Magenta;
-        private const ConsoleColor ErrorColor = ConsoleColor.Red;
-        private const ConsoleColor BaseColor = ConsoleColor.White;
-        private const ConsoleColor WarningColor = ConsoleColor.Yellow;
-        private const ConsoleColor InfoColor = ConsoleColor.Green;
-        private const ConsoleColor DebugColor = ConsoleColor.Blue;
-        private const ConsoleColor TraceColor = ConsoleColor.Cyan;
-        public static void Log(string message)
-        {
-            Console.WriteLine(message);
-        }
-        /// <summary>
-        /// Writes log to console with given color. Creates new line.
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="color"></param>
-        public static void Log(string message, ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-        public static void Log(string message, ConsoleColor color, bool newLine)
-        {
-            Console.ForegroundColor = color;
-            if (newLine)
-            {
-                Console.WriteLine(message);
-            }
-            else
-            {
-                Console.Write(message);
-            }
-            Console.ResetColor();
-        }
-        public static void Log(LogLevel level, string message)
-        {
-            switch (level)
-            {
-                case LogLevel.Error:
-                    Log(message, ErrorColor);
-                    break;
-                case LogLevel.Warning:
-                    Log(message, WarningColor);
-                    break;
-                case LogLevel.Information:
-                    Log(message, InfoColor);
-                    break;
-                case LogLevel.Debug:
-                    Log(message, DebugColor);
-                    break;
-                case LogLevel.Trace:
-                    Log(message, TraceColor);
-                    break;
-                case LogLevel.Critical:
-                    Log(message, FatalColor);
-                    break;
-                default:
-                    Log(message, BaseColor);
-                    break;
-            }
-        }
-        public static void Log(LogLevel severity, string message, params object[] param)
-        {
-            var logStr = param.ToLogString(severity) + " " + message;
-            switch (severity)
-            {
-                case LogLevel.Error:
-                    Log(logStr, ErrorColor);
-                    break;
-                case LogLevel.Warning:
-                    Log(logStr, WarningColor);
-                    break;
-                case LogLevel.Information:
-                    Log(logStr, InfoColor);
-                    break;
-                case LogLevel.Trace:
-                    Log(logStr,TraceColor);
-                    break;
-                case LogLevel.Debug:
-                    Log(logStr, DebugColor);
-                    break;
-                case LogLevel.Critical:
-                    Log(logStr, FatalColor);
-                    break;
-                default:
-                    Log(logStr, BaseColor);
-                    break;
-            }
-        }
+namespace EasMe.Logging;
 
-        public static void Error(string message, params string[] param)
+/// <summary>
+///     Basic console logger for heavy api request logging.
+///     File logging with heavy api request sometime creating errors.
+///     With this you only log to console but if error happens you log with EasLog or some other library to a file.
+/// </summary>
+public static class EasLogConsole
+{
+    private const ConsoleColor FatalColor = ConsoleColor.Magenta;
+    private const ConsoleColor ErrorColor = ConsoleColor.Red;
+    private const ConsoleColor BaseColor = ConsoleColor.White;
+    private const ConsoleColor WarningColor = ConsoleColor.Yellow;
+    private const ConsoleColor InfoColor = ConsoleColor.Green;
+    private const ConsoleColor DebugColor = ConsoleColor.Blue;
+    private const ConsoleColor TraceColor = ConsoleColor.Cyan;
+
+    public static void Log(string message)
+    {
+        Console.WriteLine(message);
+    }
+
+    /// <summary>
+    ///     Writes log to console with given color. Creates new line.
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="color"></param>
+    public static void Log(string message, ConsoleColor color)
+    {
+        Console.ForegroundColor = color;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+
+    public static void Log(string message, ConsoleColor color, bool newLine)
+    {
+        Console.ForegroundColor = color;
+        if (newLine)
+            Console.WriteLine(message);
+        else
+            Console.Write(message);
+        Console.ResetColor();
+    }
+
+    public static void Log(LogLevel level, string message)
+    {
+        switch (level)
         {
-            Log(LogLevel.Error, message, param);
+            case LogLevel.Error:
+                Log(message, ErrorColor);
+                break;
+            case LogLevel.Warning:
+                Log(message, WarningColor);
+                break;
+            case LogLevel.Information:
+                Log(message, InfoColor);
+                break;
+            case LogLevel.Debug:
+                Log(message, DebugColor);
+                break;
+            case LogLevel.Trace:
+                Log(message, TraceColor);
+                break;
+            case LogLevel.Critical:
+                Log(message, FatalColor);
+                break;
+            default:
+                Log(message, BaseColor);
+                break;
         }
-        public static void Fatal(string message, params string[] param)
+    }
+
+    public static void Log(LogLevel severity, string message, params object[] param)
+    {
+        var logStr = param.ToLogString(severity) + " " + message;
+        switch (severity)
         {
-            Log(LogLevel.Critical, message, param);
+            case LogLevel.Error:
+                Log(logStr, ErrorColor);
+                break;
+            case LogLevel.Warning:
+                Log(logStr, WarningColor);
+                break;
+            case LogLevel.Information:
+                Log(logStr, InfoColor);
+                break;
+            case LogLevel.Trace:
+                Log(logStr, TraceColor);
+                break;
+            case LogLevel.Debug:
+                Log(logStr, DebugColor);
+                break;
+            case LogLevel.Critical:
+                Log(logStr, FatalColor);
+                break;
+            default:
+                Log(logStr, BaseColor);
+                break;
         }
-        public static void Warn(string message, params string[] param)
-        {
-            Log(LogLevel.Warning, message, param);
-        }
-        public static void Info(string message, params string[] param)
-        {
-            Log(LogLevel.Information, message, param);
-        }
-        public static void Debug(string message, params string[] param)
-        {
-            Log(LogLevel.Debug, message, param);
-        }
-        public static void Trace(string message, params string[] param)
-        {
-            Log(LogLevel.Trace, message, param);
-        }
+    }
+
+    public static void Error(string message, params string[] param)
+    {
+        Log(LogLevel.Error, message, param);
+    }
+
+    public static void Fatal(string message, params string[] param)
+    {
+        Log(LogLevel.Critical, message, param);
+    }
+
+    public static void Warn(string message, params string[] param)
+    {
+        Log(LogLevel.Warning, message, param);
+    }
+
+    public static void Info(string message, params string[] param)
+    {
+        Log(LogLevel.Information, message, param);
+    }
+
+    public static void Debug(string message, params string[] param)
+    {
+        Log(LogLevel.Debug, message, param);
+    }
+
+    public static void Trace(string message, params string[] param)
+    {
+        Log(LogLevel.Trace, message, param);
     }
 }

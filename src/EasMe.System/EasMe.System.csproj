@@ -5,6 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
+	  <Version>3.4.1.0</Version>
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasMe.PostSharp\EasMe.PostSharp.csproj" />
     <ProjectReference Include="..\EasMe\EasMe.csproj" />
   </ItemGroup>
 

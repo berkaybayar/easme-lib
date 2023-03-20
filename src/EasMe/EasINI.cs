@@ -1,137 +1,140 @@
-﻿using EasMe.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
+using EasMe.Exceptions;
 
-namespace EasMe
+namespace EasMe;
+
+public class EasINI
 {
-    public class EasINI
+    private readonly string _path = string.Empty;
+
+    public EasINI(string? iniFilePath = null)
     {
-        public EasINI(string? iniFilePath = null)
-        {
-            if (iniFilePath == null) iniFilePath = Directory.GetCurrentDirectory() + @"\service.ini";
-            if (!File.Exists(iniFilePath)) throw new NotExistException("Given INI file path does not exist: " + iniFilePath);
-            _path = iniFilePath;
-        }
-        private readonly string _path = string.Empty;
+        if (iniFilePath == null) iniFilePath = Directory.GetCurrentDirectory() + @"\service.ini";
+        if (!File.Exists(iniFilePath))
+            throw new NotExistException("Given INI file path does not exist: " + iniFilePath);
+        _path = iniFilePath;
+    }
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool WritePrivateProfileString(string lpAppName, string lpKeyName, string lpString, string lpFileName);
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool WritePrivateProfileString(string lpAppName, string lpKeyName, string lpString,
+        string lpFileName);
 
-        /// <summary>
-        /// Writes a value to the INI file
-        /// </summary>
-        /// <param name="Section"></param>
-        /// <param name="Key"></param>
-        /// <param name="Value"></param>
-        public void Write(string Section, string Key, string Value)
-        {
-            WritePrivateProfileString(Section, Key, Value, _path);
-        }
-        /// <summary>
-        /// Reads a value from the INI file
-        /// </summary>
-        /// <param name="Section"></param>
-        /// <param name="Key"></param>
-        /// <returns></returns>
-        public string? Read(string Section, string Key)
-        {
-            StringBuilder buffer = new(255);
-            _ = GetPrivateProfileString(Section, Key, "", buffer, 255, _path);
-            return Convert.ToString(buffer);
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+    private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal,
+        int size, string filePath);
 
-        }
+    /// <summary>
+    ///     Writes a value to the INI file
+    /// </summary>
+    /// <param name="Section"></param>
+    /// <param name="Key"></param>
+    /// <param name="Value"></param>
+    public void Write(string Section, string Key, string Value)
+    {
+        WritePrivateProfileString(Section, Key, Value, _path);
+    }
 
-        public static IniFile ReadFromPath(string path)
+    /// <summary>
+    ///     Reads a value from the INI file
+    /// </summary>
+    /// <param name="Section"></param>
+    /// <param name="Key"></param>
+    /// <returns></returns>
+    public string? Read(string Section, string Key)
+    {
+        StringBuilder buffer = new(255);
+        _ = GetPrivateProfileString(Section, Key, "", buffer, 255, _path);
+        return Convert.ToString(buffer);
+    }
+
+    public static IniFile ReadFromPath(string path)
+    {
+        var str = File.ReadAllText(path);
+        return ReadFromString(str);
+    }
+
+    public static IniFile ReadFromString(string data)
+    {
+        var model = new IniFile();
+        var split = data.Split(Environment.NewLine);
+        for (var i = 0; i < split.Length; i++)
         {
-            var str = File.ReadAllText(path);
-            return ReadFromString(str);
-        }
-        public static IniFile ReadFromString(string data)
-        {
-            var model = new IniFile();
-            var split = data.Split(Environment.NewLine);
-            for (int i = 0; i < split.Length; i++)
+            var line = split[i];
+            if (line.StartsWith("[") && line.EndsWith("]"))
             {
-                var line = split[i];
-                if (line.StartsWith("[") && line.EndsWith("]"))
-                {
-                    IniSection section = new();
-                    section.Name = line[1..^1];
-                    model.Sections?.Add(section);
-                }
-                else if (line.Contains('='))
-                {
-                    var key = new IniData();
-                    var splitKeyValue = line.Split('=');
-                    key.Key = splitKeyValue[0];
-                    key.Value = splitKeyValue[1];
-                    model.Sections?.Last().Data?.Add(key);
-                }
-                else if (line.StartsWith(';'))
-                {
-                    IniComment comment = new();
-                    comment.Comment = line.Replace(";","").Trim();
-                    comment.LineNo = i;
-                    model.Sections?.Last().Comments?.Add(comment);
-                }
-                else if (line == Environment.NewLine || line == "\t" || line == "\r" || line == "\n" || line == "") continue;
-                else
-                {
-                    throw new Exception("Ini file contains invalid line");
-                }
+                IniSection section = new();
+                section.Name = line[1..^1];
+                model.Sections?.Add(section);
             }
-            return model;
-        }
-        public static void WriteToPath(string path, IniFile model)
-        {
-            var str = WriteToString(model);
-            File.WriteAllText(path, str);
-        }
-        private static string WriteToString(IniFile model)
-        {
-            var sb = new StringBuilder();
-            foreach (var section in model.Sections)
+            else if (line.Contains('='))
             {
-                sb.AppendLine($"[{section.Name}]");
-                foreach (var comment in section.Comments)
-                {
-                    sb.AppendLine($";{comment.Comment}");
-                }
-                foreach (var data in section.Data)
-                {
-                    sb.AppendLine($"{data.Key}={data.Value}");
-                }
+                var key = new IniData();
+                var splitKeyValue = line.Split('=');
+                key.Key = splitKeyValue[0];
+                key.Value = splitKeyValue[1];
+                model.Sections?.Last().Data?.Add(key);
             }
-            return sb.ToString();
+            else if (line.StartsWith(';'))
+            {
+                IniComment comment = new();
+                comment.Comment = line.Replace(";", "").Trim();
+                comment.LineNo = i;
+                model.Sections?.Last().Comments?.Add(comment);
+            }
+            else if (line == Environment.NewLine || line == "\t" || line == "\r" || line == "\n" || line == "")
+            {
+            }
+            else
+            {
+                throw new Exception("Ini file contains invalid line");
+            }
         }
-    }
-    public class IniFile
-    {
-        public List<IniSection> Sections { get; set; } = new();
-    }
-    public class IniSection
-    {
-        public string? Name { get; set; }
-        public List<IniData> Data { get; set; } = new();
-        public List<IniComment> Comments { get; set; } = new();
 
+        return model;
     }
-    public class IniData
-    {
-        public string? Key { get; set; }
-        public string? Value { get; set; }
-    }
-    public class IniComment
-    {
-        public int LineNo { get; set; } = -1;
-        public string? Comment { get; set; }
 
+    public static void WriteToPath(string path, IniFile model)
+    {
+        var str = WriteToString(model);
+        File.WriteAllText(path, str);
     }
+
+    private static string WriteToString(IniFile model)
+    {
+        var sb = new StringBuilder();
+        foreach (var section in model.Sections)
+        {
+            sb.AppendLine($"[{section.Name}]");
+            foreach (var comment in section.Comments) sb.AppendLine($";{comment.Comment}");
+            foreach (var data in section.Data) sb.AppendLine($"{data.Key}={data.Value}");
+        }
+
+        return sb.ToString();
+    }
+}
+
+public class IniFile
+{
+    public List<IniSection> Sections { get; set; } = new();
+}
+
+public class IniSection
+{
+    public string? Name { get; set; }
+    public List<IniData> Data { get; set; } = new();
+    public List<IniComment> Comments { get; set; } = new();
+}
+
+public class IniData
+{
+    public string? Key { get; set; }
+    public string? Value { get; set; }
+}
+
+public class IniComment
+{
+    public int LineNo { get; set; } = -1;
+    public string? Comment { get; set; }
 }

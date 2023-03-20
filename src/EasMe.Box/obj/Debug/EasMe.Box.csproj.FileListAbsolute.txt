@@ -16,3 +16,9 @@ C:\Users\kkass\source\repos\easme-lib\src\EasMe.Box\obj\Debug\EasMe.Box.csproj.A
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Box\obj\Debug\EasMe.Box.csproj.CoreCompileInputs.cache
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Box\obj\Debug\EasMe.MessageBox.dll
 C:\Users\kkass\source\repos\easme-lib\src\EasMe.Box\obj\Debug\EasMe.MessageBox.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Box\bin\Debug\EasMe.MessageBox.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Box\bin\Debug\EasMe.MessageBox.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Box\obj\Debug\EasMe.Box.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Box\obj\Debug\EasMe.Box.csproj.CoreCompileInputs.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Box\obj\Debug\EasMe.MessageBox.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Box\obj\Debug\EasMe.MessageBox.pdb
