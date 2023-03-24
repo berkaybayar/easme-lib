@@ -1,5 +1,5 @@
 ﻿using EasMe.Logging.Internal;
-using Microsoft.Extensions.Logging;
+
 
 namespace EasMe.Logging;
 
@@ -45,26 +45,26 @@ public static class EasLogConsole
         Console.ResetColor();
     }
 
-    public static void Log(LogLevel level, string message)
+    public static void Log(EasLogLevel level, string message)
     {
         switch (level)
         {
-            case LogLevel.Error:
+            case EasLogLevel.Error:
                 Log(message, ErrorColor);
                 break;
-            case LogLevel.Warning:
+            case EasLogLevel.Warning:
                 Log(message, WarningColor);
                 break;
-            case LogLevel.Information:
+            case EasLogLevel.Information:
                 Log(message, InfoColor);
                 break;
-            case LogLevel.Debug:
+            case EasLogLevel.Debug:
                 Log(message, DebugColor);
                 break;
-            case LogLevel.Trace:
+            case EasLogLevel.Trace:
                 Log(message, TraceColor);
                 break;
-            case LogLevel.Critical:
+            case EasLogLevel.Fatal:
                 Log(message, FatalColor);
                 break;
             default:
@@ -73,27 +73,27 @@ public static class EasLogConsole
         }
     }
 
-    public static void Log(LogLevel severity, string message, params object[] param)
+    public static void Log(EasLogLevel severity, string message, params object[] param)
     {
         var logStr = param.ToLogString(severity) + " " + message;
         switch (severity)
         {
-            case LogLevel.Error:
+            case EasLogLevel.Error:
                 Log(logStr, ErrorColor);
                 break;
-            case LogLevel.Warning:
+            case EasLogLevel.Warning:
                 Log(logStr, WarningColor);
                 break;
-            case LogLevel.Information:
+            case EasLogLevel.Information:
                 Log(logStr, InfoColor);
                 break;
-            case LogLevel.Trace:
+            case EasLogLevel.Trace:
                 Log(logStr, TraceColor);
                 break;
-            case LogLevel.Debug:
+            case EasLogLevel.Debug:
                 Log(logStr, DebugColor);
                 break;
-            case LogLevel.Critical:
+            case EasLogLevel.Fatal:
                 Log(logStr, FatalColor);
                 break;
             default:
@@ -104,31 +104,31 @@ public static class EasLogConsole
 
     public static void Error(string message, params string[] param)
     {
-        Log(LogLevel.Error, message, param);
+        Log(EasLogLevel.Error, message, param);
     }
 
     public static void Fatal(string message, params string[] param)
     {
-        Log(LogLevel.Critical, message, param);
+        Log(EasLogLevel.Fatal, message, param);
     }
 
     public static void Warn(string message, params string[] param)
     {
-        Log(LogLevel.Warning, message, param);
+        Log(EasLogLevel.Warning, message, param);
     }
 
     public static void Info(string message, params string[] param)
     {
-        Log(LogLevel.Information, message, param);
+        Log(EasLogLevel.Information, message, param);
     }
 
     public static void Debug(string message, params string[] param)
     {
-        Log(LogLevel.Debug, message, param);
+        Log(EasLogLevel.Debug, message, param);
     }
 
     public static void Trace(string message, params string[] param)
     {
-        Log(LogLevel.Trace, message, param);
+        Log(EasLogLevel.Trace, message, param);
     }
 }

@@ -32,7 +32,7 @@ public interface IResult
 
     string ErrorCode { get; init; }
 
-    string[] Errors { get; init; }
+    List<string> Errors { get; init; }
 
     ResultSeverity Severity { get; init; }
 

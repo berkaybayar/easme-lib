@@ -1,43 +1,43 @@
 ﻿using EasMe.Result;
-using Microsoft.Extensions.Logging;
+
 
 namespace EasMe.Logging.Internal;
 
 internal static class InternalExtensions
 {
-    internal static LogLevel ToLogLevel(this ResultSeverity resultSeverity)
+    internal static EasLogLevel ToEasLogLevel(this ResultSeverity resultSeverity)
     {
         switch (resultSeverity)
         {
             case ResultSeverity.Info:
-                return LogLevel.Information;
+                return EasLogLevel.Information;
             case ResultSeverity.Warn:
-                return LogLevel.Warning;
+                return EasLogLevel.Warning;
             case ResultSeverity.Error:
-                return LogLevel.Error;
+                return EasLogLevel.Error;
             case ResultSeverity.Fatal:
-                return LogLevel.Critical;
+                return EasLogLevel.Fatal;
             default:
-                return LogLevel.None;
+                return EasLogLevel.Off;
         }
     }
 
-    internal static LogLevel ToLogLevel(this string logLevel)
+    internal static EasLogLevel ToEasLogLevel(this string logLevel)
     {
         switch (logLevel)
         {
             case "Debug":
-                return LogLevel.Debug;
+                return EasLogLevel.Debug;
             case "Information":
-                return LogLevel.Information;
+                return EasLogLevel.Information;
             case "Warning":
-                return LogLevel.Warning;
+                return EasLogLevel.Warning;
             case "Error":
-                return LogLevel.Error;
-            case "Critical":
-                return LogLevel.Critical;
+                return EasLogLevel.Error;
+            case "Fatal":
+                return EasLogLevel.Fatal;
             default:
-                return LogLevel.None;
+                return EasLogLevel.Off;
         }
     }
 
@@ -61,10 +61,16 @@ internal static class InternalExtensions
         return string.Empty;
     }
 
-    internal static string ToLogString(this object[] param, LogLevel logLevel)
+    internal static string ToLogString(this object[] param, EasLogLevel logLevel)
     {
         var paramStr = $"[{logLevel.ToString().ToUpper()}] [{DateTime.Now:MM/dd/yyyy HH:mm:ss}]";
         foreach (var item in param) paramStr += " [" + item + "]";
         return paramStr;
+    }
+
+    internal static bool IsLoggable(this EasLogLevel severity)
+    {
+        var list = EasLogHelper.GetLoggableLevels();
+        return list.Contains(severity);
     }
 }

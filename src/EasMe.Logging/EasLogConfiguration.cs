@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace EasMe.Logging;
+﻿namespace EasMe.Logging;
 
 public class EasLogConfiguration
 {
@@ -11,7 +9,7 @@ public class EasLogConfiguration
     /// <summary>
     ///     Gets or sets a value indicating whether to log the request body.
     /// </summary>
-    public LogLevel MinimumLogLevel { get; set; } = LogLevel.Information;
+    public EasLogLevel MinimumLogLevel { get; set; } = EasLogLevel.Information;
 
     /// <summary>
     ///     Set logs folder path to be stored. Defualt is current directory, adds folder named Logs.

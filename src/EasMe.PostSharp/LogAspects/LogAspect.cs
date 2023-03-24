@@ -1,6 +1,5 @@
 ﻿using EasMe.Extensions;
 using EasMe.Logging;
-using Microsoft.Extensions.Logging;
 using PostSharp.Aspects;
 using PostSharp.Extensibility;
 
@@ -24,7 +23,7 @@ public class LogAspect : OnMethodBoundaryAspect
 
     public override void OnEntry(MethodExecutionArgs args)
     {
-        if (!_logger.IsLogLevelEnabled(LogLevel.Information)) return;
+        if (!_logger.IsLogLevelEnabled(EasLogLevel.Information)) return;
 
         try
         {

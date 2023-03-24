@@ -9,18 +9,53 @@ public static class ExtensionMethods
     /// </summary>
     /// <param name="result"></param>
     /// <param name="errorCode"></param>
-    /// <param name="includeErrorArray"></param>
+    /// <param name="severity"></param>
     /// <returns></returns>
-    public static Result Combine(this IEnumerable<Result> result, string errorCode,
-        bool includeErrorArrayOfErrors = true)
+    [Obsolete]
+    public static Result Combine(
+        this IEnumerable<Result> result,
+        string errorCode
+    )
+    {
+        return result.CombineAll(errorCode);
+    }
+    public static Result CombineErrorArrays(
+        this IEnumerable<Result> result, 
+        string errorCode,
+        ResultSeverity severity = ResultSeverity.Warn
+        )
     {
         var list = result.ToList();
         var isAllSuccess = list.All(x => x.IsSuccess);
-        var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode);
-        if (!includeErrorArrayOfErrors)
-            return Result.Create(isAllSuccess, ResultSeverity.Warn, errorCode, errorArray.ToArray());
-        var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToArray();
-        errorArray = errorArray.Concat(errorArrayOfErrors);
-        return Result.Create(isAllSuccess, ResultSeverity.Warn, errorCode, errorArray.ToArray());
+        //var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToArray();
+        var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
+        return Result.Create(isAllSuccess, severity, errorCode, errorArrayOfErrors);
     }
+    public static Result CombineAll(
+        this IEnumerable<Result> result,
+        string errorCode,
+        ResultSeverity severity = ResultSeverity.Warn
+    )
+    {
+        var list = result.ToList();
+        var isAllSuccess = list.All(x => x.IsSuccess);
+        var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToList();
+        var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
+        errorArray = errorArray.Concat(errorArrayOfErrors).ToList();
+        return Result.Create(isAllSuccess, severity, errorCode, errorArray);
+    }
+    public static Result CombineErrorCodes(
+        this IEnumerable<Result> result,
+        string errorCode,
+        ResultSeverity severity = ResultSeverity.Warn
+    )
+    {
+        var list = result.ToList();
+        var isAllSuccess = list.All(x => x.IsSuccess);
+        var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToList();
+        //var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToArray();
+        //errorArray = errorArray.Concat(errorArrayOfErrors).ToArray();
+        return Result.Create(isAllSuccess, severity, errorCode, errorArray);
+    }
+
 }

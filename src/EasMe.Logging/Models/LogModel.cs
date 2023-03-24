@@ -1,6 +1,6 @@
 ﻿using EasMe.Logging.Internal;
 using EasMe.Models;
-using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 
 namespace EasMe.Logging.Models;
@@ -11,12 +11,12 @@ public class LogModel
     {
     }
 
-    private LogModel(LogLevel logLevel, string source, object log, Exception? exception = null, WebInfo? webInfo = null)
+    private LogModel(EasLogLevel logLevel, string source, object log, Exception? exception = null, WebInfo? webInfo = null)
     {
         Level = logLevel;
         Source = source;
         Log = log;
-        if (EasLogFactory.Config.TraceLogging || logLevel == LogLevel.Trace)
+        if (EasLogFactory.Config.TraceLogging || logLevel == EasLogLevel.Trace)
         {
             var traceInfo = EasLogHelper.GetTraceInfo();
             TraceMethod = traceInfo.MethodName;
@@ -31,7 +31,7 @@ public class LogModel
     }
 
     public DateTime Date { get; } = DateTime.Now;
-    public LogLevel Level { get; set; }
+    public EasLogLevel Level { get; set; }
     public string? Source { get; set; }
     public object? Log { get; set; }
 
@@ -47,7 +47,7 @@ public class LogModel
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public WebInfo? WebInfo { get; set; }
 
-    public static LogModel Create(LogLevel logLevel, string source, object log, Exception? exception = null,
+    public static LogModel Create(EasLogLevel logLevel, string source, object log, Exception? exception = null,
         WebInfo? webInfo = null)
     {
         return new LogModel(logLevel, source, log, exception, webInfo);

@@ -3,7 +3,7 @@ using EasMe.Exceptions;
 using EasMe.Extensions;
 using EasMe.Logging.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+
 
 namespace EasMe.Logging.Internal;
 
@@ -71,20 +71,16 @@ internal static class EasLogHelper
         }
     }
 
-    internal static List<LogLevel> GetLoggableLevels()
+    internal static List<EasLogLevel> GetLoggableLevels()
     {
-        var list = new List<LogLevel>();
+        var list = new List<EasLogLevel>();
         var min = EasLogFactory.Config.MinimumLogLevel;
         var num = (int)min;
-        foreach (var item in Enum.GetValues(typeof(LogLevel)))
+        foreach (var item in Enum.GetValues(typeof(EasLogLevel)))
             if ((int)item >= num)
-                list.Add((LogLevel)item);
+                list.Add((EasLogLevel)item);
         return list;
     }
 
-    internal static bool IsLoggable(this LogLevel severity)
-    {
-        var list = GetLoggableLevels();
-        return list.Contains(severity);
-    }
+
 }

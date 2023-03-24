@@ -1,7 +1,7 @@
 ﻿using EasMe.Exceptions;
 using EasMe.Extensions;
 using EasMe.Logging.Models;
-using Microsoft.Extensions.Logging;
+
 
 namespace EasMe.Logging;
 
@@ -68,7 +68,7 @@ public static class EasLogReader
     /// <param name="logLevel"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static List<LogModel> GetLogFileContent(LogLevel logLevel)
+    public static List<LogModel> GetLogFileContent(EasLogLevel logLevel)
     {
         var list = GetLogFileContent();
         return list.Where(x => x.Level == logLevel).ToList();

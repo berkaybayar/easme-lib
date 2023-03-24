@@ -9,38 +9,36 @@ namespace EasMe.Result;
 /// </summary>
 public readonly struct Result : IResult
 {
-    internal Result(bool isSuccess, ResultSeverity severity, object errCode, string[] errors)
+    internal Result(bool isSuccess, ResultSeverity severity, object errCode, List<string> errors)
     {
         ErrorCode = errCode.ToString() ?? "None";
         Severity = severity;
-        Errors = errors ?? Array.Empty<string>();
         IsSuccess = isSuccess;
         ExceptionInfo = null;
+        Errors = errors;
     }
 
     internal Result(bool isSuccess, ResultSeverity severity, object errCode)
     {
         ErrorCode = errCode.ToString() ?? "None";
         Severity = severity;
-        Errors = Array.Empty<string>();
         IsSuccess = isSuccess;
         ExceptionInfo = null;
     }
 
-    internal Result(Exception exception, ResultSeverity severity, string[] errors)
+    internal Result(Exception exception, ResultSeverity severity, List<string> errors)
     {
         ErrorCode = "ExceptionOccured";
         Severity = severity;
-        Errors = errors ?? Array.Empty<string>();
         IsSuccess = false;
         ExceptionInfo = new CleanException(exception);
+        Errors = errors;
     }
 
     internal Result(Exception exception, ResultSeverity severity = ResultSeverity.Fatal)
     {
         ErrorCode = "ExceptionOccured";
         Severity = severity;
-        Errors = Array.Empty<string>();
         IsSuccess = false;
         ExceptionInfo = new CleanException(exception);
     }
@@ -48,7 +46,7 @@ public readonly struct Result : IResult
     public bool IsSuccess { get; init; }
     public bool IsFailure => !IsSuccess;
     public string ErrorCode { get; init; } = "UnsetError";
-    public string[] Errors { get; init; } = Array.Empty<string>();
+    public List<string> Errors { get; init; } = new();
     public ResultSeverity Severity { get; init; }
     public CleanException? ExceptionInfo { get; init; }
 
@@ -69,9 +67,20 @@ public readonly struct Result : IResult
     }
     //CREATE METHODS
 
+    public Result AddError(string error)
+    {
+        Errors.Add(error);
+        return this;
+    }
+
+    public Result WithNewErrorCode(string errorCode)
+    {
+        return new Result(IsSuccess, Severity, errorCode, Errors);
+    }
+
     #region Success
 
-    public static Result Create(bool isSuccess, ResultSeverity severity, object errCode, string[] errors)
+    public static Result Create(bool isSuccess, ResultSeverity severity, object errCode, List<string> errors)
     {
         return new Result(isSuccess, severity, errCode, errors);
     }
@@ -90,7 +99,7 @@ public readonly struct Result : IResult
                 : errorCode);
     }
 
-    public static ResultData<T> SuccessData<T>(T data, string? errorCode, string[] errors)
+    public static ResultData<T> SuccessData<T>(T data, string? errorCode, List<string> errors)
     {
         return new ResultData<T>(data,
             ResultSeverity.Info,
@@ -100,7 +109,7 @@ public readonly struct Result : IResult
             errors);
     }
 
-    public static Result Success(string errorCode, string[] errors)
+    public static Result Success(string errorCode, List<string> errors)
     {
         return new Result(true, ResultSeverity.Info, string.IsNullOrEmpty(errorCode) ? "Success" : errorCode, errors);
     }
@@ -114,50 +123,50 @@ public readonly struct Result : IResult
         return new Result(exception, severity);
     }
 
-    public static Result Exception(Exception exception, ResultSeverity severity, string[] errors)
+    public static Result Exception(Exception exception, ResultSeverity severity, List<string> errors)
     {
         return new Result(exception, severity, errors);
     }
 
     public static Result Exception(Exception exception, ResultSeverity severity, string error1)
     {
-        var errors = new[] { error1 };
+        var errors = new List<string>() { error1 };
         return new Result(exception, severity, errors);
     }
 
     public static Result Exception(Exception exception, ResultSeverity severity, string error1, string error2)
     {
-        var errors = new[] { error1, error2 };
+        var errors = new List<string>() { error1, error2 };
         return new Result(exception, severity, errors);
     }
 
     public static Result Exception(Exception exception, ResultSeverity severity, string error1, string error2,
         string error3)
     {
-        var errors = new[] { error1, error2, error3 };
+        var errors = new List<string>() { error1, error2, error3 };
         return new Result(exception, severity, errors);
     }
 
-    public static Result Exception(Exception exception, string[] errors)
+    public static Result Exception(Exception exception, List<string> errors)
     {
         return new Result(exception, ResultSeverity.Fatal, errors);
     }
 
     public static Result Exception(Exception exception, string error1)
     {
-        var errors = new[] { error1 };
+        var errors = new List<string>() { error1 };
         return new Result(exception, ResultSeverity.Fatal, errors);
     }
 
     public static Result Exception(Exception exception, string error1, string error2)
     {
-        var errors = new[] { error1, error2 };
+        var errors = new List<string>() { error1, error2 };
         return new Result(exception, ResultSeverity.Fatal, errors);
     }
 
     public static Result Exception(Exception exception, string error1, string error2, string error3)
     {
-        var errors = new[] { error1, error2, error3 };
+        var errors = new List<string>() { error1, error2, error3 };
         return new Result(exception, ResultSeverity.Fatal, errors);
     }
 
@@ -170,26 +179,26 @@ public readonly struct Result : IResult
         return new Result(false, ResultSeverity.Warn, errorCode);
     }
 
-    public static Result Warn(object errorCode, string[] errors)
+    public static Result Warn(object errorCode, List<string> errors)
     {
         return new Result(false, ResultSeverity.Warn, errorCode, errors);
     }
 
     public static Result Warn(object errorCode, string error1)
     {
-        var errors = new[] { error1 };
+        var errors = new List<string>() { error1 };
         return new Result(false, ResultSeverity.Warn, errorCode, errors);
     }
 
     public static Result Warn(object errorCode, string error1, string error2)
     {
-        var errors = new[] { error1, error2 };
+        var errors = new List<string>() { error1, error2 };
         return new Result(false, ResultSeverity.Warn, errorCode, errors);
     }
 
     public static Result Warn(object errorCode, string error1, string error2, string error3)
     {
-        var errors = new[] { error1, error2, error3 };
+        var errors = new List<string>() { error1, error2, error3 };
         return new Result(false, ResultSeverity.Warn, errorCode, errors);
     }
 
@@ -202,26 +211,26 @@ public readonly struct Result : IResult
         return new Result(false, ResultSeverity.Fatal, errorCode);
     }
 
-    public static Result Fatal(object errorCode, string[] errors)
+    public static Result Fatal(object errorCode, List<string> errors)
     {
         return new Result(false, ResultSeverity.Fatal, errorCode, errors);
     }
 
     public static Result Fatal(object errorCode, string error1)
     {
-        var errors = new[] { error1 };
+        var errors = new List<string>() { error1 };
         return new Result(false, ResultSeverity.Fatal, errorCode, errors);
     }
 
     public static Result Fatal(object errorCode, string error1, string error2)
     {
-        var errors = new[] { error1, error2 };
+        var errors = new List<string>() { error1, error2 };
         return new Result(false, ResultSeverity.Fatal, errorCode, errors);
     }
 
     public static Result Fatal(object errorCode, string error1, string error2, string error3)
     {
-        var errors = new[] { error1, error2, error3 };
+        var errors = new List<string>() { error1, error2, error3 };
         return new Result(false, ResultSeverity.Fatal, errorCode, errors);
     }
 
@@ -234,26 +243,26 @@ public readonly struct Result : IResult
         return new Result(false, ResultSeverity.Error, errorCode);
     }
 
-    public static Result Error(object errorCode, string[] errors)
+    public static Result Error(object errorCode, List<string> errors)
     {
         return new Result(false, ResultSeverity.Error, errorCode, errors);
     }
 
     public static Result Error(object errorCode, string error1)
     {
-        var errors = new[] { error1 };
+        var errors = new List<string>() { error1 };
         return new Result(false, ResultSeverity.Error, errorCode, errors);
     }
 
     public static Result Error(object errorCode, string error1, string error2)
     {
-        var errors = new[] { error1, error2 };
+        var errors = new List<string>() { error1, error2 };
         return new Result(false, ResultSeverity.Error, errorCode, errors);
     }
 
     public static Result Error(object errorCode, string error1, string error2, string error3)
     {
-        var errors = new[] { error1, error2, error3 };
+        var errors = new List<string>() { error1, error2, error3 };
         return new Result(false, ResultSeverity.Error, errorCode, errors);
     }
 
@@ -271,7 +280,7 @@ public readonly struct Result : IResult
         return new Result(false, ResultSeverity.Error, "Forbidden");
     }
 
-    public static Result ValidationError(string[] errors)
+    public static Result ValidationError(List<string> errors)
     {
         return new Result(false, ResultSeverity.Error, EasMe.Result.ErrorCode.ValidationError, errors);
     }
@@ -280,49 +289,49 @@ public readonly struct Result : IResult
 
     #region Multiple-Error
 
-    public static Result MultipleErrors(object errorCode, string[] errors)
+    public static Result MultipleErrors(object errorCode, List<string> errors)
     {
         return new Result(false, ResultSeverity.Error, errorCode, errors);
     }
 
     public static Result MultipleErrors(object errorCode, string error1)
     {
-        var errors = new[] { error1 };
+        var errors = new List<string>() { error1 };
         return new Result(false, ResultSeverity.Error, errorCode, errors);
     }
 
     public static Result MultipleErrors(object errorCode, string error1, string error2)
     {
-        var errors = new[] { error1, error2 };
+        var errors = new List<string>() { error1, error2 };
         return new Result(false, ResultSeverity.Error, errorCode, errors);
     }
 
     public static Result MultipleErrors(object errorCode, string error1, string error2, string error3)
     {
-        var errors = new[] { error1, error2, error3 };
+        var errors = new List<string>() { error1, error2, error3 };
         return new Result(false, ResultSeverity.Error, errorCode, errors);
     }
 
-    public static Result MultipleErrors(string[] errors)
+    public static Result MultipleErrors(List<string> errors)
     {
         return new Result(false, ResultSeverity.Error, "MultipleErrors", errors);
     }
 
     public static Result MultipleErrors(string error1)
     {
-        var errors = new[] { error1 };
+        var errors = new List<string>() { error1 };
         return new Result(false, ResultSeverity.Error, "MultipleErrors", errors);
     }
 
     public static Result MultipleErrors(string error1, string error2)
     {
-        var errors = new[] { error1, error2 };
+        var errors = new List<string>() { error1, error2 };
         return new Result(false, ResultSeverity.Error, "MultipleErrors", errors);
     }
 
     public static Result MultipleErrors(string error1, string error2, string error3)
     {
-        var errors = new[] { error1, error2, error3 };
+        var errors = new List<string>() { error1, error2, error3 };
         return new Result(false, ResultSeverity.Error, "MultipleErrors", errors);
     }
 

@@ -1,13 +1,12 @@
 ﻿using System.Diagnostics;
-using Microsoft.Extensions.Logging;
+
 
 namespace EasMe.Logging;
 
 public static class EasLogFactory
 {
-    public static readonly IEasLog StaticLogger = CreateLogger();
+    public static readonly IEasLog StaticLogger = CreateLogger("StaticLogger");
     private static bool _isConfigured;
-
     internal static EasLogConfiguration Config { get; set; } = new();
 
     public static IEasLog CreateLogger()
@@ -21,7 +20,16 @@ public static class EasLogFactory
     {
         return new EasLog(name);
     }
-
+    public static IEasLog Create(string folderPath)
+    {
+        var methodInfo = new StackTrace().GetFrame(1)?.GetMethod();
+        var className = methodInfo?.ReflectedType?.FullName;
+        return new EasLog(className ?? "Sys",folderPath);
+    }
+    public static IEasLog Create(string name, string folderPath)
+    {
+        return new EasLog(name, folderPath);
+    }
     /// <summary>
     ///     EasLog logging configuration. Call this method in your startup. If you don't call it it will use default values.
     /// </summary>
@@ -36,7 +44,7 @@ public static class EasLogFactory
     }
 
 
-    public static void ConfigureTraceDefault(bool isWeb)
+    public static void ConfigureDebugDefault(bool isWeb)
     {
         if (_isConfigured) throw new InvalidOperationException("EasLog configuration already loaded.");
         Config = new EasLogConfiguration
@@ -44,7 +52,7 @@ public static class EasLogFactory
             ConsoleAppender = true,
             ExceptionHideSensitiveInfo = false,
             LogFileName = "Trace_",
-            MinimumLogLevel = LogLevel.Trace,
+            MinimumLogLevel = EasLogLevel.Debug,
             WebInfoLogging = isWeb,
             TraceLogging = true,
             SeparateLogLevelToFolder = false

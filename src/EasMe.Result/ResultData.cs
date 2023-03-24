@@ -9,27 +9,25 @@ namespace EasMe.Result;
 /// </summary>
 public readonly struct ResultData<T>
 {
-    internal ResultData(T? data, ResultSeverity severity, object errCode, string[] errors = default)
-    {
-        ErrorCode = errCode.ToString() ?? "None";
-        Severity = severity;
-        Data = data;
-        Errors = errors;
-        IsSuccess = data != null;
-        Exception = null;
-    }
-
     internal ResultData(T? data, ResultSeverity severity, object errCode)
     {
         ErrorCode = errCode.ToString() ?? "None";
         Severity = severity;
         Data = data;
-        Errors = Array.Empty<string>();
         IsSuccess = data != null;
         Exception = null;
     }
 
-    internal ResultData(Exception exception, ResultSeverity severity, string[] errors)
+    internal ResultData(T? data, ResultSeverity severity, object errCode, List<string> errors)
+    {
+        ErrorCode = errCode.ToString() ?? "None";
+        Severity = severity;
+        Data = data;
+        IsSuccess = data != null;
+        Exception = null;
+        Errors = errors;
+    }
+    internal ResultData(Exception exception, ResultSeverity severity, List<string> errors)
     {
         ErrorCode = "ExceptionOccured";
         Severity = severity;
@@ -44,7 +42,6 @@ public readonly struct ResultData<T>
         ErrorCode = "ExceptionOccured";
         Severity = severity;
         Data = default;
-        Errors = Array.Empty<string>();
         IsSuccess = false;
         Exception = new CleanException(exception);
     }
@@ -54,7 +51,7 @@ public readonly struct ResultData<T>
     public bool IsSuccess { get; init; }
     public bool IsFailure => !IsSuccess;
     public string ErrorCode { get; init; } = "UnsetError";
-    public string[] Errors { get; init; } = Array.Empty<string>();
+    public List<string> Errors { get; init; } = new();
     public T? Data { get; init; }
 
 
