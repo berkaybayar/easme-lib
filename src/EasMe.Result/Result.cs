@@ -336,4 +336,6 @@ public readonly struct Result : IResult
     }
 
     #endregion
+
+    
 }
