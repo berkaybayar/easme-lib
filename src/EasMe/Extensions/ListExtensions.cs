@@ -11,7 +11,10 @@ public static class ListExtensions
         foreach (var item in list)
             action(item);
     }
-
+    public static string JoinString<T>(this List<T> list, string separator)
+    {
+        return string.Join(separator, list);
+    }
     public static List<TResult> ForEachResult<T, TResult>(this IEnumerable<T> list, Func<T, TResult> action)
     {
         var result = new List<TResult>();

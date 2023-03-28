@@ -21,6 +21,7 @@ public static class StringExtensions
         "y"
     };
 
+
     public static string RemoveText(this string value, string removeText)
     {
         return value.Replace(removeText, string.Empty);

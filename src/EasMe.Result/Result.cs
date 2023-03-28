@@ -1,4 +1,5 @@
 ﻿using EasMe.Models;
+using System;
 
 namespace EasMe.Result;
 
@@ -9,12 +10,20 @@ namespace EasMe.Result;
 /// </summary>
 public readonly struct Result : IResult
 {
-    internal Result(bool isSuccess, ResultSeverity severity, object errCode, List<string> errors)
+    internal Result(bool isSuccess, ResultSeverity severity, object errCode, List<string> errors,Exception ex)
     {
         ErrorCode = errCode.ToString() ?? "None";
         Severity = severity;
         IsSuccess = isSuccess;
-        ExceptionInfo = null;
+        ExceptionInfo = new CleanException(ex);
+        Errors = errors;
+    }
+    internal Result(bool isSuccess, ResultSeverity severity, object errCode, List<string> errors, CleanException? ex = null)
+    {
+        ErrorCode = errCode.ToString() ?? "None";
+        Severity = severity;
+        IsSuccess = isSuccess;
+        ExceptionInfo = ex;
         Errors = errors;
     }
 
@@ -28,7 +37,7 @@ public readonly struct Result : IResult
 
     internal Result(Exception exception, ResultSeverity severity, List<string> errors)
     {
-        ErrorCode = "ExceptionOccured";
+        ErrorCode = "ExceptionOccurred";
         Severity = severity;
         IsSuccess = false;
         ExceptionInfo = new CleanException(exception);
@@ -37,12 +46,18 @@ public readonly struct Result : IResult
 
     internal Result(Exception exception, ResultSeverity severity = ResultSeverity.Fatal)
     {
-        ErrorCode = "ExceptionOccured";
+        ErrorCode = "ExceptionOccurred";
         Severity = severity;
         IsSuccess = false;
         ExceptionInfo = new CleanException(exception);
     }
-
+    internal Result(Exception exception, string errorCode,ResultSeverity severity = ResultSeverity.Fatal)
+    {
+        ErrorCode = errorCode;
+        Severity = severity;
+        IsSuccess = false;
+        ExceptionInfo = new CleanException(exception);
+    }
     public bool IsSuccess { get; init; }
     public bool IsFailure => !IsSuccess;
     public string ErrorCode { get; init; } = "UnsetError";
@@ -75,15 +90,31 @@ public readonly struct Result : IResult
 
     public Result WithNewErrorCode(string errorCode)
     {
-        return new Result(IsSuccess, Severity, errorCode, Errors);
+        return new Result(IsSuccess, Severity, errorCode, Errors, ExceptionInfo);
     }
 
-    #region Success
+    public Result WithNewSeverity(ResultSeverity severity)
+    {
+        return new Result(IsSuccess, severity, ErrorCode, Errors, ExceptionInfo);
+    }
 
+    public Result WithNewErrors(List<string> errors)
+    {
+        return new Result(IsSuccess, Severity, ErrorCode, errors, ExceptionInfo);
+    }
+
+    public Result WithNewErrors(params string[] errors)
+    {
+        return new Result(IsSuccess, Severity, ErrorCode, errors.ToList(), ExceptionInfo);
+    }
     public static Result Create(bool isSuccess, ResultSeverity severity, object errCode, List<string> errors)
     {
         return new Result(isSuccess, severity, errCode, errors);
     }
+
+
+    #region Success
+
 
     public static Result Success(string errorCode = "")
     {
@@ -112,6 +143,10 @@ public readonly struct Result : IResult
     public static Result Success(string errorCode, List<string> errors)
     {
         return new Result(true, ResultSeverity.Info, string.IsNullOrEmpty(errorCode) ? "Success" : errorCode, errors);
+    }
+    public static Result Success(List<string> errors)
+    {
+        return new Result(true, ResultSeverity.Info, "Success", errors);
     }
 
     #endregion

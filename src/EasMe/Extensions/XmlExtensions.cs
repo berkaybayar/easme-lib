@@ -21,7 +21,21 @@ public static class XmlExtensions
         var item = (T?)xmlSerializer.Deserialize(reader);
         return item;
     }
-
+    /// <summary>
+    ///     Deserializes given XElement to T type object.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="xElement"></param>
+    /// <returns></returns>
+    /// <exception cref="EasException"></exception>
+    public static T? XmlDeserialize<T>(this string xmlText)
+    {
+        StringReader reader = new(xmlText.Replace("True", "true").Replace("False", "false"));
+        XmlSerializer xmlSerializer = new(typeof(T));
+        var item = (T?)xmlSerializer.Deserialize(reader);
+        return item;
+        
+    }
     /// <summary>
     ///     Deserializes given IEnumerable of XElement to T type object.
     /// </summary>
