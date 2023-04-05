@@ -1,4 +1,5 @@
 ﻿using EasMe.Models;
+using Newtonsoft.Json;
 
 namespace EasMe.Result;
 
@@ -9,6 +10,8 @@ namespace EasMe.Result;
 /// </summary>
 public readonly struct ResultData<T>
 {
+    #region CONSTRUCTORS
+
     internal ResultData(T? data, ResultSeverity severity, object errCode)
     {
         ErrorCode = errCode.ToString() ?? "None";
@@ -27,6 +30,7 @@ public readonly struct ResultData<T>
         Exception = null;
         Errors = errors;
     }
+
     internal ResultData(Exception exception, ResultSeverity severity, List<string> errors)
     {
         ErrorCode = "ExceptionOccured";
@@ -46,14 +50,25 @@ public readonly struct ResultData<T>
         Exception = new CleanException(exception);
     }
 
+    #endregion
+
+    #region PROPERTIES
+
     public ResultSeverity Severity { get; init; }
-    public CleanException? Exception { get; init; }
     public bool IsSuccess { get; init; }
     public bool IsFailure => !IsSuccess;
     public string ErrorCode { get; init; } = "UnsetError";
     public List<string> Errors { get; init; } = new();
+
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public T? Data { get; init; }
 
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public CleanException? Exception { get; init; }
+
+    #endregion
+
+    #region OPERATORS
 
     public static implicit operator T?(ResultData<T> res)
     {
@@ -87,8 +102,19 @@ public readonly struct ResultData<T>
         return new ResultData<T>(default, result.Severity, result.ErrorCode);
     }
 
+    #endregion
+
+    #region MethodConverters
+
     public Result ToResult()
     {
         return new Result(IsSuccess, Severity, ErrorCode);
     }
+
+    public ResultData<T> ToNew(T? data)
+    {
+        return new ResultData<T>(data, Severity, Errors, Errors);
+    }
+
+    #endregion
 }

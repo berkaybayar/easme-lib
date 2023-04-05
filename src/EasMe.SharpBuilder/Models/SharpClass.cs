@@ -4,7 +4,7 @@ public class SharpClass
 {
     public string AccessModifierString { get; set; } = "public";
     public string Name { get; set; }
-    public List<SharpProperty> Properties { get; set; } = new List<SharpProperty>();
+    public List<SharpProperty> Properties { get; set; } = new();
     public bool IsStatic { get; set; } = false;
     public bool IsPartial { get; set; } = false;
     public bool IsAbstract { get; set; } = false;

@@ -8,14 +8,7 @@ namespace EasMe;
  */
 public static class HttpContextHelper
 {
-    private static readonly HttpContextAccessor? _accessor = new();
+    private static readonly HttpContextAccessor? Accessor = new();
 
-    public static HttpContext? Current
-    {
-        get
-        {
-            if (_accessor == null) return null;
-            return _accessor.HttpContext;
-        }
-    }
+    public static HttpContext? Current => Accessor?.HttpContext;
 }

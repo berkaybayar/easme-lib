@@ -1,6 +1,5 @@
 ﻿using EasMe.Logging.Internal;
 using EasMe.Models;
-
 using Newtonsoft.Json;
 
 namespace EasMe.Logging.Models;
@@ -11,7 +10,8 @@ public class LogModel
     {
     }
 
-    private LogModel(EasLogLevel logLevel, string source, object log, Exception? exception = null, WebInfo? webInfo = null)
+    private LogModel(EasLogLevel logLevel, string source, object log, Exception? exception = null,
+        WebInfo? webInfo = null)
     {
         Level = logLevel;
         Source = source;

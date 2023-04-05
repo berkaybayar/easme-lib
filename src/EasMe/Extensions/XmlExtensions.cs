@@ -21,6 +21,7 @@ public static class XmlExtensions
         var item = (T?)xmlSerializer.Deserialize(reader);
         return item;
     }
+
     /// <summary>
     ///     Deserializes given XElement to T type object.
     /// </summary>
@@ -34,8 +35,8 @@ public static class XmlExtensions
         XmlSerializer xmlSerializer = new(typeof(T));
         var item = (T?)xmlSerializer.Deserialize(reader);
         return item;
-        
     }
+
     /// <summary>
     ///     Deserializes given IEnumerable of XElement to T type object.
     /// </summary>

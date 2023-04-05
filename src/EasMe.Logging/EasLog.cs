@@ -3,7 +3,6 @@ using EasMe.Logging.Internal;
 using EasMe.Logging.Models;
 using EasMe.Result;
 
-
 namespace EasMe.Logging;
 
 /// <summary>
@@ -15,21 +14,23 @@ public class EasLog : IEasLog
 
     private static readonly EasTask EasTask = new();
     private static readonly List<Exception> _exceptions = new();
+    private readonly string _folderName;
 
     internal string _LogSource;
-    private readonly string _folderName;
 
     internal EasLog(string source, string folderName)
     {
-        if(folderName.IsNullOrEmpty()) folderName = EasLogFactory.Config.LogFolderPath;
+        if (folderName.IsNullOrEmpty()) folderName = EasLogFactory.Config.LogFolderPath;
         _LogSource = source;
         _folderName = folderName;
     }
+
     internal EasLog(string source)
     {
         _LogSource = source;
         _folderName = EasLogFactory.Config?.LogFolderPath ?? ".\\Logs";
     }
+
     public static IReadOnlyCollection<Exception> Exceptions => _exceptions;
 
 

@@ -23,16 +23,19 @@ public class SharpClassBuilder
         _sharpClass.Name = name;
         return this;
     }
+
     public SharpClassBuilder WithProperties(List<SharpProperty> properties)
     {
         _sharpClass.Properties = properties;
         return this;
     }
+
     public SharpClassBuilder WithIsStatic(bool isStatic)
     {
         _sharpClass.IsStatic = isStatic;
         return this;
     }
+
     public SharpClassBuilder WithIsPartial(bool isPartial)
     {
         _sharpClass.IsPartial = isPartial;

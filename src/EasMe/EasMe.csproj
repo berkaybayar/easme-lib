@@ -9,7 +9,7 @@
 		<Configurations>Debug;Release</Configurations>
 		<BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
 		<Platforms>AnyCPU</Platforms>
-		<Version>3.4.1.0</Version>
+		<Version>3.5</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

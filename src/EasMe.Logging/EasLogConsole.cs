@@ -1,6 +1,5 @@
 ﻿using EasMe.Logging.Internal;
 
-
 namespace EasMe.Logging;
 
 /// <summary>

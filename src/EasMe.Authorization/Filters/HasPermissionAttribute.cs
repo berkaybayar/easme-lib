@@ -58,9 +58,6 @@ public class HasPermissionAttribute : ActionFilterAttribute
             return;
         }
 
-        if (!permList.Contains(_actionCode))
-        {
-            _dbContext.Result = new ForbidResult();
-        }
+        if (!permList.Contains(_actionCode)) _dbContext.Result = new ForbidResult();
     }
 }

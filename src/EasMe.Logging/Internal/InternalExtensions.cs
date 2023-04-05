@@ -1,6 +1,5 @@
 ﻿using EasMe.Result;
 
-
 namespace EasMe.Logging.Internal;
 
 internal static class InternalExtensions

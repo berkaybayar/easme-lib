@@ -45,9 +45,9 @@ public class EasMemoryCache
         return cacheDictionary.ContainsKey(key) ? (T?)cacheDictionary[key].Value : default;
     }
 
-    public T? GetOrSet<T>(string key, Func<T> func, int expireSeconds = 60)
+    public T GetOrSet<T>(string key, Func<T> func, int expireSeconds = 60)
     {
-        if (cacheDictionary.ContainsKey(key)) return (T?)cacheDictionary[key].Value;
+        if (cacheDictionary.ContainsKey(key)) return (T)cacheDictionary[key].Value;
         var res = func();
         if (res is null) return default;
         Set(key, res, expireSeconds);

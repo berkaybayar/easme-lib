@@ -34,9 +34,8 @@ public static class EasGenerate
     /// <summary>
     ///     Generate a random string with a given length and characters. Max allowed length value is 1024.
     /// </summary>
+    /// <param name="chars"></param>
     /// <param name="length"></param>
-    /// <param name="allowedChars"></param>
-    /// <param name="onlyLetter"></param>
     /// <returns></returns>
     private static string GenerateString(string chars, int length)
     {
@@ -63,9 +62,9 @@ public static class EasGenerate
     /// <returns></returns>
     public static string GenerateRandomString(int length, bool onlyLetter = false, string allowedChars = "")
     {
-        var lowerAll = "abcdefghijklmnoprstuvwxyzq";
-        var upperAll = "ABCDEFGHIJKLMNOPRSTUVWXYZQ";
-        var digits = "0123456789";
+        const string lowerAll = "abcdefghijklmnoprstuvwxyzq";
+        const string upperAll = "ABCDEFGHIJKLMNOPRSTUVWXYZQ";
+        const string digits = "0123456789";
         string allChars;
         if (onlyLetter)
         {
@@ -84,9 +83,9 @@ public static class EasGenerate
     /// <returns></returns>
     public static long GenerateRandomNumbers(int digitCount)
     {
-        var digits = "0123456789";
+        const string digits = "0123456789";
         var random = GenerateString(digits, digitCount);
-        var RandomNumberStringAsInt32 = Convert.ToInt64(random);
-        return RandomNumberStringAsInt32;
+        var randomNumberStringAsInt32 = Convert.ToInt64(random);
+        return randomNumberStringAsInt32;
     }
 }

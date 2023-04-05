@@ -1,6 +1,5 @@
 ﻿using EasMe.Result;
 
-
 namespace EasMe.Logging;
 
 public interface IEasLog

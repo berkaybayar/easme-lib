@@ -2,7 +2,6 @@
 using EasMe.Extensions;
 using EasMe.Logging.Models;
 
-
 namespace EasMe.Logging;
 
 public static class EasLogReader

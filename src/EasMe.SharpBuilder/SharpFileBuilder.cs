@@ -5,6 +5,7 @@ namespace EasMe.SharpBuilder;
 public class SharpFileBuilder
 {
     private readonly SharpFile _sharpFile;
+
     public SharpFileBuilder()
     {
         _sharpFile = new SharpFile();
@@ -15,11 +16,13 @@ public class SharpFileBuilder
         _sharpFile.UsingList.Add(usingString);
         return this;
     }
+
     public SharpFileBuilder WithUsingList(List<string> list)
     {
         _sharpFile.UsingList = list;
         return this;
     }
+
     public SharpFileBuilder WithNameSpace(string nameSpace)
     {
         _sharpFile.NameSpace = nameSpace;
@@ -42,5 +45,4 @@ public class SharpFileBuilder
     {
         return _sharpFile;
     }
-
 }

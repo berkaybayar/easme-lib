@@ -1,5 +1,4 @@
-﻿using EasMe.Result;
-using EasMe.SharpBuilder.Models;
+﻿using EasMe.SharpBuilder.Models;
 
 namespace EasMe.SharpBuilder;
 
@@ -9,5 +8,4 @@ public static class SharpExtensions
     {
         throw new NotImplementedException();
     }
-
 }

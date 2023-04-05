@@ -9,5 +9,4 @@ public enum EasLogLevel
     Error = 3,
     Fatal = 4,
     Off = 5
-    
 }

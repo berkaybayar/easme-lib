@@ -2,7 +2,7 @@
 
 public class SharpFile
 {
-    public List<string> UsingList { get; set; } = new List<string>();
+    public List<string> UsingList { get; set; } = new();
     public string NameSpace { get; set; }
-    public List<SharpClass> Classes { get; set; } = new List<SharpClass>();
+    public List<SharpClass> Classes { get; set; } = new();
 }

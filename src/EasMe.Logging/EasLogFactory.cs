@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 
-
 namespace EasMe.Logging;
 
 public static class EasLogFactory
@@ -20,16 +19,19 @@ public static class EasLogFactory
     {
         return new EasLog(name);
     }
+
     public static IEasLog Create(string folderPath)
     {
         var methodInfo = new StackTrace().GetFrame(1)?.GetMethod();
         var className = methodInfo?.ReflectedType?.FullName;
-        return new EasLog(className ?? "Sys",folderPath);
+        return new EasLog(className ?? "Sys", folderPath);
     }
+
     public static IEasLog Create(string name, string folderPath)
     {
         return new EasLog(name, folderPath);
     }
+
     /// <summary>
     ///     EasLog logging configuration. Call this method in your startup. If you don't call it it will use default values.
     /// </summary>

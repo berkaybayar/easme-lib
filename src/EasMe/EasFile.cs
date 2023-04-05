@@ -43,7 +43,6 @@ public static class EasFile
     /// <param name="sourcePath"></param>
     /// <param name="destPath"></param>
     /// <param name="overwrite"></param>
-    /// <param name="isLoggingEnabled"></param>
     public static void MoveAll(string sourcePath, string destPath, bool overwrite)
     {
         if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);

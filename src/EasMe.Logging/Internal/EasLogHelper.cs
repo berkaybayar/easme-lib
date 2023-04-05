@@ -4,14 +4,13 @@ using EasMe.Extensions;
 using EasMe.Logging.Models;
 using Microsoft.AspNetCore.Http;
 
-
 namespace EasMe.Logging.Internal;
 
 internal static class EasLogHelper
 {
     internal static TraceInfo GetTraceInfo()
     {
-        const int frame = 4;
+        const int frame = 3;
         var info = new TraceInfo();
         var trace = new StackTrace().GetFrame(frame);
         if (trace == null) return info;
@@ -81,6 +80,4 @@ internal static class EasLogHelper
                 list.Add((EasLogLevel)item);
         return list;
     }
-
-
 }
