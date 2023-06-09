@@ -51,7 +51,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         return query.LastOrDefault();
     }
 
-    public virtual IEnumerable<TEntity> GetOrdered(
+    public virtual IQueryable<TEntity> GetOrdered(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeExpressions)
@@ -63,10 +63,10 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         foreach (var includeProperty in includeExpressions) query = query.Include(includeProperty);
 
         if (orderBy != null) query = orderBy(query);
-        return query.ToList();
+        return query;
     }
 
-    public virtual IEnumerable<TResult> GetSelect<TResult>(
+    public virtual IQueryable<TResult> GetSelect<TResult>(
         Expression<Func<TEntity, TResult>> select,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
@@ -78,7 +78,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         if (filter != null) query = query.Where(filter);
 
         if (orderBy != null) query = orderBy(query);
-        return query.Select(select).ToList();
+        return query.Select(select);
     }
 
     public TResult? GetFirstOrDefaultSelect<TResult>(Expression<Func<TEntity, TResult>> select,
@@ -95,13 +95,13 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         return query.Select(select).FirstOrDefault();
     }
 
-    public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
+    public virtual IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
         params string[] includeExpressions)
     {
         return GetOrdered(filter, null, includeExpressions);
     }
 
-    public virtual IEnumerable<TEntity> GetPaging(int page, int pageSize = 15,
+    public virtual IQueryable<TEntity> GetPaging(int page, int pageSize = 15,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeExpressions)
@@ -117,9 +117,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         var skipItemIndex = (page - 1) * pageSize;
         return query
             .Skip(skipItemIndex)
-            .Take(pageSize)
-            .ToList();
-        return query.ToList();
+            .Take(pageSize);
     }
 
 
@@ -165,7 +163,10 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     {
         var enumerable = entities.ToList();
         Table.AttachRange(enumerable);
-        _dbContext.Entry(enumerable).State = EntityState.Modified;
+        foreach (var entity in enumerable)
+        {
+            _dbContext.Entry(entity).State = EntityState.Modified;
+        }
     }
 
     public virtual void DeleteRange(IEnumerable<TEntity> entities)

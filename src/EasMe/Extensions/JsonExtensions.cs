@@ -6,20 +6,7 @@ namespace EasMe.Extensions;
 
 public static class JsonExtensions
 {
-    /// <summary>
-    ///     Gets one of the values from Json Object.
-    /// </summary>
-    /// <param name="response"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    public static string? FromJObject(this JObject jObject, string key)
-    {
-        var isValid = jObject.TryGetValue(key, out var value);
-        if (isValid)
-            if (value != null)
-                return value.ToString();
-        return null;
-    }
+
 
     /// <summary>
     ///     Serializes given object to json string.
@@ -32,16 +19,17 @@ public static class JsonExtensions
     //{
     //    return obj.ToJsonString(formatting);
     //}
-    public static string ToJsonString(this object? obj, Formatting formatting = Formatting.None)
+    public static string ToJsonString(this object? obj, Formatting formatting = Formatting.None, ReferenceLoopHandling referenceLoopHandling = ReferenceLoopHandling.Ignore)
     {
         if (obj == null) return default;
         var settings = new JsonSerializerSettings
         {
             ContractResolver = new Resolver(),
-            Formatting = formatting
+            Formatting = formatting,
+            ReferenceLoopHandling = referenceLoopHandling
         };
         var json = JsonConvert.SerializeObject(obj, settings);
-        return json.Replace("\n", "").Replace("\r", "");
+        return json.RemoveLineEndings();
     }
 
     /// <summary>
@@ -55,29 +43,8 @@ public static class JsonExtensions
         return JsonConvert.DeserializeObject<T>(str);
     }
 
-    /// <summary>
-    ///     Deserializes given json string to T model. Uses UnsafeRelaxedJsonEscaping JavaScriptEncoder.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    /// <exception cref="EasException"></exception>
-    public static T? JsonDeserialize<T>(this string str)
-    {
-        return JsonConvert.DeserializeObject<T>(str);
-    }
 
-    /// <summary>
-    ///     Gets one of the values from Json string.
-    /// </summary>
-    /// <param name="response"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    public static string? ParseFromJson(this string jsonStr, string key)
-    {
-        var jObj = JObject.Parse(jsonStr);
-        if (jObj == null) return null;
-        return jObj.FromJObject(key);
-    }
+  
 
     private class Resolver : DefaultContractResolver
     {

@@ -1,0 +1,17 @@
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\EasMe.Test.exe
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\EasMe.Test.deps.json
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\EasMe.Test.runtimeconfig.json
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\EasMe.Test.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\EasMe.Test.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\Ardalis.Result.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.AssemblyInfoInputs.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.AssemblyInfo.cs
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.csproj.CoreCompileInputs.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.csproj.CopyComplete
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\refint\EasMe.Test.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\EasMe.Test.genruntimeconfig.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net6.0\ref\EasMe.Test.dll

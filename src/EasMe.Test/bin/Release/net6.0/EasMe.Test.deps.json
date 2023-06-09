@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "EasMe.Test/3.5": {
+        "dependencies": {
+          "Ardalis.Result": "7.1.0"
+        },
+        "runtime": {
+          "EasMe.Test.dll": {}
+        }
+      },
+      "Ardalis.Result/7.1.0": {
+        "runtime": {
+          "lib/netstandard2.0/Ardalis.Result.dll": {
+            "assemblyVersion": "7.1.0.0",
+            "fileVersion": "7.1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EasMe.Test/3.5": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Ardalis.Result/7.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pmZqOKXD6OGwNmp6CUy+iIsOaeZmY3wsk0IIYWJmJ5pRU2DCO0lbhGzlx5rrxyTOr1/h02K2VhJv5qLuECfWWw==",
+      "path": "ardalis.result/7.1.0",
+      "hashPath": "ardalis.result.7.1.0.nupkg.sha512"
+    }
+  }
+}

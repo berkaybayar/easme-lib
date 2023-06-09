@@ -1,0 +1,14 @@
+{
+  "runtimeOptions": {
+    "tfm": "net7.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "7.0.3"
+    },
+    "additionalProbingPaths": [
+      "C:\\Users\\kkass\\.nuget\\packages\\",
+      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+      "C:\\ProgramData\\PostSharp\\NuGetFallback"
+    ]
+  }
+}

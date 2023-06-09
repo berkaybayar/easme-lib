@@ -45,7 +45,7 @@ public static class EasLogReader
             var list = new List<LogModel>();
             foreach (var line in LogFileContent)
             {
-                var deserialized = line.JsonDeserialize<LogModel>();
+                var deserialized = line.FromJsonString<LogModel>();
                 if (deserialized == null) throw new Exception("Failed to deseralize");
                 list.Add(deserialized);
             }

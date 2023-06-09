@@ -2,6 +2,7 @@
 using EasMe.Logging.Internal;
 using EasMe.Logging.Models;
 using EasMe.Result;
+using FluentValidation;
 
 namespace EasMe.Logging;
 
@@ -16,79 +17,78 @@ public class EasLog : IEasLog
     private static readonly List<Exception> _exceptions = new();
     private readonly string _folderName;
 
-    internal string _LogSource;
+    protected string _LogSource;
 
-    internal EasLog(string source, string folderName)
+    public EasLog(string source, string folderName)
     {
         if (folderName.IsNullOrEmpty()) folderName = EasLogFactory.Config.LogFolderPath;
         _LogSource = source;
         _folderName = folderName;
     }
 
-    internal EasLog(string source)
+    public EasLog(string source)
     {
         _LogSource = source;
         _folderName = EasLogFactory.Config?.LogFolderPath ?? ".\\Logs";
     }
 
     public static IReadOnlyCollection<Exception> Exceptions => _exceptions;
-
-
+    
     public void LogResult(Result.Result result)
     {
-        var EasLogLevel = result.Severity.ToEasLogLevel();
-        if (!EasLogLevel.IsLoggable()) return;
+        var easLogLevel = result.Severity.ToEasLogLevel();
+        if (!easLogLevel.IsLoggable()) return;
         if (result.Errors.Count > 0)
         {
-            WriteLog(_LogSource, EasLogLevel, null, $"ErrorCode:{result.ErrorCode}",
+            WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}",
                 $"Errors:{string.Join(",", result.Errors)}");
             return;
         }
 
-        WriteLog(_LogSource, EasLogLevel, null, $"ErrorCode:{result.ErrorCode}");
+        WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}");
     }
 
     public void LogResult<T>(ResultData<T> result)
     {
-        var EasLogLevel = result.Severity.ToEasLogLevel();
-        if (!EasLogLevel.IsLoggable()) return;
+        var easLogLevel = result.Severity.ToEasLogLevel();
+        if (!easLogLevel.IsLoggable()) return;
         if (result.Errors.Count > 0)
         {
-            WriteLog(_LogSource, EasLogLevel, null, $"ErrorCode:{result.ErrorCode}",
+            WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}",
+                $"Data:{result.Data.ToJsonString()}",
                 $"Errors:{string.Join(",", result.Errors)}");
             return;
         }
 
-        WriteLog(_LogSource, EasLogLevel, null, $"ErrorCode:{result.ErrorCode}", $"Data:{result.Data}");
+        WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}", $"Data:{result.Data.ToJsonString()}");
     }
 
     public void LogResult(Result.Result result, object message)
     {
-        var EasLogLevel = result.Severity.ToEasLogLevel();
-        if (!EasLogLevel.IsLoggable()) return;
+        var easLogLevel = result.Severity.ToEasLogLevel();
+        if (!easLogLevel.IsLoggable()) return;
         if (result.Errors?.Count > 0)
         {
-            WriteLog(_LogSource, EasLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
+            WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
                 $"Errors:{string.Join(",", result.Errors)}");
             return;
         }
 
-        WriteLog(_LogSource, EasLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}");
+        WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}");
     }
 
     public void LogResult<T>(ResultData<T> result, object message)
     {
-        var EasLogLevel = result.Severity.ToEasLogLevel();
-        if (!EasLogLevel.IsLoggable()) return;
+        var easLogLevel = result.Severity.ToEasLogLevel();
+        if (!easLogLevel.IsLoggable()) return;
         if (result.Errors.Count > 0)
         {
-            WriteLog(_LogSource, EasLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
-                $"Errors:{string.Join(",", result.Errors)}", $"Data:{result.Data}");
+            WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
+                $"Errors:{string.Join(",", result.Errors)}", $"Data:{result.Data.ToJsonString()}");
             return;
         }
-
-        WriteLog(_LogSource, EasLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
-            $"Data:{result.Data}");
+        WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
+            $"Data:{result.Data.ToJsonString()}");
     }
 
 
@@ -623,7 +623,7 @@ public class EasLog : IEasLog
         EasTask.Flush();
     }
 
-    private void WriteLog(string source, EasLogLevel severity, Exception? exception = null, params object[] param)
+    protected void WriteLog(string source, EasLogLevel severity, Exception? exception = null, params object[] param)
     {
         WebInfo? webInfo = null;
         if (EasLogFactory.Config.WebInfoLogging) webInfo = new WebInfo();

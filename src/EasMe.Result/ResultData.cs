@@ -30,7 +30,14 @@ public readonly struct ResultData<T>
         Exception = null;
         Errors = errors;
     }
-
+    internal ResultData(ResultSeverity severity, object errCode, List<string> errors)
+    {
+        ErrorCode = errCode.ToString() ?? "None";
+        Severity = severity;
+        IsSuccess = false;
+        Exception = null;
+        Errors = errors;
+    }
     internal ResultData(Exception exception, ResultSeverity severity, List<string> errors)
     {
         ErrorCode = "ExceptionOccured";
@@ -61,7 +68,7 @@ public readonly struct ResultData<T>
     public List<string> Errors { get; init; } = new();
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public T? Data { get; init; }
+    public T? Data { get; init; } = (T?)default;
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public CleanException? Exception { get; init; }
@@ -99,7 +106,7 @@ public readonly struct ResultData<T>
         if (result.IsSuccess)
             throw new InvalidOperationException(
                 "Implicit conversion from Result to ResultData<T> is not possible if ResultState is success");
-        return new ResultData<T>(default, result.Severity, result.ErrorCode);
+        return new ResultData<T>(result.Severity, result.ErrorCode,result.Errors);
     }
 
     #endregion

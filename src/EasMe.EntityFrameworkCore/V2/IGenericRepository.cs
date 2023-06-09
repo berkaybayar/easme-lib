@@ -22,23 +22,23 @@ public interface IGenericRepository<TEntity>
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeProperties);
 
-    IEnumerable<TEntity> GetOrdered(
+    IQueryable<TEntity> GetOrdered(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeExpressions);
 
-    IEnumerable<TEntity> Get(
+    IQueryable<TEntity> Get(
         Expression<Func<TEntity, bool>>? filter = null,
         params string[] includeExpressions);
 
-    IEnumerable<TEntity> GetPaging(
+    IQueryable<TEntity> GetPaging(
         int page,
         int pageSize = 15,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeExpressions);
 
-    IEnumerable<TResult> GetSelect<TResult>(
+    IQueryable<TResult> GetSelect<TResult>(
         Expression<Func<TEntity, TResult>> select,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
