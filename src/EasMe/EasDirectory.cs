@@ -2,8 +2,7 @@
 
 namespace EasMe;
 
-public enum KnownFolder
-{
+public enum KnownFolder {
     /// <summary>
     ///     Guid: 56784854-C6CB-462B-8169-88E350ACB882
     /// </summary>
@@ -35,10 +34,8 @@ public enum KnownFolder
     SavedSearches
 }
 
-public static class EasDirectory
-{
-    private static readonly IReadOnlyDictionary<KnownFolder, Guid> _guids = new Dictionary<KnownFolder, Guid>
-    {
+public static class EasDirectory {
+    private static readonly IReadOnlyDictionary<KnownFolder, Guid> _guids = new Dictionary<KnownFolder, Guid> {
         [KnownFolder.Contacts] = new("56784854-C6CB-462B-8169-88E350ACB882"),
         [KnownFolder.Downloads] = new("374DE290-123F-4565-9164-39C4925E467B"),
         [KnownFolder.Favorites] = new("1777F761-68AD-4D8A-87BD-30B759FA33DD"),
@@ -47,8 +44,7 @@ public static class EasDirectory
         [KnownFolder.SavedSearches] = new("7D1D3A04-DEBB-4115-95CF-2F29DA2920DA")
     };
 
-    public static string GetPath(KnownFolder knownFolder)
-    {
+    public static string GetPath(KnownFolder knownFolder) {
         return SHGetKnownFolderPath(_guids[knownFolder], 0);
     }
 

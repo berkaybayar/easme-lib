@@ -6,8 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace EasMe;
 
-public static class EasReCaptcha
-{
+public static class EasReCaptcha {
     /// <summary>
     ///     Validates given CaptchtaResponse from Google by SecretKey.
     /// </summary>
@@ -15,13 +14,10 @@ public static class EasReCaptcha
     /// <param name="CaptchaResponse"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static CaptchaResponseModel Validate(string Secret, string? CaptchaResponse)
-    {
-        try
-        {
+    public static CaptchaResponseModel Validate(string Secret, string? CaptchaResponse) {
+        try {
             if (CaptchaResponse.IsNullOrEmpty())
-                return new CaptchaResponseModel
-                {
+                return new CaptchaResponseModel {
                     Success = false
                 };
             var response = new CaptchaResponseModel();
@@ -35,8 +31,7 @@ public static class EasReCaptcha
             response.ErrorCodes = (string)obj.SelectToken("error-codes");
             return response;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new FailedToValidateException("Could not validate reCaptcha.", ex);
         }
     }

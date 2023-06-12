@@ -2,10 +2,8 @@
 
 namespace EasMe;
 
-public static class EasHttp
-{
-    public static string GetStatusCodeShortMessage(uint httpStatusCode)
-    {
+public static class EasHttp {
+    public static string GetStatusCodeShortMessage(uint httpStatusCode) {
         var statusCode = (HttpStatusCode)httpStatusCode;
         var str = statusCode.ToString();
         var num = int.TryParse(str, out var _);
@@ -13,17 +11,14 @@ public static class EasHttp
         return str;
     }
 
-    public static string GetHostIpAddress()
-    {
+    public static string GetHostIpAddress() {
         var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
         var ipAddress = ipHostInfo.AddressList[0];
         return ipAddress.ToString();
     }
 
-    public static string GetStatusCodeLongMessage(uint httpStatusCode)
-    {
-        return httpStatusCode switch
-        {
+    public static string GetStatusCodeLongMessage(uint httpStatusCode) {
+        return httpStatusCode switch {
             100 => "Continue",
             101 => "Switching Protocols",
             102 => "Processing",

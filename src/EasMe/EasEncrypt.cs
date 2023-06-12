@@ -6,19 +6,18 @@ namespace EasMe;
 /// <summary>
 ///     Basic string encryption and decryption class.
 /// </summary>
-public class EasEncrypt
-{
+public class EasEncrypt {
     private static string _encryptKey = null!;
 
-    private static readonly byte[] _salt = { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 };
-    public EasEncrypt(string key)
-    {
+    private static readonly byte[] _salt =
+        { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 };
+
+    public EasEncrypt(string key) {
         _encryptKey = key;
     }
 
 
-    public string EncryptString(string clearText)
-    {
+    public string EncryptString(string clearText) {
         var clearBytes = Encoding.Unicode.GetBytes(clearText);
         using var aes = Aes.Create();
         var pdb = new Rfc2898DeriveBytes(_encryptKey, _salt);
@@ -31,8 +30,8 @@ public class EasEncrypt
         clearText = Convert.ToBase64String(ms.ToArray());
         return clearText;
     }
-    public string DecryptString(string cipherText)
-    {
+
+    public string DecryptString(string cipherText) {
         cipherText = cipherText.Replace(" ", "+");
         var cipherBytes = Convert.FromBase64String(cipherText);
         using var aes = Aes.Create();

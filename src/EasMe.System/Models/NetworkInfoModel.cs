@@ -2,12 +2,10 @@
 
 namespace EasMe.System.Models;
 
-public class NetworkInfoModel
-{
+public class NetworkInfoModel {
     private string? _IpAddress;
 
-    public string? IpAddress
-    {
+    public string? IpAddress {
         get => _IpAddress;
         set => _IpAddress = value.IsNullOrEmpty() ? null : value;
     }

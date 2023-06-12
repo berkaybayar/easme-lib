@@ -5,12 +5,10 @@ namespace EasMe.EntityFrameworkCore.V2;
 
 public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     where TEntity : class, IEntity
-    where TContext : DbContext, new()
-{
+    where TContext : DbContext, new() {
     private readonly TContext _dbContext;
 
-    public GenericRepository(TContext context)
-    {
+    public GenericRepository(TContext context) {
         _dbContext = context;
         Table = context.Set<TEntity>();
     }
@@ -19,8 +17,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
 
     public virtual TEntity? GetFirstOrDefault(
         Expression<Func<TEntity, bool>>? filter = null,
-        params string[] includeProperties)
-    {
+        params string[] includeProperties) {
         var query = Table.AsQueryable();
         if (filter != null) query = query.Where(filter);
         foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
@@ -30,8 +27,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     public virtual TEntity? GetFirstOrDefaultOrdered(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeProperties)
-    {
+        params string[] includeProperties) {
         var query = Table.AsQueryable();
         if (filter != null) query = query.Where(filter);
         foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
@@ -42,8 +38,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     public virtual TEntity? GetLastOrDefaultOrdered(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeProperties)
-    {
+        params string[] includeProperties) {
         var query = Table.AsQueryable();
         if (filter != null) query = query.Where(filter);
         foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
@@ -54,8 +49,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     public virtual IQueryable<TEntity> GetOrdered(
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions)
-    {
+        params string[] includeExpressions) {
         var query = Table.AsQueryable();
 
         if (filter != null) query = query.Where(filter);
@@ -70,8 +64,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         Expression<Func<TEntity, TResult>> select,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions)
-    {
+        params string[] includeExpressions) {
         var query = Table.AsQueryable();
         foreach (var includeProperty in includeExpressions) query = query.Include(includeProperty);
 
@@ -84,8 +77,7 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     public TResult? GetFirstOrDefaultSelect<TResult>(Expression<Func<TEntity, TResult>> select,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions)
-    {
+        params string[] includeExpressions) {
         var query = Table.AsQueryable();
         foreach (var includeProperty in includeExpressions) query = query.Include(includeProperty);
 
@@ -96,16 +88,14 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     }
 
     public virtual IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
-        params string[] includeExpressions)
-    {
+        params string[] includeExpressions) {
         return GetOrdered(filter, null, includeExpressions);
     }
 
     public virtual IQueryable<TEntity> GetPaging(int page, int pageSize = 15,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions)
-    {
+        params string[] includeExpressions) {
         var query = Table.AsQueryable();
 
         if (filter != null) query = query.Where(filter);
@@ -121,69 +111,55 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     }
 
 
-    public virtual TEntity? GetById(object id)
-    {
+    public virtual TEntity? GetById(object id) {
         return Table.Find(id);
     }
 
-    public virtual TEntity? GetById(params object[] id)
-    {
+    public virtual TEntity? GetById(params object[] id) {
         return Table.Find(id);
     }
 
-    public virtual void Insert(TEntity entity)
-    {
+    public virtual void Insert(TEntity entity) {
         Table.Add(entity);
     }
 
-    public virtual void InsertRange(IEnumerable<TEntity> entities)
-    {
+    public virtual void InsertRange(IEnumerable<TEntity> entities) {
         Table.AddRange(entities);
     }
 
-    public virtual void Delete(object id)
-    {
+    public virtual void Delete(object id) {
         var entityToDelete = Table.Find(id);
         if (entityToDelete != null) Delete(entityToDelete);
     }
 
-    public virtual void Delete(TEntity entityToDelete)
-    {
+    public virtual void Delete(TEntity entityToDelete) {
         if (_dbContext.Entry(entityToDelete).State == EntityState.Detached) Table.Attach(entityToDelete);
         Table.Remove(entityToDelete);
     }
 
-    public virtual void Update(TEntity entityToUpdate)
-    {
+    public virtual void Update(TEntity entityToUpdate) {
         Table.Attach(entityToUpdate);
         _dbContext.Entry(entityToUpdate).State = EntityState.Modified;
     }
 
-    public virtual void UpdateRange(IEnumerable<TEntity> entities)
-    {
+    public virtual void UpdateRange(IEnumerable<TEntity> entities) {
         var enumerable = entities.ToList();
         Table.AttachRange(enumerable);
-        foreach (var entity in enumerable)
-        {
-            _dbContext.Entry(entity).State = EntityState.Modified;
-        }
+        foreach (var entity in enumerable) _dbContext.Entry(entity).State = EntityState.Modified;
     }
 
-    public virtual void DeleteRange(IEnumerable<TEntity> entities)
-    {
+    public virtual void DeleteRange(IEnumerable<TEntity> entities) {
         var enumerable = entities.ToList();
         if (_dbContext.Entry(enumerable).State == EntityState.Detached) Table.AttachRange(enumerable);
         Table.RemoveRange(enumerable);
     }
 
-    public virtual bool Any(Expression<Func<TEntity, bool>>? filter = null)
-    {
+    public virtual bool Any(Expression<Func<TEntity, bool>>? filter = null) {
         if (filter == null) return Table.Any();
         return Table.Any(filter);
     }
 
-    public virtual int Count(Expression<Func<TEntity, bool>>? filter = null)
-    {
+    public virtual int Count(Expression<Func<TEntity, bool>>? filter = null) {
         if (filter == null) return Table.Count();
         return Table.Count(filter);
     }

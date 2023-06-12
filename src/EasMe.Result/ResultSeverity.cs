@@ -1,7 +1,6 @@
 ﻿namespace EasMe.Result;
 
-public enum ResultSeverity
-{
+public enum ResultSeverity {
     None,
     Info,
     Warn,

@@ -3,13 +3,11 @@ using System.Net.Http.Json;
 
 namespace EasMe;
 
-public static class EasAPI
-{
+public static class EasAPI {
     //Install-Package Microsoft.AspNet.WebApi.Client -Version 5.2.8
 
 
-    public static HttpResponseMessage SendGetRequest(string URL, string? TOKEN = null, int timeout = 10)
-    {
+    public static HttpResponseMessage SendGetRequest(string URL, string? TOKEN = null, int timeout = 10) {
         var client = new HttpClient();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -20,8 +18,7 @@ public static class EasAPI
         return postTask.Result;
     }
 
-    public static T? SendGetRequestAndGetResponseAsJson<T>(string URL, string? TOKEN = null, int timeout = 10)
-    {
+    public static T? SendGetRequestAndGetResponseAsJson<T>(string URL, string? TOKEN = null, int timeout = 10) {
         var client = new HttpClient();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -34,8 +31,7 @@ public static class EasAPI
     }
 
     public static T? SendPostRequestAsJsonAndGetResponseAsJson<T>(string URL, object Data, string? TOKEN = null,
-        int timeout = 10)
-    {
+        int timeout = 10) {
         HttpClient client = new();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -48,8 +44,7 @@ public static class EasAPI
     }
 
     public static HttpResponseMessage SendPostRequestAsJson(string URL, object Data, string? TOKEN = null,
-        int timeout = 10)
-    {
+        int timeout = 10) {
         HttpClient client = new();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -61,8 +56,7 @@ public static class EasAPI
     }
 
     public static HttpResponseMessage SendPostRequest(string URL, HttpContent Content, string? TOKEN = null,
-        int timeout = 10)
-    {
+        int timeout = 10) {
         HttpClient client = new();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -73,8 +67,7 @@ public static class EasAPI
         return postTask.Result;
     }
 
-    public static HttpResponseMessage SendDeleteRequest(string URL, string? TOKEN = null, int timeout = 10)
-    {
+    public static HttpResponseMessage SendDeleteRequest(string URL, string? TOKEN = null, int timeout = 10) {
         HttpClient client = new();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -86,8 +79,7 @@ public static class EasAPI
     }
 
     public static HttpResponseMessage SendPatchRequest(string URL, HttpContent Content, string? TOKEN = null,
-        int timeout = 10)
-    {
+        int timeout = 10) {
         var client = new HttpClient();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -99,8 +91,7 @@ public static class EasAPI
     }
 
     public static HttpResponseMessage SendPutRequest(string URL, HttpContent Content, string? TOKEN = null,
-        int timeout = 10)
-    {
+        int timeout = 10) {
         HttpClient client = new();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -112,8 +103,7 @@ public static class EasAPI
     }
 
     public static HttpResponseMessage SendPutRequestAsJson(string URL, object Data, string? TOKEN = null,
-        int timeout = 10)
-    {
+        int timeout = 10) {
         var client = new HttpClient();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
@@ -124,8 +114,8 @@ public static class EasAPI
         return postTask.Result;
     }
 
-    public static HttpResponseMessage Send(string URL, HttpRequestMessage Data, string? TOKEN = null, int timeout = 10)
-    {
+    public static HttpResponseMessage Send(string URL, HttpRequestMessage Data, string? TOKEN = null,
+        int timeout = 10) {
         var client = new HttpClient();
         if (!string.IsNullOrEmpty(TOKEN))
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);

@@ -1,9 +1,7 @@
 ﻿namespace EasMe.Logging;
 
-public class EasLogConfiguration
-{
-    internal EasLogConfiguration()
-    {
+public class EasLogConfiguration {
+    internal EasLogConfiguration() {
     }
 
     /// <summary>

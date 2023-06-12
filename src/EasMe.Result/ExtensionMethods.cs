@@ -1,7 +1,6 @@
 ﻿namespace EasMe.Result;
 
-public static class ExtensionMethods
-{
+public static class ExtensionMethods {
     /// <summary>
     ///     Merges multiple Results into one.
     ///     Result will be Success if all results are Success
@@ -15,8 +14,7 @@ public static class ExtensionMethods
     public static Result Combine(
         this IEnumerable<Result> result,
         string errorCode
-    )
-    {
+    ) {
         return result.CombineAll(errorCode);
     }
 
@@ -42,8 +40,7 @@ public static class ExtensionMethods
         this IEnumerable<Result> result,
         string errorCode,
         ResultSeverity severity = ResultSeverity.Warn
-    )
-    {
+    ) {
         var list = result.ToList();
         var isAllSuccess = list.All(x => x.IsSuccess);
         //var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToArray();
@@ -73,8 +70,7 @@ public static class ExtensionMethods
         this IEnumerable<Result> result,
         string errorCode,
         ResultSeverity severity = ResultSeverity.Warn
-    )
-    {
+    ) {
         var list = result.ToList();
         var isAllSuccess = list.All(x => x.IsSuccess);
         var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToList();
@@ -103,8 +99,7 @@ public static class ExtensionMethods
         this IEnumerable<Result> result,
         string errorCode,
         ResultSeverity severity = ResultSeverity.Warn
-    )
-    {
+    ) {
         var list = result.ToList();
         var isAllSuccess = list.All(x => x.IsSuccess);
         var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToList();

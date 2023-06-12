@@ -7,8 +7,7 @@ namespace EasMe;
 /// <summary>
 ///     Simple mail sender
 /// </summary>
-public class EasMail
-{
+public class EasMail {
     /// <summary>
     ///     Mail sender class, uses SMTP protocol.
     /// </summary>
@@ -21,8 +20,7 @@ public class EasMail
         string mailAddress,
         string password,
         int port,
-        bool enableSSL = false)
-    {
+        bool enableSSL = false) {
         Host = host;
         MailAddress = mailAddress;
         Password = password;
@@ -42,14 +40,11 @@ public class EasMail
     /// <param name="Body"></param>
     /// <param name="SendTo"></param>
     /// <param name="Subject"></param>
-    public void SendMail(string Subject, string Body, string SendTo, bool isBodyHtml = false)
-    {
-        try
-        {
+    public void SendMail(string Subject, string Body, string SendTo, bool isBodyHtml = false) {
+        try {
             var fromAddress = new MailAddress(MailAddress);
             var toAddress = new MailAddress(SendTo);
-            using var smtp = new SmtpClient
-            {
+            using var smtp = new SmtpClient {
                 Host = Host,
                 Port = Port,
                 EnableSsl = EnableSSL,
@@ -61,8 +56,7 @@ public class EasMail
             message.IsBodyHtml = isBodyHtml;
             smtp.Send(message);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new EmailSendFailedException("Failed to send email.", ex);
         }
     }

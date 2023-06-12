@@ -2,59 +2,49 @@
 
 namespace EasMe.SharpBuilder;
 
-public class SharpPropertyBuilder
-{
+public class SharpPropertyBuilder {
     private readonly SharpProperty _property;
 
-    public SharpPropertyBuilder()
-    {
+    public SharpPropertyBuilder() {
         _property = new SharpProperty();
     }
 
-    public SharpPropertyBuilder WithAccessModifier(string accessModifier)
-    {
+    public SharpPropertyBuilder WithAccessModifier(string accessModifier) {
         _property.AccessModifierString = accessModifier;
         return this;
     }
 
-    public SharpPropertyBuilder WithGetterAccessModifier(string getterAccessModifier)
-    {
+    public SharpPropertyBuilder WithGetterAccessModifier(string getterAccessModifier) {
         _property.GetterAccessModifierString = getterAccessModifier;
         return this;
     }
 
-    public SharpPropertyBuilder WithSetterAccessModifier(string setterAccessModifier)
-    {
+    public SharpPropertyBuilder WithSetterAccessModifier(string setterAccessModifier) {
         _property.SetterAccessModifierString = setterAccessModifier;
         return this;
     }
 
-    public SharpPropertyBuilder WithName(string name)
-    {
+    public SharpPropertyBuilder WithName(string name) {
         _property.Name = name;
         return this;
     }
 
-    public SharpPropertyBuilder WithValueType(Type valueType)
-    {
+    public SharpPropertyBuilder WithValueType(Type valueType) {
         _property.ValueType = valueType;
         return this;
     }
 
-    public SharpPropertyBuilder WithIsField(bool isField)
-    {
+    public SharpPropertyBuilder WithIsField(bool isField) {
         _property.IsField = isField;
         return this;
     }
 
-    public SharpPropertyBuilder WithIsStatic(bool isStatic)
-    {
+    public SharpPropertyBuilder WithIsStatic(bool isStatic) {
         _property.IsStatic = isStatic;
         return this;
     }
 
-    public SharpProperty Build()
-    {
+    public SharpProperty Build() {
         return _property;
     }
 }

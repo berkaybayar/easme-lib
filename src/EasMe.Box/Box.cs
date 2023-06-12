@@ -1,9 +1,7 @@
 ﻿using System.Windows.Forms;
 
-namespace EasMe.MessageBox
-{
-    public static class Box
-    {
+namespace EasMe.MessageBox {
+    public static class Box {
         public static bool Confirm(string Message) //Shows a confirmation box and returns the result taken from user
         {
             if (DialogResult.Yes == System.Windows.Forms.MessageBox.Show(Message, "Confirmation",

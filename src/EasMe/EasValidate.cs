@@ -6,25 +6,21 @@ using EasMe.Exceptions;
 
 namespace EasMe;
 
-public static class EasValidate
-{
+public static class EasValidate {
     /// <summary>
     ///     Returns true if given string is valid email address.
     /// </summary>
     /// <param name="str"></param>
     /// <returns></returns>
-    public static bool IsValidEmail(this string str)
-    {
+    public static bool IsValidEmail(this string str) {
         var trimmedEmail = str.Replace(" ", "");
         if (trimmedEmail.EndsWith("."))
             return false;
-        try
-        {
+        try {
             var addr = new MailAddress(str);
             return addr.Address == trimmedEmail;
         }
-        catch
-        {
+        catch {
             return false;
         }
     }
@@ -35,11 +31,9 @@ public static class EasValidate
     /// <param name="value"></param>
     /// <param name="IpAddress"></param>
     /// <returns></returns>
-    public static bool IsValidIPAddress(this string value, out IPAddress? IpAddress)
-    {
+    public static bool IsValidIPAddress(this string value, out IPAddress? IpAddress) {
         IpAddress = null;
-        if (IPAddress.TryParse(value, out var address))
-        {
+        if (IPAddress.TryParse(value, out var address)) {
             IpAddress = address;
             return true;
         }
@@ -52,14 +46,12 @@ public static class EasValidate
     /// </summary>
     /// <param name="IpAddress"></param>
     /// <returns></returns>
-    public static bool IsValidIPAddress(this string IpAddress)
-    {
+    public static bool IsValidIPAddress(this string IpAddress) {
         return IpAddress.IsValidIPAddress(out var IpVersion);
     }
 
     //It's not quite possible make %100 sure it is correct but this will do for most cases
-    public static bool IsValidFilePath(this string path)
-    {
+    public static bool IsValidFilePath(this string path) {
         var isValid = path.IndexOfAny(Path.GetInvalidPathChars()) == -1;
         if (!isValid) return false;
         if (!path.Contains('\\'))
@@ -74,8 +66,7 @@ public static class EasValidate
     /// </summary>
     /// <param name="macAddress"></param>
     /// <returns></returns>
-    public static bool IsValidMACAddress(this string macAddress)
-    {
+    public static bool IsValidMACAddress(this string macAddress) {
         var MACRegex = "^[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}$";
         if (!Regex.IsMatch(macAddress, MACRegex))
             return false;
@@ -87,8 +78,7 @@ public static class EasValidate
     /// </summary>
     /// <param name="port"></param>
     /// <returns></returns>
-    public static bool IsValidPort(this int port)
-    {
+    public static bool IsValidPort(this int port) {
         var PortRegex = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
         if (!Regex.IsMatch(port.ToString(), PortRegex))
             return false;
@@ -101,10 +91,8 @@ public static class EasValidate
     /// <param name="yourString"></param>
     /// <param name="allowedChars"></param>
     /// <returns></returns>
-    public static bool HasSpecialChars(this string yourString, string allowedChars = "")
-    {
-        foreach (var c in yourString)
-        {
+    public static bool HasSpecialChars(this string yourString, string allowedChars = "") {
+        foreach (var c in yourString) {
             if (char.IsLetterOrDigit(c))
                 continue;
             if (!allowedChars.Contains(c))
@@ -128,8 +116,7 @@ public static class EasValidate
     /// <returns></returns>
     public static bool IsStrongPassword(this string password, string allowedChars, byte minLength = 6,
         byte maxLength = 16, byte minUpperCaseCount = 1, byte minLowerCaseCount = 1, byte minNumberCount = 1,
-        byte minSpecialCharCount = 1)
-    {
+        byte minSpecialCharCount = 1) {
         if (password.Length < minLength || password.Length > maxLength)
             return false;
         if (HasSpecialChars(password, allowedChars))
@@ -150,10 +137,8 @@ public static class EasValidate
     /// </summary>
     /// <param name="URL"></param>
     /// <returns></returns>
-    public static bool IsUrlImage(this string URL)
-    {
-        try
-        {
+    public static bool IsUrlImage(this string URL) {
+        try {
             if (!URL.IsValidURL()) return false;
             var client = new HttpClient();
             var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
@@ -163,8 +148,7 @@ public static class EasValidate
                 return true;
             return false;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new FailedToCheck("Failed to check if URL is image: " + URL, ex);
         }
     }
@@ -174,10 +158,8 @@ public static class EasValidate
     /// </summary>
     /// <param name="URL"></param>
     /// <returns></returns>
-    public static bool IsUrlVideo(this string URL)
-    {
-        try
-        {
+    public static bool IsUrlVideo(this string URL) {
+        try {
             if (!URL.IsValidURL()) return false;
             var client = new HttpClient();
             var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
@@ -190,8 +172,7 @@ public static class EasValidate
                 return true;
             return false;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new FailedToCheck("Failed to check if given URL is video: " + URL, ex);
         }
     }
@@ -201,8 +182,7 @@ public static class EasValidate
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    public static bool IsValidURL(this string url)
-    {
+    public static bool IsValidURL(this string url) {
         return Uri.IsWellFormedUriString(url, UriKind.Absolute);
     }
 
@@ -212,22 +192,18 @@ public static class EasValidate
     /// <param name="response"></param>
     /// <param name="key"></param>
     /// <returns></returns>
-    public static bool IsValidConnectionString(this string yourConn)
-    {
-        try
-        {
+    public static bool IsValidConnectionString(this string yourConn) {
+        try {
             DbConnectionStringBuilder csb = new();
             csb.ConnectionString = yourConn;
             return true;
         }
-        catch
-        {
+        catch {
             return false;
         }
     }
 
-    public static bool IsCreditCardInfoValid(string cardNo, string expiryDate, string cvv)
-    {
+    public static bool IsCreditCardInfoValid(string cardNo, string expiryDate, string cvv) {
         //Source: https://stackoverflow.com/questions/32959273/c-sharp-validating-user-input-like-a-credit-card-number
         var cardCheck = new Regex(@"^(1298|1267|4512|4567|8901|8933)([\-\s]?[0-9]{4}){3}$");
         var monthCheck = new Regex(@"^(0[1-9]|1[0-2])$");

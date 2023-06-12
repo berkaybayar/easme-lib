@@ -2,10 +2,8 @@
 
 namespace EasMe;
 
-public static class EasZip
-{
-    public static void MakeZip(string[] files, string destination)
-    {
+public static class EasZip {
+    public static void MakeZip(string[] files, string destination) {
         var index = destination.LastIndexOf("\\", StringComparison.Ordinal);
         var destinationFolder = destination[..index];
         if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);
@@ -14,8 +12,7 @@ public static class EasZip
         foreach (var fPath in files) archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
     }
 
-    public static void UnZip(string sourceZip, string extractFolder)
-    {
+    public static void UnZip(string sourceZip, string extractFolder) {
         var index = extractFolder.LastIndexOf("\\", StringComparison.Ordinal);
         var destinationFolder = extractFolder[..index];
         if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);

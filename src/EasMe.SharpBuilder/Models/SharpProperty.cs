@@ -1,7 +1,6 @@
 ﻿namespace EasMe.SharpBuilder.Models;
 
-public class SharpProperty
-{
+public class SharpProperty {
     public string AccessModifierString { get; set; } = "public";
     public string GetterAccessModifierString { get; set; } = "";
     public string SetterAccessModifierString { get; set; } = "";

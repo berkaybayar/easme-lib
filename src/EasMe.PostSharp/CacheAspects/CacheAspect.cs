@@ -4,19 +4,16 @@ using PostSharp.Aspects;
 namespace EasMe.PostSharp.CacheAspects;
 
 [Serializable]
-public class CacheAspect : MethodInterceptionAspect
-{
+public class CacheAspect : MethodInterceptionAspect {
     private int _cacheBySeconds;
     private IMemoryCache _memoryCache;
 
-    public CacheAspect(IMemoryCache memoryCache, int cacheBySeconds = 60)
-    {
+    public CacheAspect(IMemoryCache memoryCache, int cacheBySeconds = 60) {
         _memoryCache = memoryCache;
         _cacheBySeconds = cacheBySeconds;
     }
 
-    public override void OnInvoke(MethodInterceptionArgs args)
-    {
+    public override void OnInvoke(MethodInterceptionArgs args) {
         var methodName = string.Format("{0}.{1}.{2}",
             args.Method.ReflectedType?.Namespace,
             args.Method.ReflectedType?.Name,
@@ -30,8 +27,7 @@ public class CacheAspect : MethodInterceptionAspect
         if (contains) args.ReturnValue = current;
 
         base.OnInvoke(args);
-        if (args.ReturnValue is not null)
-        {
+        if (args.ReturnValue is not null) {
             var entry = _memoryCache.CreateEntry(key);
             entry.SetAbsoluteExpiration(DateTime.Now + TimeSpan.FromSeconds(_cacheBySeconds));
             entry.SetValue(args.ReturnValue);

@@ -3,8 +3,7 @@
 /// <summary>
 ///     Runs a queue of Tasks in the background with a single thread
 /// </summary>
-public class EasTask : IDisposable
-{
+public class EasTask : IDisposable {
     private readonly ManualResetEvent _hasNewItems = new(false);
     private readonly Queue<Action> _queue = new();
     private readonly ManualResetEvent _terminate = new(false);
@@ -12,10 +11,8 @@ public class EasTask : IDisposable
     private readonly Thread _thread;
     private readonly ManualResetEvent _waiting = new(false);
 
-    public EasTask()
-    {
-        _thread = new Thread(ProcessQueue)
-        {
+    public EasTask() {
+        _thread = new Thread(ProcessQueue) {
             IsBackground = true
         };
         // this is performed from a bg thread, to ensure the queue is serviced from a single thread
@@ -23,18 +20,15 @@ public class EasTask : IDisposable
     }
 
 
-    public void Dispose()
-    {
+    public void Dispose() {
         _terminate.Set();
         _thread.Join();
         GC.SuppressFinalize(this);
     }
 
 
-    private void ProcessQueue()
-    {
-        while (true)
-        {
+    private void ProcessQueue() {
+        while (true) {
             _waiting.Set();
             var i = WaitHandle.WaitAny(new WaitHandle[] { _hasNewItems, _terminate });
 
@@ -43,8 +37,7 @@ public class EasTask : IDisposable
             _waiting.Reset();
             if (_queue.Count == 0) continue;
             Queue<Action> queueCopy;
-            lock (_queue)
-            {
+            lock (_queue) {
                 queueCopy = new Queue<Action>(_queue);
                 _queue.Clear();
             }
@@ -53,10 +46,8 @@ public class EasTask : IDisposable
         }
     }
 
-    public void AddToQueue(Action action)
-    {
-        lock (_queue)
-        {
+    public void AddToQueue(Action action) {
+        lock (_queue) {
             _queue.Enqueue(action);
         }
 
@@ -64,8 +55,7 @@ public class EasTask : IDisposable
     }
 
 
-    public void Flush()
-    {
+    public void Flush() {
         _waiting.WaitOne();
     }
 }

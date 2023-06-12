@@ -4,28 +4,24 @@
 ///     Simple thread-safe variable cache helper.
 /// </summary>
 /// <typeparam name="TData"></typeparam>
-public class EasCache<TData> where TData : class
-{
+public class EasCache<TData> where TData : class {
     private static readonly object _locker = new();
     private readonly Func<TData> _action;
     private readonly int INTERVAL;
     private TData _result;
     private DateTime LAST_UPDATE;
 
-    public EasCache(Func<TData> action, int intervalMinutes)
-    {
+    public EasCache(Func<TData> action, int intervalMinutes) {
         INTERVAL = intervalMinutes;
         _action = action;
         //_result = _action();
         LAST_UPDATE = DateTime.MinValue;
     }
 
-    public TData Get()
-    {
+    public TData Get() {
         var isUpdateTime = LAST_UPDATE.AddMinutes(INTERVAL) < DateTime.Now;
         if (!isUpdateTime) return _result;
-        lock (_locker)
-        {
+        lock (_locker) {
             if (!isUpdateTime) return _result;
             Refresh();
         }
@@ -33,8 +29,7 @@ public class EasCache<TData> where TData : class
         return _result;
     }
 
-    public void Refresh()
-    {
+    public void Refresh() {
         _result = _action();
         LAST_UPDATE = DateTime.Now;
     }
@@ -46,27 +41,23 @@ public class EasCache<TData> where TData : class
 /// <typeparam name="TData"></typeparam>
 public class EasCache<TIn, TData>
     where TData : class
-    where TIn : class
-{
+    where TIn : class {
     private static readonly object _locker = new();
     private readonly Func<TIn, TData> _action;
     private readonly int INTERVAL;
     private Dictionary<TIn, TData> _result;
     private DateTime LAST_UPDATE;
 
-    public EasCache(Func<TIn, TData> action, int intervalMinutes)
-    {
+    public EasCache(Func<TIn, TData> action, int intervalMinutes) {
         INTERVAL = intervalMinutes;
         _action = action;
         LAST_UPDATE = DateTime.UnixEpoch;
     }
 
-    public TData? Get(TIn inVal)
-    {
+    public TData? Get(TIn inVal) {
         var isUpdateTime = LAST_UPDATE.AddMinutes(INTERVAL) < DateTime.Now;
         if (_result is not null && !isUpdateTime) return _result.GetValueOrDefault(inVal);
-        lock (_locker)
-        {
+        lock (_locker) {
             if (_result is not null && !isUpdateTime) return _result.GetValueOrDefault(inVal);
             Refresh(inVal);
         }
@@ -75,8 +66,7 @@ public class EasCache<TIn, TData>
         ;
     }
 
-    public void Refresh(TIn inVal)
-    {
+    public void Refresh(TIn inVal) {
         _result.Remove(inVal);
         _result.Add(inVal, _action(inVal));
         LAST_UPDATE = DateTime.Now;

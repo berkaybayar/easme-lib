@@ -8,12 +8,10 @@ namespace EasMe;
 /// <summary>
 ///     JWT Authentication helper, generating and reading tokens.
 /// </summary>
-public class EasJWT
-{
+public class EasJWT {
     private readonly JwtSecurityTokenHandler TokenHandler = new();
 
-    public EasJWT(string secret, string? issuer = null, string? audience = null)
-    {
+    public EasJWT(string secret, string? issuer = null, string? audience = null) {
         Issuer = issuer;
         Audience = audience;
         if (!string.IsNullOrEmpty(Issuer)) ValidateIssuer = true;
@@ -33,16 +31,13 @@ public class EasJWT
     /// <param name="claimsIdentity"></param>
     /// <param name="expireMinutes"></param>
     /// <returns></returns>
-    public string GenerateJwtToken(ClaimsIdentity claimsIdentity, int expireMinutes)
-    {
+    public string GenerateJwtToken(ClaimsIdentity claimsIdentity, int expireMinutes) {
         return GenerateJwtToken(claimsIdentity, DateTime.Now.AddMinutes(expireMinutes));
     }
 
-    public string GenerateJwtToken(ClaimsIdentity claimsIdentity, DateTime expire)
-    {
+    public string GenerateJwtToken(ClaimsIdentity claimsIdentity, DateTime expire) {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
+        var tokenDescriptor = new SecurityTokenDescriptor {
             Subject = claimsIdentity,
             Expires = expire,
             SigningCredentials =
@@ -60,16 +55,13 @@ public class EasJWT
     /// <param name="claimsIdentity"></param>
     /// <param name="expireMinutes"></param>
     /// <returns></returns>
-    public string GenerateJwtToken(Dictionary<string, object?> claims, int expireMinutes)
-    {
+    public string GenerateJwtToken(Dictionary<string, object?> claims, int expireMinutes) {
         return GenerateJwtToken(claims, DateTime.Now.AddMinutes(expireMinutes));
     }
 
-    public string GenerateJwtToken(Dictionary<string, object?> claims, DateTime expire)
-    {
+    public string GenerateJwtToken(Dictionary<string, object?> claims, DateTime expire) {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
+        var tokenDescriptor = new SecurityTokenDescriptor {
             Claims = claims,
             Expires = expire,
             SigningCredentials =
@@ -88,10 +80,8 @@ public class EasJWT
     /// <param name="validateIssuer"></param>
     /// <param name="validateAudience"></param>
     /// <returns></returns>
-    public ClaimsPrincipal? ValidateJwtToken(string token)
-    {
-        var tokenValidationParameters = new TokenValidationParameters
-        {
+    public ClaimsPrincipal? ValidateJwtToken(string token) {
+        var tokenValidationParameters = new TokenValidationParameters {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Secret),
             ValidateIssuer = ValidateIssuer,

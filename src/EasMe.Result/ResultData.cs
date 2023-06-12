@@ -8,12 +8,10 @@ namespace EasMe.Result;
 ///     <br />
 ///     In order to avoid using <see cref="Exception" />'s and the performance downside from it.
 /// </summary>
-public readonly struct ResultData<T>
-{
+public readonly struct ResultData<T> {
     #region CONSTRUCTORS
 
-    internal ResultData(T? data, ResultSeverity severity, object errCode)
-    {
+    internal ResultData(T? data, ResultSeverity severity, object errCode) {
         ErrorCode = errCode.ToString() ?? "None";
         Severity = severity;
         Data = data;
@@ -21,8 +19,7 @@ public readonly struct ResultData<T>
         Exception = null;
     }
 
-    internal ResultData(T? data, ResultSeverity severity, object errCode, List<string> errors)
-    {
+    internal ResultData(T? data, ResultSeverity severity, object errCode, List<string> errors) {
         ErrorCode = errCode.ToString() ?? "None";
         Severity = severity;
         Data = data;
@@ -30,16 +27,16 @@ public readonly struct ResultData<T>
         Exception = null;
         Errors = errors;
     }
-    internal ResultData(ResultSeverity severity, object errCode, List<string> errors)
-    {
+
+    internal ResultData(ResultSeverity severity, object errCode, List<string> errors) {
         ErrorCode = errCode.ToString() ?? "None";
         Severity = severity;
         IsSuccess = false;
         Exception = null;
         Errors = errors;
     }
-    internal ResultData(Exception exception, ResultSeverity severity, List<string> errors)
-    {
+
+    internal ResultData(Exception exception, ResultSeverity severity, List<string> errors) {
         ErrorCode = "ExceptionOccured";
         Severity = severity;
         Data = default;
@@ -48,8 +45,7 @@ public readonly struct ResultData<T>
         Exception = new CleanException(exception);
     }
 
-    internal ResultData(Exception exception, ResultSeverity severity)
-    {
+    internal ResultData(Exception exception, ResultSeverity severity) {
         ErrorCode = "ExceptionOccured";
         Severity = severity;
         Data = default;
@@ -68,7 +64,7 @@ public readonly struct ResultData<T>
     public List<string> Errors { get; init; } = new();
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public T? Data { get; init; } = (T?)default;
+    public T? Data { get; init; } = default;
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public CleanException? Exception { get; init; }
@@ -77,20 +73,17 @@ public readonly struct ResultData<T>
 
     #region OPERATORS
 
-    public static implicit operator T?(ResultData<T> res)
-    {
+    public static implicit operator T?(ResultData<T> res) {
         return res.Data;
     }
 
-    public static implicit operator ResultData<T>(T? value)
-    {
+    public static implicit operator ResultData<T>(T? value) {
         return value is null
             ? Result.Error($"{nameof(T)}.NullReference")
             : Result.SuccessData(value);
     }
 
-    public static implicit operator bool(ResultData<T> value)
-    {
+    public static implicit operator bool(ResultData<T> value) {
         return value.IsSuccess;
     }
 
@@ -101,25 +94,22 @@ public readonly struct ResultData<T>
     /// </summary>
     /// <param name="result"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public static implicit operator ResultData<T>(Result result)
-    {
+    public static implicit operator ResultData<T>(Result result) {
         if (result.IsSuccess)
             throw new InvalidOperationException(
                 "Implicit conversion from Result to ResultData<T> is not possible if ResultState is success");
-        return new ResultData<T>(result.Severity, result.ErrorCode,result.Errors);
+        return new ResultData<T>(result.Severity, result.ErrorCode, result.Errors);
     }
 
     #endregion
 
     #region MethodConverters
 
-    public Result ToResult()
-    {
+    public Result ToResult() {
         return new Result(IsSuccess, Severity, ErrorCode);
     }
 
-    public ResultData<T> ToNew(T? data)
-    {
+    public ResultData<T> ToNew(T? data) {
         return new ResultData<T>(data, Severity, Errors, Errors);
     }
 

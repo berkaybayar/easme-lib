@@ -7,14 +7,12 @@ using Microsoft.Win32;
 
 namespace EasMe.System;
 
-public static class EasSystem
-{
+public static class EasSystem {
     /// <summary>
     ///     Returns this computers MAC Address.
     /// </summary>
     /// <returns></returns>
-    public static string GetMACAddress()
-    {
+    public static string GetMACAddress() {
         var macAddr = (
             from nic in NetworkInterface.GetAllNetworkInterfaces()
             where nic.OperationalStatus == OperationalStatus.Up
@@ -23,15 +21,13 @@ public static class EasSystem
         if (!string.IsNullOrEmpty(macAddr))
             return macAddr;
         var active = GetMACAddresses_Active();
-        if (active.Count > 0)
-        {
+        if (active.Count > 0) {
             var mac = active.Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
             if (mac is not null) return mac;
         }
 
         var all = GetMACAddresses_All();
-        if (all.Count > 0)
-        {
+        if (all.Count > 0) {
             var mac = all.Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
             if (mac is not null) return mac;
         }
@@ -39,8 +35,7 @@ public static class EasSystem
         return "NOT_FOUND";
     }
 
-    public static List<string> GetMACAddresses_Active()
-    {
+    public static List<string> GetMACAddresses_Active() {
         return NetworkInterface.GetAllNetworkInterfaces()
             .Where(x => x.OperationalStatus == OperationalStatus.Up)
             .Select(x => x.GetPhysicalAddress().ToString())
@@ -48,8 +43,7 @@ public static class EasSystem
             .ToList();
     }
 
-    public static List<string> GetMACAddresses_All()
-    {
+    public static List<string> GetMACAddresses_All() {
         return NetworkInterface.GetAllNetworkInterfaces()
             .OrderBy(x => x.OperationalStatus == OperationalStatus.Up)
             .Select(x => x.GetPhysicalAddress().ToString())
@@ -62,12 +56,10 @@ public static class EasSystem
     /// </summary>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static List<RamModel> GetRamList()
-    {
+    public static List<RamModel> GetRamList() {
         var list = new List<RamModel>();
 
-        foreach (var obj in GetManagementObjList("Win32_PhysicalMemory"))
-        {
+        foreach (var obj in GetManagementObjList("Win32_PhysicalMemory")) {
             var ramModel = new RamModel();
             ramModel.Attributes = obj.Properties["Attributes"].Value.ToString();
             ramModel.Capacity = obj.Properties["Capacity"].Value.ToString();
@@ -101,8 +93,7 @@ public static class EasSystem
     ///     Returns this computers Motherboard information as a MotherboardModel object.
     /// </summary>
     /// <returns></returns>
-    public static MotherboardModel GetMotherboard()
-    {
+    public static MotherboardModel GetMotherboard() {
         var motherboardModel = new MotherboardModel();
 
         var item = GetManagementObjList("Win32_BaseBoard").FirstOrDefault();
@@ -135,14 +126,12 @@ public static class EasSystem
     //	}
     //	return "";
     //}
-    public static string GetGpuName()
-    {
+    public static string GetGpuName() {
         var item = GetManagementObjList("Win32_VideoController").FirstOrDefault();
         return item["Name"]?.ToString() ?? "";
     }
 
-    public static string GetProcessorName()
-    {
+    public static string GetProcessorName() {
         var CPUName = Convert.ToString(Registry.GetValue(
             "HKEY_LOCAL_MACHINE\\HARDWARE\\DESCRIPTION\\SYSTEM\\CentralProcessor\\0", "ProcessorNameString", null));
         return CPUName?.Trim() ?? "";
@@ -153,8 +142,7 @@ public static class EasSystem
     /// </summary>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static CPUModel GetProcessor()
-    {
+    public static CPUModel GetProcessor() {
         var CPUModel = new CPUModel();
         var item = GetManagementObjList("Win32_Processor").FirstOrDefault();
         CPUModel.AddressWidth = item["AddressWidth"].ToString();
@@ -209,8 +197,7 @@ public static class EasSystem
     /// </summary>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static List<DiskModel> GetDiskList()
-    {
+    public static List<DiskModel> GetDiskList() {
         var list = new List<DiskModel>();
         var disk = GetManagementObjList("Win32_DiskDrive").FirstOrDefault();
         var model = new DiskModel();
@@ -256,12 +243,10 @@ public static class EasSystem
     /// </summary>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static List<GPUModel> GetGPUList()
-    {
+    public static List<GPUModel> GetGPUList() {
         var list = new List<GPUModel>();
         var GPUList = GetManagementObjList("Win32_VideoController");
-        foreach (var video in GPUList)
-        {
+        foreach (var video in GPUList) {
             var model = new GPUModel();
             model.AdapterRAM = video["AdapterRAM"].ToString();
             model.Availability = video["Availability"].ToString();
@@ -310,8 +295,7 @@ public static class EasSystem
     /// </summary>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static BIOSModel GetBIOS()
-    {
+    public static BIOSModel GetBIOS() {
         var model = new BIOSModel();
         var bios = GetManagementObjList("Win32_BIOS").FirstOrDefault();
         model.BIOSVersion = bios["BIOSVersion"].ToString();
@@ -339,37 +323,30 @@ public static class EasSystem
         return model;
     }
 
-    public static string GetTimezone()
-    {
+    public static string GetTimezone() {
         return TimeZoneInfo.Local.StandardName;
     }
 
-    public static string GetOSVersion()
-    {
+    public static string GetOSVersion() {
         return Environment.OSVersion.ToString();
     }
 
-    public static string GetMachineName()
-    {
+    public static string GetMachineName() {
         return Environment.MachineName;
     }
 
-    public static string GetThreadId()
-    {
+    public static string GetThreadId() {
         return Environment.CurrentManagedThreadId.ToString();
     }
 
 
-    public static string GetRemoteIPAddress()
-    {
-        try
-        {
+    public static string GetRemoteIPAddress() {
+        try {
             var httpClient = new HttpClient();
             var response = httpClient.GetAsync("https://api.ipify.org/").Result;
             return response.Content.ReadAsStringAsync().Result;
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             return "N/A";
         }
     }
@@ -381,8 +358,7 @@ public static class EasSystem
     /// <exception cref="KeyNotFoundException"></exception>
     /// <exception cref="IndexOutOfRangeException"></exception>
     /// <exception cref="EasException"></exception>
-    public static string? GetMachineGuid()
-    {
+    public static string? GetMachineGuid() {
         var location = @"SOFTWARE\Microsoft\Cryptography";
         var name = "MachineGuid";
 
@@ -400,8 +376,7 @@ public static class EasSystem
     ///     Returns Disk UUID from Win32_ComputerSystemProduct
     /// </summary>
     /// <returns></returns>
-    public static string GetDiskUUID()
-    {
+    public static string GetDiskUUID() {
         var run = "get-wmiobject Win32_ComputerSystemProduct  | Select-Object -ExpandProperty UUID";
         var oProcess = new Process();
         var oStartInfo = new ProcessStartInfo("powershell.exe", run);
@@ -416,8 +391,7 @@ public static class EasSystem
         return result.TrimAbsolute().RemoveLineEndings();
     }
 
-    public static NetworkInfoModel GetNetworkInfo_Client()
-    {
+    public static NetworkInfoModel GetNetworkInfo_Client() {
         var resp = EasAPI.SendGetRequest("https://cloudflare.com/cdn-cgi/trace", null, 3);
         if (!resp.IsSuccessStatusCode) throw new Exception("Failed to get network info");
         var bodyText = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -426,8 +400,7 @@ public static class EasSystem
         var loc = bodyLines[9].Split("=")[1];
         var warp = bodyLines[12].Split("=")[1].StringConversion<bool>();
         var gateway = bodyLines[13].Split("=")[1].StringConversion<bool>();
-        return new NetworkInfoModel
-        {
+        return new NetworkInfoModel {
             IpAddress = ip,
             IsGatewayOn = gateway,
             IsWarpOn = warp,
@@ -437,23 +410,20 @@ public static class EasSystem
 
     #region Read System.Management
 
-    private static string GetIdentifier(string wmiClass, string wmiProperty)
-    {
+    private static string GetIdentifier(string wmiClass, string wmiProperty) {
         var result = "";
         var mc = new ManagementClass(wmiClass);
         var moc = mc.GetInstances();
         foreach (var mo in moc.Cast<ManagementObject>())
             //Only get the first one
             if (string.IsNullOrEmpty(result))
-                try
-                {
+                try {
                     var prop = mo[wmiProperty];
                     if (prop != null)
                         result = prop.ToString();
                     break;
                 }
-                catch
-                {
+                catch {
                 }
 
         if (string.IsNullOrEmpty(result)) return "Unknown";
@@ -461,12 +431,10 @@ public static class EasSystem
     }
 
 
-    private static List<ManagementObject> GetManagementObjList(string className, string searchCol = "*")
-    {
+    private static List<ManagementObject> GetManagementObjList(string className, string searchCol = "*") {
         var list = new List<ManagementObject>();
         var searcher = new ManagementObjectSearcher("select " + searchCol + " from " + className);
-        foreach (var obj in searcher.Get().Cast<ManagementObject>())
-        {
+        foreach (var obj in searcher.Get().Cast<ManagementObject>()) {
             if (obj == null)
                 continue;
             list.Add(obj);

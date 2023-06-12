@@ -1,5 +1,4 @@
 ﻿namespace EasMe.EntityFrameworkCore;
 
-public interface IEntity
-{
+public interface IEntity {
 }

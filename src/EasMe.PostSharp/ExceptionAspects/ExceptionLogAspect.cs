@@ -4,23 +4,19 @@ using PostSharp.Aspects;
 namespace EasMe.PostSharp.ExceptionAspects;
 
 [Serializable]
-public class ExceptionLogAspect : OnExceptionAspect
-{
+public class ExceptionLogAspect : OnExceptionAspect {
     [NonSerialized] private readonly IEasLog _logger;
 
 
-    public ExceptionLogAspect(IEasLog logger)
-    {
+    public ExceptionLogAspect(IEasLog logger) {
         _logger = logger;
     }
 
-    public ExceptionLogAspect()
-    {
+    public ExceptionLogAspect() {
         _logger = EasLogFactory.StaticLogger;
     }
 
-    public override void OnException(MethodExecutionArgs args)
-    {
+    public override void OnException(MethodExecutionArgs args) {
         var methodName = args.Method.Name;
         _logger.Exception(args.Exception, methodName);
     }

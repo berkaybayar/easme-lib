@@ -3,19 +3,15 @@ using Newtonsoft.Json;
 
 namespace EasMe.Models;
 
-public class CleanException
-{
-    public CleanException()
-    {
+public class CleanException {
+    public CleanException() {
     }
 
-    public CleanException(string message)
-    {
+    public CleanException(string message) {
         Message = message;
     }
 
-    public CleanException(Exception exception)
-    {
+    public CleanException(Exception exception) {
         StackTrace = exception.StackTrace;
         Message = exception.Message;
         Source = exception.Source;

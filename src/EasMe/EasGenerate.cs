@@ -4,25 +4,21 @@ using EasMe.Exceptions;
 
 namespace EasMe;
 
-public static class EasGenerate
-{
+public static class EasGenerate {
     private const string CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
     /// <summary>
     ///     Generates and returns a random GUID string without "-"
     /// </summary>
     /// <returns></returns>
-    public static string GenerateGuidString()
-    {
+    public static string GenerateGuidString() {
         return Guid.NewGuid().ToString().Replace("-", "");
     }
 
-    public static string GetRandomString(ushort length)
-    {
+    public static string GetRandomString(ushort length) {
         var charArray = CHARACTERS.ToCharArray();
         var result = new StringBuilder(length);
-        for (var i = 0; i < length; i++)
-        {
+        for (var i = 0; i < length; i++) {
             var random = RandomNumberGenerator.GetInt32(charArray.Length);
             var randomChar = charArray[random];
             result.Append(randomChar);
@@ -37,8 +33,7 @@ public static class EasGenerate
     /// <param name="chars"></param>
     /// <param name="length"></param>
     /// <returns></returns>
-    private static string GenerateString(string chars, int length)
-    {
+    private static string GenerateString(string chars, int length) {
         if (length > 2048)
             throw new TooBigValueException(
                 "Given length to create random string is too big. Max allowed length value is 1024.");
@@ -60,14 +55,12 @@ public static class EasGenerate
     /// <param name="allowedChars"></param>
     /// <param name="onlyLetter"></param>
     /// <returns></returns>
-    public static string GenerateRandomString(int length, bool onlyLetter = false, string allowedChars = "")
-    {
+    public static string GenerateRandomString(int length, bool onlyLetter = false, string allowedChars = "") {
         const string lowerAll = "abcdefghijklmnoprstuvwxyzq";
         const string upperAll = "ABCDEFGHIJKLMNOPRSTUVWXYZQ";
         const string digits = "0123456789";
         string allChars;
-        if (onlyLetter)
-        {
+        if (onlyLetter) {
             allChars = lowerAll + upperAll + allowedChars;
             return GenerateString(allChars, length);
         }
@@ -81,8 +74,7 @@ public static class EasGenerate
     /// </summary>
     /// <param name="digitCount"></param>
     /// <returns></returns>
-    public static long GenerateRandomNumbers(int digitCount)
-    {
+    public static long GenerateRandomNumbers(int digitCount) {
         const string digits = "0123456789";
         var random = GenerateString(digits, digitCount);
         var randomNumberStringAsInt32 = Convert.ToInt64(random);

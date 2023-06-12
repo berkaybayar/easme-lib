@@ -2,12 +2,11 @@
 
 namespace EasMe.Logging;
 
-public interface IEasLog
-{
-    //void LogResult(Result.Result result);
-    //void LogResult<T>(ResultData<T> result);
-    //void LogResult(Result.Result result, object message);
-    //void LogResult<T>(ResultData<T> result, object message);
+public interface IEasLog {
+    void LogResult(Result.Result result);
+    void LogResult<T>(ResultData<T> result);
+    void LogResult(Result.Result result, object message);
+    void LogResult<T>(ResultData<T> result, object message);
 
     //void LogBool(bool status, string trueMessage, string falseMessage,
     //    ResultSeverity falseResultSeverity = ResultSeverity.Warn);

@@ -4,20 +4,16 @@ using Newtonsoft.Json;
 
 namespace EasMe.Logging.Models;
 
-public class LogModel
-{
-    private LogModel()
-    {
+public class LogModel {
+    private LogModel() {
     }
 
     private LogModel(EasLogLevel logLevel, string source, object log, Exception? exception = null,
-        WebInfo? webInfo = null)
-    {
+        WebInfo? webInfo = null) {
         Level = logLevel;
         Source = source;
         Log = log;
-        if (EasLogFactory.Config.TraceLogging || logLevel == EasLogLevel.Trace)
-        {
+        if (EasLogFactory.Config.TraceLogging || logLevel == EasLogLevel.Trace) {
             var traceInfo = EasLogHelper.GetTraceInfo();
             TraceMethod = traceInfo.MethodName;
             TraceClass = traceInfo.ClassName;
@@ -48,8 +44,7 @@ public class LogModel
     public WebInfo? WebInfo { get; set; }
 
     public static LogModel Create(EasLogLevel logLevel, string source, object log, Exception? exception = null,
-        WebInfo? webInfo = null)
-    {
+        WebInfo? webInfo = null) {
         return new LogModel(logLevel, source, log, exception, webInfo);
     }
 }

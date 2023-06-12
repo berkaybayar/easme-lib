@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace EasMe.Extensions;
 
-public static class JsonExtensions
-{
-
-
+public static class JsonExtensions {
     /// <summary>
     ///     Serializes given object to json string.
     /// </summary>
@@ -19,11 +15,10 @@ public static class JsonExtensions
     //{
     //    return obj.ToJsonString(formatting);
     //}
-    public static string ToJsonString(this object? obj, Formatting formatting = Formatting.None, ReferenceLoopHandling referenceLoopHandling = ReferenceLoopHandling.Ignore)
-    {
+    public static string ToJsonString(this object? obj, Formatting formatting = Formatting.None,
+        ReferenceLoopHandling referenceLoopHandling = ReferenceLoopHandling.Ignore) {
         if (obj == null) return default;
-        var settings = new JsonSerializerSettings
-        {
+        var settings = new JsonSerializerSettings {
             ContractResolver = new Resolver(),
             Formatting = formatting,
             ReferenceLoopHandling = referenceLoopHandling
@@ -38,18 +33,13 @@ public static class JsonExtensions
     /// <param name="obj"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static T? FromJsonString<T>(this string str)
-    {
+    public static T? FromJsonString<T>(this string str) {
         return JsonConvert.DeserializeObject<T>(str);
     }
 
 
-  
-
-    private class Resolver : DefaultContractResolver
-    {
-        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-        {
+    private class Resolver : DefaultContractResolver {
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
             if (!typeof(Exception).IsAssignableFrom(type)) return base.CreateProperties(type, memberSerialization);
             var props = base.CreateProperties(type, memberSerialization);
             return props.Where(p => p.PropertyName != "WatsonBuckets").ToList();

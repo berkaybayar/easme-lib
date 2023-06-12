@@ -8,10 +8,8 @@ namespace EasMe;
 /// <summary>
 ///     SQL helper, used to execute SQL queries, and get data from SQL database.
 /// </summary>
-public class EasQL
-{
-    public EasQL(string connection)
-    {
+public class EasQL {
+    public EasQL(string connection) {
         if (!connection.IsValidConnectionString())
             throw new NotValidException("EasQL given connection string is not valid");
         Connection = connection;
@@ -27,8 +25,7 @@ public class EasQL
     /// <param name="Timeout"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public DataTable GetTable(SqlCommand cmd, int Timeout = 0)
-    {
+    public DataTable GetTable(SqlCommand cmd, int Timeout = 0) {
         return GetTable(Connection, cmd, Timeout);
     }
 
@@ -40,13 +37,11 @@ public class EasQL
     /// <param name="Timeout"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public int ExecNonQuery(SqlCommand cmd, int Timeout = 0)
-    {
+    public int ExecNonQuery(SqlCommand cmd, int Timeout = 0) {
         return ExecNonQuery(Connection, cmd, Timeout);
     }
 
-    public async Task<int> ExecNonQueryAsync(SqlCommand cmd, int timeout = 0)
-    {
+    public async Task<int> ExecNonQueryAsync(SqlCommand cmd, int timeout = 0) {
         return await Task.Run(() => { return ExecNonQuery(Connection, cmd, timeout); });
     }
 
@@ -59,13 +54,11 @@ public class EasQL
     /// <param name="Timeout"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public object ExecScalar(SqlCommand cmd, int Timeout = 0)
-    {
+    public object ExecScalar(SqlCommand cmd, int Timeout = 0) {
         return ExecScalar(Connection, cmd, Timeout);
     }
 
-    public async Task<object> ExecScalarAsync(SqlCommand cmd, int timeout = 0)
-    {
+    public async Task<object> ExecScalarAsync(SqlCommand cmd, int timeout = 0) {
         return await Task.Run(() => { return ExecScalar(Connection, cmd, timeout); });
     }
 
@@ -77,13 +70,11 @@ public class EasQL
     /// <param name="BackupFolderPath"></param>
     /// <param name="Timeout"></param>
     /// <exception cref="EasException"></exception>
-    public void BackupDatabase(string BackupPath, int Timeout = 0)
-    {
+    public void BackupDatabase(string BackupPath, int Timeout = 0) {
         BackupDatabase(Connection, BackupPath, Timeout);
     }
 
-    public async Task BackupDatabaseAsync(string BackupPath, int Timeout = 0)
-    {
+    public async Task BackupDatabaseAsync(string BackupPath, int Timeout = 0) {
         await Task.Run(() => { BackupDatabase(BackupPath, Timeout); });
     }
 
@@ -95,13 +86,11 @@ public class EasQL
     /// <param name="DatabaseName"></param>
     /// <param name="DatabaseLogName"></param>
     /// <exception cref="EasException"></exception>
-    public void ShrinkDatabase(string DatabaseLogName = "_log")
-    {
+    public void ShrinkDatabase(string DatabaseLogName = "_log") {
         ShrinkDatabase(Connection, DatabaseLogName);
     }
 
-    public async Task ShrinkDatabaseAsync(string DatabaseLogName = "_log")
-    {
+    public async Task ShrinkDatabaseAsync(string DatabaseLogName = "_log") {
         await Task.Run(() => { ShrinkDatabase(DatabaseLogName); });
     }
 
@@ -113,13 +102,11 @@ public class EasQL
     /// <param name="Connection"></param>
     /// <param name="TableName"></param>
     /// <exception cref="EasException"></exception>
-    public void TruncateTable(string TableName)
-    {
+    public void TruncateTable(string TableName) {
         TruncateTable(Connection, TableName);
     }
 
-    public async Task TruncateTableAsync(string TableName)
-    {
+    public async Task TruncateTableAsync(string TableName) {
         await Task.Run(() => { TruncateTable(TableName); });
     }
 
@@ -131,13 +118,11 @@ public class EasQL
     /// <param name="Connection"></param>
     /// <param name="TableName"></param>
     /// <exception cref="EasException"></exception>
-    public void DropTable(string TableName)
-    {
+    public void DropTable(string TableName) {
         DropTable(Connection, TableName);
     }
 
-    public async Task DropTableAsync(string TableName)
-    {
+    public async Task DropTableAsync(string TableName) {
         await Task.Run(() => { DropTable(TableName); });
     }
 
@@ -148,8 +133,7 @@ public class EasQL
     /// <param name="Connection"></param>
     /// <param name="DatabaseName"></param>
     /// <exception cref="EasException"></exception>
-    public void DropDatabase(string DatabaseName)
-    {
+    public void DropDatabase(string DatabaseName) {
         DropDatabase(Connection, DatabaseName);
     }
 
@@ -159,8 +143,7 @@ public class EasQL
     /// <param name="Connection"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public List<string> GetAllTableName()
-    {
+    public List<string> GetAllTableName() {
         return GetAllTableName(Connection);
     }
 
@@ -175,8 +158,7 @@ public class EasQL
     /// <param name="timeout"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static DataTable GetTable(string connection, SqlCommand cmd, int timeout = 0)
-    {
+    public static DataTable GetTable(string connection, SqlCommand cmd, int timeout = 0) {
         DataTable dt = new();
         using var conn = new SqlConnection(connection);
         conn.Open();
@@ -187,8 +169,7 @@ public class EasQL
         return dt;
     }
 
-    public static async Task<DataTable> GetTableAsync(string connection, SqlCommand cmd, int timeout = 0)
-    {
+    public static async Task<DataTable> GetTableAsync(string connection, SqlCommand cmd, int timeout = 0) {
         return await Task.Run(() => { return GetTable(connection, cmd, timeout); });
     }
 
@@ -200,8 +181,7 @@ public class EasQL
     /// <param name="Timeout"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static int ExecNonQuery(string Connection, SqlCommand cmd, int Timeout = 0)
-    {
+    public static int ExecNonQuery(string Connection, SqlCommand cmd, int Timeout = 0) {
         using SqlConnection conn = new(Connection);
         cmd.Connection = conn;
         cmd.CommandTimeout = Timeout;
@@ -209,8 +189,7 @@ public class EasQL
         return cmd.ExecuteNonQuery();
     }
 
-    public static async Task<int> ExecNonQueryAsync(string connection, SqlCommand cmd, int timeout = 0)
-    {
+    public static async Task<int> ExecNonQueryAsync(string connection, SqlCommand cmd, int timeout = 0) {
         return await Task.Run(() => { return ExecNonQuery(connection, cmd, timeout); });
     }
 
@@ -223,8 +202,7 @@ public class EasQL
     /// <param name="Timeout"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0)
-    {
+    public static object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0) {
         using SqlConnection conn = new(Connection);
         cmd.Connection = conn;
         cmd.CommandTimeout = Timeout;
@@ -232,13 +210,11 @@ public class EasQL
         return cmd.ExecuteScalar();
     }
 
-    public static async Task<object> ExecScalarAsync(string connection, SqlCommand cmd, int timeout = 0)
-    {
+    public static async Task<object> ExecScalarAsync(string connection, SqlCommand cmd, int timeout = 0) {
         return await Task.Run(() => { return ExecScalar(connection, cmd, timeout); });
     }
 
-    public static void BackupDatabase(string connection, string backupFolderPath, int timeout = 0)
-    {
+    public static void BackupDatabase(string connection, string backupFolderPath, int timeout = 0) {
         var dbName = connection.ParseDatabaseName();
         if (!Directory.Exists(backupFolderPath)) Directory.CreateDirectory(backupFolderPath);
         var bkPath = backupFolderPath + "\\bk_" + dbName + ".bak";
@@ -247,13 +223,11 @@ public class EasQL
         ExecNonQuery(connection, cmd, timeout);
     }
 
-    public static async Task BackupDatabaseAsync(string connection, string backupFolderPath, int timeout = 0)
-    {
+    public static async Task BackupDatabaseAsync(string connection, string backupFolderPath, int timeout = 0) {
         await Task.Run(() => { BackupDatabase(connection, backupFolderPath, timeout); });
     }
 
-    public static void ShrinkDatabase(string Connection, string DatabaseLogName = "_log")
-    {
+    public static void ShrinkDatabase(string Connection, string DatabaseLogName = "_log") {
         var DatabaseName = Connection.ParseDatabaseName();
         if (DatabaseLogName == "_log") DatabaseLogName = DatabaseName + DatabaseLogName;
         var query = $@"BEGIN
@@ -270,21 +244,18 @@ public class EasQL
         ExecNonQuery(Connection, cmd);
     }
 
-    public static async Task ShrinkDatabaseAsync(string Connection, string DatabaseLogName = "_log")
-    {
+    public static async Task ShrinkDatabaseAsync(string Connection, string DatabaseLogName = "_log") {
         await Task.Run(() => { ShrinkDatabase(Connection, DatabaseLogName); });
     }
 
 
-    public static void TruncateTable(string Connection, string TableName)
-    {
+    public static void TruncateTable(string Connection, string TableName) {
         var query = $@"TRUNCATE TABLE {TableName}";
         var cmd = new SqlCommand(query);
         ExecNonQuery(Connection, cmd);
     }
 
-    public static async Task TruncateTableAsync(string Connection, string TableName)
-    {
+    public static async Task TruncateTableAsync(string Connection, string TableName) {
         await Task.Run(() => { TruncateTable(Connection, TableName); });
     }
 
@@ -295,15 +266,13 @@ public class EasQL
     /// <param name="Connection"></param>
     /// <param name="TableName"></param>
     /// <exception cref="EasException"></exception>
-    public static void DropTable(string Connection, string TableName)
-    {
+    public static void DropTable(string Connection, string TableName) {
         var query = $@"DROP TABLE {TableName}";
         var cmd = new SqlCommand(query);
         ExecNonQuery(Connection, cmd);
     }
 
-    public static async Task DropTableAsync(string Connection, string TableName)
-    {
+    public static async Task DropTableAsync(string Connection, string TableName) {
         await Task.Run(() => { DropTable(Connection, TableName); });
     }
 
@@ -314,8 +283,7 @@ public class EasQL
     /// <param name="Connection"></param>
     /// <param name="DatabaseName"></param>
     /// <exception cref="EasException"></exception>
-    public static void DropDatabase(string Connection, string DatabaseName)
-    {
+    public static void DropDatabase(string Connection, string DatabaseName) {
         var query = $@"DROP DATABASE {DatabaseName}";
         var cmd = new SqlCommand(query);
         ExecNonQuery(Connection, cmd);
@@ -328,8 +296,7 @@ public class EasQL
     /// <param name="Connection"></param>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static List<string> GetAllTableName(string Connection)
-    {
+    public static List<string> GetAllTableName(string Connection) {
         var query = @"SELECT '['+SCHEMA_NAME(schema_id)+'].['+name+']' FROM sys.tables";
         var list = new List<string>();
         var cmd = new SqlCommand(query);
@@ -338,15 +305,13 @@ public class EasQL
         return list;
     }
 
-    public static List<string> GetColumns(string connection, string tableName)
-    {
+    public static List<string> GetColumns(string connection, string tableName) {
         var list = new List<string>();
         var query = $@"SELECT name FROM sys.columns WHERE object_id = OBJECT_ID('{tableName}')";
         SqlCommand cmd = new(query);
         var dt = GetTable(connection, cmd);
         foreach (DataRow row in dt.Rows)
-            if (row != null)
-            {
+            if (row != null) {
                 var columnName = row[0].ToString();
                 if (!string.IsNullOrEmpty(columnName)) list.Add(columnName);
             }

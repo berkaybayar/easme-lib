@@ -3,39 +3,33 @@ using System.Reflection;
 
 namespace EasMe.Extensions;
 
-public static class ObjectExtensions
-{
-    public static TDestination SelectAs<TSource, TDestination>(this TSource source, Func<TSource, TDestination> action)
-    {
+public static class ObjectExtensions {
+    public static TDestination
+        SelectAs<TSource, TDestination>(this TSource source, Func<TSource, TDestination> action) {
         return action(source);
     }
 
-    public static bool ValidateModel<T>(this T model)
-    {
+    public static bool ValidateModel<T>(this T model) {
         var _dbContext = new ValidationContext(model);
         var results = new List<ValidationResult>();
         var isValid = Validator.TryValidateObject(model, _dbContext, results, true);
         return isValid;
     }
 
-    public static bool IsNull(this object? target)
-    {
+    public static bool IsNull(this object? target) {
         return target.IsNull<object>();
     }
 
-    public static bool IsNull<T>(this T? target)
-    {
+    public static bool IsNull<T>(this T? target) {
         return (object)target == DBNull.Value || target == null;
     }
 
-    public static bool IsNotNull(this object? target)
-    {
+    public static bool IsNotNull(this object? target) {
         return !target.IsNull();
     }
 
     public static Dictionary<string, object?> AsDictionary(this object source,
-        BindingFlags bindingAttr = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
-    {
+        BindingFlags bindingAttr = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance) {
         return source.GetType().GetProperties(bindingAttr).ToDictionary
         (
             propInfo => propInfo.Name,
@@ -43,10 +37,8 @@ public static class ObjectExtensions
         );
     }
 
-    public static object? ChangeType(this object value, Type t)
-    {
-        if (t.IsGenericType && t.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
-        {
+    public static object? ChangeType(this object value, Type t) {
+        if (t.IsGenericType && t.GetGenericTypeDefinition().Equals(typeof(Nullable<>))) {
             if (value == null) return default;
 
             t = Nullable.GetUnderlyingType(t);
@@ -62,14 +54,12 @@ public static class ObjectExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static string ToLineString<T>(this T obj)
-    {
+    public static string ToLineString<T>(this T obj) {
         if (obj is null)
             return "null";
         var t = obj.GetType();
         var text = "";
-        foreach (var prop in t.GetProperties())
-        {
+        foreach (var prop in t.GetProperties()) {
             var value = prop.GetValue(obj, null);
             var name = prop.Name;
             text += $"{name}:{value?.ToString() ?? "null"} ";

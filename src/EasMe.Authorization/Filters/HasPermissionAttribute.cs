@@ -22,29 +22,24 @@ namespace EasMe.Authorization.Filters;
 ///         <see cref="HttpContext.User" /> claims.
 ///     </example>
 /// </summary>
-public class HasPermissionAttribute : ActionFilterAttribute
-{
+public class HasPermissionAttribute : ActionFilterAttribute {
     private readonly string _actionCode;
 
-    public HasPermissionAttribute(object actionCode)
-    {
+    public HasPermissionAttribute(object actionCode) {
         _actionCode = actionCode.ToString() ?? "";
         if (string.IsNullOrEmpty(_actionCode))
             throw new ArgumentNullException(nameof(actionCode));
     }
 
-    public override void OnActionExecuting(ActionExecutingContext _dbContext)
-    {
-        if (_dbContext.HttpContext.User.Identity is not { IsAuthenticated: true })
-        {
+    public override void OnActionExecuting(ActionExecutingContext _dbContext) {
+        if (_dbContext.HttpContext.User.Identity is not { IsAuthenticated: true }) {
             Trace.WriteLine("Not authorized");
             return;
         }
 
         var endPointPermissionString =
             _dbContext.HttpContext.User.FindFirst(EasMeClaimType.EndPointPermissions)?.Value ?? "";
-        if (string.IsNullOrEmpty(endPointPermissionString))
-        {
+        if (string.IsNullOrEmpty(endPointPermissionString)) {
             _dbContext.Result = new ForbidResult();
             return;
         }
@@ -52,8 +47,7 @@ public class HasPermissionAttribute : ActionFilterAttribute
         Trace.WriteLine(endPointPermissionString);
         var permList = AuthorizationHelper.SplitPermissions(endPointPermissionString);
         Trace.WriteLine("Permission List" + JsonConvert.SerializeObject(permList));
-        if (permList.Length == 0)
-        {
+        if (permList.Length == 0) {
             _dbContext.Result = new ForbidResult();
             return;
         }

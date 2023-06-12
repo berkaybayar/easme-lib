@@ -2,8 +2,7 @@
 
 namespace EasMe;
 
-public enum PasswordScore
-{
+public enum PasswordScore {
     Blank = 0,
     VeryWeak = 1,
     Weak = 2,
@@ -12,10 +11,8 @@ public enum PasswordScore
     VeryStrong = 5
 }
 
-public class EasCheck
-{
-    public static PasswordScore CheckPasswordStrength(string password)
-    {
+public class EasCheck {
+    public static PasswordScore CheckPasswordStrength(string password) {
         var score = 0;
 
         if (password.Length < 1)

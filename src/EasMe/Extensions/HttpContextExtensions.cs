@@ -2,10 +2,8 @@
 
 namespace EasMe.Extensions;
 
-public static class HttpContextExtensions
-{
-    public static string[] _HeaderList = new string[21]
-    {
+public static class HttpContextExtensions {
+    public static string[] _HeaderList = new string[21] {
         "HOST",
         "ORIGIN",
         "X-FORWARDED-FOR",
@@ -30,8 +28,7 @@ public static class HttpContextExtensions
         "X-Real-IP"
     };
 
-    public static readonly string[] _realIpHeaderList = new string[5]
-    {
+    public static readonly string[] _realIpHeaderList = new string[5] {
         "X-FORWARDED-FOR",
         "X-Real-IP",
         "X-ORIGINAL-IP",
@@ -45,11 +42,9 @@ public static class HttpContextExtensions
     /// </summary>
     /// <param name="httpRequest"></param>
     /// <returns></returns>
-    public static Dictionary<string, string> GetHeaderValues(this HttpRequest httpRequest)
-    {
+    public static Dictionary<string, string> GetHeaderValues(this HttpRequest httpRequest) {
         var headerValues = new Dictionary<string, string>();
-        foreach (var header in _HeaderList)
-        {
+        foreach (var header in _HeaderList) {
             var value = httpRequest.Headers[header];
             if (!string.IsNullOrEmpty(value)) headerValues.Add(header, value);
         }
@@ -57,24 +52,20 @@ public static class HttpContextExtensions
         return headerValues;
     }
 
-    public static string GetXForwardedForOrRemoteIp(this HttpRequest req)
-    {
+    public static string GetXForwardedForOrRemoteIp(this HttpRequest req) {
         var ip = req.Headers["X-Forwarded-For"].FirstOrDefault();
         if (string.IsNullOrEmpty(ip)) ip = req.HttpContext.Connection.RemoteIpAddress.ToString();
         return ip;
     }
 
-    public static string[] GetIpAddressList(this HttpRequest req)
-    {
+    public static string[] GetIpAddressList(this HttpRequest req) {
         var ipList = new List<string>();
         foreach (var item in _realIpHeaderList)
-            try
-            {
+            try {
                 var ip = req.Headers[item].ToString();
                 if (ip != null && ip != "") ipList.Add(ip);
             }
-            catch
-            {
+            catch {
             }
 
         ipList.Add(req.HttpContext.Connection.RemoteIpAddress.ToString());
@@ -86,8 +77,7 @@ public static class HttpContextExtensions
     /// </summary>
     /// <param name="httpRequest"></param>
     /// <returns></returns>
-    public static List<string> GetIpAddresses(this HttpRequest httpRequest)
-    {
+    public static List<string> GetIpAddresses(this HttpRequest httpRequest) {
         var list = new List<string>();
         var headers = httpRequest.GetHeaderValues();
         var remoteIp = httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
@@ -103,31 +93,25 @@ public static class HttpContextExtensions
     /// </summary>
     /// <param name="httpRequest"></param>
     /// <returns></returns>
-    public static string GetRemoteIpAddress(this HttpRequest httpRequest)
-    {
-        try
-        {
+    public static string GetRemoteIpAddress(this HttpRequest httpRequest) {
+        try {
             foreach (var item in httpRequest.Headers)
                 if (_realIpHeaderList.Any(x => x == item.Key))
                     if (item.Value.ToString() != null || item.Value != "")
                         return item.Value.ToString() ?? "";
             return httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
         }
-        catch
-        {
+        catch {
             return "N/A";
         }
     }
 
-    public static string GetUserAgent(this HttpRequest httpRequest)
-    {
+    public static string GetUserAgent(this HttpRequest httpRequest) {
         {
-            try
-            {
+            try {
                 return httpRequest.Headers["User-Agent"].ToString();
             }
-            catch
-            {
+            catch {
                 return "N/A";
             }
         }
@@ -138,8 +122,7 @@ public static class HttpContextExtensions
     /// </summary>
     /// <param name="httpRequest"></param>
     /// <returns></returns>
-    public static string GetRequestQuery(this HttpRequest httpRequest)
-    {
+    public static string GetRequestQuery(this HttpRequest httpRequest) {
         return httpRequest.Path.ToUriComponent();
     }
 }

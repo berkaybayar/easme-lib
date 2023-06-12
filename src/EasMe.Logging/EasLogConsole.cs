@@ -7,8 +7,7 @@ namespace EasMe.Logging;
 ///     File logging with heavy api request sometime creating errors.
 ///     With this you only log to console but if error happens you log with EasLog or some other library to a file.
 /// </summary>
-public static class EasLogConsole
-{
+public static class EasLogConsole {
     private const ConsoleColor FatalColor = ConsoleColor.Magenta;
     private const ConsoleColor ErrorColor = ConsoleColor.Red;
     private const ConsoleColor BaseColor = ConsoleColor.White;
@@ -17,8 +16,7 @@ public static class EasLogConsole
     private const ConsoleColor DebugColor = ConsoleColor.Blue;
     private const ConsoleColor TraceColor = ConsoleColor.Cyan;
 
-    public static void Log(string message)
-    {
+    public static void Log(string message) {
         Console.WriteLine(message);
     }
 
@@ -27,15 +25,13 @@ public static class EasLogConsole
     /// </summary>
     /// <param name="message"></param>
     /// <param name="color"></param>
-    public static void Log(string message, ConsoleColor color)
-    {
+    public static void Log(string message, ConsoleColor color) {
         Console.ForegroundColor = color;
         Console.WriteLine(message);
         Console.ResetColor();
     }
 
-    public static void Log(string message, ConsoleColor color, bool newLine)
-    {
+    public static void Log(string message, ConsoleColor color, bool newLine) {
         Console.ForegroundColor = color;
         if (newLine)
             Console.WriteLine(message);
@@ -44,10 +40,8 @@ public static class EasLogConsole
         Console.ResetColor();
     }
 
-    public static void Log(EasLogLevel level, string message)
-    {
-        switch (level)
-        {
+    public static void Log(EasLogLevel level, string message) {
+        switch (level) {
             case EasLogLevel.Error:
                 Log(message, ErrorColor);
                 break;
@@ -72,11 +66,9 @@ public static class EasLogConsole
         }
     }
 
-    public static void Log(EasLogLevel severity, string message, params object[] param)
-    {
+    public static void Log(EasLogLevel severity, string message, params object[] param) {
         var logStr = param.ToLogString(severity) + " " + message;
-        switch (severity)
-        {
+        switch (severity) {
             case EasLogLevel.Error:
                 Log(logStr, ErrorColor);
                 break;
@@ -101,33 +93,27 @@ public static class EasLogConsole
         }
     }
 
-    public static void Error(string message, params string[] param)
-    {
+    public static void Error(string message, params string[] param) {
         Log(EasLogLevel.Error, message, param);
     }
 
-    public static void Fatal(string message, params string[] param)
-    {
+    public static void Fatal(string message, params string[] param) {
         Log(EasLogLevel.Fatal, message, param);
     }
 
-    public static void Warn(string message, params string[] param)
-    {
+    public static void Warn(string message, params string[] param) {
         Log(EasLogLevel.Warning, message, param);
     }
 
-    public static void Info(string message, params string[] param)
-    {
+    public static void Info(string message, params string[] param) {
         Log(EasLogLevel.Information, message, param);
     }
 
-    public static void Debug(string message, params string[] param)
-    {
+    public static void Debug(string message, params string[] param) {
         Log(EasLogLevel.Debug, message, param);
     }
 
-    public static void Trace(string message, params string[] param)
-    {
+    public static void Trace(string message, params string[] param) {
         Log(EasLogLevel.Trace, message, param);
     }
 }
