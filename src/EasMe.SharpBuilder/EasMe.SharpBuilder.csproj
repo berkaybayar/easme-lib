@@ -4,7 +4,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <Version>3.5</Version>
+	  <Version>1.0.0</Version>
+	  <AssemblyVersion>1.0.0</AssemblyVersion>
+	  <Title>EasMe.SharpBuilder</Title>
+	  <Authors>bberka</Authors>
+	  <Description>C# code and class builder, for creating models from various type of files. Excel, text, json files.</Description>
+	  <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
+	  <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
+	  <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
   </PropertyGroup>
 

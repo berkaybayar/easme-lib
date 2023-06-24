@@ -30,6 +30,27 @@ public readonly struct ResultData<T>  {
 
     #region OPERATORS
 
+    public static implicit operator ResultData<T>(Result res) {
+        return new ResultData<T>() {
+            ErrorCode = res.ErrorCode,
+            Severity = res.Severity,
+            ExceptionInfo = res.ExceptionInfo,
+            IsSuccess = res.IsSuccess,
+            Errors = res.Errors,
+            ValidationErrors = res.ValidationErrors,
+        };
+    }
+    public static implicit operator Result(ResultData<T> res) {
+        return new Result() {
+            ErrorCode = res.ErrorCode,
+            Severity = res.Severity,
+            ExceptionInfo = res.ExceptionInfo,
+            IsSuccess = res.IsSuccess,
+            Errors = res.Errors,
+            ValidationErrors = res.ValidationErrors
+        };
+    }
+    
     public static implicit operator T?(ResultData<T> res) {
         return res.Data;
     }

@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "EasMe.SharpBuilder/3.5": {
+      "EasMe.SharpBuilder/1.0.0": {
         "dependencies": {
           "EasMe.Result": "3.5.0"
         },
@@ -1642,7 +1642,7 @@
     }
   },
   "libraries": {
-    "EasMe.SharpBuilder/3.5": {
+    "EasMe.SharpBuilder/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

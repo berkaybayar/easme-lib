@@ -42,6 +42,7 @@ public readonly struct Result
     public static implicit operator bool(Result value) {
         return value.IsSuccess;
     }
+    
 
     public static implicit operator ActionResult(Result result) {
         return result.ToActionResult();
@@ -96,6 +97,10 @@ public readonly struct Result
     public static Result Success(string errorCode) {
         return new Result() {  
             ErrorCode = errorCode,
+            IsSuccess = true,
+            Severity = ResultSeverity.Info,
+            ExceptionInfo = null,
+            
         };
     }
 
@@ -149,9 +154,39 @@ public readonly struct Result
         };
     }
 
+    public static Result Warn<T>(T errorEnum) where T : Enum{
+        return new Result() {
+            ErrorCode = errorEnum.ToString(),
+            IsSuccess = false,
+            Severity = ResultSeverity.Warn,
+        };
+    }
+    public static Result Warn(string errorCode, List<string> errors) {
+        return new Result() {
+            ErrorCode = errorCode,
+            Errors = errors,
+            IsSuccess = false,
+            Severity = ResultSeverity.Warn
+        };
+    }
+    public static Result Warn(string errorCode, params string[] errors) {
+        return new Result() {
+            ErrorCode = errorCode,
+            Errors = errors.ToList(),
+            IsSuccess = false,
+            Severity = ResultSeverity.Warn
+        };
+    }
     public static Result Fatal(string errorCode) {
         return new Result() {
             ErrorCode = errorCode,
+            IsSuccess = false,
+            Severity = ResultSeverity.Fatal,
+        };
+    }
+    public static Result Fatal<T>(T errorEnum) where T : Enum{
+        return new Result() {
+            ErrorCode = errorEnum.ToString(),
             IsSuccess = false,
             Severity = ResultSeverity.Fatal,
         };
@@ -199,6 +234,13 @@ public readonly struct Result
             Errors = errors.ToList(),
             IsSuccess = false,
             Severity = ResultSeverity.Error
+        };
+    }
+    public static Result Error<T>(T errorEnum) where T : Enum{
+        return new Result() {
+            ErrorCode = errorEnum.ToString(),
+            IsSuccess = false,
+            Severity = ResultSeverity.Error,
         };
     }
     public static Result NotFound() {

@@ -9,7 +9,15 @@
 		<Configurations>Debug;Release</Configurations>
 		<BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
 		<Platforms>AnyCPU</Platforms>
-		<Version>3.5</Version>
+		<Version>3.5.0</Version>
+		<AssemblyVersion>3.5.0</AssemblyVersion>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Title>EasMe</Title>
+		<Authors>bberka</Authors>
+		<Description>CSharp extender library. Contains various extension methods, helper classes.</Description>
+		<PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
+		<RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
