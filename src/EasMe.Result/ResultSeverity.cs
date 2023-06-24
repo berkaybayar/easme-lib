@@ -3,7 +3,9 @@
 public enum ResultSeverity {
     None,
     Info,
+    Validation,
     Warn,
     Error,
-    Fatal
+    Exception,
+    Fatal,
 }

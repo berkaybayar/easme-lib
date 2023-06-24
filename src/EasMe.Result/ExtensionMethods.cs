@@ -27,7 +27,7 @@ public static class ExtensionMethods {
     ///     <see cref="Result" />'s that has <see cref="Result.IsSuccess" /> status true will not be added to combined
     ///     <see cref="Result.Errors" /> array
     ///     <br /><br />
-    ///     <see cref="Result.ExceptionInfo" />.Message's will be merged into error array
+    ///     <see cref="Result.Exception" />.Message's will be merged into error array
     /// </summary>
     /// <param name="result"></param>
     /// <param name="errorCode"></param>
@@ -45,7 +45,8 @@ public static class ExtensionMethods {
         var isAllSuccess = list.All(x => x.IsSuccess);
         //var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToArray();
         var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
-        return Result.Create(isAllSuccess, severity, errorCode, errorArrayOfErrors);
+        var validationErrors = list.Where(x => x.IsFailure).SelectMany(x => x.ValidationErrors).ToList();
+        return Result.Create(isAllSuccess, severity, errorCode, errorArrayOfErrors, validationErrors);
     }
 
     /// <summary>
@@ -57,7 +58,7 @@ public static class ExtensionMethods {
     ///     <see cref="Result" />'s that has <see cref="Result.IsSuccess" /> status true will not be added to combined
     ///     <see cref="Result.Errors" /> array
     ///     <br /><br />
-    ///     <see cref="Result.ExceptionInfo" />.Message's will be merged into error array
+    ///     <see cref="Result.Exception" />.Message's will be merged into error array
     /// </summary>
     /// <param name="result"></param>
     /// <param name="errorCode"></param>
@@ -76,7 +77,8 @@ public static class ExtensionMethods {
         var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToList();
         var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
         errorArray = errorArray.Concat(errorArrayOfErrors).ToList();
-        return Result.Create(isAllSuccess, severity, errorCode, errorArray);
+        var validationErrors = list.Where(x => x.IsFailure).SelectMany(x => x.ValidationErrors).ToList();
+        return Result.Create(isAllSuccess, severity, errorCode, errorArray , validationErrors);
     }
 
     /// <summary>
@@ -86,7 +88,7 @@ public static class ExtensionMethods {
     ///     <see cref="Result" />'s that has <see cref="Result.IsSuccess" /> status true will not be added to combined
     ///     <see cref="Result.Errors" /> array
     ///     <br /><br />
-    ///     <see cref="Result.ExceptionInfo" />.Message's will be merged into error array
+    ///     <see cref="Result.Exception" />.Message's will be merged into error array
     /// </summary>
     /// <param name="result"></param>
     /// <param name="errorCode"></param>
@@ -106,9 +108,10 @@ public static class ExtensionMethods {
         var exceptions = list.Where(x => x.IsFailure && x.ExceptionInfo != null).Select(x => x.ExceptionInfo!.Message)
             .ToList();
         errorArray = errorArray.Concat(exceptions).ToList();
-        return Result.Create(isAllSuccess, severity, errorCode, errorArray);
+        var validationErrors = list.Where(x => x.IsFailure).SelectMany(x => x.ValidationErrors).ToList();
+        return Result.Create(isAllSuccess, severity, errorCode, errorArray , validationErrors);
         //var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToArray();
         //errorArray = errorArray.Concat(errorArrayOfErrors).ToArray();
-        return Result.Create(isAllSuccess, severity, errorCode, errorArray);
+        // return Result.Create(isAllSuccess, severity, errorCode, errorArray , validationErrors);
     }
 }

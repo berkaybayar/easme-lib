@@ -63,24 +63,5 @@ public static class EasLogReader {
         return list.Where(x => x.Level == logLevel).ToList();
     }
 
-    /// <summary>
-    ///     Gets filtered logs by TraceClass.
-    /// </summary>
-    /// <param name="TraceClass"></param>
-    /// <returns></returns>
-    public static List<LogModel> GetLogFileContentByTrace(string TraceClass) {
-        var list = GetLogFileContent();
-        return list.Where(x => x.TraceClass == TraceClass).ToList();
-    }
 
-    /// <summary>
-    ///     Gets filtered logs by TraceClass and TraceAction.
-    /// </summary>
-    /// <param name="TraceClass"></param>
-    /// <param name="TraceAction"></param>
-    /// <returns></returns>
-    public static List<LogModel> GetLogFileContentByTrace(string TraceClass, string TraceAction) {
-        var list = GetLogFileContent();
-        return list.Where(x => x.TraceMethod == TraceAction && x.TraceClass == TraceClass).ToList();
-    }
 }

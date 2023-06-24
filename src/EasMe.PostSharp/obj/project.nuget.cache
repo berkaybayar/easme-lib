@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "f38CHdG7MPoXc9/u5/sYP5XMfJGq5d88iyDgFtezGHYZ1rQ1L+4s46rQ9qy/1W3lGnHA/FjGhMEFUYPb5ikQfg==",
+  "dgSpecHash": "XvDYqHtFR9zVMPDzWwNUW8o3WXJe/yaUM8E3hR/NIW8BniCZBlDUYXsvaYXHwKPO35ik7pkIrgkwgJY90PeOuw==",
   "success": true,
   "projectFilePath": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.PostSharp\\EasMe.PostSharp.csproj",
   "expectedPackageFiles": [
@@ -160,7 +160,13 @@
     "C:\\Users\\kkass\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\kkass\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
     "C:\\Users\\kkass\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
-    "C:\\Users\\kkass\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
+    "C:\\Users\\kkass\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\kkass\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\kkass\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\kkass\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\kkass\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\kkass\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\kkass\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512"
   ],
   "logs": []
 }

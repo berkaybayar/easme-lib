@@ -15,7 +15,7 @@ public class EasLog : IEasLog {
     private static readonly List<Exception> _exceptions = new();
     private readonly string _folderName;
 
-    protected string _LogSource;
+    protected readonly string _LogSource;
 
     public EasLog(string source, string folderName) {
         if (folderName.IsNullOrEmpty()) folderName = EasLogFactory.Config.LogFolderPath;

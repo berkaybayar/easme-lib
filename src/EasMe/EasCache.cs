@@ -4,7 +4,7 @@
 ///     Simple thread-safe variable cache helper.
 /// </summary>
 /// <typeparam name="TData"></typeparam>
-public class EasCache<TData> where TData : class {
+public class EasCache<TData> {
     private static readonly object _locker = new();
     private readonly Func<TData> _action;
     private readonly int INTERVAL;

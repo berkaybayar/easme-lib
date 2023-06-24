@@ -48,7 +48,6 @@ public static class EasLogFactory {
             LogFileName = "Trace_",
             MinimumLogLevel = EasLogLevel.Debug,
             WebInfoLogging = isWeb,
-            TraceLogging = true,
             SeparateLogLevelToFolder = false
         };
         _isConfigured = true;

@@ -44,13 +44,6 @@ public class EasLogConfiguration {
     /// </summary>
     public bool WebInfoLogging { get; set; } = false;
 
-    /// <summary>
-    ///     Whether to enable Trace logging. Default value is false.
-    ///     If set true, it will print which class and method log method is called from.
-    ///     This is useful for debugging.
-    ///     This will be force enabled for Trace method calls even if this value is set to false.
-    /// </summary>
-    public bool TraceLogging { get; set; } = false;
 
     /// <summary>
     ///     Whether to hide sensitive information from being logged.

@@ -13,12 +13,6 @@ public class LogModel {
         Level = logLevel;
         Source = source;
         Log = log;
-        if (EasLogFactory.Config.TraceLogging || logLevel == EasLogLevel.Trace) {
-            var traceInfo = EasLogHelper.GetTraceInfo();
-            TraceMethod = traceInfo.MethodName;
-            TraceClass = traceInfo.ClassName;
-        }
-
         WebInfo = webInfo;
         if (exception == null) return;
         Exception = EasLogFactory.Config.ExceptionHideSensitiveInfo
@@ -31,11 +25,6 @@ public class LogModel {
     public string? Source { get; set; }
     public object? Log { get; set; }
 
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public string? TraceMethod { get; set; }
-
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public string? TraceClass { get; set; }
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public CleanException? Exception { get; set; }

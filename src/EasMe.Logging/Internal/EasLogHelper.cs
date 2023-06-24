@@ -7,24 +7,7 @@ using Microsoft.AspNetCore.Http;
 namespace EasMe.Logging.Internal;
 
 internal static class EasLogHelper {
-    internal static TraceInfo GetTraceInfo() {
-        const int frame = 3;
-        var info = new TraceInfo();
-        var trace = new StackTrace().GetFrame(frame);
-        if (trace == null) return info;
-        var method = trace.GetMethod();
-        if (method == null) return info;
-        info.MethodName = method.Name;
-        var reflected = method.ReflectedType;
-        if (reflected != null) {
-            info.ClassName = reflected.Name;
-            return info;
-        }
 
-        var declaring = method.DeclaringType;
-        if (declaring != null) info.ClassName = declaring.Name;
-        return info;
-    }
 
     internal static int ConvertConfigFileSize(string value) {
         try {

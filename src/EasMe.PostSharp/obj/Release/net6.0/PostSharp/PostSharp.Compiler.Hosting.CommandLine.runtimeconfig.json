@@ -1,1 +1,14 @@
-C:/Users/kkass/source/repos/#MyProjects/easme-lib/src/EasMe.PostSharp/obj/PostSharp/postsharp.9a2dbab.net6.0.p.4be100456a66d77df0424d0a81ae2b51.runtimeconfig.json
+{
+  "runtimeOptions": {
+    "tfm": "net7.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "7.0.3"
+    },
+    "additionalProbingPaths": [
+      "C:\\Users\\kkass\\.nuget\\packages\\",
+      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+      "C:\\ProgramData\\PostSharp\\NuGetFallback"
+    ]
+  }
+}

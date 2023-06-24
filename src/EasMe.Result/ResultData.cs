@@ -1,4 +1,5 @@
 ﻿using EasMe.Models;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace EasMe.Result;
@@ -6,70 +7,26 @@ namespace EasMe.Result;
 /// <summary>
 ///     A readonly struct Result with Data of T type to be used in Domain Driven Design mainly.
 ///     <br />
-///     In order to avoid using <see cref="Exception" />'s and the performance downside from it.
+///     In order to avoid using <see cref="ExceptionInfo" />'s and the performance downside from it.
 /// </summary>
-public readonly struct ResultData<T> {
-    #region CONSTRUCTORS
+public readonly struct ResultData<T>  {
+    
 
-    internal ResultData(T? data, ResultSeverity severity, object errCode) {
-        ErrorCode = errCode.ToString() ?? "None";
-        Severity = severity;
-        Data = data;
-        IsSuccess = data != null;
-        Exception = null;
-    }
+    public ResultData() {}
 
-    internal ResultData(T? data, ResultSeverity severity, object errCode, List<string> errors) {
-        ErrorCode = errCode.ToString() ?? "None";
-        Severity = severity;
-        Data = data;
-        IsSuccess = data != null;
-        Exception = null;
-        Errors = errors;
-    }
-
-    internal ResultData(ResultSeverity severity, object errCode, List<string> errors) {
-        ErrorCode = errCode.ToString() ?? "None";
-        Severity = severity;
-        IsSuccess = false;
-        Exception = null;
-        Errors = errors;
-    }
-
-    internal ResultData(Exception exception, ResultSeverity severity, List<string> errors) {
-        ErrorCode = "ExceptionOccured";
-        Severity = severity;
-        Data = default;
-        Errors = errors;
-        IsSuccess = false;
-        Exception = new CleanException(exception);
-    }
-
-    internal ResultData(Exception exception, ResultSeverity severity) {
-        ErrorCode = "ExceptionOccured";
-        Severity = severity;
-        Data = default;
-        IsSuccess = false;
-        Exception = new CleanException(exception);
-    }
-
-    #endregion
-
-    #region PROPERTIES
-
-    public ResultSeverity Severity { get; init; }
-    public bool IsSuccess { get; init; }
+    public ResultSeverity Severity { get; init; } = ResultSeverity.None;
+    public bool IsSuccess { get; init; } = false;
     public bool IsFailure => !IsSuccess;
     public string ErrorCode { get; init; } = "UnsetError";
     public List<string> Errors { get; init; } = new();
+    public List<ValidationError> ValidationErrors { get; init; } = new();
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public T? Data { get; init; } = default;
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public CleanException? Exception { get; init; }
+    public CleanException? ExceptionInfo { get; init; } = null;
 
-    #endregion
 
     #region OPERATORS
 
@@ -79,38 +36,71 @@ public readonly struct ResultData<T> {
 
     public static implicit operator ResultData<T>(T? value) {
         return value is null
-            ? Result.Error($"{nameof(T)}.NullReference")
-            : Result.SuccessData(value);
+            ? new ResultData<T>() {
+                ErrorCode = "UnsetError",
+                ExceptionInfo = null,
+                Severity = ResultSeverity.Error,
+                IsSuccess = false,
+            }
+            : new ResultData<T>() {
+                ErrorCode = "Success",
+                Severity = ResultSeverity.Info,
+                ExceptionInfo = null,
+                Data = value,
+                IsSuccess = true,
+            };
     }
 
     public static implicit operator bool(ResultData<T> value) {
         return value.IsSuccess;
     }
 
-    /// <summary>
-    ///     Implicit operator for <see cref="Result" /> to <see cref="ResultData{T}" />
-    ///     <br />
-    ///     If <see cref="Result" /> status is success conversion t
-    /// </summary>
-    /// <param name="result"></param>
-    /// <exception cref="InvalidOperationException"></exception>
-    public static implicit operator ResultData<T>(Result result) {
-        if (result.IsSuccess)
-            throw new InvalidOperationException(
-                "Implicit conversion from Result to ResultData<T> is not possible if ResultState is success");
-        return new ResultData<T>(result.Severity, result.ErrorCode, result.Errors);
+    public static implicit operator ActionResult(ResultData<T> result) {
+        return result.ToActionResult();
     }
-
     #endregion
-
+    
+    
     #region MethodConverters
 
     public Result ToResult() {
-        return new Result(IsSuccess, Severity, ErrorCode);
+        return new Result() {  
+            ErrorCode = this.ErrorCode,
+            Severity = Severity,
+            ExceptionInfo = ExceptionInfo,
+            IsSuccess = IsSuccess,
+            Errors = Errors,
+            ValidationErrors = ValidationErrors
+        };
     }
 
-    public ResultData<T> ToNew(T? data) {
-        return new ResultData<T>(data, Severity, Errors, Errors);
+    public ResultData<T2> Map<T2>(Func<T,T2> action) {
+        var res = action(Data);
+        return new ResultData<T2>() {
+            ErrorCode = ErrorCode,
+            Severity = Severity,
+            Data = res,
+            IsSuccess = IsSuccess,
+            ExceptionInfo = ExceptionInfo,
+        };
+        
+    }
+
+    /// <summary>
+    ///   Converts <see cref="Result" /> to <see cref="IActionResult" />. If result is failure, returns <see cref="ObjectResult" /> with <paramref name="failStatusCode" />. If result is success, returns <see cref="OkObjectResult" />.
+    /// </summary>
+    /// <param name="failStatusCode"></param>
+    /// <returns></returns>
+    public ActionResult ToActionResult(int failStatusCode) {
+        return IsSuccess ? new OkObjectResult(this) : new ObjectResult(this) { StatusCode = failStatusCode };
+    }
+    
+    /// <summary>
+    /// Converts <see cref="Result"/> to <see cref="IActionResult"/>. If result is failure, returns <see cref="BadRequestObjectResult"/>. If result is success, returns <see cref="OkObjectResult"/>.
+    /// </summary>
+    /// <returns></returns>
+    public ActionResult ToActionResult() {
+        return IsSuccess ? new OkObjectResult(this) : new BadRequestObjectResult(this);
     }
 
     #endregion
