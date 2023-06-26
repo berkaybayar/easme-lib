@@ -23,7 +23,6 @@ This is a work in progress and will be updated frequently.
   - [EasQL](#eassql)
   - [EasReCaptcha](#easrecaptcha)
   - [EasTask](#eastask)
-  - [EasValidate](#easvalidate)
   - [EasZip](#easzip)
   - [EasMe.Scheduler](#easscheduler)
 - [EasMe.Authorization .NET 6](#easmeauthorization)
@@ -310,6 +309,33 @@ var filePath = "C:\\Users\\John\\Desktop\\test.txt";
 var md5File = filePath.FileMD5Hash(); // byte[]
 var xxFile = filePath.FileXXHash(); // byte[]
 ```
+
+#### Validation Extensions
+```csharp
+var isValidEmail = "mail@mail.com".IsValidEmail(); //true
+var isValidIp = "".IsValidIpAddress(); //false
+var isValidIp2 = "11.11.11.11".IsValidIpAddress(out IpAddress ipAddress); //true
+
+//Validates full file path with extension. If given file path is relative path it will be false
+var isValidFilePath = "\\Test.txt".IsValidFilePath(); //false
+
+var isValidMacAddress = "00-00-00-00-00-00".IsValidMacAddress(); //true
+var isValidPort = 8080.IsValidPort(); //true
+var hasSpecialCharacters = "Test".ContainsSpecialChars(); //false
+var isStrongPassword = "Test123!".IsStrongPassword(
+                                    "!+'-", //Allowed special characters
+                                    4, //Minimum length
+                                    32, //Maximum length
+                                    1, //Minimum number of uppercase letters
+                                    1, //Minimum number of lowercase letters
+                                    1, //Minimum number of digits
+                                    1 //Minimum number of special characters
+                                    ); 
+var isUrlImage = "https://www.test.com/test.jpg".IsUrlImage(); //true     
+var isValidUrl = "https://www.test.com".IsValidUrl(); //true
+var isValidConnectionString = "Server=.;Database=Test;Trusted_Connection=True;".IsValidConnectionString(); //true
+var isValidCreditCard = "1111-1111-1111-1111".IsValidCreditCard("01/01",999); //true         
+```
 ### EasAPI
 Every method has a token and timeout parameter as optional. Depending on the http request method a body is required.
 ```csharp
@@ -532,35 +558,97 @@ var claimsPrincipal = easJwt.ValidateToken(token);
 ```
 ### EasMail
 ```csharp
+//Create EasMail instance with smtp server, mail address, password, port and ssl
+var easEmail = new EasMail("smtp.gmail.com", "mailAddress", "password", 57, true);
 
+easEmail.Send("Subject","Body","mailAddress", true); // Sends mail to mailAddress with html body
+easEmail.Send("Subject","Body","mailAddress", false); // Sends mail to mailAddress 
 ```
 ### EasMemoryCache
+Improved caching from EasCache. Both are viable and working the way how caching and receiving data is different.
+This is a singleton class without any service or injection required.
 ```csharp
+EasMemoryCache.This.Set("Key", "Value", 60); // Sets cache for 60 seconds
+var value = EasMemoryCache.This.Get("Key"); // Gets cache value
+var valueStr = EasMemoryCache.This.Get<string>("Key"); // Gets cache value as string
 
+var keyExists = EasMemoryCache.This.Exists("Key"); // Checks if cache exists
+EasMemoryCache.This.Remove("Key"); // Removes cache
+EasMemoryCache.This.Clear(); // Clears all cache
+
+// Gets cache value or sets it if it doesn't exist and then returns it
+var value = EasMemoryCache.This.GetOrSet("Key", () => "Value", 60); 
 ```
+
 ### EasQL
+Simple and easy to use SQL database access.
+This is not related to EntityFrameworkCore it uses Microsoft.Data.SqlClient.
+You can use static methods or create an instance of EasQL class and pass connection string.
+Here is an example of creating instance. When using static methods connection string must be passes everytime.
 ```csharp
+var easQL = new EasQL("Server=.;Database=Test;Trusted_Connection=True;");
+var command = new SqlCommand("SELECT * FROM TestTable");
+var result = easQL.GetTable(command); //DataTable
+var result2 = easQL.ExecNonQuery(command); //int
+var result3 = easQL.ExecNonQueryAsync(command); //Task<int>
+var result4 = easQL.ExecScalar(command); //object
+var result5 = easQL.ExecScalarAsync(command); //Task<object>
 
+easQL.BackupDatabase("C:\\Users\\John\\Desktop\\Test.bak", "DbName"); // Backups database
+easQL.BackupDatabaseAsync("C:\\Users\\John\\Desktop\\Test.bak", "DbName"); // Backups database and returns Task
+easQL.ShrinkDatabase("DbName","DbLogFileName");
+
+easQL.TruncateTable("TableName");
+easQL.TruncateTableAsync("TableName"); // Returns Task
+easQL.DropTable("TableName");
+easQL.DropTableAsync("TableName"); // Returns Task
+var tables = easQL.GetAllTableNames();
 ```
+
 ### EasReCaptcha
 ```csharp
-
+//validates google captcha 
+var secret = "Secret";
+var captchaResponse = "Response";
+var result = EasReCaptcha.Validate(secret, captchaResponse);
 ```
+
+Captcha validation result model
+```csharp
+public class CaptchaResponseModel
+{
+    public bool Success { get; set; } = false;
+    public DateTime ChallengeTS { get; set; }
+    public string ApkPackageName { get; set; }
+    public string ErrorCodes { get; set; }
+}
+```
+
 ### EasTask
+A task manager that can run tasks in background in a queue.
 ```csharp
+var easTask = new EasTask();
+easTask.AddTask(() => Console.WriteLine("Task 1"));
+easTask.AddTask(() => Console.WriteLine("Task 2"));
+easTask.AddTask(() => Console.WriteLine("Task 3"));
 
-```
-### EasValidate
-```csharp
+//On Application Exit or wait all tasks to finish
+easTask.Flush();
 
+//Disposes easTask and all the related tasks and threads
+//This method will not wait for tasks to be ended 
+easTask.Dispose(); 
 ```
 ### EasZip
 ```csharp
-
+var fileList = new List<string>();
+var zipFile = "C:\\Users\\John\\Desktop\\Test.zip";
+EasZip.MakeZip(fileList, zipFile); // Makes zip file from fileList
+EasZip.UnZip(zipFile, "C:\\Users\\John\\Desktop\\Test"); // Unzips zipFile to destination
 ```
 ### EasScheduler
 ```csharp
-
+//Not implemented
 ```
 
 ## EasMe.Authorization

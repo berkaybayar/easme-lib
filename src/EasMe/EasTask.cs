@@ -58,5 +58,6 @@ public class EasTask : IDisposable
 
     public void Flush() {
         _waiting.WaitOne();
+        
     }
 }

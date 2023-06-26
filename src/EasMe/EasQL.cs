@@ -75,13 +75,14 @@ public class EasQL
     ///     still you should backup first.
     /// </summary>
     /// <param name="databaseLogName"></param>
-    public void ShrinkDatabase(string databaseLogName = "_log") {
-        ShrinkDatabase(_connection, databaseLogName);
+    public void ShrinkDatabase(string dbName,string databaseLogName = "_log") {
+        ShrinkDatabase(_connection, dbName, databaseLogName);
     }
 
-    public async Task ShrinkDatabaseAsync(string databaseLogName = "_log") {
-        await Task.Run(() => { ShrinkDatabase(databaseLogName); });
-    }
+    // public async Task ShrinkDatabaseAsync(string databaseName, string databaseLogName = "_log") {
+    //     await Task.Run(() => { ShrinkDatabase(databaseName, databaseLogName); });
+    // }
+    
 
 
     /// <summary>
@@ -107,24 +108,12 @@ public class EasQL
         DropTable(_connection, tableName);
     }
 
-    public async Task DropTableAsync(string tableName) {
-        await Task.Run(() => { DropTable(tableName); });
-    }
-
-    /// <summary>
-    ///     Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks
-    ///     before running this.
-    /// </summary>
-    /// <param name="databaseName"></param>
-    public void DropDatabase(string databaseName) {
-        DropDatabase(_connection, databaseName);
-    }
 
     /// <summary>
     ///     Gets all table names in SQL database and returns.
     /// </summary>
     /// <returns></returns>
-    public List<string> GetAllTableName() {
+    public List<string> GetAllTableNames() {
         return GetAllTableName(_connection);
     }
 

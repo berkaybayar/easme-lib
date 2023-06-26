@@ -3,9 +3,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 
-namespace EasMe;
+namespace EasMe.Extensions;
 
-public static class EasValidate
+public static class ValidationExtensions
 {
     /// <summary>
     ///     Returns true if given string is valid email address.
@@ -91,7 +91,7 @@ public static class EasValidate
     /// <param name="yourString"></param>
     /// <param name="allowedChars"></param>
     /// <returns></returns>
-    public static bool HasSpecialChars(this string yourString, string allowedChars = "") {
+    public static bool ContainsSpecialChars(this string yourString, string allowedChars = "") {
         foreach (var c in yourString) {
             if (char.IsLetterOrDigit(c))
                 continue;
@@ -119,7 +119,7 @@ public static class EasValidate
                                         byte minSpecialCharCount = 1) {
         if (password.Length < minLength || password.Length > maxLength)
             return false;
-        if (HasSpecialChars(password, allowedChars))
+        if (ContainsSpecialChars(password, allowedChars))
             return false;
         if (password.Count(char.IsUpper) < minUpperCaseCount)
             return false;
@@ -202,7 +202,7 @@ public static class EasValidate
         }
     }
 
-    public static bool IsCreditCardInfoValid(string cardNo, string expiryDate, string cvv) {
+    public static bool IsValidCreditCard(string cardNo, string expiryDate, int cvv) {
         //Source: https://stackoverflow.com/questions/32959273/c-sharp-validating-user-input-like-a-credit-card-number
         var cardCheck = new Regex(@"^(1298|1267|4512|4567|8901|8933)([\-\s]?[0-9]{4}){3}$");
         var monthCheck = new Regex(@"^(0[1-9]|1[0-2])$");
@@ -211,7 +211,7 @@ public static class EasValidate
 
         if (!cardCheck.IsMatch(cardNo)) // <1>check card number is valid
             return false;
-        if (!cvvCheck.IsMatch(cvv)) // <2>check cvv is valid as "999"
+        if (!cvvCheck.IsMatch(cvv.ToString())) // <2>check cvv is valid as "999"
             return false;
 
         var dateParts = expiryDate.Split('/'); //expiry date in from MM/yyyy            
