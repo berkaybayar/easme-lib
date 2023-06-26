@@ -1,18 +1,20 @@
 ﻿using System.Diagnostics;
 using EasMe.Extensions;
 using EasMe.Logging.Internal;
+using Microsoft.AspNetCore.Http;
 
 namespace EasMe.Logging.Models;
 
 public class WebInfo
 {
     public WebInfo() {
-        if (HttpContextHelper.Current is null) return;
+        var context = new HttpContextAccessor().HttpContext;
+        if (context is null) return;
         try {
-            Ip = HttpContextHelper.Current.Request.GetRemoteIpAddress();
-            HttpMethod = HttpContextHelper.Current.Request.Method;
-            RequestUrl = HttpContextHelper.Current.Request.GetRequestQuery();
-            Headers = EasLogHelper.GetHeadersJson(HttpContextHelper.Current);
+            Ip = context.Request.GetRemoteIpAddress();
+            HttpMethod = context.Request.Method;
+            RequestUrl = context.Request.GetRequestQuery();
+            Headers = EasLogHelper.GetHeadersJson(context);
         }
         catch (Exception e) {
             Debug.WriteLine(e.Message);

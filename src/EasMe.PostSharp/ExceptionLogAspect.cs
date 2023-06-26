@@ -1,7 +1,7 @@
 ﻿using EasMe.Logging;
 using PostSharp.Aspects;
 
-namespace EasMe.PostSharp.ExceptionAspects;
+namespace EasMe.PostSharp;
 
 [Serializable]
 public class ExceptionLogAspect : OnExceptionAspect

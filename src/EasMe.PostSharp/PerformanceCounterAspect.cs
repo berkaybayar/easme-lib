@@ -2,7 +2,7 @@
 using System.Reflection;
 using PostSharp.Aspects;
 
-namespace EasMe.PostSharp.PerformanceAspects;
+namespace EasMe.PostSharp;
 
 [Serializable]
 public class PerformanceCounterAspect : OnMethodBoundaryAspect

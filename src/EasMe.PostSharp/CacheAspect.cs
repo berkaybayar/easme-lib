@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using PostSharp.Aspects;
 
-namespace EasMe.PostSharp.CacheAspects;
+namespace EasMe.PostSharp;
 
 [Serializable]
 public class CacheAspect : MethodInterceptionAspect

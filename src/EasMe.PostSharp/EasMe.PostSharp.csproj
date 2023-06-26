@@ -10,12 +10,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="11.5.2"/>
-        <PackageReference Include="PostSharp" Version="2023.0.5"/>
+        <PackageReference Include="FluentValidation" Version="11.5.2" />
+        <PackageReference Include="PostSharp" Version="2023.0.5" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EasMe.Logging\EasMe.Logging.csproj"/>
+        <ProjectReference Include="..\EasMe.Logging\EasMe.Logging.csproj" />
     </ItemGroup>
 
 </Project>

@@ -13,11 +13,11 @@ public enum HttpMethod
     TRACE
 }
 
-public enum AuthorizationType
-{
-    HttpMethodAuthorization,
-    EndpointAuthorization
-}
+// public enum AuthorizationType
+// {
+//     HttpMethodAuthorization,
+//     EndpointAuthorization
+// }
 
 public static class EasMeClaimType
 {

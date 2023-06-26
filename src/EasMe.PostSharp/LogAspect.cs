@@ -3,7 +3,7 @@ using EasMe.Logging;
 using PostSharp.Aspects;
 using PostSharp.Extensibility;
 
-namespace EasMe.PostSharp.LogAspects;
+namespace EasMe.PostSharp;
 
 [Serializable]
 [MulticastAttributeUsage(MulticastTargets.Method, TargetMemberAttributes = MulticastAttributes.Instance)]
