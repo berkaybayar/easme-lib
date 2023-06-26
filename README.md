@@ -6,56 +6,56 @@ This is a work in progress and will be updated frequently.
 - [Installation](#installation)
 - [License](#license)
 - [EasMe](#easme)
-  - [Extensions](#easme-extensions)
-  - [EasAPI](#easme-api)
-  - [EasCache](#easme-cache)
-  - [EasCheck](#easme-check)
-  - [EasConfig](#easme-config)
-  - [EasDirectory](#easme-directory)
-  - [EasEncrypt](#easme-encrypt)
-  - [EasFile](#easme-file)
-  - [EasGenerate](#easme-generate)
-  - [EasHash](#easme-hash)
-  - [EasHttp](#easme-http)
-  - [EasINI](#easme-ini)
-  - [EasJWT](#easme-jwt)
-  - [EasMail](#easme-mail)
-  - [EasMemoryCache](#easme-memorycache)
-  - [EasQL](#easme-sql)
-  - [EasReCaptcha](#easme-recaptcha)
-  - [EasTask](#easme-task)
-  - [EasValidate](#easme-validate)
-  - [EasZip](#easme-zip)
-  - [EasMe.Scheduler](#easme-scheduler)
-- [EasMe.Authorization .NET 6](#easme-authorization)
-  - [Enums](#easme-enums)
-  - [Action permission authorization](#easme-haspermissionattribute)
-  - [Http method permission authorization](#easme-httpmethodauthorizationmiddleware)
-- [EasMe.Box .NET Framework 4.8](#easme-box)
-- [EasMe.EntityFrameworkCore .NET 6](#easme-entityframeworkcore)
-  - [Entity abstracts](#easme-entity-abstracts)
-  - [Repository abstracts](#easme-repository-abstracts)
-  - [Generic repository](#easme-generic-repository)
-- [EasMe.Logging .NET 6](#easme-logging)
-  - [EasLog](#easme-log)
-  - [EasLogConsole](#easme-log-console)
-  - [EasLogFactory](#easme-log-factory)
-  - [Configuration](#easme-log-configuration)
-  - [EasLogReader](#easme-log-reader)
-- [EasMe.PostSharp .NET 6](#easme-postsharp)
-- [EasMe.Result .NET 6](#easme-result)
-  - [Result](#easme-result)
-  - [Result with data](#easme-result-data)
-  - [Enums](#easme-result-enums)
-- [EasMe.SharpBuilder .NET 6](#easme-sharpbuilder)
-  - [Class builder](#easme-sharpbuilder-class-builder)
-  - [File builder](#easme-sharpbuilder-file-builder)
-  - [Property builder](#easme-sharpbuilder-property-builder)
-- [EasMe.System .NET 6 (Windows only)](#easme-system)
-  - [Getting device information](#easme-system)
-  - [Creating unique id](#easme-system-startup)
-  - [Adding application to windows startup](#easme-system-startup)
-- [EasMe.Test](#easme-test)
+  - [Extensions](#extensions)
+  - [EasAPI](#easapi)
+  - [EasCache](#eascache)
+  - [EasCheck](#eascheck)
+  - [EasConfig](#easconfig)
+  - [EasDirectory](#easdirectory)
+  - [EasEncrypt](#easencrypt)
+  - [EasFile](#easfile)
+  - [EasGenerate](#easgenerate)
+  - [EasHash](#eashash)
+  - [EasHttp](#eashttp)
+  - [EasINI](#easini)
+  - [EasJWT](#easjwt)
+  - [EasMail](#easmail)
+  - [EasMemoryCache](#easmemorycache)
+  - [EasQL](#eassql)
+  - [EasReCaptcha](#easrecaptcha)
+  - [EasTask](#eastask)
+  - [EasValidate](#easvalidate)
+  - [EasZip](#easzip)
+  - [EasMe.Scheduler](#easscheduler)
+- [EasMe.Authorization .NET 6](#easmeauthorization)
+  - [Enums](#authorization-enums)
+  - [Action permission authorization](#haspermissionattribute)
+  - [Http method permission authorization](#httpmethodauthorizationmiddleware)
+- [EasMe.Box .NET Framework 4.8](#easmebox)
+- [EasMe.EntityFrameworkCore .NET 6](#easmeentityframeworkcore)
+  - [Entity abstracts](#entity-abstracts)
+  - [Repository abstracts](#repository-abstracts)
+  - [Generic repository](#generic-repository)
+- [EasMe.Logging .NET 6](#easmelogging)
+  - [EasLog](#easlog)
+  - [EasLogConsole](#easlogconsole)
+  - [EasLogFactory](#easlogfactory)
+  - [Configuration](#log-configuration)
+  - [EasLogReader](#easlogreader)
+- [EasMe.PostSharp .NET 6](#easmepostsharp)
+- [EasMe.Result .NET 6](#easmeresult)
+  - [Result](#result)
+  - [Result with data](#result-with-data)
+  - [Result Enums](#result-enums)
+- [EasMe.SharpBuilder .NET 6](#easmesharpbuilder)
+  - [Class builder](#easmesharpbuilder)
+  - [File builder](#file-builder)
+  - [Property builder](#property-builder)
+- [EasMe.System .NET 6 (Windows only)](#easmesystem)
+  - [Getting device information](#getting-device-information)
+  - [Creating unique id](#creating-unique-id)
+  - [Adding application to windows startup](#adding-application-to-windows-startup)
+- [EasMe.Test](#easmetest)
 
 ## Installation
 You can install the package via Nuget:
@@ -97,10 +97,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * ### EasTask
 * ### EasValidate
 * ### EasZip
-* ### EasMe.Scheduler
+* ### EasScheduler
 
 ## EasMe.Authorization
-* ### Enums
+* ### Authorization Enums
 * ### HasPermissionAttribute
 * ### HttpMethodAuthorizationMiddleware
 
@@ -115,22 +115,23 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * ### EasLog
 * ### EasLogConsole
 * ### EasLogFactory
-* ### Configuration
+* ### Log Configuration
 * ### EasLogReader
+
 
 ## EasMe.PostSharp
 
 ## EasMe.Result
 * ### Result
 * ### Result with data
-* ### Enums
+* ### Result Enums
 
 ## EasMe.SharpBuilder
 * ### Class builder
 * ### File builder
 * ### Property builder
 
-## EasMe.System (Windows only)
+## EasMe.System
 * ### Getting device information
 * ### Creating unique id
 * ### Adding application to windows startup
