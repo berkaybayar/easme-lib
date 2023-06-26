@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	  <Version>1.0.0</Version>
-	  <AssemblyVersion>1.0.0</AssemblyVersion>
+	  <AssemblyVersion>1.1.0</AssemblyVersion>
 	  <Title>EasMe.SharpBuilder</Title>
 	  <Authors>bberka</Authors>
 	  <Description>C# code and class builder, for creating models from various type of files. Excel, text, json files.</Description>

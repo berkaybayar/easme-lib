@@ -8,4 +8,5 @@ public class SharpProperty {
     public Type ValueType { get; set; }
     public bool IsField { get; set; } = false;
     public bool IsStatic { get; set; } = false;
+    public bool IsReadOnly { get; set; } = false;
 }

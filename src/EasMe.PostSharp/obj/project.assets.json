@@ -2806,12 +2806,12 @@
           "bin/placeholder/EasMe.dll": {}
         }
       },
-      "EasMe.Logging/3.5.0": {
+      "EasMe.Logging/3.1.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "EasMe": "3.5.0",
-          "EasMe.Result": "3.5.0",
+          "EasMe.Result": "2.0.2",
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
@@ -2821,7 +2821,7 @@
           "bin/placeholder/EasMe.Logging.dll": {}
         }
       },
-      "EasMe.Result/3.5.0": {
+      "EasMe.Result/2.0.2": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -8202,12 +8202,12 @@
       "path": "../EasMe/EasMe.csproj",
       "msbuildProject": "../EasMe/EasMe.csproj"
     },
-    "EasMe.Logging/3.5.0": {
+    "EasMe.Logging/3.1.0": {
       "type": "project",
       "path": "../EasMe.Logging/EasMe.Logging.csproj",
       "msbuildProject": "../EasMe.Logging/EasMe.Logging.csproj"
     },
-    "EasMe.Result/3.5.0": {
+    "EasMe.Result/2.0.2": {
       "type": "project",
       "path": "../EasMe.Result/EasMe.Result.csproj",
       "msbuildProject": "../EasMe.Result/EasMe.Result.csproj"
@@ -8215,7 +8215,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "EasMe.Logging >= 3.5.0",
+      "EasMe.Logging >= 3.1.0",
       "FluentValidation >= 11.5.2",
       "PostSharp >= 2023.0.5"
     ]

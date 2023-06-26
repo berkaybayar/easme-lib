@@ -8181,7 +8181,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "3.5.0",
+    "version": "2.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.System\\EasMe.System.csproj",
       "projectName": "EasMe.System",

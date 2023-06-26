@@ -2777,7 +2777,7 @@
           "bin/placeholder/EasMe.dll": {}
         }
       },
-      "EasMe.Result/3.5.0": {
+      "EasMe.Result/2.0.2": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -8087,7 +8087,7 @@
       "path": "../EasMe/EasMe.csproj",
       "msbuildProject": "../EasMe/EasMe.csproj"
     },
-    "EasMe.Result/3.5.0": {
+    "EasMe.Result/2.0.2": {
       "type": "project",
       "path": "../EasMe.Result/EasMe.Result.csproj",
       "msbuildProject": "../EasMe.Result/EasMe.Result.csproj"
@@ -8095,7 +8095,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "EasMe.Result >= 3.5.0"
+      "EasMe.Result >= 2.0.2"
     ]
   },
   "packageFolders": {
@@ -8103,7 +8103,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "3.5.0",
+    "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.SharpBuilder\\EasMe.SharpBuilder.csproj",
       "projectName": "EasMe.SharpBuilder",

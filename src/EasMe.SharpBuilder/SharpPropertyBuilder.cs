@@ -44,6 +44,10 @@ public class SharpPropertyBuilder {
         return this;
     }
 
+    public SharpPropertyBuilder ReadOnly() {
+        _property.IsReadOnly = true;
+        return this;
+    }
     public SharpProperty Build() {
         return _property;
     }
