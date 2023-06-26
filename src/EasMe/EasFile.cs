@@ -8,7 +8,7 @@ namespace EasMe;
 /// </summary>
 public static class EasFile
 {
-    private const int BYTES_TO_READ = sizeof(long);
+    private const int BytesToRead = sizeof(long);
 
     private static readonly ReaderWriterLock _locker = new();
 
@@ -81,20 +81,7 @@ public static class EasFile
     }
 
 
-    public static string GetFileExtension(string filename) {
-        var index = filename.LastIndexOf('.');
-        if (index == -1) return filename;
-        var res = filename[(index + 1)..];
-        return res;
-    }
-
-    public static string GetFileNameWithExtension(string filename) {
-        var index = filename.LastIndexOf('\\');
-        if (index == -1) return filename;
-        var res = filename[(index + 1)..];
-        return res;
-    }
-
+ 
     public static string GetFileDirectory(string filename) {
         var index = filename.LastIndexOf('\\');
         if (index == -1) index = filename.LastIndexOf("/");
@@ -106,14 +93,14 @@ public static class EasFile
     public static bool FilesAreEqual(FileInfo first, FileInfo second) {
         if (first.Length != second.Length)
             return false;
-        var iterations = (int)Math.Ceiling((double)first.Length / BYTES_TO_READ);
+        var iterations = (int)Math.Ceiling((double)first.Length / BytesToRead);
         using var fs1 = first.OpenRead();
         using var fs2 = second.OpenRead();
-        var one = new byte[BYTES_TO_READ];
-        var two = new byte[BYTES_TO_READ];
+        var one = new byte[BytesToRead];
+        var two = new byte[BytesToRead];
         for (var i = 0; i < iterations; i++) {
-            var r1 = fs1.Read(one, 0, BYTES_TO_READ);
-            var r2 = fs2.Read(two, 0, BYTES_TO_READ);
+            var r1 = fs1.Read(one, 0, BytesToRead);
+            var r2 = fs2.Read(two, 0, BytesToRead);
             if (r1 != r2)
                 return false;
         }
@@ -152,67 +139,61 @@ public static class EasFile
         return firstHash == secondHash;
     }
 
-    /// <summary>
-    ///     Reads file with given path and returns byte array. This does support multiple threading. Uses ReaderWriterLock by
-    ///     System.Threading. Allows multiple readers and a single writer
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
-    public static byte[] ReadBytesSafe(string path) {
-        try {
-            _locker.AcquireReaderLock(int.MaxValue);
-            return File.ReadAllBytes(path);
-        }
-        finally {
-            _locker.ReleaseWriterLock();
-        }
-    }
+    // /// <summary>
+    // ///     Reads file with given path and returns byte array. This does support multiple threading. Uses ReaderWriterLock by
+    // ///     System.Threading. Allows multiple readers and a single writer
+    // /// </summary>
+    // /// <param name="path"></param>
+    // /// <returns></returns>
+    // public static byte[] ReadBytesSafe(string path) {
+    //     try {
+    //         _locker.AcquireReaderLock(int.MaxValue);
+    //         return File.ReadAllBytes(path);
+    //     }
+    //     finally {
+    //         _locker.ReleaseWriterLock();
+    //     }
+    // }
+    //
+    // /// <summary>
+    // ///     Reads file with given path and returns BaseStream. This does support multiple threading. Uses ReaderWriterLock by
+    // ///     System.Threading. Allows multiple readers and a single writer
+    // /// </summary>
+    // /// <param name="path"></param>
+    // /// <returns></returns>
+    // public static Stream ReadStreamSafe(string path) {
+    //     try {
+    //         _locker.AcquireReaderLock(int.MaxValue);
+    //         var reader = new StreamReader(path);
+    //         return reader.BaseStream;
+    //     }
+    //     finally {
+    //         _locker.ReleaseWriterLock();
+    //     }
+    // }
 
-    /// <summary>
-    ///     Reads file with given path and returns BaseStream. This does support multiple threading. Uses ReaderWriterLock by
-    ///     System.Threading. Allows multiple readers and a single writer
-    /// </summary>
-    /// <param name="path"></param>
-    /// <returns></returns>
-    public static Stream ReadStreamSafe(string path) {
-        try {
-            _locker.AcquireReaderLock(int.MaxValue);
-            var reader = new StreamReader(path);
-            return reader.BaseStream;
-        }
-        finally {
-            _locker.ReleaseWriterLock();
-        }
-    }
 
-
-    public static int DeleteDirectoryWhere(this string dirPath, Func<DirectoryInfo, bool> condition, bool recurisive) {
+    public static void DeleteDirectoryWhere(this string dirPath, Func<DirectoryInfo, bool> condition, bool recurisive) {
         if (!Directory.Exists(dirPath)) throw new InvalidOperationException("Directory does not exist");
         var dirs = Directory.GetDirectories(dirPath);
-        var deleted = 0;
         foreach (var path in dirs) {
             var dir = new DirectoryInfo(path);
             if (condition(dir)) {
                 dir.Delete(recurisive);
-                deleted++;
             }
         }
 
-        return deleted;
     }
 
-    public static int DeleteFileWhere(this string dirPath, Func<FileInfo, bool> condition) {
+    public static void DeleteFileWhere(this string dirPath, Func<FileInfo, bool> condition) {
         if (!Directory.Exists(dirPath)) throw new InvalidOperationException("Directory does not exist");
         var files = Directory.GetFiles(dirPath);
-        var deleted = 0;
         foreach (var path in files) {
             var file = new FileInfo(path);
             if (condition(file)) {
                 file.Delete();
-                deleted++;
             }
         }
 
-        return deleted;
     }
 }

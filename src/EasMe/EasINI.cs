@@ -26,31 +26,31 @@ public class EasINI
     /// <summary>
     ///     Writes a value to the INI file
     /// </summary>
-    /// <param name="Section"></param>
-    /// <param name="Key"></param>
-    /// <param name="Value"></param>
-    public void Write(string Section, string Key, string Value) {
-        WritePrivateProfileString(Section, Key, Value, _path);
+    /// <param name="section"></param>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public void Write(string section, string key, string value) {
+        WritePrivateProfileString(section, key, value, _path);
     }
 
     /// <summary>
     ///     Reads a value from the INI file
     /// </summary>
-    /// <param name="Section"></param>
-    /// <param name="Key"></param>
+    /// <param name="section"></param>
+    /// <param name="key"></param>
     /// <returns></returns>
-    public string? Read(string Section, string Key) {
+    public string? Read(string section, string key) {
         StringBuilder buffer = new(255);
-        _ = GetPrivateProfileString(Section, Key, "", buffer, 255, _path);
+        _ = GetPrivateProfileString(section, key, "", buffer, 255, _path);
         return Convert.ToString(buffer);
     }
 
-    public static IniFile ReadFromPath(string path) {
+    public static IniFile ParseByPath(string path) {
         var str = File.ReadAllText(path);
-        return ReadFromString(str);
+        return ParseByString(str);
     }
 
-    public static IniFile ReadFromString(string data) {
+    private static IniFile ParseByString(string data) {
         var model = new IniFile();
         var split = data.Split(Environment.NewLine);
         for (var i = 0; i < split.Length; i++) {
@@ -82,15 +82,15 @@ public class EasINI
 
         return model;
     }
+}
 
-    public static void WriteToPath(string path, IniFile model) {
-        var str = WriteToString(model);
-        File.WriteAllText(path, str);
-    }
+public class IniFile
+{
+    public List<IniSection> Sections { get; set; } = new();
 
-    private static string WriteToString(IniFile model) {
+    public string WriteToString() {
         var sb = new StringBuilder();
-        foreach (var section in model.Sections) {
+        foreach (var section in this.Sections) {
             sb.AppendLine($"[{section.Name}]");
             foreach (var comment in section.Comments) sb.AppendLine($";{comment.Comment}");
             foreach (var data in section.Data) sb.AppendLine($"{data.Key}={data.Value}");
@@ -98,11 +98,11 @@ public class EasINI
 
         return sb.ToString();
     }
-}
 
-public class IniFile
-{
-    public List<IniSection> Sections { get; set; } = new();
+    public void WriteToPath(string path) {
+        var str = this.WriteToString();
+        File.WriteAllText(path, str);
+    }
 }
 
 public class IniSection

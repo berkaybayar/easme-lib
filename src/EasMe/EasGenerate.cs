@@ -7,15 +7,7 @@ public static class EasGenerate
 {
     private const string Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
-    /// <summary>
-    ///     Generates and returns a random GUID string without "-"
-    /// </summary>
-    /// <returns></returns>
-    public static string GenerateCleanGuidString() {
-        return Guid.NewGuid().ToString().Replace("-", "");
-    }
-
-    public static string GetRandomString(ushort length) {
+    public static string RandomString(ushort length) {
         var charArray = Characters.ToCharArray();
         var result = new StringBuilder(length);
         for (var i = 0; i < length; i++) {
@@ -33,7 +25,7 @@ public static class EasGenerate
     /// <param name="chars"></param>
     /// <param name="length"></param>
     /// <returns></returns>
-    private static string GenerateString(string chars, int length) {
+    private static string RandomString(string chars, int length) {
         switch (length) {
             case > 2048:
                 throw new InvalidDataException(
@@ -58,18 +50,18 @@ public static class EasGenerate
     /// <param name="allowedChars"></param>
     /// <param name="onlyLetter"></param>
     /// <returns></returns>
-    public static string GenerateRandomString(int length, bool onlyLetter = false, string allowedChars = "") {
+    public static string RandomString(int length, bool onlyLetter = false, string allowedChars = "") {
         const string lowerAll = "abcdefghijklmnoprstuvwxyzq";
         const string upperAll = "ABCDEFGHIJKLMNOPRSTUVWXYZQ";
         const string digits = "0123456789";
         string allChars;
         if (onlyLetter) {
             allChars = lowerAll + upperAll + allowedChars;
-            return GenerateString(allChars, length);
+            return RandomString(allChars, length);
         }
 
         allChars = lowerAll + upperAll + digits + allowedChars;
-        return GenerateString(allChars, length);
+        return RandomString(allChars, length);
     }
 
     /// <summary>
@@ -77,10 +69,15 @@ public static class EasGenerate
     /// </summary>
     /// <param name="digitCount"></param>
     /// <returns></returns>
-    public static long GenerateRandomNumbers(int digitCount) {
+    public static long RandomNumber(int digitCount) {
         const string digits = "0123456789";
-        var random = GenerateString(digits, digitCount);
+        var random = RandomString(digits, digitCount);
         var randomNumberStringAsInt32 = Convert.ToInt64(random);
         return randomNumberStringAsInt32;
+    }
+
+    public static int RandomInt(int min, int max) {
+        var random = new Random();
+        return random.Next(min, max);
     }
 }

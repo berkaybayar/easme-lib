@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Management;
+using System.Net;
 using System.Net.NetworkInformation;
 using EasMe.Extensions;
 using EasMe.System.Models;
@@ -9,6 +10,12 @@ namespace EasMe.System;
 
 public static class EasSystem
 {
+    public static string GetHostIpAddress() {
+        var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+        var ipAddress = ipHostInfo.AddressList[0];
+        return ipAddress.ToString();
+    }
+    
     /// <summary>
     ///     Returns this computers MAC Address.
     /// </summary>

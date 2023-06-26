@@ -32,11 +32,11 @@ public class EasJWT
     /// <param name="claimsIdentity"></param>
     /// <param name="expireMinutes"></param>
     /// <returns></returns>
-    public string GenerateJwtToken(ClaimsIdentity claimsIdentity, int expireMinutes) {
-        return GenerateJwtToken(claimsIdentity, DateTime.Now.AddMinutes(expireMinutes));
+    public string GenerateToken(ClaimsIdentity claimsIdentity, int expireMinutes) {
+        return GenerateToken(claimsIdentity, DateTime.Now.AddMinutes(expireMinutes));
     }
 
-    public string GenerateJwtToken(ClaimsIdentity claimsIdentity, DateTime expire) {
+    public string GenerateToken(ClaimsIdentity claimsIdentity, DateTime expire) {
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor {
                                                               Subject = claimsIdentity,
@@ -56,11 +56,11 @@ public class EasJWT
     /// <param name="claimsIdentity"></param>
     /// <param name="expireMinutes"></param>
     /// <returns></returns>
-    public string GenerateJwtToken(Dictionary<string, object?> claims, int expireMinutes) {
-        return GenerateJwtToken(claims, DateTime.Now.AddMinutes(expireMinutes));
+    public string GenerateToken(Dictionary<string, object?> claims, int expireMinutes) {
+        return GenerateToken(claims, DateTime.Now.AddMinutes(expireMinutes));
     }
 
-    public string GenerateJwtToken(Dictionary<string, object?> claims, DateTime expire) {
+    public string GenerateToken(Dictionary<string, object?> claims, DateTime expire) {
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor {
                                                               Claims = claims,
@@ -81,7 +81,7 @@ public class EasJWT
     /// <param name="validateIssuer"></param>
     /// <param name="validateAudience"></param>
     /// <returns></returns>
-    public ClaimsPrincipal? ValidateJwtToken(string token) {
+    public ClaimsPrincipal? ValidateToken(string token) {
         var tokenValidationParameters = new TokenValidationParameters {
                                                                           ValidateIssuerSigningKey = true,
                                                                           IssuerSigningKey = new SymmetricSecurityKey(Secret),

@@ -12,11 +12,7 @@ public static class EasHttp
         return str;
     }
 
-    public static string GetHostIpAddress() {
-        var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-        var ipAddress = ipHostInfo.AddressList[0];
-        return ipAddress.ToString();
-    }
+    
 
     public static string GetStatusCodeLongMessage(uint httpStatusCode) {
         return httpStatusCode switch {
@@ -24,7 +20,7 @@ public static class EasHttp
                    101 => "Switching Protocols",
                    102 => "Processing",
                    103 => "Early Hints",
-                   200 => "OK",
+                   200 => "Success",
                    201 => "Created",
                    202 => "Accepted",
                    203 => "Non-Authoritative Information",

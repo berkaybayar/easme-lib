@@ -15,7 +15,6 @@ This is a work in progress and will be updated frequently.
   - [EasEncrypt](#easencrypt)
   - [EasFile](#easfile)
   - [EasGenerate](#easgenerate)
-  - [EasHash](#eashash)
   - [EasHttp](#eashttp)
   - [EasINI](#easini)
   - [EasJWT](#easjwt)
@@ -296,6 +295,21 @@ var asXElement = userObject.ToXElement(); // <User><Name>John</Name><Surname>Doe
 var asXElementPropertiesAsAttributes = userObject.ToXElement(true); // <User Name="John" Surname="Doe" />
 var asXElementPropertiesAsElement = userObject.ToXElement(false); // <User><Name>John</Name><Surname>Doe</Surname></User>
 ```
+
+#### Hash Extensions
+```csharp
+var md5Byte = "text".MD5Hash(); // byte[]
+var md5ByteSalted = "text".MD5Hash("salt"); // byte[]
+var sha256Byte = "text".SHA256Hash(); // byte[]
+var sha256ByteSalted = "text".SHA256Hash("salt"); // byte[]
+var sha512Byte = "text".SHA512Hash(); // byte[]
+var sha512ByteSalted = "text".SHA512Hash("salt"); // byte[]
+var xxHashByte = "text".XXHash(); // byte[]
+
+var filePath = "C:\\Users\\John\\Desktop\\test.txt";
+var md5File = filePath.FileMD5Hash(); // byte[]
+var xxFile = filePath.FileXXHash(); // byte[]
+```
 ### EasAPI
 Every method has a token and timeout parameter as optional. Depending on the http request method a body is required.
 ```csharp
@@ -412,19 +426,142 @@ This mostly set to project build number so every build will have a different sal
 Default value is set to 0, if you have not set it, it will not be used.
 
 ### EasFile
+```csharp
+var sourcePath = @"C:\Users\John\Desktop\test.txt";
+var destinationPath = @"C:\Users\John\Desktop\test2.txt";
+var sourceDirectoryPath = @"C:\Users\John\Desktop\test";
+
+EasFile.DeleteAll(destinationPath); // Deletes all files and directories inside of the destination path
+EasFile.CopyAll(sourcePath, destinationPath); // Copies the file or directory from source to destination
+EasFile.MoveAll(sourcePath, destinationPath); // Moves the file or directory from source to destination
+
+// Deletes all files and directories inside of the source path where the name contains "test"
+EasFile.DeleteDirectoryWhere(sourceDirectoryPath,x => x.Name.Contains("test"), true); 
+
+// Deletes all files inside of the source path where the name contains "test"
+EasFile.DeleteFileWhere(sourceDirectoryPath,x => x.Name.Contains("test")); 
+
+var fileInfo1 = new FileInfo(sourcePath); // FileInfo
+var fileInfo2 = new FileInfo(destinationPath); // FileInfo
+
+//Reads 64 bytes on each loop till the end of the file to compare
+var filesAreEqual = EasFile.FilesAreEqual(fileInfo1, fileInfo2); // bool
+
+//Reads 1 byte on each loop till the end of the file to compare
+var filesAreEqualOneByte = EasFile.FilesAreEqual_OneByte(fileInfo1, fileInfo2); // bool
+
+//Reads all bytes at once and hashes them with MD5 to compare
+var filesAreEqualMD5Hash = EasFile.FilesAreEqual_MD5Hash(fileInfo1, fileInfo2); // bool
+
+//Reads all bytes at once and hashes them with xxHash to compare
+var filesAreEqualXXHash = EasFile.FilesAreEqual_XXHash(fileInfo1, fileInfo2); // bool
+```
 ### EasGenerate
-### EasHash
+```csharp
+
+const string DefaultCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; //Hardcoded
+var randomString = EasGenerate.RandomString(10); // Random string with 10 characters
+var randomInt = EasGenerate.RandomInt(100, 200); // Random int between 100 and 200
+var randomNumber = EasGenerate.RandomNumber(100); // Random number with 100 digits
+var randomString1 = EasGenerate.RandomString(10, true); // Random string without digits
+var randomString1 = EasGenerate.RandomString(10, true, "'^%!"); // Random string without digits and with custom characters
+```
+
 ### EasHttp
+```csharp
+var statusCodeShortMessage = EasHttp.GetStatusCodeShortMessage(200); // OK
+var statusCodeLongMessage = EasHttp.GetStatusCodeLongMessage(500); // Internal Server Error
+```
 ### EasINI
+You can read and write to .ini files with EasINI class. 
+Also you can parse the .ini file to IniFile model.
+```csharp
+var iniFile = EasINI.Parse("C:\\Users\\John\\Desktop\\test.ini"); 
+
+var easIni = new EasINI(iniFile);
+easIni.Write("Section", "Key", "Value");
+var value  = easIni.Read("Section", "Key");
+
+var iniFile = EasINI.ParseByPath(iniFile);
+var str = iniFile.WriteToString();
+iniFile.WriteToPath(iniFile);
+```
+
+IniFile models 
+```csharp
+public class IniSection
+{
+    public string? Name { get; set; }
+    public List<IniData> Data { get; set; } = new();
+    public List<IniComment> Comments { get; set; } = new();
+}
+
+public class IniData
+{
+    public string? Key { get; set; }
+    public string? Value { get; set; }
+}
+
+public class IniComment
+{
+    public int LineNo { get; set; } = -1;
+    public string? Comment { get; set; }
+}
+```
 ### EasJWT
+```csharp
+var easJwt = new EasJWT("Secret","Issuer","Audience");// or new EasJWT("Secret");
+var claimsIdentity = new ClaimsIdentity(new Claim[]
+{
+    new Claim(ClaimTypes.Name, "John"),
+    new Claim(ClaimTypes.Role, "Admin"),
+    new Claim(ClaimTypes.Role, "User"),
+});
+var token = easJwt.GenerateToken(claimsIdentity,60); // Generates token with claims for 60 minutes
+
+var claimsDictionary = new Dictionary<string, object>
+{
+    {"Name", "John"},
+    {"Role", "Admin"},
+    {"Role", "User"},
+}; 
+var token2 = easJwt.GenerateToken(claimsDictionary,60); // Generates token with claims for 60 minutes
+
+// Validates token and returns ClaimsPrincipal, if token is expired or is not valid it throws exception.
+var claimsPrincipal = easJwt.ValidateToken(token); 
+```
 ### EasMail
+```csharp
+
+```
 ### EasMemoryCache
+```csharp
+
+```
 ### EasQL
+```csharp
+
+```
 ### EasReCaptcha
+```csharp
+
+```
 ### EasTask
+```csharp
+
+```
 ### EasValidate
+```csharp
+
+```
 ### EasZip
+```csharp
+
+```
 ### EasScheduler
+```csharp
+
+```
 
 ## EasMe.Authorization
 ### Authorization Enums
