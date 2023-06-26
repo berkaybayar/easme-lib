@@ -312,10 +312,74 @@ var putAsJson = EasAPI.PutAsJson(dummyUrl, new { Name = "John" }); // HttpRespon
 var send = EasAPI.Send(dummyUrl, new HttpRequestMessage(),dummyAuthorizationToken, 10); // HttpResponseMessage
 ```
 ### EasCache
+Simple memory caching
+```csharp
+List<User> GetUsersFromDb(){ /* db access */}
+
+var easCache = new EasCache<List<User>>(GetUsersFromDb, 10); // 10 minutes
+var users = easCache.Get(); // List<User>
+```
+
+Caching with key and value
+```csharp
+User GetUserFromDb(int userId){ /* db access */}
+
+var easCache = new EasCache<int ,List<User> >(GetUserFromDb, 10); // 10 minutes
+var user = easCache.Get(231); // Nullable<User>
+```
 ### EasCheck
+```csharp
+var password = "123123";
+var passwordScore = EasCheck.CheckPasswordStrength(password); // PasswordScore Enum
+```
+
+PasswordScore enum
+```csharp
+public enum PasswordScore
+{
+    Blank = 0,
+    VeryWeak = 1,
+    Weak = 2,
+    Medium = 3,
+    Strong = 4,
+    VeryStrong = 5
+}
+```
 ### EasConfig
+Easily access app.config or web.config
+```csharp
+var connString = EasConfig.GetConnectionString("DefaultConnection"); // string
+var someValue = EasConfig.GetValue("someValue"); // string
+var someIntValue = EasConfig.GetValue<int>("someIntValue"); // int
+```
 ### EasDirectory
+Get known folder paths
+```csharp
+var downloadsPath = EasDirectory.GetPath(KnownFolder.Downloads); // string
+var contactsPath = EasDirectory.GetPath(KnownFolder.Contacts); // string
+var favoritesPath = EasDirectory.GetPath(KnownFolder.Favorites); // string
+var linksPath = EasDirectory.GetPath(KnownFolder.Links); // string
+var savedGamesPath = EasDirectory.GetPath(KnownFolder.SavedGames); // string
+var savedSearchesPath = EasDirectory.GetPath(KnownFolder.SavedSearches); // string
+```
+
+KnownFolder enum
+```csharp
+public enum KnownFolder
+{
+    Contacts,
+    Downloads,
+    Favorites,
+    Links,
+    SavedGames,
+    SavedSearches
+}
+```
 ### EasEncrypt
+Simple encryption and decryption with AES
+```csharp
+var encryptor = new EasEncrypt();
+```
 ### EasFile
 ### EasGenerate
 ### EasHash

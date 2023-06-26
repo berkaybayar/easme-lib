@@ -9,12 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ardalis.Result" Version="7.1.0"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Ardalis.Result" Version="7.1.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EasMe\EasMe.csproj"/>
+        <ProjectReference Include="..\EasMe\EasMe.csproj" />
     </ItemGroup>
 
 </Project>
