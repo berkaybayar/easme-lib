@@ -1,7 +1,4 @@
-﻿using EasMe.Authorization.Filters;
-using EasMe.Authorization.Middlewares;
-
-namespace EasMe.Authorization;
+﻿namespace EasMe.Authorization;
 
 public enum HttpMethod {
     GET,
@@ -29,7 +26,7 @@ public static class EasMeClaimType {
     public static string HttpMethodPermissions => "EasMe.Authorization::Permissions";
 
     /// <summary>
-    ///     Claim Type for initializing User authorization in order to use <see cref="HasPermissionAttribute" />.
+    ///     Claim Type for initializing User authorization in order to use <see cref="HasActionPermissionAttribute" />.
     ///     <br />
     ///     Value must contain <see cref="HttpMethod" /> strings merged with ","
     /// </summary>

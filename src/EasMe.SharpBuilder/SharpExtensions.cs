@@ -40,6 +40,7 @@ public static class SharpExtensions {
             if (item.IsRecord) {
                 sb.Append(" record");
             }
+
             sb.Append(" class " + item.Name + " {");
             sb.AppendLine();
             foreach (var prop in item.Properties) {

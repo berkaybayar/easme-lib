@@ -142,8 +142,8 @@ public static class EasSystem {
     /// </summary>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static CPUModel GetProcessor() {
-        var CPUModel = new CPUModel();
+    public static CpuModel GetProcessor() {
+        var CPUModel = new CpuModel();
         var item = GetManagementObjList("Win32_Processor").FirstOrDefault();
         CPUModel.AddressWidth = item["AddressWidth"].ToString();
         CPUModel.Architecture = item["Architecture"].ToString();
@@ -243,11 +243,11 @@ public static class EasSystem {
     /// </summary>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static List<GPUModel> GetGPUList() {
-        var list = new List<GPUModel>();
+    public static List<GpuModel> GetGPUList() {
+        var list = new List<GpuModel>();
         var GPUList = GetManagementObjList("Win32_VideoController");
         foreach (var video in GPUList) {
-            var model = new GPUModel();
+            var model = new GpuModel();
             model.AdapterRAM = video["AdapterRAM"].ToString();
             model.Availability = video["Availability"].ToString();
             model.Caption = video["Caption"].ToString();
@@ -295,10 +295,10 @@ public static class EasSystem {
     /// </summary>
     /// <returns></returns>
     /// <exception cref="EasException"></exception>
-    public static BIOSModel GetBIOS() {
-        var model = new BIOSModel();
+    public static BiosModel GetBIOS() {
+        var model = new BiosModel();
         var bios = GetManagementObjList("Win32_BIOS").FirstOrDefault();
-        model.BIOSVersion = bios["BIOSVersion"].ToString();
+        model.BiosVersion = bios["BIOSVersion"].ToString();
         model.BiosCharacteristics = bios["BiosCharacteristics"].ToString();
         model.Caption = bios["Caption"].ToString();
         model.Description = bios["Description"].ToString();
@@ -306,14 +306,14 @@ public static class EasSystem {
         model.EmbeddedControllerMinorVersion = bios["EmbeddedControllerMinorVersion"].ToString();
         model.Manufacturer = bios["Manufacturer"].ToString();
         model.Name = bios["Name"].ToString();
-        model.PrimaryBIOS = bios["PrimaryBIOS"].ToString();
+        model.PrimaryBios = bios["PrimaryBIOS"].ToString();
         model.ReleaseDate = bios["ReleaseDate"].ToString();
         model.SerialNumber = bios["SerialNumber"].ToString();
-        model.SMBIOSBIOSVersion = bios["SMBIOSBIOSVersion"].ToString();
-        model.SMBIOSMajorVersion = bios["SMBIOSMajorVersion"].ToString();
-        model.SMBIOSMinorVersion = bios["SMBIOSMinorVersion"].ToString();
-        model.SMBIOSPresent = bios["SMBIOSPresent"].ToString();
-        model.SoftwareElementID = bios["SoftwareElementID"].ToString();
+        // model.SMBIOSBIOSVersion = bios["SMBIOSBIOSVersion"].ToString();
+        // model.SMBIOSMajorVersion = bios["SMBIOSMajorVersion"].ToString();
+        // model.SMBIOSMinorVersion = bios["SMBIOSMinorVersion"].ToString();
+        // model.SMBIOSPresent = bios["SMBIOSPresent"].ToString();
+        model.SoftwareElementId = bios["SoftwareElementID"].ToString();
         model.SoftwareElementState = bios["SoftwareElementState"].ToString();
         model.Status = bios["Status"].ToString();
         model.SystemBiosMajorVersion = bios["SystemBiosMajorVersion"].ToString();

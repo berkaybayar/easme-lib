@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 
-namespace EasMe.Authorization.Filters;
+namespace EasMe.Authorization;
 
 /// <summary>
 ///     EndPointAuthorizationFilter to select permission to each endpoint for <see cref="HttpContext.User" /> must be
@@ -22,36 +22,41 @@ namespace EasMe.Authorization.Filters;
 ///         <see cref="HttpContext.User" /> claims.
 ///     </example>
 /// </summary>
-public class HasPermissionAttribute : ActionFilterAttribute {
+public class HasActionPermissionAttribute : ActionFilterAttribute {
     private readonly string _actionCode;
 
-    public HasPermissionAttribute(object actionCode) {
+    public HasActionPermissionAttribute(object actionCode) {
         _actionCode = actionCode.ToString() ?? "";
         if (string.IsNullOrEmpty(_actionCode))
-            throw new ArgumentNullException(nameof(actionCode));
+            throw new ArgumentNullException(nameof(_actionCode));
     }
-
-    public override void OnActionExecuting(ActionExecutingContext _dbContext) {
-        if (_dbContext.HttpContext.User.Identity is not { IsAuthenticated: true }) {
-            Trace.WriteLine("Not authorized");
+    public HasActionPermissionAttribute(string actionCode) {
+        _actionCode = actionCode;
+        if (string.IsNullOrEmpty(_actionCode))
+            throw new ArgumentNullException(nameof(_actionCode));
+    }
+    
+    public override void OnActionExecuting(ActionExecutingContext actionExecutingContext) {
+        if (actionExecutingContext.HttpContext.User.Identity is not { IsAuthenticated: true }) {
+            Trace.WriteLine("Not authenticated");
             return;
         }
 
         var endPointPermissionString =
-            _dbContext.HttpContext.User.FindFirst(EasMeClaimType.EndPointPermissions)?.Value ?? "";
+            actionExecutingContext.HttpContext.User.FindFirst(EasMeClaimType.EndPointPermissions)?.Value ?? "";
         if (string.IsNullOrEmpty(endPointPermissionString)) {
-            _dbContext.Result = new ForbidResult();
+            actionExecutingContext.Result = new ForbidResult();
             return;
         }
 
         Trace.WriteLine(endPointPermissionString);
-        var permList = AuthorizationHelper.SplitPermissions(endPointPermissionString);
-        Trace.WriteLine("Permission List" + JsonConvert.SerializeObject(permList));
+        var permList = InternalHelper.SplitPermissions(endPointPermissionString);
+        Trace.WriteLine("Permission List: " + string.Join(",",permList));
         if (permList.Length == 0) {
-            _dbContext.Result = new ForbidResult();
+            actionExecutingContext.Result = new ForbidResult();
             return;
         }
 
-        if (!permList.Contains(_actionCode)) _dbContext.Result = new ForbidResult();
+        if (!permList.Contains(_actionCode)) actionExecutingContext.Result = new ForbidResult();
     }
 }

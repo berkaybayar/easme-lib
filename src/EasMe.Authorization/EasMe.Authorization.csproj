@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
 		<Version>1.0.0</Version>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<AssemblyVersion>2.0.0</AssemblyVersion>
 		<Title>EasMe.Authorization</Title>
 		<Authors>bberka</Authors>
 		<Description>AspNetCore authorization extender library. Easily manage and apply required roles for desired endpoints.</Description>

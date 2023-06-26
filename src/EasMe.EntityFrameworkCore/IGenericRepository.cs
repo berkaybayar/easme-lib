@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace EasMe.EntityFrameworkCore.V2;
+namespace EasMe.EntityFrameworkCore;
 
 public interface IGenericRepository<TEntity>
     where TEntity : class, IEntity {

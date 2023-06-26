@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EasMe.EntityFrameworkCore.V2;
+namespace EasMe.EntityFrameworkCore;
 
 public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     where TEntity : class, IEntity

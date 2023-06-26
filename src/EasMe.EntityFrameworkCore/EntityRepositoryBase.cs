@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace EasMe.EntityFrameworkCore.V1;
+namespace EasMe.EntityFrameworkCore;
 
 /// <summary>
 ///     Base EntityFrameworkCore Repository class to implement under Unit of Work pattern
