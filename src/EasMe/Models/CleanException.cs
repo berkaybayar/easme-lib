@@ -3,7 +3,8 @@ using Newtonsoft.Json;
 
 namespace EasMe.Models;
 
-public class CleanException {
+public class CleanException
+{
     public CleanException() {
     }
 

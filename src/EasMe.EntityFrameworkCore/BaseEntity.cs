@@ -2,7 +2,8 @@
 
 namespace EasMe.EntityFrameworkCore;
 
-public abstract class BaseEntity : IBaseEntity {
+public abstract class BaseEntity : IBaseEntity
+{
     protected BaseEntity(Guid guid) {
         Id = guid;
     }
@@ -12,7 +13,8 @@ public abstract class BaseEntity : IBaseEntity {
 
     public DateTime RegisterDate { get; set; } = DateTime.Now;
 
-    [Key] public Guid Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
 
     public bool Equals(BaseEntity? other) {
         if (other is null) return false;

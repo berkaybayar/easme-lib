@@ -2,11 +2,11 @@
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
-using EasMe.Exceptions;
 
 namespace EasMe;
 
-public static class EasValidate {
+public static class EasValidate
+{
     /// <summary>
     ///     Returns true if given string is valid email address.
     /// </summary>
@@ -29,12 +29,12 @@ public static class EasValidate {
     ///     returns true if given string is valid IP address.
     /// </summary>
     /// <param name="value"></param>
-    /// <param name="IpAddress"></param>
+    /// <param name="ipAddress"></param>
     /// <returns></returns>
-    public static bool IsValidIPAddress(this string value, out IPAddress? IpAddress) {
-        IpAddress = null;
+    public static bool IsValidIpAddress(this string value, out IPAddress? ipAddress) {
+        ipAddress = null;
         if (IPAddress.TryParse(value, out var address)) {
-            IpAddress = address;
+            ipAddress = address;
             return true;
         }
 
@@ -44,10 +44,10 @@ public static class EasValidate {
     /// <summary>
     ///     Return true if given string is valid IP address.
     /// </summary>
-    /// <param name="IpAddress"></param>
+    /// <param name="ipAddress"></param>
     /// <returns></returns>
-    public static bool IsValidIPAddress(this string IpAddress) {
-        return IpAddress.IsValidIPAddress(out var IpVersion);
+    public static bool IsValidIpAddress(this string ipAddress) {
+        return ipAddress.IsValidIpAddress(out _);
     }
 
     //It's not quite possible make %100 sure it is correct but this will do for most cases
@@ -66,9 +66,9 @@ public static class EasValidate {
     /// </summary>
     /// <param name="macAddress"></param>
     /// <returns></returns>
-    public static bool IsValidMACAddress(this string macAddress) {
-        var MACRegex = "^[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}$";
-        if (!Regex.IsMatch(macAddress, MACRegex))
+    public static bool IsValidMacAddress(this string macAddress) {
+        const string macRegex = "^[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}-[0-9A-F]{2}$";
+        if (!Regex.IsMatch(macAddress, macRegex))
             return false;
         return true;
     }
@@ -79,8 +79,8 @@ public static class EasValidate {
     /// <param name="port"></param>
     /// <returns></returns>
     public static bool IsValidPort(this int port) {
-        var PortRegex = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
-        if (!Regex.IsMatch(port.ToString(), PortRegex))
+        const string portRegex = "^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$";
+        if (!Regex.IsMatch(port.ToString(), portRegex))
             return false;
         return true;
     }
@@ -115,8 +115,8 @@ public static class EasValidate {
     /// <param name="minSpecialCharCount"></param>
     /// <returns></returns>
     public static bool IsStrongPassword(this string password, string allowedChars, byte minLength = 6,
-        byte maxLength = 16, byte minUpperCaseCount = 1, byte minLowerCaseCount = 1, byte minNumberCount = 1,
-        byte minSpecialCharCount = 1) {
+                                        byte maxLength = 16, byte minUpperCaseCount = 1, byte minLowerCaseCount = 1, byte minNumberCount = 1,
+                                        byte minSpecialCharCount = 1) {
         if (password.Length < minLength || password.Length > maxLength)
             return false;
         if (HasSpecialChars(password, allowedChars))
@@ -139,7 +139,7 @@ public static class EasValidate {
     /// <returns></returns>
     public static bool IsUrlImage(this string URL) {
         try {
-            if (!URL.IsValidURL()) return false;
+            if (!URL.IsValidUrl()) return false;
             var client = new HttpClient();
             var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
             if (req != null)
@@ -149,31 +149,31 @@ public static class EasValidate {
             return false;
         }
         catch (Exception ex) {
-            throw new FailedToCheck("Failed to check if URL is image: " + URL, ex);
+            throw new Exception("Failed to check if URL is image: " + URL, ex);
         }
     }
 
     /// <summary>
     ///     Returns true if given URL is Video.
     /// </summary>
-    /// <param name="URL"></param>
+    /// <param name="url"></param>
     /// <returns></returns>
-    public static bool IsUrlVideo(this string URL) {
+    public static bool IsUrlVideo(this string url) {
         try {
-            if (!URL.IsValidURL()) return false;
+            if (!url.IsValidUrl()) return false;
             var client = new HttpClient();
-            var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, URL)).Result.Content.Headers.ContentType;
+            var req = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).Result.Content.Headers.ContentType;
             if (req != null)
                 return req.ToString().ToLower().StartsWith("video/");
 
-            if (URL.Contains(".mp4") || URL.Contains(".avi") || URL.Contains(".mkv") || URL.Contains(".wmv") ||
-                URL.Contains(".flv") || URL.Contains(".mov") || URL.Contains(".mpeg") || URL.Contains(".mpg") ||
-                URL.Contains(".webm"))
+            if (url.Contains(".mp4") || url.Contains(".avi") || url.Contains(".mkv") || url.Contains(".wmv") ||
+                url.Contains(".flv") || url.Contains(".mov") || url.Contains(".mpeg") || url.Contains(".mpg") ||
+                url.Contains(".webm"))
                 return true;
             return false;
         }
         catch (Exception ex) {
-            throw new FailedToCheck("Failed to check if given URL is video: " + URL, ex);
+            throw new Exception("Failed to check if given URL is video: " + url, ex);
         }
     }
 
@@ -182,15 +182,14 @@ public static class EasValidate {
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    public static bool IsValidURL(this string url) {
+    public static bool IsValidUrl(this string url) {
         return Uri.IsWellFormedUriString(url, UriKind.Absolute);
     }
 
     /// <summary>
     ///     Returns true if given string is a valid database connection string.
     /// </summary>
-    /// <param name="response"></param>
-    /// <param name="key"></param>
+    /// <param name="yourConn"></param>
     /// <returns></returns>
     public static bool IsValidConnectionString(this string yourConn) {
         try {

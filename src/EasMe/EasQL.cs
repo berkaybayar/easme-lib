@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using EasMe.Exceptions;
 using EasMe.Extensions;
 using Microsoft.Data.SqlClient;
 
@@ -8,90 +7,80 @@ namespace EasMe;
 /// <summary>
 ///     SQL helper, used to execute SQL queries, and get data from SQL database.
 /// </summary>
-public class EasQL {
+public class EasQL
+{
+    private readonly string _connection;
+
     public EasQL(string connection) {
         if (!connection.IsValidConnectionString())
-            throw new NotValidException("EasQL given connection string is not valid");
-        Connection = connection;
+            throw new InvalidDataException("EasQL given connection string is not valid");
+        _connection = connection;
     }
 
-    private static string? Connection { get; set; }
 
     /// <summary>
     ///     Executes SQL query and returns DataTable.
     /// </summary>
-    /// <param name="Connection"></param>
     /// <param name="cmd"></param>
-    /// <param name="Timeout"></param>
+    /// <param name="timeout"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
-    public DataTable GetTable(SqlCommand cmd, int Timeout = 0) {
-        return GetTable(Connection, cmd, Timeout);
+    public DataTable GetTable(SqlCommand cmd, int timeout = 0) {
+        return GetTable(_connection, cmd, timeout);
     }
 
     /// <summary>
     ///     Exectues SQL query and returns affected row count.
     /// </summary>
-    /// <param name="Connection"></param>
     /// <param name="cmd"></param>
     /// <param name="Timeout"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
     public int ExecNonQuery(SqlCommand cmd, int Timeout = 0) {
-        return ExecNonQuery(Connection, cmd, Timeout);
+        return ExecNonQuery(_connection, cmd, Timeout);
     }
 
     public async Task<int> ExecNonQueryAsync(SqlCommand cmd, int timeout = 0) {
-        return await Task.Run(() => { return ExecNonQuery(Connection, cmd, timeout); });
+        return await Task.Run(() => { return ExecNonQuery(_connection, cmd, timeout); });
     }
 
     /// <summary>
     ///     Exectues SQL query and returns the first column of first row in the result set returned by query. Additional
     ///     columns or rows ignored.
     /// </summary>
-    /// <param name="Connection"></param>
     /// <param name="cmd"></param>
-    /// <param name="Timeout"></param>
+    /// <param name="timeout"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
-    public object ExecScalar(SqlCommand cmd, int Timeout = 0) {
-        return ExecScalar(Connection, cmd, Timeout);
+    public object ExecScalar(SqlCommand cmd, int timeout = 0) {
+        return ExecScalar(_connection, cmd, timeout);
     }
 
     public async Task<object> ExecScalarAsync(SqlCommand cmd, int timeout = 0) {
-        return await Task.Run(() => { return ExecScalar(Connection, cmd, timeout); });
+        return await Task.Run(() => { return ExecScalar(_connection, cmd, timeout); });
     }
 
     /// <summary>
     ///     Executes a SQL query to backup database to the given folder path.
     /// </summary>
-    /// <param name="Connection"></param>
-    /// <param name="DatabaseName"></param>
-    /// <param name="BackupFolderPath"></param>
-    /// <param name="Timeout"></param>
-    /// <exception cref="EasException"></exception>
-    public void BackupDatabase(string BackupPath, int Timeout = 0) {
-        BackupDatabase(Connection, BackupPath, Timeout);
+    /// <param name="backupPath"></param>
+    /// <param name="timeout"></param>
+    public void BackupDatabase(string backupPath, int timeout = 0) {
+        BackupDatabase(_connection, backupPath, timeout);
     }
 
-    public async Task BackupDatabaseAsync(string BackupPath, int Timeout = 0) {
-        await Task.Run(() => { BackupDatabase(BackupPath, Timeout); });
+    public async Task BackupDatabaseAsync(string backupPath, int timeout = 0) {
+        await Task.Run(() => { BackupDatabase(backupPath, timeout); });
     }
 
     /// <summary>
     ///     Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but
     ///     still you should backup first.
     /// </summary>
-    /// <param name="Connection"></param>
-    /// <param name="DatabaseName"></param>
-    /// <param name="DatabaseLogName"></param>
-    /// <exception cref="EasException"></exception>
-    public void ShrinkDatabase(string DatabaseLogName = "_log") {
-        ShrinkDatabase(Connection, DatabaseLogName);
+    /// <param name="databaseLogName"></param>
+    public void ShrinkDatabase(string databaseLogName = "_log") {
+        ShrinkDatabase(_connection, databaseLogName);
     }
 
-    public async Task ShrinkDatabaseAsync(string DatabaseLogName = "_log") {
-        await Task.Run(() => { ShrinkDatabase(DatabaseLogName); });
+    public async Task ShrinkDatabaseAsync(string databaseLogName = "_log") {
+        await Task.Run(() => { ShrinkDatabase(databaseLogName); });
     }
 
 
@@ -99,15 +88,13 @@ public class EasQL {
     ///     Deletes all records in given table but keeps the table. This action can not be undone, be aware of the risks before
     ///     running this.
     /// </summary>
-    /// <param name="Connection"></param>
-    /// <param name="TableName"></param>
-    /// <exception cref="EasException"></exception>
-    public void TruncateTable(string TableName) {
-        TruncateTable(Connection, TableName);
+    /// <param name="tableName"></param>
+    public void TruncateTable(string tableName) {
+        TruncateTable(_connection, tableName);
     }
 
-    public async Task TruncateTableAsync(string TableName) {
-        await Task.Run(() => { TruncateTable(TableName); });
+    public async Task TruncateTableAsync(string tableName) {
+        await Task.Run(() => { TruncateTable(tableName); });
     }
 
 
@@ -115,36 +102,30 @@ public class EasQL {
     ///     Deletes all records in the table and the table from database. This action can not be undone, be aware of the risks
     ///     before running this.
     /// </summary>
-    /// <param name="Connection"></param>
-    /// <param name="TableName"></param>
-    /// <exception cref="EasException"></exception>
-    public void DropTable(string TableName) {
-        DropTable(Connection, TableName);
+    /// <param name="tableName"></param>
+    public void DropTable(string tableName) {
+        DropTable(_connection, tableName);
     }
 
-    public async Task DropTableAsync(string TableName) {
-        await Task.Run(() => { DropTable(TableName); });
+    public async Task DropTableAsync(string tableName) {
+        await Task.Run(() => { DropTable(tableName); });
     }
 
     /// <summary>
     ///     Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks
     ///     before running this.
     /// </summary>
-    /// <param name="Connection"></param>
-    /// <param name="DatabaseName"></param>
-    /// <exception cref="EasException"></exception>
-    public void DropDatabase(string DatabaseName) {
-        DropDatabase(Connection, DatabaseName);
+    /// <param name="databaseName"></param>
+    public void DropDatabase(string databaseName) {
+        DropDatabase(_connection, databaseName);
     }
 
     /// <summary>
     ///     Gets all table names in SQL database and returns.
     /// </summary>
-    /// <param name="Connection"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
     public List<string> GetAllTableName() {
-        return GetAllTableName(Connection);
+        return GetAllTableName(_connection);
     }
 
 
@@ -157,7 +138,6 @@ public class EasQL {
     /// <param name="cmd"></param>
     /// <param name="timeout"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
     public static DataTable GetTable(string connection, SqlCommand cmd, int timeout = 0) {
         DataTable dt = new();
         using var conn = new SqlConnection(connection);
@@ -176,42 +156,40 @@ public class EasQL {
     /// <summary>
     ///     Exectues SQL query and returns affected row count.
     /// </summary>
-    /// <param name="Connection"></param>
+    /// <param name="connection"></param>
     /// <param name="cmd"></param>
-    /// <param name="Timeout"></param>
+    /// <param name="timeout"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
-    public static int ExecNonQuery(string Connection, SqlCommand cmd, int Timeout = 0) {
-        using SqlConnection conn = new(Connection);
+    public static int ExecNonQuery(string connection, SqlCommand cmd, int timeout = 0) {
+        using SqlConnection conn = new(connection);
         cmd.Connection = conn;
-        cmd.CommandTimeout = Timeout;
+        cmd.CommandTimeout = timeout;
         conn.Open();
         return cmd.ExecuteNonQuery();
     }
 
     public static async Task<int> ExecNonQueryAsync(string connection, SqlCommand cmd, int timeout = 0) {
-        return await Task.Run(() => { return ExecNonQuery(connection, cmd, timeout); });
+        return await Task.Run(() => ExecNonQuery(connection, cmd, timeout));
     }
 
     /// <summary>
     ///     Exectues SQL query and returns the first column of first row in the result set returned by query. Additional
     ///     columns or rows ignored.
     /// </summary>
-    /// <param name="Connection"></param>
+    /// <param name="connection"></param>
     /// <param name="cmd"></param>
-    /// <param name="Timeout"></param>
+    /// <param name="timeout"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
-    public static object ExecScalar(string Connection, SqlCommand cmd, int Timeout = 0) {
-        using SqlConnection conn = new(Connection);
+    public static object ExecScalar(string connection, SqlCommand cmd, int timeout = 0) {
+        using SqlConnection conn = new(connection);
         cmd.Connection = conn;
-        cmd.CommandTimeout = Timeout;
+        cmd.CommandTimeout = timeout;
         conn.Open();
         return cmd.ExecuteScalar();
     }
 
     public static async Task<object> ExecScalarAsync(string connection, SqlCommand cmd, int timeout = 0) {
-        return await Task.Run(() => { return ExecScalar(connection, cmd, timeout); });
+        return await Task.Run(() => ExecScalar(connection, cmd, timeout));
     }
 
     public static void BackupDatabase(string connection, string backupFolderPath, int timeout = 0) {
@@ -227,80 +205,77 @@ public class EasQL {
         await Task.Run(() => { BackupDatabase(connection, backupFolderPath, timeout); });
     }
 
-    public static void ShrinkDatabase(string Connection, string DatabaseLogName = "_log") {
-        var DatabaseName = Connection.ParseDatabaseName();
-        if (DatabaseLogName == "_log") DatabaseLogName = DatabaseName + DatabaseLogName;
+    public static void ShrinkDatabase(string connection, string databaseLogName = "_log") {
+        var databaseName = connection.ParseDatabaseName() ?? throw new ArgumentNullException("connection.ParseDatabaseName()");
+        if (databaseLogName == "_log") databaseLogName = databaseName + databaseLogName;
         var query = $@"BEGIN
-                                ALTER DATABASE [{DatabaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
-                                DBCC SHRINKFILE(N'{DatabaseLogName}', 1)
-                                ALTER DATABASE [{DatabaseName}] SET RECOVERY FULL WITH NO_WAIT
+                                ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
+                                DBCC SHRINKFILE(N'{databaseLogName}', 1)
+                                ALTER DATABASE [{databaseName}] SET RECOVERY FULL WITH NO_WAIT
                             END
                             BEGIN
-                                ALTER DATABASE [{DatabaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
-                                DBCC SHRINKFILE(N'{DatabaseName}', 1)
-                                ALTER DATABASE [{DatabaseName}] SET RECOVERY FULL WITH NO_WAIT
+                                ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
+                                DBCC SHRINKFILE(N'{databaseName}', 1)
+                                ALTER DATABASE [{databaseName}] SET RECOVERY FULL WITH NO_WAIT
                             END";
         var cmd = new SqlCommand(query);
-        ExecNonQuery(Connection, cmd);
+        ExecNonQuery(connection, cmd);
     }
 
-    public static async Task ShrinkDatabaseAsync(string Connection, string DatabaseLogName = "_log") {
-        await Task.Run(() => { ShrinkDatabase(Connection, DatabaseLogName); });
+    public static async Task ShrinkDatabaseAsync(string connection, string databaseLogName = "_log") {
+        await Task.Run(() => { ShrinkDatabase(connection, databaseLogName); });
     }
 
 
-    public static void TruncateTable(string Connection, string TableName) {
-        var query = $@"TRUNCATE TABLE {TableName}";
+    public static void TruncateTable(string connection, string tableName) {
+        var query = $@"TRUNCATE TABLE {tableName}";
         var cmd = new SqlCommand(query);
-        ExecNonQuery(Connection, cmd);
+        ExecNonQuery(connection, cmd);
     }
 
-    public static async Task TruncateTableAsync(string Connection, string TableName) {
-        await Task.Run(() => { TruncateTable(Connection, TableName); });
+    public static async Task TruncateTableAsync(string connection, string tableName) {
+        await Task.Run(() => { TruncateTable(connection, tableName); });
     }
 
     /// <summary>
     ///     Deletes all records in the table and the table from database. This action can not be undone, be aware of the risks
     ///     before running this.
     /// </summary>
-    /// <param name="Connection"></param>
-    /// <param name="TableName"></param>
-    /// <exception cref="EasException"></exception>
-    public static void DropTable(string Connection, string TableName) {
-        var query = $@"DROP TABLE {TableName}";
+    /// <param name="connection"></param>
+    /// <param name="tableName"></param>
+    public static void DropTable(string connection, string tableName) {
+        var query = $@"DROP TABLE {tableName}";
         var cmd = new SqlCommand(query);
-        ExecNonQuery(Connection, cmd);
+        ExecNonQuery(connection, cmd);
     }
 
-    public static async Task DropTableAsync(string Connection, string TableName) {
-        await Task.Run(() => { DropTable(Connection, TableName); });
+    public static async Task DropTableAsync(string connection, string tableName) {
+        await Task.Run(() => { DropTable(connection, tableName); });
     }
 
     /// <summary>
     ///     Deletes all records and all tables and the database entirely. This action can not be undone, be aware of the risks
     ///     before running this.
     /// </summary>
-    /// <param name="Connection"></param>
-    /// <param name="DatabaseName"></param>
-    /// <exception cref="EasException"></exception>
-    public static void DropDatabase(string Connection, string DatabaseName) {
-        var query = $@"DROP DATABASE {DatabaseName}";
+    /// <param name="connection"></param>
+    /// <param name="databaseName"></param>
+    public static void DropDatabase(string connection, string databaseName) {
+        var query = $@"DROP DATABASE {databaseName}";
         var cmd = new SqlCommand(query);
-        ExecNonQuery(Connection, cmd);
+        ExecNonQuery(connection, cmd);
     }
 
 
     /// <summary>
     ///     Gets all table names in SQL database and returns.
     /// </summary>
-    /// <param name="Connection"></param>
+    /// <param name="connection"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
-    public static List<string> GetAllTableName(string Connection) {
+    public static List<string> GetAllTableName(string connection) {
         var query = @"SELECT '['+SCHEMA_NAME(schema_id)+'].['+name+']' FROM sys.tables";
         var list = new List<string>();
         var cmd = new SqlCommand(query);
-        var dt = GetTable(Connection, cmd);
+        var dt = GetTable(connection, cmd);
         foreach (DataRow row in dt.Rows) list.Add(row[0].ToString());
         return list;
     }

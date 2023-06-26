@@ -5,7 +5,8 @@ namespace EasMe.EntityFrameworkCore;
 
 public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     where TEntity : class, IEntity
-    where TContext : DbContext, new() {
+    where TContext : DbContext, new()
+{
     private readonly TContext _dbContext;
 
     public GenericRepository(TContext context) {
@@ -75,9 +76,9 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     }
 
     public TResult? GetFirstOrDefaultSelect<TResult>(Expression<Func<TEntity, TResult>> select,
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions) {
+                                                     Expression<Func<TEntity, bool>>? filter = null,
+                                                     Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+                                                     params string[] includeExpressions) {
         var query = Table.AsQueryable();
         foreach (var includeProperty in includeExpressions) query = query.Include(includeProperty);
 
@@ -88,14 +89,14 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
     }
 
     public virtual IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
-        params string[] includeExpressions) {
+                                           params string[] includeExpressions) {
         return GetOrdered(filter, null, includeExpressions);
     }
 
     public virtual IQueryable<TEntity> GetPaging(int page, int pageSize = 15,
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions) {
+                                                 Expression<Func<TEntity, bool>>? filter = null,
+                                                 Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+                                                 params string[] includeExpressions) {
         var query = Table.AsQueryable();
 
         if (filter != null) query = query.Where(filter);
@@ -106,8 +107,8 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         if (orderBy != null) query = orderBy(query);
         var skipItemIndex = (page - 1) * pageSize;
         return query
-            .Skip(skipItemIndex)
-            .Take(pageSize);
+               .Skip(skipItemIndex)
+               .Take(pageSize);
     }
 
 

@@ -1,11 +1,12 @@
 ﻿namespace EasMe.Extensions;
 
-public static class DateTimeExtensions {
+public static class DateTimeExtensions
+{
     public static bool IsBetween(this DateTime date, DateTime start, DateTime end) {
         return date >= start && date <= end;
     }
 
-    public static bool IsInPass(this DateTime date) {
+    public static bool IsPassed(this DateTime date) {
         return date <= DateTime.Now;
     }
 
@@ -13,80 +14,18 @@ public static class DateTimeExtensions {
         return date >= DateTime.Now;
     }
 
-    public static bool IsValidDate(this string date) {
+    public static bool IsValidDateTime(this string date) {
         return DateTime.TryParse(date, out var _);
     }
 
+    /// <summary>
+    ///     Converts a nullable datetime to datetime. If null, returns DateTime.UnixEpoch
+    /// </summary>
+    /// <param name="datetime"></param>
+    /// <returns></returns>
     public static DateTime ToDateTime(this DateTime? datetime) {
         if (datetime is null) return DateTime.UnixEpoch;
         return (DateTime)datetime;
-    }
-
-    public static string ToReadableDateString(this DateTime datetime) {
-        if (datetime < DateTime.Now) {
-            var timeSpan = DateTime.Now - datetime;
-            var seconds = timeSpan.TotalSeconds;
-            var minutes = timeSpan.TotalMinutes;
-            var hours = timeSpan.TotalHours;
-            var days = timeSpan.TotalDays;
-            var months = days / 30;
-            var years = days / 365;
-
-
-            if (seconds < 60) return $"{(int)seconds} seconds ago";
-
-            if (minutes < 60) return $"{(int)minutes} minutes ago";
-
-            if (hours < 24) {
-                var leftMins = (int)minutes % 60;
-                if (leftMins > 0)
-                    return $"{(int)hours} hours and {leftMins} minutes ago";
-
-                return $"{(int)hours} hours ago";
-            }
-
-            if (days < 30) {
-                var leftHours = (int)hours % 24;
-                if (leftHours > 0)
-                    return $"{(int)days} days and {leftHours} hours ago";
-                return $"{(int)days} days ";
-            }
-
-            if (months < 12)
-                return $"{(int)months} months ago";
-            return $"{(int)years} years ago";
-        }
-        else {
-            var timeSpan = datetime - DateTime.Now;
-            var seconds = timeSpan.TotalSeconds;
-            var minutes = timeSpan.TotalMinutes;
-            var hours = timeSpan.TotalHours;
-            var days = timeSpan.TotalDays;
-            var months = days / 30;
-            var years = days / 365;
-            if (seconds < 60) return $"in {(int)seconds} seconds";
-
-            if (minutes < 60) return $"in {(int)minutes} minutes";
-
-            if (hours < 24) {
-                var leftMins = (int)minutes % 60;
-                if (leftMins > 0)
-                    return $"in {(int)hours} hours and {leftMins} minutes";
-
-                return $"in {(int)hours} hours";
-            }
-
-            if (days < 30) {
-                var leftHours = (int)hours % 24;
-                if (leftHours > 0)
-                    return $"in {(int)days} days and {leftHours} hours";
-                return $"in {(int)days} days";
-            }
-
-            if (months < 12)
-                return $"in {(int)months} months";
-            return $"in {(int)years} years";
-        }
     }
 
     public static DateTime UnixTimeStampToDateTime(this long unixTimeStamp) {
@@ -95,9 +34,12 @@ public static class DateTimeExtensions {
         return dateTime;
     }
 
+    public static DateTime TicksToDateTime(long ticks) {
+        return new DateTime(ticks);
+    }
+
     public static long ToUnixTime(this DateTime date) {
         return ((DateTimeOffset)date).ToUnixTimeSeconds();
-        //return (long)(date - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
     }
 
     public static bool IsDayOlder(this DateTime date, int day) {
@@ -122,5 +64,63 @@ public static class DateTimeExtensions {
 
     public static bool IsYearOlder(this DateTime date, int years) {
         return date.AddYears(years) < DateTime.Now;
+    }
+
+    public static string ToReadableDateString(this DateTime dateTime) {
+        var isPassed = dateTime.IsPassed();
+        var timeSpan = isPassed ? DateTime.Now - dateTime : dateTime - DateTime.Now;
+        var text = isPassed ? "ago" : "from now";
+        if (timeSpan.TotalSeconds < 60) {
+            var seconds = (int)timeSpan.TotalSeconds;
+            return FormatTimeSpan(seconds, "second", text);
+        }
+
+        if (timeSpan.TotalMinutes < 60) {
+            var minutes = (int)timeSpan.TotalMinutes;
+            return FormatTimeSpan(minutes, "minute", text);
+        }
+
+        if (timeSpan.TotalHours < 24) {
+            var hours = (int)timeSpan.TotalHours;
+            var leftMinutes = (int)timeSpan.TotalMinutes % 60;
+            return FormatTimeSpan(hours, "hour", leftMinutes, "minute", text);
+        }
+
+        if (timeSpan.TotalDays < 30) {
+            var days = (int)timeSpan.TotalDays;
+            var leftHours = (int)timeSpan.TotalHours % 24;
+            return FormatTimeSpan(days, "day", leftHours, "hour", text);
+        }
+
+        if (timeSpan.TotalDays < 365) {
+            var months = (int)(timeSpan.TotalDays / 30);
+            var leftDays = (int)timeSpan.TotalDays % 30;
+            return FormatTimeSpan(months, "month", leftDays, "day", text);
+        }
+
+        var years = (int)(timeSpan.TotalDays / 365);
+        var leftMonths = (int)(timeSpan.TotalDays / 30) % 12;
+        return FormatTimeSpan(years, "year", leftMonths, "month", text);
+    }
+
+    private static string FormatTimeSpan(int value1, string unit1, int value2, string unit2, string text) {
+        var result = $"{value1} {unit1}";
+        if (value1 != 1)
+            result += "s";
+        if (value2 > 0) {
+            result += $" and {value2} {unit2}";
+            if (value2 != 1)
+                result += "s";
+        }
+
+        return $"{result} {text}";
+    }
+
+    private static string FormatTimeSpan(int value, string unit, string text) {
+        var result = $"{value} {unit}";
+        if (value != 1)
+            result += "s";
+
+        return $"{result} {text}";
     }
 }

@@ -3,7 +3,8 @@
 /// <summary>
 ///     Runs a queue of Tasks in the background with a single thread
 /// </summary>
-public class EasTask : IDisposable {
+public class EasTask : IDisposable
+{
     private readonly ManualResetEvent _hasNewItems = new(false);
     private readonly Queue<Action> _queue = new();
     private readonly ManualResetEvent _terminate = new(false);
@@ -13,8 +14,8 @@ public class EasTask : IDisposable {
 
     public EasTask() {
         _thread = new Thread(ProcessQueue) {
-            IsBackground = true
-        };
+                                               IsBackground = true
+                                           };
         // this is performed from a bg thread, to ensure the queue is serviced from a single thread
         _thread.Start();
     }

@@ -2,7 +2,8 @@
 
 namespace EasMe.Logging;
 
-public static class EasLogFactory {
+public static class EasLogFactory
+{
     public static readonly IEasLog StaticLogger = CreateLogger("StaticLogger");
     private static bool _isConfigured;
     internal static EasLogConfiguration Config { get; set; } = new();
@@ -43,13 +44,13 @@ public static class EasLogFactory {
     public static void ConfigureDebugDefault(bool isWeb) {
         if (_isConfigured) throw new InvalidOperationException("EasLog configuration already loaded.");
         Config = new EasLogConfiguration {
-            ConsoleAppender = true,
-            ExceptionHideSensitiveInfo = false,
-            LogFileName = "Trace_",
-            MinimumLogLevel = EasLogLevel.Debug,
-            WebInfoLogging = isWeb,
-            SeparateLogLevelToFolder = false
-        };
+                                             ConsoleAppender = true,
+                                             ExceptionHideSensitiveInfo = false,
+                                             LogFileName = "Trace_",
+                                             MinimumLogLevel = EasLogLevel.Debug,
+                                             WebInfoLogging = isWeb,
+                                             SeparateLogLevelToFolder = false
+                                         };
         _isConfigured = true;
     }
 }

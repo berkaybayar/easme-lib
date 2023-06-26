@@ -2,8 +2,9 @@
 
 namespace EasMe;
 
-public static class EasZip {
-    public static void MakeZip(string[] files, string destination) {
+public static class EasZip
+{
+    public static void MakeZip(IEnumerable<string> files, string destination) {
         var index = destination.LastIndexOf("\\", StringComparison.Ordinal);
         var destinationFolder = destination[..index];
         if (!Directory.Exists(destinationFolder)) Directory.CreateDirectory(destinationFolder);

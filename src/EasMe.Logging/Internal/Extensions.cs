@@ -2,26 +2,27 @@
 
 namespace EasMe.Logging.Internal;
 
-public static class Extensions {
+public static class Extensions
+{
     public static EasLogLevel ToEasLogLevel(this ResultSeverity resultSeverity) {
         return resultSeverity switch {
-            ResultSeverity.Info => EasLogLevel.Information,
-            ResultSeverity.Warn => EasLogLevel.Warning,
-            ResultSeverity.Error => EasLogLevel.Error,
-            ResultSeverity.Fatal => EasLogLevel.Fatal,
-            _ => EasLogLevel.Off
-        };
+                   ResultSeverity.Info => EasLogLevel.Information,
+                   ResultSeverity.Warn => EasLogLevel.Warning,
+                   ResultSeverity.Error => EasLogLevel.Error,
+                   ResultSeverity.Fatal => EasLogLevel.Fatal,
+                   _ => EasLogLevel.Off
+               };
     }
 
     internal static EasLogLevel ToEasLogLevel(this string logLevel) {
         return logLevel switch {
-            "Debug" => EasLogLevel.Debug,
-            "Information" => EasLogLevel.Information,
-            "Warning" => EasLogLevel.Warning,
-            "Error" => EasLogLevel.Error,
-            "Fatal" => EasLogLevel.Fatal,
-            _ => EasLogLevel.Off
-        };
+                   "Debug" => EasLogLevel.Debug,
+                   "Information" => EasLogLevel.Information,
+                   "Warning" => EasLogLevel.Warning,
+                   "Error" => EasLogLevel.Error,
+                   "Fatal" => EasLogLevel.Fatal,
+                   _ => EasLogLevel.Off
+               };
     }
 
     internal static string ToLogString(this object[] param) {

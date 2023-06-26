@@ -2,7 +2,8 @@
 
 namespace EasMe.SharpBuilder;
 
-public class SharpFileBuilder {
+public class SharpFileBuilder
+{
     private readonly SharpFile _sharpFile;
 
     public SharpFileBuilder() {

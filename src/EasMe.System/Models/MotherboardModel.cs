@@ -1,6 +1,7 @@
 ﻿namespace EasMe.System.Models;
 
-public class MotherboardModel {
+public class MotherboardModel
+{
     public string? Caption { get; set; }
     public string? ConfigOptions { get; set; }
     public string? CreationClassName { get; set; }

@@ -2,7 +2,8 @@
 
 namespace EasMe.SharpBuilder;
 
-public class SharpPropertyBuilder {
+public class SharpPropertyBuilder
+{
     private readonly SharpProperty _property;
 
     public SharpPropertyBuilder() {
@@ -48,6 +49,7 @@ public class SharpPropertyBuilder {
         _property.IsReadOnly = true;
         return this;
     }
+
     public SharpProperty Build() {
         return _property;
     }

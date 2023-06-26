@@ -7,7 +7,8 @@ namespace EasMe.Logging;
 ///     File logging with heavy api request sometime creating errors.
 ///     With this you only log to console but if error happens you log with EasLog or some other library to a file.
 /// </summary>
-public static class EasLogConsole {
+public static class EasLogConsole
+{
     private const ConsoleColor FatalColor = ConsoleColor.Magenta;
     private const ConsoleColor ErrorColor = ConsoleColor.Red;
     private const ConsoleColor BaseColor = ConsoleColor.White;

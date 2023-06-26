@@ -2,39 +2,40 @@
 
 namespace EasMe.Extensions;
 
-public static class HttpContextExtensions {
+public static class HttpContextExtensions
+{
     public static string[] _HeaderList = new string[21] {
-        "HOST",
-        "ORIGIN",
-        "X-FORWARDED-FOR",
-        "ACCEPT",
-        "ACCESSTOKEN",
-        "CONTENT-LENGTH",
-        "CONTENT-TYPE",
-        //"COOKIE",
-        "REFERER",
-        "SEC-CH-UA",
-        "SEC-CH-UA-MOBILE",
-        "SEC-FETCH-SITE",
-        "SERVERREGION",
-        "USER-AGENT",
-        "X-ORIGINAL-HOST",
-        "X-ORIGINAL-URL",
-        "X-ORIGINAL-IP",
-        "X-FORWARDED-PORT",
-        "X-FORWARDED-PROTO",
-        "PC-Real-IP",
-        "CF-Connecting-IP",
-        "X-Real-IP"
-    };
+                                                            "HOST",
+                                                            "ORIGIN",
+                                                            "X-FORWARDED-FOR",
+                                                            "ACCEPT",
+                                                            "ACCESSTOKEN",
+                                                            "CONTENT-LENGTH",
+                                                            "CONTENT-TYPE",
+                                                            //"COOKIE",
+                                                            "REFERER",
+                                                            "SEC-CH-UA",
+                                                            "SEC-CH-UA-MOBILE",
+                                                            "SEC-FETCH-SITE",
+                                                            "SERVERREGION",
+                                                            "USER-AGENT",
+                                                            "X-ORIGINAL-HOST",
+                                                            "X-ORIGINAL-URL",
+                                                            "X-ORIGINAL-IP",
+                                                            "X-FORWARDED-PORT",
+                                                            "X-FORWARDED-PROTO",
+                                                            "PC-Real-IP",
+                                                            "CF-Connecting-IP",
+                                                            "X-Real-IP"
+                                                        };
 
     public static readonly string[] _realIpHeaderList = new string[5] {
-        "X-FORWARDED-FOR",
-        "X-Real-IP",
-        "X-ORIGINAL-IP",
-        "PC-Real-IP",
-        "CF-Connecting-IP"
-    };
+                                                                          "X-FORWARDED-FOR",
+                                                                          "X-Real-IP",
+                                                                          "X-ORIGINAL-IP",
+                                                                          "PC-Real-IP",
+                                                                          "CF-Connecting-IP"
+                                                                      };
 
 
     /// <summary>
@@ -63,9 +64,10 @@ public static class HttpContextExtensions {
         foreach (var item in _realIpHeaderList)
             try {
                 var ip = req.Headers[item].ToString();
-                if (ip != null && ip != "") ipList.Add(ip);
+                if (ip != "") ipList.Add(ip);
             }
             catch {
+                // ignored
             }
 
         ipList.Add(req.HttpContext.Connection.RemoteIpAddress.ToString());
@@ -97,7 +99,7 @@ public static class HttpContextExtensions {
         try {
             foreach (var item in httpRequest.Headers)
                 if (_realIpHeaderList.Any(x => x == item.Key))
-                    if (item.Value.ToString() != null || item.Value != "")
+                    if (!string.IsNullOrEmpty(item.Value))
                         return item.Value.ToString() ?? "";
             return httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
         }

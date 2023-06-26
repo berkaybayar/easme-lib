@@ -1,6 +1,7 @@
 ﻿namespace EasMe.System.Models;
 
-public class BiosModel {
+public class BiosModel
+{
     public string? BiosCharacteristics { get; set; }
     public string? BiosVersion { get; set; }
     public string? Caption { get; set; }
@@ -11,7 +12,9 @@ public class BiosModel {
     public string? Name { get; set; }
     public string? PrimaryBios { get; set; }
     public string? ReleaseDate { get; set; }
+
     public string? SerialNumber { get; set; }
+
     // public string? SMBIOSBIOSVersion { get; set; }
     // public string? SMBIOSMajorVersion { get; set; }
     // public string? SMBIOSMinorVersion { get; set; }

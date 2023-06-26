@@ -1,9 +1,10 @@
 ﻿namespace EasMe;
 
-public class EasMemoryCache {
-    private static EasMemoryCache? Instance;
+public class EasMemoryCache
+{
+    private static EasMemoryCache? _instance;
 
-    private static readonly Dictionary<string, CacheData> cacheDictionary = new();
+    private static readonly Dictionary<string, CacheData> CacheDictionary = new();
 
     private EasMemoryCache() {
         ClearLoop();
@@ -11,33 +12,33 @@ public class EasMemoryCache {
 
     public static EasMemoryCache This {
         get {
-            Instance ??= new EasMemoryCache();
-            return Instance;
+            _instance ??= new EasMemoryCache();
+            return _instance;
         }
     }
 
     private void ClearLoop() {
         Task.Run(() => {
-            while (true) {
-                var items = cacheDictionary.Where(x => x.Value.ExpireDateTime < DateTime.Now).Select(x => x.Key)
-                    .ToList();
-                if (items.Count > 0)
-                    lock (cacheDictionary) {
-                        foreach (var key in items) cacheDictionary.Remove(key);
-                    }
+                     while (true) {
+                         var items = CacheDictionary.Where(x => x.Value.ExpireDateTime < DateTime.Now).Select(x => x.Key)
+                                                    .ToList();
+                         if (items.Count > 0)
+                             lock (CacheDictionary) {
+                                 foreach (var key in items) CacheDictionary.Remove(key);
+                             }
 
-                Thread.Sleep(1000);
-            }
-        });
+                         Thread.Sleep(1000);
+                     }
+                 });
     }
 
     public T? Get<T>(string key) {
         //return cacheDictionary.ContainsKey(key) ? cacheDictionary[key].Value.ToString().StringConversion<T>() : default;
-        return cacheDictionary.ContainsKey(key) ? (T?)cacheDictionary[key].Value : default;
+        return CacheDictionary.TryGetValue(key, out var value) ? (T?)value.Value : default;
     }
 
     public T GetOrSet<T>(string key, Func<T> func, int expireSeconds = 60) {
-        if (cacheDictionary.ContainsKey(key)) return (T)cacheDictionary[key].Value;
+        if (CacheDictionary.TryGetValue(key, out var value)) return (T)value.Value;
         var res = func();
         if (res is null) return default;
         Set(key, res, expireSeconds);
@@ -45,39 +46,40 @@ public class EasMemoryCache {
     }
 
     public object? Get(string key) {
-        return cacheDictionary.ContainsKey(key) ? cacheDictionary[key].Value : null;
+        return CacheDictionary.TryGetValue(key, out var value) ? value.Value : null;
     }
 
     public void Set(string key, object value, int expireSeconds = 60) {
-        if (cacheDictionary.ContainsKey(key))
-            lock (cacheDictionary) {
-                cacheDictionary.Remove(key);
+        if (CacheDictionary.ContainsKey(key))
+            lock (CacheDictionary) {
+                CacheDictionary.Remove(key);
             }
 
         var data = new CacheData(value, DateTime.Now + TimeSpan.FromSeconds(expireSeconds));
-        lock (cacheDictionary) {
-            cacheDictionary.Add(key, data);
+        lock (CacheDictionary) {
+            CacheDictionary.Add(key, data);
         }
     }
 
     public bool Exists(string key) {
-        return cacheDictionary.ContainsKey(key);
+        return CacheDictionary.ContainsKey(key);
     }
 
     public void Remove(string key) {
-        if (cacheDictionary.ContainsKey(key))
-            lock (cacheDictionary) {
-                cacheDictionary.Remove(key);
-            }
-    }
-
-    public void Clear() {
-        lock (cacheDictionary) {
-            cacheDictionary.Clear();
+        if (!CacheDictionary.ContainsKey(key)) return;
+        lock (CacheDictionary) {
+            CacheDictionary.Remove(key);
         }
     }
 
-    private class CacheData {
+    public void Clear() {
+        lock (CacheDictionary) {
+            CacheDictionary.Clear();
+        }
+    }
+
+    private class CacheData
+    {
         public CacheData(object value, DateTime expireDateTime) {
             Value = value;
             ExpireDateTime = expireDateTime;

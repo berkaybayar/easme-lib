@@ -2,7 +2,8 @@
 
 namespace EasMe;
 
-public static class EasConfig {
+public static class EasConfig
+{
     public static string? GetConnectionString(string key) {
         return ConfigurationManager.ConnectionStrings[key]?.ConnectionString;
     }

@@ -1,23 +1,23 @@
-﻿using EasMe.Logging.Internal;
-using EasMe.Models;
+﻿using EasMe.Models;
 using Newtonsoft.Json;
 
 namespace EasMe.Logging.Models;
 
-public class LogModel {
+public class LogModel
+{
     private LogModel() {
     }
 
     private LogModel(EasLogLevel logLevel, string source, object log, Exception? exception = null,
-        WebInfo? webInfo = null) {
+                     WebInfo? webInfo = null) {
         Level = logLevel;
         Source = source;
         Log = log;
         WebInfo = webInfo;
         if (exception == null) return;
         Exception = EasLogFactory.Config.ExceptionHideSensitiveInfo
-            ? new CleanException(exception.Message)
-            : new CleanException(exception);
+                        ? new CleanException(exception.Message)
+                        : new CleanException(exception);
     }
 
     public DateTime Date { get; } = DateTime.Now;
@@ -33,7 +33,7 @@ public class LogModel {
     public WebInfo? WebInfo { get; set; }
 
     public static LogModel Create(EasLogLevel logLevel, string source, object log, Exception? exception = null,
-        WebInfo? webInfo = null) {
+                                  WebInfo? webInfo = null) {
         return new LogModel(logLevel, source, log, exception, webInfo);
     }
 }

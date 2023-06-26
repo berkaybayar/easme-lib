@@ -4,7 +4,8 @@ using PostSharp.Aspects;
 namespace EasMe.PostSharp.CacheAspects;
 
 [Serializable]
-public class CacheAspect : MethodInterceptionAspect {
+public class CacheAspect : MethodInterceptionAspect
+{
     private int _cacheBySeconds;
     private IMemoryCache _memoryCache;
 
@@ -15,9 +16,9 @@ public class CacheAspect : MethodInterceptionAspect {
 
     public override void OnInvoke(MethodInterceptionArgs args) {
         var methodName = string.Format("{0}.{1}.{2}",
-            args.Method.ReflectedType?.Namespace,
-            args.Method.ReflectedType?.Name,
-            args.Method.Name);
+                                       args.Method.ReflectedType?.Namespace,
+                                       args.Method.ReflectedType?.Name,
+                                       args.Method.Name);
         var arguments = args.Arguments.ToList();
 
         var key = $"{methodName}({string.Join(",", arguments.Select(x => x != null ? x.ToString() : "<Null>"))})";

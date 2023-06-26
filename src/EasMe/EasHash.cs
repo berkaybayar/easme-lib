@@ -7,7 +7,8 @@ using EasMe.Extensions;
 
 namespace EasMe;
 
-public static class EasHash {
+public static class EasHash
+{
     private static byte[] ComputeHash(HashAlgorithm algorithm, string rawData) {
         return algorithm.ComputeHash(rawData.ConvertToByteArray());
     }

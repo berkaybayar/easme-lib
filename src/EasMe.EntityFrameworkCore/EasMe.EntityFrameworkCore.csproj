@@ -1,25 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
-	  <Version>2.0.0</Version>
-	  <AssemblyVersion>2.0.0</AssemblyVersion>
-	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Title>EasMe.EntityFrameworkCore</Title>
-	  <Description>EntityFrameworkCore extender library with built in repository pattern interfaces and more.</Description>
-	  <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
-	  <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
-	  <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
-	  <Authors>bberka</Authors>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
+        <Version>2.0.0</Version>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>EasMe.EntityFrameworkCore</Title>
+        <Description>EntityFrameworkCore extender library with built in repository pattern interfaces and more.</Description>
+        <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
+        <Authors>bberka</Authors>
 
 
-  </PropertyGroup>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5"/>
+    </ItemGroup>
 
 </Project>

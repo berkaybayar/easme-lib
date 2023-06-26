@@ -1,11 +1,13 @@
 ﻿using System.Windows.Forms;
 
-namespace EasMe.MessageBox {
-    public static class Box {
+namespace EasMe.MessageBox
+{
+    public static class Box
+    {
         public static bool Confirm(string Message) //Shows a confirmation box and returns the result taken from user
         {
             if (DialogResult.Yes == System.Windows.Forms.MessageBox.Show(Message, "Confirmation",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                                                                         MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 return true;
             return false;
         }
@@ -23,7 +25,7 @@ namespace EasMe.MessageBox {
         public static void Info(string Message) //Shows an information message box with only OK buttong
         {
             System.Windows.Forms.MessageBox.Show(Message, "Information", MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+                                                 MessageBoxIcon.Information);
         }
 
         public static void Error(string Message) //Shows an Error message box with only OK buttong

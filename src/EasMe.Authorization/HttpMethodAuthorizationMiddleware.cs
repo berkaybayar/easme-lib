@@ -6,7 +6,8 @@ namespace EasMe.Authorization;
 /// <summary>
 ///     Is to authorize every user by <see cref="HttpMethod" /> permissions
 /// </summary>
-public class HttpMethodAuthorizationMiddleware {
+public class HttpMethodAuthorizationMiddleware
+{
     private readonly RequestDelegate _next;
 
     public HttpMethodAuthorizationMiddleware(RequestDelegate next) {

@@ -5,7 +5,8 @@
 ///     <br />
 ///     In order to avoid using <see cref="Exception" />'s and the performance downside from it.
 /// </summary>
-public readonly struct ResultT<T> {
+public readonly struct ResultT<T>
+{
     internal ResultT(T? data, Result result) {
         Data = data;
         Result = result;

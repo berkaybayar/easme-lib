@@ -5,19 +5,20 @@ using System.Security;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using EasMe.Exceptions;
+using log4net.Util.TypeConverters;
 using Newtonsoft.Json.Linq;
 
 namespace EasMe.Extensions;
 
-public static class StringExtensions {
+public static class StringExtensions
+{
     private static readonly HashSet<string> _booleanValues = new(StringComparer.OrdinalIgnoreCase) {
-        "true",
-        "1",
-        "on",
-        "yes",
-        "y"
-    };
+                                                                                                       "true",
+                                                                                                       "1",
+                                                                                                       "on",
+                                                                                                       "yes",
+                                                                                                       "y"
+                                                                                                   };
 
 
     public static string RemoveText(this string value, string removeText) {
@@ -44,8 +45,8 @@ public static class StringExtensions {
             return string.Empty;
         var num = value.IndexOf(endString, startIndex + startString.Length, StringComparison.Ordinal);
         return num == -1
-            ? string.Empty
-            : value.Substring(startIndex + startString.Length, num - startIndex - startString.Length);
+                   ? string.Empty
+                   : value.Substring(startIndex + startString.Length, num - startIndex - startString.Length);
     }
 
     public static byte[] ConvertToByteArray(this string yourStr) {
@@ -143,11 +144,11 @@ public static class StringExtensions {
             return default;
         }
         catch (Exception ex) {
-            throw new FailedToConvertException("StringConversion failed type: " + typeof(T), ex);
+            throw new ConversionNotSupportedException("StringConversion failed type: " + typeof(T), ex);
         }
     }
 
-    public static string FormatString(this string str, params object[] args) {
+    public static string Format(this string str, params object[] args) {
         return string.Format(str, args);
     }
 
@@ -172,7 +173,7 @@ public static class StringExtensions {
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static int? ToInt32(this string? value) {
+    public static int? ToInt(this string? value) {
         if (int.TryParse(value, out var i)) return i;
         return null;
     }
@@ -192,7 +193,7 @@ public static class StringExtensions {
     /// </summary>
     /// <param name="str"></param>
     /// <returns></returns>
-    public static string TrimAbsolute(this string str) {
+    public static string RemoveWhiteSpace(this string str) {
         var res = str.Replace(" ", "");
         return res;
     }
@@ -299,22 +300,17 @@ public static class StringExtensions {
     /// <param name="value"></param>
     /// <param name="maxChars"></param>
     /// <returns></returns>
-    public static string TruncateString(this string value, int maxChars) {
-        return value.Length <= maxChars ? value : value[..maxChars] + "...";
+    public static string TruncateLongString(this string str, int maxLength) {
+        return str[..Math.Min(str.Length, maxLength)] + (str.Length > maxLength ? "..." : null);
     }
-
 
     public static string RemoveLineEndings(this string str) {
         return str.Replace("\n", "").Replace("\r", "").Replace("\t", "");
     }
 
     public static string ToHexString(this string str) {
-        var sb = new StringBuilder();
-
         var bytes = Encoding.Unicode.GetBytes(str);
-        foreach (var t in bytes) sb.Append(t.ToString("X2"));
-
-        return sb.ToString(); // returns: "48656C6C6F20776F726C64" for "Hello world"
+        return Convert.ToHexString(bytes);
     }
 
     public static string FromHexString(this string hexString) {
@@ -333,9 +329,6 @@ public static class StringExtensions {
         return Encoding.UTF8.GetString(base64EncodedBytes);
     }
 
-    public static string TruncateLongString(this string str, int maxLength) {
-        return str[..Math.Min(str.Length, maxLength)];
-    }
 
     public static string Replace_Reverse(this string value, string? newValue, string oldValue) {
         return value.Replace(oldValue, newValue);

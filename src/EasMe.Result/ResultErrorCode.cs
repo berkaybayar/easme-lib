@@ -3,7 +3,8 @@
 /// <summary>
 ///     Built-in Result Error Codes
 /// </summary>
-public enum ResultErrorCode {
+public enum ResultErrorCode
+{
     Ok,
     Warning,
     Error,

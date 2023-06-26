@@ -10,7 +10,8 @@ namespace EasMe.EntityFrameworkCore;
 /// <typeparam name="TContext"></typeparam>
 public class EntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
     where TEntity : class, IEntity, new()
-    where TContext : DbContext, new() {
+    where TContext : DbContext, new()
+{
     private readonly TContext _dbContext;
     private readonly DbSet<TEntity> _dbSet;
 
@@ -21,14 +22,14 @@ public class EntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity
 
     public IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null) {
         return filter == null
-            ? _dbSet
-            : _dbSet.Where(filter);
+                   ? _dbSet
+                   : _dbSet.Where(filter);
     }
 
     public List<TEntity> GetList(Expression<Func<TEntity, bool>>? filter = null) {
         return filter == null
-            ? _dbSet.ToList()
-            : _dbSet.Where(filter).ToList();
+                   ? _dbSet.ToList()
+                   : _dbSet.Where(filter).ToList();
     }
 
     public TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>> filter) {

@@ -1,9 +1,10 @@
 ﻿using System.Security.Claims;
-using EasMe.Exceptions;
+using log4net.Util.TypeConverters;
 
 namespace EasMe.Extensions;
 
-public static class ClaimsExtensions {
+public static class ClaimsExtensions
+{
     /// <summary>
     ///     Converts given model to claims identity.
     /// </summary>
@@ -12,16 +13,9 @@ public static class ClaimsExtensions {
     /// <returns></returns>
     /// <exception cref="FailedToConvertException"></exception>
     public static Dictionary<string, object> AsDictionary(this IEnumerable<Claim> claims) {
-        var dic = new Dictionary<string, object>();
-        //var type = claims.GetType();
-        //var props = type.GetProperties();
-        foreach (var item in claims) {
-            var name = item.Type;
-            var value = item.Value;
-            dic[name] = value;
-        }
-
-        return dic;
+        var dictionary = new Dictionary<string, object>();
+        foreach (var claim in claims) dictionary.TryAdd(claim.Type, claim.Value);
+        return dictionary;
     }
 
 
@@ -29,19 +23,18 @@ public static class ClaimsExtensions {
     ///     Converts given model to claims identity.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="Model"></param>
+    /// <param name="model"></param>
     /// <returns></returns>
-    /// <exception cref="FailedToConvertException"></exception>
-    public static ClaimsIdentity ToClaimsIdentity<T>(this T Model) {
+    /// <exception cref="ConversionNotSupportedException"></exception>
+    public static ClaimsIdentity ToClaimsIdentity<T>(this T model) {
         var claimsIdentity = new ClaimsIdentity();
-        var props = Model?.GetType().GetProperties();
-        if (props == null)
-            throw new FailedToConvertException("Failed to convert model to claims identity. Model has no properties");
+        var props = model?.GetType().GetProperties();
+        if (props is null || props.Length == 0)
+            throw new ConversionNotSupportedException("Failed to convert model to claims identity. Model has no properties");
         foreach (var property in props) {
-            if (property == null) continue;
-            var value = property.GetValue(Model);
-            if (value == null) continue;
-            claimsIdentity.AddClaim(new Claim(property.Name, value.ToString()));
+            var value = property.GetValue(model);
+            if (value is null) continue;
+            claimsIdentity.AddClaim(new Claim(property.Name, value.ToString() ?? string.Empty));
         }
 
         return claimsIdentity;
@@ -52,22 +45,23 @@ public static class ClaimsExtensions {
     ///     properties. This adds one claim that
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="Model"></param>
-    /// <param name="ExceptionMessage"></param>
+    /// <param name="model"></param>
+    /// <param name="exceptionMessages"></param>
     /// <returns></returns>
-    /// <exception cref="FailedToConvertException"></exception>
-    public static ClaimsIdentity ToClaimsIdentity<T>(this T Model, out List<Exception> ExceptionMessages) {
-        ExceptionMessages = new List<Exception>();
+    public static ClaimsIdentity ToClaimsIdentity<T>(this T model, out List<Exception> exceptionMessages) {
+        exceptionMessages = new List<Exception>();
         var claimsIdentity = new ClaimsIdentity();
-        foreach (var property in Model.GetType().GetProperties())
+        var props = model?.GetType().GetProperties();
+        if (props is null || props.Length == 0)
+            throw new ConversionNotSupportedException("Failed to convert model to claims identity. Model has no properties");
+        foreach (var property in props)
             try {
-                if (property == null) continue;
-                var value = property.GetValue(Model);
+                var value = property.GetValue(model);
                 if (value == null) continue;
                 claimsIdentity.AddClaim(new Claim(property.Name, value.ToString()));
             }
             catch (Exception ex) {
-                ExceptionMessages.Add(ex);
+                exceptionMessages.Add(ex);
             }
 
         return claimsIdentity;

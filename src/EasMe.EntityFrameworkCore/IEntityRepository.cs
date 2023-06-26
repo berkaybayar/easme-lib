@@ -3,7 +3,8 @@
 namespace EasMe.EntityFrameworkCore;
 
 public interface IEntityRepository<T>
-    where T : class, IEntity, new() {
+    where T : class, IEntity, new()
+{
     IQueryable<T> Get(Expression<Func<T, bool>>? filter = null);
     List<T> GetList(Expression<Func<T, bool>>? filter = null);
     bool Any(Expression<Func<T, bool>> filter);

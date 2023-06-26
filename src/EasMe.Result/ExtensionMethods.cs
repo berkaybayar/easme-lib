@@ -1,6 +1,7 @@
 ﻿namespace EasMe.Result;
 
-public static class ExtensionMethods {
+public static class ExtensionMethods
+{
     /// <summary>
     ///     Merges multiple Results into one.
     ///     Result will be Success if all results are Success
@@ -78,7 +79,7 @@ public static class ExtensionMethods {
         var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
         errorArray = errorArray.Concat(errorArrayOfErrors).ToList();
         var validationErrors = list.Where(x => x.IsFailure).SelectMany(x => x.ValidationErrors).ToList();
-        return Result.Create(isAllSuccess, severity, errorCode, errorArray , validationErrors);
+        return Result.Create(isAllSuccess, severity, errorCode, errorArray, validationErrors);
     }
 
     /// <summary>
@@ -106,10 +107,10 @@ public static class ExtensionMethods {
         var isAllSuccess = list.All(x => x.IsSuccess);
         var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToList();
         var exceptions = list.Where(x => x.IsFailure && x.ExceptionInfo != null).Select(x => x.ExceptionInfo!.Message)
-            .ToList();
+                             .ToList();
         errorArray = errorArray.Concat(exceptions).ToList();
         var validationErrors = list.Where(x => x.IsFailure).SelectMany(x => x.ValidationErrors).ToList();
-        return Result.Create(isAllSuccess, severity, errorCode, errorArray , validationErrors);
+        return Result.Create(isAllSuccess, severity, errorCode, errorArray, validationErrors);
         //var errorArrayOfErrors = list.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToArray();
         //errorArray = errorArray.Concat(errorArrayOfErrors).ToArray();
         // return Result.Create(isAllSuccess, severity, errorCode, errorArray , validationErrors);

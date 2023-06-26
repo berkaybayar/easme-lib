@@ -1,6 +1,7 @@
 ﻿namespace EasMe.System.Models;
 
-public class CpuModel {
+public class CpuModel
+{
     public string? AddressWidth { get; set; }
     public string? Architecture { get; set; }
     public string? AssetTag { get; set; }

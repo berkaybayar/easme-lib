@@ -1,22 +1,22 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using EasMe.Exceptions;
 
 namespace EasMe;
 
-public static class EasGenerate {
-    private const string CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+public static class EasGenerate
+{
+    private const string Characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
     /// <summary>
     ///     Generates and returns a random GUID string without "-"
     /// </summary>
     /// <returns></returns>
-    public static string GenerateGuidString() {
+    public static string GenerateCleanGuidString() {
         return Guid.NewGuid().ToString().Replace("-", "");
     }
 
     public static string GetRandomString(ushort length) {
-        var charArray = CHARACTERS.ToCharArray();
+        var charArray = Characters.ToCharArray();
         var result = new StringBuilder(length);
         for (var i = 0; i < length; i++) {
             var random = RandomNumberGenerator.GetInt32(charArray.Length);
@@ -34,16 +34,19 @@ public static class EasGenerate {
     /// <param name="length"></param>
     /// <returns></returns>
     private static string GenerateString(string chars, int length) {
-        if (length > 2048)
-            throw new TooBigValueException(
-                "Given length to create random string is too big. Max allowed length value is 1024.");
-        if (length < 1)
-            throw new TooSmallValueException(
-                "Given length to create random string is too small. Min allowed length value is 1.");
+        switch (length) {
+            case > 2048:
+                throw new InvalidDataException(
+                                               "Given length to create random string is too big. Max allowed length value is 1024.");
+            case < 1:
+                throw new InvalidDataException(
+                                               "Given length to create random string is too small. Min allowed length value is 1.");
+        }
+
         var random = new Random();
         string resultToken = new(
-            Enumerable.Repeat(chars, length)
-                .Select(token => token[random.Next(token.Length)]).ToArray());
+                                 Enumerable.Repeat(chars, length)
+                                           .Select(token => token[random.Next(token.Length)]).ToArray());
         return resultToken;
     }
 

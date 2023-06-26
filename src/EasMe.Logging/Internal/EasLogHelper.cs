@@ -1,29 +1,25 @@
-﻿using System.Diagnostics;
-using EasMe.Exceptions;
-using EasMe.Extensions;
-using EasMe.Logging.Models;
+﻿using EasMe.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace EasMe.Logging.Internal;
 
-internal static class EasLogHelper {
-
-
+internal static class EasLogHelper
+{
     internal static int ConvertConfigFileSize(string value) {
         try {
             var split = value.Split("-");
-            if (split.Length == 0) throw new NotValidException("Given LogFileSize is not valid.");
+            if (split.Length == 0) throw new InvalidDataException("Given LogFileSize is not valid.");
             var size = Convert.ToInt32(split[0].Trim());
             var unit = split[1].Trim().ToLower();
             return unit switch {
-                "kb" => size * 1024,
-                "mb" => size * 1024 * 1024,
-                "gb" => size * 1024 * 1024 * 1024,
-                _ => size
-            };
+                       "kb" => size * 1024,
+                       "mb" => size * 1024 * 1024,
+                       "gb" => size * 1024 * 1024 * 1024,
+                       _ => size
+                   };
         }
         catch (Exception ex) {
-            throw new FailedToParseException("Failed to parse configuration file size.", ex);
+            throw new Exception("Failed to parse configuration file size.", ex);
         }
     }
 

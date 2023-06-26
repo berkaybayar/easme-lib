@@ -1,6 +1,7 @@
 ﻿namespace EasMe.System.Models;
 
-public class DiskModel {
+public class DiskModel
+{
     public string? BytesPerSector { get; set; }
     public string? Capabilities { get; set; }
     public string? CapabilityDescriptions { get; set; }

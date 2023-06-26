@@ -1,6 +1,7 @@
 ﻿# EasMe.Logging
 
 ### Table of Contents
+
 - EasLog
 - EasLogFactory
 - EasLogConfiguration

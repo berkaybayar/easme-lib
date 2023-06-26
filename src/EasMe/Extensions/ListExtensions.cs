@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Data;
-using EasMe.Exceptions;
 
 namespace EasMe.Extensions;
 
-public static class ListExtensions {
+public static class ListExtensions
+{
     public static void ForEach<T>(this IEnumerable<T> list, Action<T> action) {
         foreach (var item in list)
             action(item);
@@ -76,60 +76,60 @@ public static class ListExtensions {
     public static T SingleOrThrow<T>(this IEnumerable<T> list, string message = "Item not found") {
         var item = list.SingleOrDefault();
         if (item is null)
-            throw new NoEntryFoundException(message);
+            throw new ArgumentNullException(message);
         return item;
     }
 
     public static T SingleOrThrow<T>(this IEnumerable<T> list, Func<T, bool> predicate,
-        string message = "Item not found") {
+                                     string message = "Item not found") {
         var item = list.SingleOrDefault(predicate);
         if (item is null)
-            throw new NoEntryFoundException(message);
+            throw new ArgumentNullException(message);
         return item;
     }
 
     public static T SingleOrThrow<T>(this IQueryable<T> list, string message = "Item not found") {
         var item = list.SingleOrDefault();
         if (item is null)
-            throw new NoEntryFoundException(message);
+            throw new ArgumentNullException(message);
         return item;
     }
 
     public static T SingleOrThrow<T>(this IQueryable<T> list, Func<T, bool> predicate,
-        string message = "Item not found") {
+                                     string message = "Item not found") {
         var item = list.SingleOrDefault(predicate);
         if (item is null)
-            throw new NoEntryFoundException(message);
+            throw new ArgumentNullException(message);
         return item;
     }
 
     public static T FirstOrThrow<T>(this IEnumerable<T> list, string message = "Item not found") {
         var item = list.FirstOrDefault();
         if (item is null)
-            throw new NoEntryFoundException(message);
+            throw new ArgumentNullException(message);
         return item;
     }
 
     public static T FirstOrThrow<T>(this IEnumerable<T> list, Func<T, bool> predicate,
-        string message = "Item not found") {
+                                    string message = "Item not found") {
         var item = list.FirstOrDefault(predicate);
         if (item is null)
-            throw new NoEntryFoundException(message);
+            throw new ArgumentNullException(message);
         return item;
     }
 
     public static T FirstOrThrow<T>(this IQueryable<T> list, string message = "Item not found") {
         var item = list.FirstOrDefault();
         if (item is null)
-            throw new NoEntryFoundException(message);
+            throw new ArgumentNullException(message);
         return item;
     }
 
     public static T FirstOrThrow<T>(this IQueryable<T> list, Func<T, bool> predicate,
-        string message = "Item not found") {
+                                    string message = "Item not found") {
         var item = list.FirstOrDefault(predicate);
         if (item is null)
-            throw new NoEntryFoundException(message);
+            throw new ArgumentNullException(message);
         return item;
     }
 

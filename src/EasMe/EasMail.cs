@@ -1,31 +1,31 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using EasMe.Exceptions;
 
 namespace EasMe;
 
 /// <summary>
 ///     Simple mail sender
 /// </summary>
-public class EasMail {
+public class EasMail
+{
     /// <summary>
     ///     Mail sender class, uses SMTP protocol.
     /// </summary>
-    /// <param name="Host"></param>
-    /// <param name="MailAddress"></param>
-    /// <param name="Password"></param>
-    /// <param name="Port"></param>
-    /// <param name="isSSL"></param>
+    /// <param name="host"></param>
+    /// <param name="mailAddress"></param>
+    /// <param name="password"></param>
+    /// <param name="port"></param>
+    /// <param name="enableSsl"></param>
     public EasMail(string host,
-        string mailAddress,
-        string password,
-        int port,
-        bool enableSSL = false) {
+                   string mailAddress,
+                   string password,
+                   int port,
+                   bool enableSsl = false) {
         Host = host;
         MailAddress = mailAddress;
         Password = password;
         Port = port;
-        EnableSSL = enableSSL;
+        EnableSSL = enableSsl;
     }
 
     private string Host { get; }
@@ -37,27 +37,28 @@ public class EasMail {
     /// <summary>
     ///     Sends mail, better to create thread for this function.
     /// </summary>
-    /// <param name="Body"></param>
-    /// <param name="SendTo"></param>
-    /// <param name="Subject"></param>
-    public void SendMail(string Subject, string Body, string SendTo, bool isBodyHtml = false) {
+    /// <param name="body"></param>
+    /// <param name="sendTo"></param>
+    /// <param name="subject"></param>
+    /// <param name="isBodyHtml"></param>
+    public void SendMail(string subject, string body, string sendTo, bool isBodyHtml = false) {
         try {
             var fromAddress = new MailAddress(MailAddress);
-            var toAddress = new MailAddress(SendTo);
+            var toAddress = new MailAddress(sendTo);
             using var smtp = new SmtpClient {
-                Host = Host,
-                Port = Port,
-                EnableSsl = EnableSSL,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, Password)
-            };
-            using var message = new MailMessage(fromAddress, toAddress) { Subject = Subject, Body = Body };
+                                                Host = Host,
+                                                Port = Port,
+                                                EnableSsl = EnableSSL,
+                                                DeliveryMethod = SmtpDeliveryMethod.Network,
+                                                UseDefaultCredentials = false,
+                                                Credentials = new NetworkCredential(fromAddress.Address, Password)
+                                            };
+            using var message = new MailMessage(fromAddress, toAddress) { Subject = subject, Body = body };
             message.IsBodyHtml = isBodyHtml;
             smtp.Send(message);
         }
         catch (Exception ex) {
-            throw new EmailSendFailedException("Failed to send email.", ex);
+            throw new Exception("Failed to send email.", ex);
         }
     }
 }

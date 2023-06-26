@@ -3,7 +3,8 @@
 namespace EasMe.EntityFrameworkCore;
 
 public interface IGenericRepository<TEntity>
-    where TEntity : class, IEntity {
+    where TEntity : class, IEntity
+{
     TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties);
 
     List<TEntity> ToList() {

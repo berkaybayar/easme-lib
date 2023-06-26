@@ -1,30 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
-	  <Version>3.1.0</Version>
-	  <AssemblyVersion>3.1.0</AssemblyVersion>
-	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	  <Title>EasMe.Logging</Title>
-	  <Description>Simple lightweight Json logging library.</Description>
-	  <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
-	  <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
-	  <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
-	  <Authors>bberka</Authors>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
+        <Version>3.1.0</Version>
+        <AssemblyVersion>3.1.0</AssemblyVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>EasMe.Logging</Title>
+        <Description>Simple lightweight Json logging library.</Description>
+        <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
+        <Authors>bberka</Authors>
 
 
-  </PropertyGroup>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EasMe.Result\EasMe.Result.csproj" />
-    <ProjectReference Include="..\EasMe\EasMe.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\EasMe.Result\EasMe.Result.csproj"/>
+        <ProjectReference Include="..\EasMe\EasMe.csproj"/>
+    </ItemGroup>
 
 </Project>

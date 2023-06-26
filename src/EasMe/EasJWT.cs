@@ -8,8 +8,9 @@ namespace EasMe;
 /// <summary>
 ///     JWT Authentication helper, generating and reading tokens.
 /// </summary>
-public class EasJWT {
-    private readonly JwtSecurityTokenHandler TokenHandler = new();
+public class EasJWT
+{
+    private readonly JwtSecurityTokenHandler _tokenHandler = new();
 
     public EasJWT(string secret, string? issuer = null, string? audience = null) {
         Issuer = issuer;
@@ -38,13 +39,13 @@ public class EasJWT {
     public string GenerateJwtToken(ClaimsIdentity claimsIdentity, DateTime expire) {
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor {
-            Subject = claimsIdentity,
-            Expires = expire,
-            SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
-            Issuer = Issuer,
-            Audience = Audience
-        };
+                                                              Subject = claimsIdentity,
+                                                              Expires = expire,
+                                                              SigningCredentials =
+                                                                  new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
+                                                              Issuer = Issuer,
+                                                              Audience = Audience
+                                                          };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
@@ -62,19 +63,19 @@ public class EasJWT {
     public string GenerateJwtToken(Dictionary<string, object?> claims, DateTime expire) {
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor {
-            Claims = claims,
-            Expires = expire,
-            SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
-            Issuer = Issuer,
-            Audience = Audience
-        };
+                                                              Claims = claims,
+                                                              Expires = expire,
+                                                              SigningCredentials =
+                                                                  new SigningCredentials(new SymmetricSecurityKey(Secret), SecurityAlgorithms.HmacSha256Signature),
+                                                              Issuer = Issuer,
+                                                              Audience = Audience
+                                                          };
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
 
     /// <summary>
-    ///     Validates JWT token and returns ClaimsPrincipal.
+    ///     Validates JWT token and returns ClaimsPrincipal. Throws if validation fails
     /// </summary>
     /// <param name="token"></param>
     /// <param name="validateIssuer"></param>
@@ -82,15 +83,15 @@ public class EasJWT {
     /// <returns></returns>
     public ClaimsPrincipal? ValidateJwtToken(string token) {
         var tokenValidationParameters = new TokenValidationParameters {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Secret),
-            ValidateIssuer = ValidateIssuer,
-            ValidateAudience = ValidateAudience,
-            ValidateLifetime = true,
-            RequireExpirationTime = true,
-            ClockSkew = TimeSpan.Zero
-        };
-        var claims = TokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+                                                                          ValidateIssuerSigningKey = true,
+                                                                          IssuerSigningKey = new SymmetricSecurityKey(Secret),
+                                                                          ValidateIssuer = ValidateIssuer,
+                                                                          ValidateAudience = ValidateAudience,
+                                                                          ValidateLifetime = true,
+                                                                          RequireExpirationTime = true,
+                                                                          ClockSkew = TimeSpan.Zero
+                                                                      };
+        var claims = _tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
         return claims;
     }
 }

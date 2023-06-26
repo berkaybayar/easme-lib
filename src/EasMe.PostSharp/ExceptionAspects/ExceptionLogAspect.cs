@@ -4,8 +4,10 @@ using PostSharp.Aspects;
 namespace EasMe.PostSharp.ExceptionAspects;
 
 [Serializable]
-public class ExceptionLogAspect : OnExceptionAspect {
-    [NonSerialized] private readonly IEasLog _logger;
+public class ExceptionLogAspect : OnExceptionAspect
+{
+    [NonSerialized]
+    private readonly IEasLog _logger;
 
 
     public ExceptionLogAspect(IEasLog logger) {

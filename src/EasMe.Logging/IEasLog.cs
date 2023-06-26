@@ -2,7 +2,8 @@
 
 namespace EasMe.Logging;
 
-public interface IEasLog {
+public interface IEasLog
+{
     void LogResult(Result.Result result);
     void LogResult<T>(ResultData<T> result);
     void LogResult(Result.Result result, object message);
@@ -47,10 +48,10 @@ public interface IEasLog {
     void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6);
 
     void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6,
-        object obj7);
+                   object obj7);
 
     void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6,
-        object obj7, object obj8);
+                   object obj7, object obj8);
 
     void Fatal(params object[] param);
     void Fatal(object obj1);
@@ -71,7 +72,7 @@ public interface IEasLog {
     void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7);
 
     void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7,
-        object obj8);
+               object obj8);
 
     void Debug(params object[] param);
     void Debug(object obj1);
@@ -92,7 +93,7 @@ public interface IEasLog {
     void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7);
 
     void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7,
-        object obj8);
+               object obj8);
 
     void Trace(params object[] param);
     void Trace(object obj1);

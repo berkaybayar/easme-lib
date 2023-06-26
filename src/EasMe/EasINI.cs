@@ -1,27 +1,27 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
-using EasMe.Exceptions;
 
 namespace EasMe;
 
-public class EasINI {
-    private readonly string _path = string.Empty;
+public class EasINI
+{
+    private readonly string _path;
 
     public EasINI(string? iniFilePath = null) {
-        if (iniFilePath == null) iniFilePath = Directory.GetCurrentDirectory() + @"\service.ini";
+        iniFilePath ??= Directory.GetCurrentDirectory() + @"\service.ini";
         if (!File.Exists(iniFilePath))
-            throw new NotExistException("Given INI file path does not exist: " + iniFilePath);
+            throw new ArgumentNullException("iniFilePath");
         _path = iniFilePath;
     }
 
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool WritePrivateProfileString(string lpAppName, string lpKeyName, string lpString,
-        string lpFileName);
+                                                         string lpFileName);
 
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
     private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal,
-        int size, string filePath);
+                                                      int size, string filePath);
 
     /// <summary>
     ///     Writes a value to the INI file
@@ -100,22 +100,26 @@ public class EasINI {
     }
 }
 
-public class IniFile {
+public class IniFile
+{
     public List<IniSection> Sections { get; set; } = new();
 }
 
-public class IniSection {
+public class IniSection
+{
     public string? Name { get; set; }
     public List<IniData> Data { get; set; } = new();
     public List<IniComment> Comments { get; set; } = new();
 }
 
-public class IniData {
+public class IniData
+{
     public string? Key { get; set; }
     public string? Value { get; set; }
 }
 
-public class IniComment {
+public class IniComment
+{
     public int LineNo { get; set; } = -1;
     public string? Comment { get; set; }
 }

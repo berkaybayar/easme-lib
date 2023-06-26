@@ -1,25 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
-		<Version>1.0.0</Version>
-		<AssemblyVersion>2.0.0</AssemblyVersion>
-		<Title>EasMe.Authorization</Title>
-		<Authors>bberka</Authors>
-		<Description>AspNetCore authorization extender library. Easily manage and apply required roles for desired endpoints.</Description>
-		<PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
-		<PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
-		<RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <Title>EasMe.Authorization</Title>
+        <Authors>bberka</Authors>
+        <Description>AspNetCore authorization extender library. Easily manage and apply required roles for desired endpoints.</Description>
+        <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
 
-	</PropertyGroup>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
 
 </Project>

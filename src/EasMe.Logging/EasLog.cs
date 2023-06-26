@@ -8,7 +8,8 @@ namespace EasMe.Logging;
 /// <summary>
 ///     Simple static json and console logger with useful options.
 /// </summary>
-public class EasLog : IEasLog {
+public class EasLog : IEasLog
+{
     private static readonly object _fileLock = new();
 
     private static readonly EasTask EasTask = new();
@@ -35,7 +36,7 @@ public class EasLog : IEasLog {
         if (!easLogLevel.IsLoggable()) return;
         if (result.Errors.Count > 0) {
             WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}",
-                $"Errors:{string.Join(",", result.Errors)}");
+                     $"Errors:{string.Join(",", result.Errors)}");
             return;
         }
 
@@ -47,8 +48,8 @@ public class EasLog : IEasLog {
         if (!easLogLevel.IsLoggable()) return;
         if (result.Errors.Count > 0) {
             WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}",
-                $"Data:{result.Data.ToJsonString()}",
-                $"Errors:{string.Join(",", result.Errors)}");
+                     $"Data:{result.Data.ToJsonString()}",
+                     $"Errors:{string.Join(",", result.Errors)}");
             return;
         }
 
@@ -60,7 +61,7 @@ public class EasLog : IEasLog {
         if (!easLogLevel.IsLoggable()) return;
         if (result.Errors?.Count > 0) {
             WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
-                $"Errors:{string.Join(",", result.Errors)}");
+                     $"Errors:{string.Join(",", result.Errors)}");
             return;
         }
 
@@ -72,12 +73,12 @@ public class EasLog : IEasLog {
         if (!easLogLevel.IsLoggable()) return;
         if (result.Errors.Count > 0) {
             WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
-                $"Errors:{string.Join(",", result.Errors)}", $"Data:{result.Data.ToJsonString()}");
+                     $"Errors:{string.Join(",", result.Errors)}", $"Data:{result.Data.ToJsonString()}");
             return;
         }
 
         WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
-            $"Data:{result.Data.ToJsonString()}");
+                 $"Data:{result.Data.ToJsonString()}");
     }
 
 
@@ -122,7 +123,7 @@ public class EasLog : IEasLog {
     }
 
     public void Info(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7,
-        object obj8) {
+                     object obj8) {
         if (!EasLogLevel.Information.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Information, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -168,7 +169,7 @@ public class EasLog : IEasLog {
     }
 
     public void Error(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7,
-        object obj8) {
+                      object obj8) {
         if (!EasLogLevel.Error.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Error, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -214,7 +215,7 @@ public class EasLog : IEasLog {
     }
 
     public void Warn(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7,
-        object obj8) {
+                     object obj8) {
         if (!EasLogLevel.Warning.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Warning, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -261,13 +262,13 @@ public class EasLog : IEasLog {
     }
 
     public void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6,
-        object obj7) {
+                          object obj7) {
         if (!EasLogLevel.Fatal.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Fatal, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
     }
 
     public void Exception(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6,
-        object obj7, object obj8) {
+                          object obj7, object obj8) {
         if (!EasLogLevel.Fatal.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Fatal, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -314,7 +315,7 @@ public class EasLog : IEasLog {
     }
 
     public void Fatal(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7,
-        object obj8) {
+                      object obj8) {
         if (!EasLogLevel.Fatal.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Fatal, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -356,13 +357,13 @@ public class EasLog : IEasLog {
     }
 
     public void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6,
-        object obj7) {
+                      object obj7) {
         if (!EasLogLevel.Fatal.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Fatal, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
     }
 
     public void Fatal(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6,
-        object obj7, object obj8) {
+                      object obj7, object obj8) {
         if (!EasLogLevel.Fatal.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Fatal, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -409,7 +410,7 @@ public class EasLog : IEasLog {
     }
 
     public void Debug(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7,
-        object obj8) {
+                      object obj8) {
         if (!EasLogLevel.Debug.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Debug, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -450,13 +451,13 @@ public class EasLog : IEasLog {
     }
 
     public void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6,
-        object obj7) {
+                      object obj7) {
         if (!EasLogLevel.Debug.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Debug, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7);
     }
 
     public void Debug(Exception ex, object obj1, object obj2, object obj3, object obj4, object obj5, object obj6,
-        object obj7, object obj8) {
+                      object obj7, object obj8) {
         if (!EasLogLevel.Debug.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Debug, ex, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -503,7 +504,7 @@ public class EasLog : IEasLog {
     }
 
     public void Trace(object obj1, object obj2, object obj3, object obj4, object obj5, object obj6, object obj7,
-        object obj8) {
+                      object obj8) {
         if (!EasLogLevel.Trace.IsLoggable()) return;
         WriteLog(_LogSource, EasLogLevel.Trace, null, obj1, obj2, obj3, obj4, obj5, obj6, obj7, obj8);
     }
@@ -516,10 +517,10 @@ public class EasLog : IEasLog {
     private string GetExactLogPath(EasLogLevel severity) {
         var date = DateTime.Now.ToString(EasLogFactory.Config.DateFormatString);
         var path = EasLogFactory.Config.SeparateLogLevelToFolder
-            ? Path.Combine(_folderName, date,
-                severity + "_" + EasLogFactory.Config.LogFileName + date + EasLogFactory.Config.LogFileExtension)
-            : Path.Combine(_folderName,
-                EasLogFactory.Config.LogFileName + date + EasLogFactory.Config.LogFileExtension);
+                       ? Path.Combine(_folderName, date,
+                                      severity + "_" + EasLogFactory.Config.LogFileName + date + EasLogFactory.Config.LogFileExtension)
+                       : Path.Combine(_folderName,
+                                      EasLogFactory.Config.LogFileName + date + EasLogFactory.Config.LogFileExtension);
         return path;
     }
 
@@ -531,26 +532,26 @@ public class EasLog : IEasLog {
         WebInfo? webInfo = null;
         if (EasLogFactory.Config.WebInfoLogging) webInfo = new WebInfo();
         var loggingAction = new Action(() => {
-            var paramToLog = param.ToLogString();
-            var log = LogModel.Create(severity, source, paramToLog, exception, webInfo);
-            if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(log.Level, log.ToJsonString() ?? "");
-            var logFilePath = GetExactLogPath(log.Level);
-            try {
-                var folderPath = Path.GetDirectoryName(logFilePath);
-                if (folderPath is not null)
-                    if (!Directory.Exists(folderPath))
-                        Directory.CreateDirectory(folderPath);
+                                           var paramToLog = param.ToLogString();
+                                           var log = LogModel.Create(severity, source, paramToLog, exception, webInfo);
+                                           if (EasLogFactory.Config.ConsoleAppender) EasLogConsole.Log(log.Level, log.ToJsonString() ?? "");
+                                           var logFilePath = GetExactLogPath(log.Level);
+                                           try {
+                                               var folderPath = Path.GetDirectoryName(logFilePath);
+                                               if (folderPath is not null)
+                                                   if (!Directory.Exists(folderPath))
+                                                       Directory.CreateDirectory(folderPath);
 
-                lock (_fileLock) {
-                    File.AppendAllText(logFilePath, log.ToJsonString() + "\n");
-                }
-            }
-            catch (Exception ex) {
-                lock (_exceptions) {
-                    _exceptions.Add(ex);
-                }
-            }
-        });
+                                               lock (_fileLock) {
+                                                   File.AppendAllText(logFilePath, log.ToJsonString() + "\n");
+                                               }
+                                           }
+                                           catch (Exception ex) {
+                                               lock (_exceptions) {
+                                                   _exceptions.Add(ex);
+                                               }
+                                           }
+                                       });
         EasTask.AddToQueue(loggingAction);
     }
 }

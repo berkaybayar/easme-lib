@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 
 namespace EasMe.Authorization;
 
@@ -22,7 +21,8 @@ namespace EasMe.Authorization;
 ///         <see cref="HttpContext.User" /> claims.
 ///     </example>
 /// </summary>
-public class HasActionPermissionAttribute : ActionFilterAttribute {
+public class HasActionPermissionAttribute : ActionFilterAttribute
+{
     private readonly string _actionCode;
 
     public HasActionPermissionAttribute(object actionCode) {
@@ -30,12 +30,13 @@ public class HasActionPermissionAttribute : ActionFilterAttribute {
         if (string.IsNullOrEmpty(_actionCode))
             throw new ArgumentNullException(nameof(_actionCode));
     }
+
     public HasActionPermissionAttribute(string actionCode) {
         _actionCode = actionCode;
         if (string.IsNullOrEmpty(_actionCode))
             throw new ArgumentNullException(nameof(_actionCode));
     }
-    
+
     public override void OnActionExecuting(ActionExecutingContext actionExecutingContext) {
         if (actionExecutingContext.HttpContext.User.Identity is not { IsAuthenticated: true }) {
             Trace.WriteLine("Not authenticated");
@@ -51,7 +52,7 @@ public class HasActionPermissionAttribute : ActionFilterAttribute {
 
         Trace.WriteLine(endPointPermissionString);
         var permList = InternalHelper.SplitPermissions(endPointPermissionString);
-        Trace.WriteLine("Permission List: " + string.Join(",",permList));
+        Trace.WriteLine("Permission List: " + string.Join(",", permList));
         if (permList.Length == 0) {
             actionExecutingContext.Result = new ForbidResult();
             return;

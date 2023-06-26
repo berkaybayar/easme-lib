@@ -2,7 +2,8 @@
 
 namespace EasMe.SharpBuilder;
 
-public class SharpClassBuilder {
+public class SharpClassBuilder
+{
     private readonly SharpClass _sharpClass;
 
     public SharpClassBuilder() {

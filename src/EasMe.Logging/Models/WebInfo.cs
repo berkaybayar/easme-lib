@@ -4,7 +4,8 @@ using EasMe.Logging.Internal;
 
 namespace EasMe.Logging.Models;
 
-public class WebInfo {
+public class WebInfo
+{
     public WebInfo() {
         if (HttpContextHelper.Current is null) return;
         try {

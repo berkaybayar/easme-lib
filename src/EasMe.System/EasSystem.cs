@@ -7,17 +7,18 @@ using Microsoft.Win32;
 
 namespace EasMe.System;
 
-public static class EasSystem {
+public static class EasSystem
+{
     /// <summary>
     ///     Returns this computers MAC Address.
     /// </summary>
     /// <returns></returns>
     public static string GetMACAddress() {
         var macAddr = (
-            from nic in NetworkInterface.GetAllNetworkInterfaces()
-            where nic.OperationalStatus == OperationalStatus.Up
-            select nic.GetPhysicalAddress().ToString()
-        ).FirstOrDefault();
+                          from nic in NetworkInterface.GetAllNetworkInterfaces()
+                          where nic.OperationalStatus == OperationalStatus.Up
+                          select nic.GetPhysicalAddress().ToString()
+                      ).FirstOrDefault();
         if (!string.IsNullOrEmpty(macAddr))
             return macAddr;
         var active = GetMACAddresses_Active();
@@ -37,18 +38,18 @@ public static class EasSystem {
 
     public static List<string> GetMACAddresses_Active() {
         return NetworkInterface.GetAllNetworkInterfaces()
-            .Where(x => x.OperationalStatus == OperationalStatus.Up)
-            .Select(x => x.GetPhysicalAddress().ToString())
-            .Where(x => !string.IsNullOrEmpty(x))
-            .ToList();
+                               .Where(x => x.OperationalStatus == OperationalStatus.Up)
+                               .Select(x => x.GetPhysicalAddress().ToString())
+                               .Where(x => !string.IsNullOrEmpty(x))
+                               .ToList();
     }
 
     public static List<string> GetMACAddresses_All() {
         return NetworkInterface.GetAllNetworkInterfaces()
-            .OrderBy(x => x.OperationalStatus == OperationalStatus.Up)
-            .Select(x => x.GetPhysicalAddress().ToString())
-            .Where(x => !string.IsNullOrEmpty(x))
-            .ToList();
+                               .OrderBy(x => x.OperationalStatus == OperationalStatus.Up)
+                               .Select(x => x.GetPhysicalAddress().ToString())
+                               .Where(x => !string.IsNullOrEmpty(x))
+                               .ToList();
     }
 
     /// <summary>
@@ -133,7 +134,7 @@ public static class EasSystem {
 
     public static string GetProcessorName() {
         var CPUName = Convert.ToString(Registry.GetValue(
-            "HKEY_LOCAL_MACHINE\\HARDWARE\\DESCRIPTION\\SYSTEM\\CentralProcessor\\0", "ProcessorNameString", null));
+                                                         "HKEY_LOCAL_MACHINE\\HARDWARE\\DESCRIPTION\\SYSTEM\\CentralProcessor\\0", "ProcessorNameString", null));
         return CPUName?.Trim() ?? "";
     }
 
@@ -388,7 +389,7 @@ public static class EasSystem {
         oProcess.Start();
         oProcess.WaitForExit();
         var result = oProcess.StandardOutput.ReadToEnd();
-        return result.TrimAbsolute().RemoveLineEndings();
+        return result.RemoveWhiteSpace().RemoveLineEndings();
     }
 
     public static NetworkInfoModel GetNetworkInfo_Client() {
@@ -401,11 +402,11 @@ public static class EasSystem {
         var warp = bodyLines[12].Split("=")[1].StringConversion<bool>();
         var gateway = bodyLines[13].Split("=")[1].StringConversion<bool>();
         return new NetworkInfoModel {
-            IpAddress = ip,
-            IsGatewayOn = gateway,
-            IsWarpOn = warp,
-            Location = loc
-        };
+                                        IpAddress = ip,
+                                        IsGatewayOn = gateway,
+                                        IsWarpOn = warp,
+                                        Location = loc
+                                    };
     }
 
     #region Read System.Management

@@ -1,13 +1,13 @@
 ﻿using System.Data.HashFunction.xxHash;
 using System.Security.Cryptography;
-using EasMe.Exceptions;
 
 namespace EasMe;
 
 /// <summary>
 ///     File or folder deletion with logging options, uses EasLog
 /// </summary>
-public static class EasFile {
+public static class EasFile
+{
     private const int BYTES_TO_READ = sizeof(long);
 
     private static readonly ReaderWriterLock _locker = new();
@@ -31,7 +31,7 @@ public static class EasFile {
         else if (File.Exists(filePath))
             File.Delete(filePath);
         else
-            throw new NotExistException("Error in DeleteAll: Given File or folder does not exist => Path: " + filePath);
+            throw new FileNotFoundException("File or folder not found", filePath);
     }
 
     /// <summary>
@@ -48,13 +48,13 @@ public static class EasFile {
             var subdirs = Directory.GetDirectories(sourcePath);
             Parallel.ForEach(files, file => { File.Move(file, destPath + "\\" + Path.GetFileName(file), true); });
             Parallel.ForEach(subdirs,
-                subdir => { MoveAll(subdir, destPath + "\\" + Path.GetFileName(subdir), overwrite); });
+                             subdir => { MoveAll(subdir, destPath + "\\" + Path.GetFileName(subdir), overwrite); });
         }
         else if (File.Exists(sourcePath)) {
             File.Move(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), true);
         }
         else {
-            throw new NotExistException("Error in MoveAll: Given source path not exist.");
+            throw new FileNotFoundException("Given source path not exist.", sourcePath);
         }
     }
 
@@ -63,22 +63,20 @@ public static class EasFile {
     ///     the actual folder.
     /// </summary>
     /// <param name="sourcePath"></param>
-    /// <param name="destPath"></param>
-    /// <param name="overwrite"></param>
-    /// <param name="isLoggingEnabled"></param>
-    public static void CopyAll(string sourcePath, string destPath, bool overWrite = false) {
-        if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
+    /// <param name="destinationPath"></param>
+    public static void CopyAll(string sourcePath, string destinationPath, bool overwrite = false) {
+        if (!Directory.Exists(destinationPath)) Directory.CreateDirectory(destinationPath);
         if (Directory.Exists(sourcePath)) {
             var files = Directory.GetFiles(sourcePath);
             var subdirs = Directory.GetDirectories(sourcePath);
-            Parallel.ForEach(files, file => { File.Copy(file, destPath + "\\" + Path.GetFileName(file), overWrite); });
-            Parallel.ForEach(subdirs, subdir => { CopyAll(subdir, destPath + "\\" + Path.GetFileName(subdir)); });
+            Parallel.ForEach(files, file => { File.Copy(file, destinationPath + "\\" + Path.GetFileName(file), overwrite); });
+            Parallel.ForEach(subdirs, subdir => { CopyAll(subdir, destinationPath + "\\" + Path.GetFileName(subdir)); });
         }
         else if (File.Exists(sourcePath)) {
-            File.Copy(sourcePath, destPath + "\\" + Path.GetFileName(sourcePath), overWrite);
+            File.Copy(sourcePath, destinationPath + "\\" + Path.GetFileName(sourcePath), overwrite);
         }
         else {
-            throw new NotExistException("Error in CopyAll: Given source path not exist.");
+            throw new FileNotFoundException("Given source path not exist.", sourcePath);
         }
     }
 
@@ -109,19 +107,15 @@ public static class EasFile {
         if (first.Length != second.Length)
             return false;
         var iterations = (int)Math.Ceiling((double)first.Length / BYTES_TO_READ);
-
-        using (var fs1 = first.OpenRead())
-        using (var fs2 = second.OpenRead()) {
-            var one = new byte[BYTES_TO_READ];
-            var two = new byte[BYTES_TO_READ];
-
-            for (var i = 0; i < iterations; i++) {
-                fs1.Read(one, 0, BYTES_TO_READ);
-                fs2.Read(two, 0, BYTES_TO_READ);
-
-                if (BitConverter.ToInt64(one, 0) != BitConverter.ToInt64(two, 0))
-                    return false;
-            }
+        using var fs1 = first.OpenRead();
+        using var fs2 = second.OpenRead();
+        var one = new byte[BYTES_TO_READ];
+        var two = new byte[BYTES_TO_READ];
+        for (var i = 0; i < iterations; i++) {
+            var r1 = fs1.Read(one, 0, BYTES_TO_READ);
+            var r2 = fs2.Read(two, 0, BYTES_TO_READ);
+            if (r1 != r2)
+                return false;
         }
 
         return true;
@@ -134,12 +128,11 @@ public static class EasFile {
         if (string.Equals(first.FullName, second.FullName, StringComparison.OrdinalIgnoreCase))
             return true;
 
-        using (var fs1 = first.OpenRead())
-        using (var fs2 = second.OpenRead()) {
-            for (var i = 0; i < first.Length; i++)
-                if (fs1.ReadByte() != fs2.ReadByte())
-                    return false;
-        }
+        using var fs1 = first.OpenRead();
+        using var fs2 = second.OpenRead();
+        for (var i = 0; i < first.Length; i++)
+            if (fs1.ReadByte() != fs2.ReadByte())
+                return false;
 
         return true;
     }
@@ -147,11 +140,7 @@ public static class EasFile {
     public static bool FilesAreEqual_MD5Hash(FileInfo first, FileInfo second) {
         var firstHash = MD5.Create().ComputeHash(first.OpenRead());
         var secondHash = MD5.Create().ComputeHash(second.OpenRead());
-
-        for (var i = 0; i < firstHash.Length; i++)
-            if (firstHash[i] != secondHash[i])
-                return false;
-        return true;
+        return !firstHash.Where((t, i) => t != secondHash[i]).Any();
     }
 
     public static bool FilesAreEqual_XXHash(FileInfo first, FileInfo second) {

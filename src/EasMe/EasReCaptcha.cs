@@ -1,29 +1,29 @@
-﻿using System.Net;
-using EasMe.Exceptions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using EasMe.Extensions;
 using EasMe.Models;
 using Newtonsoft.Json.Linq;
 
 namespace EasMe;
 
-public static class EasReCaptcha {
+public static class EasReCaptcha
+{
     /// <summary>
     ///     Validates given CaptchtaResponse from Google by SecretKey.
     /// </summary>
-    /// <param name="Secret"></param>
-    /// <param name="CaptchaResponse"></param>
+    /// <param name="secret"></param>
+    /// <param name="captchaResponse"></param>
     /// <returns></returns>
-    /// <exception cref="EasException"></exception>
-    public static CaptchaResponseModel Validate(string Secret, string? CaptchaResponse) {
+    public static CaptchaResponseModel Validate(string secret, string? captchaResponse) {
         try {
-            if (CaptchaResponse.IsNullOrEmpty())
+            if (captchaResponse.IsNullOrEmpty())
                 return new CaptchaResponseModel {
-                    Success = false
-                };
+                                                    Success = false
+                                                };
             var response = new CaptchaResponseModel();
             var client = new WebClient();
             var result = client.DownloadString(string.Format(
-                $"https://www.google.com/recaptcha/api/siteverify?secret={Secret}&response={CaptchaResponse}"));
+                                                             $"https://www.google.com/recaptcha/api/siteverify?secret={secret}&response={captchaResponse}"));
             var obj = JObject.Parse(result);
             response.Success = (bool)obj.SelectToken("success");
             response.ChallengeTS = (DateTime)obj.SelectToken("challenge_ts");
@@ -32,7 +32,7 @@ public static class EasReCaptcha {
             return response;
         }
         catch (Exception ex) {
-            throw new FailedToValidateException("Could not validate reCaptcha.", ex);
+            throw new ValidationException("Could not validate reCaptcha.", ex);
         }
     }
 }

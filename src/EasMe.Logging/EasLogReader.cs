@@ -1,10 +1,10 @@
-﻿using EasMe.Exceptions;
-using EasMe.Extensions;
+﻿using EasMe.Extensions;
 using EasMe.Logging.Models;
 
 namespace EasMe.Logging;
 
-public static class EasLogReader {
+public static class EasLogReader
+{
     public static string? LogFilePath { get; set; }
     public static string[] LogFileContent { get; set; }
 
@@ -22,7 +22,7 @@ public static class EasLogReader {
             LogFileContent = lines;
         }
         catch (Exception e) {
-            throw new FailedToReadException("Failed reading log file with given path: " + LogFilePath, e);
+            throw new Exception("Failed reading log file with given path: " + LogFilePath, e);
         }
     }
 
@@ -43,12 +43,12 @@ public static class EasLogReader {
             }
 
             if (list.Count == 0)
-                throw new NotFoundException(
-                    "Failed getting log file content as List<BaseModel>, log file does not have logs recorded.");
+                throw new Exception(
+                                    "Failed getting log file content as List<BaseModel>, log file does not have logs recorded.");
             return list;
         }
         catch (Exception ex) {
-            throw new FailedToDeserializeException("Failed to deserialize log file content.", ex);
+            throw new Exception("Failed to deserialize log file content.", ex);
         }
     }
 
@@ -62,6 +62,4 @@ public static class EasLogReader {
         var list = GetLogFileContent();
         return list.Where(x => x.Level == logLevel).ToList();
     }
-
-
 }

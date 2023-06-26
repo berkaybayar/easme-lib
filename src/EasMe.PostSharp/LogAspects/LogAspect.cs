@@ -7,7 +7,8 @@ namespace EasMe.PostSharp.LogAspects;
 
 [Serializable]
 [MulticastAttributeUsage(MulticastTargets.Method, TargetMemberAttributes = MulticastAttributes.Instance)]
-public class LogAspect : OnMethodBoundaryAspect {
+public class LogAspect : OnMethodBoundaryAspect
+{
     private readonly IEasLog _logger;
 
     public LogAspect(IEasLog logger) {
@@ -24,7 +25,7 @@ public class LogAspect : OnMethodBoundaryAspect {
         try {
             var logParameters = args.Method.GetParameters().Select((t, i) => args.Arguments.GetArgument(i)).ToList();
             _logger.Info($"FullName:{args.Method.DeclaringType?.Name}", $"MethodName:{args.Method.Name}",
-                $"Params:{logParameters.ToJsonString()}");
+                         $"Params:{logParameters.ToJsonString()}");
         }
         catch (Exception e) {
             // ignored

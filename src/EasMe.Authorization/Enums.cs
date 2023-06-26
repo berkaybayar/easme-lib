@@ -1,6 +1,7 @@
 ﻿namespace EasMe.Authorization;
 
-public enum HttpMethod {
+public enum HttpMethod
+{
     GET,
     POST,
     PUT,
@@ -12,12 +13,14 @@ public enum HttpMethod {
     TRACE
 }
 
-public enum AuthorizationType {
+public enum AuthorizationType
+{
     HttpMethodAuthorization,
     EndpointAuthorization
 }
 
-public static class EasMeClaimType {
+public static class EasMeClaimType
+{
     /// <summary>
     ///     Claim Type for initializing User authorization in order to use <see cref="HttpMethodAuthorizationMiddleware" />.
     ///     <br />

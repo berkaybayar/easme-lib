@@ -3,17 +3,17 @@ using System.Reflection;
 
 namespace EasMe.Extensions;
 
-public static class ObjectExtensions {
+public static class ObjectExtensions
+{
     public static TDestination
         SelectAs<TSource, TDestination>(this TSource source, Func<TSource, TDestination> action) {
         return action(source);
     }
 
     public static bool ValidateModel<T>(this T model) {
-        var _dbContext = new ValidationContext(model);
-        var results = new List<ValidationResult>();
-        var isValid = Validator.TryValidateObject(model, _dbContext, results, true);
-        return isValid;
+        var validationResults = new List<ValidationResult>();
+        var validationContext = new ValidationContext(model, null, null);
+        return Validator.TryValidateObject(model, validationContext, validationResults, true);
     }
 
     public static bool IsNull(this object? target) {
@@ -29,12 +29,12 @@ public static class ObjectExtensions {
     }
 
     public static Dictionary<string, object?> AsDictionary(this object source,
-        BindingFlags bindingAttr = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance) {
+                                                           BindingFlags bindingAttr = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance) {
         return source.GetType().GetProperties(bindingAttr).ToDictionary
-        (
-            propInfo => propInfo.Name,
-            propInfo => propInfo.GetValue(source, null)
-        );
+            (
+             propInfo => propInfo.Name,
+             propInfo => propInfo.GetValue(source, null)
+            );
     }
 
     public static object? ChangeType(this object value, Type t) {
@@ -46,25 +46,5 @@ public static class ObjectExtensions {
 
         var isJson = false;
         return Convert.ChangeType(value, t);
-    }
-
-    /// <summary>
-    ///     Converts object to string with its properties. Name:Value
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static string ToLineString<T>(this T obj) {
-        if (obj is null)
-            return "null";
-        var t = obj.GetType();
-        var text = "";
-        foreach (var prop in t.GetProperties()) {
-            var value = prop.GetValue(obj, null);
-            var name = prop.Name;
-            text += $"{name}:{value?.ToString() ?? "null"} ";
-        }
-
-        return text.TrimEnd();
     }
 }

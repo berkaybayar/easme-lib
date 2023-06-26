@@ -1,6 +1,7 @@
 ﻿namespace EasMe.Extensions;
 
-public static class NumberExtensions {
+public static class NumberExtensions
+{
     public static bool IsBetween(this int value, int belowCheck, int aboveCheck) {
         return value > belowCheck && value < aboveCheck;
     }
@@ -49,12 +50,12 @@ public static class NumberExtensions {
         return value > checkValue - belowAndAboveCheck && value < checkValue + belowAndAboveCheck;
     }
 
-    public static int ToNotNullInt(this int? value) {
+    public static int ToInt(this int? value) {
         if (value is null) return default;
         return value.Value;
     }
 
-    public static long ToNotNullLong(this long? value) {
+    public static long ToLong(this long? value) {
         if (value is null) return default;
         return value.Value;
     }
