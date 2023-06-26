@@ -62,12 +62,12 @@ public class EasQL
     /// </summary>
     /// <param name="backupPath"></param>
     /// <param name="timeout"></param>
-    public void BackupDatabase(string backupPath, int timeout = 0) {
-        BackupDatabase(_connection, backupPath, timeout);
+    public void BackupDatabase(string backupPath, string databaseName, int timeout = 0) {
+        BackupDatabase(_connection,databaseName, backupPath, timeout);
     }
 
-    public async Task BackupDatabaseAsync(string backupPath, int timeout = 0) {
-        await Task.Run(() => { BackupDatabase(backupPath, timeout); });
+    public async Task BackupDatabaseAsync(string backupPath, string databaseName,int timeout = 0) {
+        await Task.Run(() => { BackupDatabase(backupPath, databaseName, timeout); });
     }
 
     /// <summary>
@@ -192,21 +192,19 @@ public class EasQL
         return await Task.Run(() => ExecScalar(connection, cmd, timeout));
     }
 
-    public static void BackupDatabase(string connection, string backupFolderPath, int timeout = 0) {
-        var dbName = connection.ParseDatabaseName();
+    public static void BackupDatabase(string connection, string databaseName ,string backupFolderPath, int timeout = 0) {
         if (!Directory.Exists(backupFolderPath)) Directory.CreateDirectory(backupFolderPath);
-        var bkPath = backupFolderPath + "\\bk_" + dbName + ".bak";
-        var query = $@"BACKUP DATABASE {dbName} TO DISK = '{bkPath}'";
+        var bkPath = backupFolderPath + "\\bk_" + databaseName + ".bak";
+        var query = $@"BACKUP DATABASE {databaseName} TO DISK = '{bkPath}'";
         var cmd = new SqlCommand(query);
         ExecNonQuery(connection, cmd, timeout);
     }
 
-    public static async Task BackupDatabaseAsync(string connection, string backupFolderPath, int timeout = 0) {
-        await Task.Run(() => { BackupDatabase(connection, backupFolderPath, timeout); });
+    public static async Task BackupDatabaseAsync(string connection, string databaseName,string backupFolderPath, int timeout = 0) {
+        await Task.Run(() => { BackupDatabase(connection, databaseName, backupFolderPath, timeout); });
     }
 
-    public static void ShrinkDatabase(string connection, string databaseLogName = "_log") {
-        var databaseName = connection.ParseDatabaseName() ?? throw new ArgumentNullException("connection.ParseDatabaseName()");
+    public static void ShrinkDatabase(string connection, string databaseName,string databaseLogName = "_log") {
         if (databaseLogName == "_log") databaseLogName = databaseName + databaseLogName;
         var query = $@"BEGIN
                                 ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE WITH NO_WAIT

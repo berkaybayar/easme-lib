@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "EasMe.SharpBuilder/1.0.0": {
         "dependencies": {
-          "EasMe.Result": "3.5.0"
+          "EasMe.Result": "2.0.2"
         },
         "runtime": {
           "EasMe.SharpBuilder.dll": {}
@@ -1630,7 +1630,7 @@
           "EasMe.dll": {}
         }
       },
-      "EasMe.Result/3.5.0": {
+      "EasMe.Result/2.0.2": {
         "dependencies": {
           "EasMe": "3.5.0",
           "Newtonsoft.Json": "13.0.3"
@@ -2737,7 +2737,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "EasMe.Result/3.5.0": {
+    "EasMe.Result/2.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

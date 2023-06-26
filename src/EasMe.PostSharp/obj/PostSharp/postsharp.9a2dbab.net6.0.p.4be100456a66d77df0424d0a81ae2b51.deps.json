@@ -1391,16 +1391,16 @@
         "runtime": {},
         "runtimeTargets": {}
       },
-      "EasMe.Logging/3.5.0": {
+      "EasMe.Logging/3.1.0": {
         "dependencies": {
           "EasMe": "3.5.0",
-          "EasMe.Result": "3.5.0",
+          "EasMe.Result": "2.0.2",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {},
         "runtimeTargets": {}
       },
-      "EasMe.Result/3.5.0": {
+      "EasMe.Result/2.0.2": {
         "dependencies": {
           "EasMe": "3.5.0",
           "Newtonsoft.Json": "13.0.3"
@@ -2715,14 +2715,14 @@
       "path": "",
       "hashPath": ""
     },
-    "EasMe.Logging/3.5.0": {
+    "EasMe.Logging/3.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": "",
       "path": "",
       "hashPath": ""
     },
-    "EasMe.Result/3.5.0": {
+    "EasMe.Result/2.0.2": {
       "type": "project",
       "serviceable": false,
       "sha512": "",

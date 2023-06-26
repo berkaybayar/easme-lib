@@ -393,14 +393,14 @@ public static class EasSystem
     }
 
     public static NetworkInfoModel GetNetworkInfo_Client() {
-        var resp = EasAPI.SendGetRequest("https://cloudflare.com/cdn-cgi/trace", null, 3);
+        var resp = EasAPI.Get("https://cloudflare.com/cdn-cgi/trace", null, 3);
         if (!resp.IsSuccessStatusCode) throw new Exception("Failed to get network info");
         var bodyText = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
         var bodyLines = bodyText.Split("\n");
         var ip = bodyLines[2].Split("=")[1];
         var loc = bodyLines[9].Split("=")[1];
-        var warp = bodyLines[12].Split("=")[1].StringConversion<bool>();
-        var gateway = bodyLines[13].Split("=")[1].StringConversion<bool>();
+        var warp = bodyLines[12].Split("=")[1].ConvertTo<bool>();
+        var gateway = bodyLines[13].Split("=")[1].ConvertTo<bool>();
         return new NetworkInfoModel {
                                         IpAddress = ip,
                                         IsGatewayOn = gateway,

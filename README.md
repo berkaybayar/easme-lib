@@ -297,6 +297,20 @@ var asXElementPropertiesAsAttributes = userObject.ToXElement(true); // <User Nam
 var asXElementPropertiesAsElement = userObject.ToXElement(false); // <User><Name>John</Name><Surname>Doe</Surname></User>
 ```
 ### EasAPI
+Every method has a token and timeout parameter as optional. Depending on the http request method a body is required.
+```csharp
+var dummyUrl = "https://127.0.0.1/";
+var dummyAuthorizationToken = "123123213";
+var get = EasAPI.Get(dummyUrl); // HttpResponseMessage
+var getWithAuthorization = EasAPI.Get(dummyUrl,dummyAuthorizationToken); // HttpResponseMessage
+var getWithAuthorizationAndTimeOut = EasAPI.Get(dummyUrl,dummyAuthorizationToken,10); // HttpResponseMessage
+var getAndReadJson = EasAPI.GetAndReadJson(dummyUrl); // JObject
+var postAsJsonAndReadJson = EasAPI.PostAsJsonAndReadJson(dummyUrl, new { Name = "John" }); // JObject 
+var postAsJson = EasAPI.PostAsJson(dummyUrl, new { Name = "John" }); // HttpResponseMessage
+var delete = EasAPI.Delete(dummyUrl); // HttpResponseMessage
+var putAsJson = EasAPI.PutAsJson(dummyUrl, new { Name = "John" }); // HttpResponseMessage
+var send = EasAPI.Send(dummyUrl, new HttpRequestMessage(),dummyAuthorizationToken, 10); // HttpResponseMessage
+```
 ### EasCache
 ### EasCheck
 ### EasConfig

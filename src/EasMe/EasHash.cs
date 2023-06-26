@@ -10,12 +10,12 @@ namespace EasMe;
 public static class EasHash
 {
     private static byte[] ComputeHash(HashAlgorithm algorithm, string rawData) {
-        return algorithm.ComputeHash(rawData.ConvertToByteArray());
+        return algorithm.ComputeHash(Encoding.UTF8.GetBytes(rawData));
     }
 
     public static byte[] ComputeSaltedHash(HashAlgorithm algorithm, string rawData, string saltStr) {
-        var plainText = rawData.ConvertToByteArray();
-        var salt = saltStr.ConvertToByteArray();
+        var plainText = Encoding.UTF8.GetBytes(rawData);
+        var salt = Encoding.UTF8.GetBytes(saltStr);
         var plainTextWithSaltBytes =
             new byte[plainText.Length + salt.Length];
 
