@@ -6,7 +6,7 @@ public static class ByteExtensions
         return Convert.ToBase64String(bytes);
     }
 
-    public static string BytesToHexString(this byte[] bytes) {
+    public static string ToHexString(this byte[] bytes) {
         return Convert.ToHexString(bytes);
     }
 
@@ -16,7 +16,8 @@ public static class ByteExtensions
     /// <param name="array1"></param>
     /// <param name="array2"></param>
     /// <returns>true if arrays are equal</returns>
-    public static bool CompareTo(this byte[] array1, byte[] array2) {
+    public static bool Compare(this byte[] array1, byte[] array2) {
+        
         if (array1.Length != array2.Length) return false;
 
         for (var i = 0; i < array1.Length; i++)

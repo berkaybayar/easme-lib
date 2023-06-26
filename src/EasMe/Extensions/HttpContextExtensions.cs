@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace EasMe.Extensions;
 
@@ -59,7 +60,7 @@ public static class HttpContextExtensions
         return ip;
     }
 
-    public static string[] GetIpAddressList(this HttpRequest req) {
+    public static string[] GetHeaderIpAddressList(this HttpRequest req) {
         var ipList = new List<string>();
         foreach (var item in _realIpHeaderList)
             try {
@@ -74,21 +75,21 @@ public static class HttpContextExtensions
         return ipList.ToArray();
     }
 
-    /// <summary>
-    ///     Gets IP's in http request headers by HttpRequest.
-    /// </summary>
-    /// <param name="httpRequest"></param>
-    /// <returns></returns>
-    public static List<string> GetIpAddresses(this HttpRequest httpRequest) {
-        var list = new List<string>();
-        var headers = httpRequest.GetHeaderValues();
-        var remoteIp = httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
-        list.Add(remoteIp);
-        foreach (var item in headers)
-            if (item.Key == "X-FORWARDED-FOR" || item.Key == "PC-Real-IP" || item.Key == "X-Real-IP")
-                list.Add(item.Value);
-        return list;
-    }
+    // /// <summary>
+    // ///     Gets IP's in http request headers by HttpRequest.
+    // /// </summary>
+    // /// <param name="httpRequest"></param>
+    // /// <returns></returns>
+    // public static List<string> GetIpAddresses(this HttpRequest httpRequest) {
+    //     var list = new List<string>();
+    //     var headers = httpRequest.GetHeaderValues();
+    //     var remoteIp = httpRequest.HttpContext.Connection.RemoteIpAddress.ToString();
+    //     list.Add(remoteIp);
+    //     foreach (var item in headers)
+    //         if (item.Key == "X-FORWARDED-FOR" || item.Key == "PC-Real-IP" || item.Key == "X-Real-IP")
+    //             list.Add(item.Value);
+    //     return list;
+    // }
 
     /// <summary>
     ///     Get Remote IP Address by HttpRequest.
@@ -108,6 +109,19 @@ public static class HttpContextExtensions
         }
     }
 
+    /// <summary>
+    /// Whether the request is coming from local.
+    /// </summary>
+    /// <param name="httpRequest"></param>
+    /// <returns></returns>
+    public static bool IsLocal(this HttpRequest httpRequest) {
+        var connection = httpRequest.HttpContext.Connection;
+        if (connection.RemoteIpAddress == null) return true;
+        if (connection.LocalIpAddress != null) {
+            return connection.RemoteIpAddress.Equals(connection.LocalIpAddress);
+        }
+        return IPAddress.IsLoopback(connection.RemoteIpAddress);
+    }
     public static string GetUserAgent(this HttpRequest httpRequest) {
         {
             try {
@@ -126,5 +140,14 @@ public static class HttpContextExtensions
     /// <returns></returns>
     public static string GetRequestQuery(this HttpRequest httpRequest) {
         return httpRequest.Path.ToUriComponent();
+    }
+    public static IDictionary<string,string> GetQueryAsDictionary(this HttpRequest httpRequest) {
+        return httpRequest.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
+    }
+
+    public static string? GetQueryValue(this HttpRequest httpRequest, string key) {
+        var queryDic = httpRequest.GetQueryAsDictionary();
+        if (queryDic.TryGetValue(key, out var value)) return value;
+        return null;
     }
 }

@@ -77,64 +77,282 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 <a name="easme"></a>
 ## EasMe
 
-* ### Extensions
-* ### EasAPI
-* ### EasCache
-* ### EasCheck
-* ### EasConfig
-* ### EasDirectory
-* ### EasEncrypt
-* ### EasFile
-* ### EasGenerate
-* ### EasHash
-* ### EasHttp
-* ### EasINI
-* ### EasJWT
-* ### EasMail
-* ### EasMemoryCache
-* ### EasQL
-* ### EasReCaptcha
-* ### EasTask
-* ### EasValidate
-* ### EasZip
-* ### EasScheduler
+### Extensions
+#### String Extensions
+```csharp
+var str = "Hello World";
+var removedText = str.RemoveText("World"); // Hello
+var before = str.GetBefore("World"); // Hello 
+var after = str.GetAfter("Wo"); // rld
+var between = str.GetBetween("Hell", "orld"); // o W
+var isNullOrEmpty = str.IsNullOrEmpty(); // false
+var isNullOrWhiteSpace = str.IsNullOrWhiteSpace(); // false
+var isNotNullOrEmpty = str.IsNotNullOrEmpty(); // true
+var isNotNullOrWhiteSpace = str.IsNotNullOrWhiteSpace(); // true
+var bytes = str.GetBytes(); // byte[]
+
+var number = "1231";
+var converted = number.ConvertTo<int>(); // 1231
+var convertedNullable = number.ConvertTo<int?>(); // 1231
+
+var formatText = "Hello {0}".Format("World"); // Hello World
+
+var whiteSpaceRemoved = "Hello World".RemoveWhiteSpace(); // HelloWorld
+
+var boolean = "true".ToBoolean(); // true
+var boolean2 = "false".ToBoolean(); // false
+var boolean3 = "0".ToBoolean(); // false
+var boolean4 = "1".ToBoolean(); // true
+var boolean5 = "asd".ToBoolean(); // true
+var boolean6 = "".ToBoolean(); // false
+
+var firstToUpper = "hello world".FirstToUpper(); // Hello world
+var firstToUpperRestLower = "hello world".FirstToUpperRestLower(); // Hello world
+var lastToUpper = "hello world".LastToUpper(); // hello WorlD
+var lastToLower = "hello worLD".LastToLower(); // hello worLd
+
+var longString = "Hello World,Hello World,Hello World";
+var truncatedString = longString.Truncate(10); // Hello Worl...
+
+var removedLineEndings = "Hello World\nHello World".RemoveLineEndings(); // Hello WorldHello World
+
+var toHexString = "Hello World".ToHexString(); // 48656C6C6F20576F726C64
+var fromHexString = "48656C6C6F20576F726C64".FromHexString(); // Hello World
+var toBase64String = "Hello World".ToBase64String(); // SGVsbG8gV29ybGQ=
+var fromBase64String = "SGVsbG8gV29ybGQ=".FromBase64String(); // Hello World
+
+var replaceReverse = "Hello World, oldValue".Replace_Reverse("newValue", "oldValue"); // Hello World, 
+
+var secureString1 = "Hello World".ToSecureString(); // System.Security.SecureString
+var secureString2 = secureString1.ToInsecureString(); // Hello World
+
+var secureStringsEqual = secureString1.SecureStringsEqual(secureString1); // true
+
+var dateString = "2021-01-01";
+var isValidDateTime = dateString.IsValidDateTime(); // true
+```
+#### Byte Extensions
+```csharp
+var bytes = new byte[] { 1, 2, 3, 4, 5 };
+var hexString = bytes.ToHexString(); // 0102030405
+var base64String = bytes.ToBase64String(); // AQIDBAU=
+
+var compared = bytes.Compare(bytes); // true
+```
+
+#### Claims Extensions
+```csharp
+var claims = new List<Claim>
+{
+    new Claim("name", "John"),
+    new Claim("surname", "Doe")
+};
+var asDictionary = claims.ToDictionary(); // Dictionary<string, string>
+
+var user = new
+{
+    Name = "John",
+    Surname = "Doe"
+};
+var claimsIdentity = user.ToClaimsIdentity(); // System.Security.Claims.ClaimsIdentity
+var claimsIdentity2 = user.ToClaimsIdentity(out List<Exception> exceptions); // System.Security.Claims.ClaimsIdentity
+```
+
+#### DateTime extensions
+```csharp
+var dateTime = new DateTime(2021, 01, 01);
+var nullableDateTime = (DateTime?)dateTime;
+var inFuture = dateTime.InFuture(); // false
+var inPast = dateTime.InPast(); // true
+
+var notNullableDatetime = nullableDateTime.GetValueOrDefault(); // DateTime
+
+var unixTime = dateTime.ToUnixTime(); //  1609459200
+var isDayOlder = dateTime.IsDayOlder(dateTime, 1); // true
+var isMinutesOlder = dateTime.IsMinutesOlder(dateTime, 1); // true
+var isSecondsOlder = dateTime.IsSecondsOlder(dateTime, 1); // true
+var isHoursOlder = dateTime.IsHoursOlder(dateTime, 1); // true
+var isMonthsOlder = dateTime.IsMonthsOlder(dateTime, 1); // true
+var isYearsOlder = dateTime.IsYearsOlder(dateTime, 1); // true
+
+var readableDateString = dateTime.ToReadableDateString(); // 2 years and 1 month ago
+```
+#### Object Extensions
+```csharp
+var user = new
+{
+    Name = "John",
+    Surname = "Doe"
+};
+var userDto = user.As<UserDto>(x => {
+    x.Name = user.Name;
+    x.Surname = user.Surname;
+}); 
+
+var isValidModel = user.IsValidModel(); // true
+var isNull = user.IsNull(); // false
+var isNotNull = user.IsNotNull(); // true
+var isDefault = user.IsDefault(); // false
+```
+#### Bool Extensions
+```csharp
+var nullableBool = (bool?)true;
+var notNullableBool = nullableBool.GetValueOrDefault(); // true
+```
+#### Dictionary Extensions
+```csharp
+var dictionary = new Dictionary<string, string>
+{
+    { "name", "John" },
+    { "surname", "Doe" }
+};
+var asQueryString = dictionary.ToQueryString(); // ?name=John&surname=Doe
+var asObject = dictionary.ToObject<User>(); // User object with name and surname properties
+```
+#### HttpContext Extensions
+```csharp
+var httpContext = new HttpContextAccessor().HttpContext; // Microsoft.AspNetCore.Http.HttpContext
+var headerValuesAsDictionary = httpContext.Request.GetHeaderValues(); // Dictionary<string, string>
+var xForwardedForOrRemoteIp = httpContext.Request.GetXForwardedForOrRemoteIp(); //
+var headerIpAddressList = httpContext.Request.GetHeaderIpAddressList(); // string[]
+var remoteIpAddress = httpContext.Request.GetRemoteIpAddress(); // string
+var userAgent = httpContext.Request.GetUserAgent(); // string
+var isLocal = httpContext.Request.IsLocal(); // true
+var query = httpContext.Request.GetQuery(); // Dictionary<string, string>
+var queryValue = httpContext.Request.GetQueryValue("name"); // John
+var queryAsDictionary = httpContext.Request.GetQueryAsDictionary(); // Dictionary<string, string>
+```
+#### List Extensions
+```csharp
+var list = new List<string> { "John", "Jane" };
+list.AddIfNotExists("John"); // false
+list.AddIfNotExists("Doe"); // true
+list.ForEach(x => Console.WriteLine(x)); // John, Doe
+var joinString = list.JoinString(","); // John, Doe
+var foreachResult = list.ForEachResult<bool>(x => {
+    var isJohn = x == "John";
+    return isJohn;
+}); // List<bool>
+
+var dataTable = list.ToDataTable(); // System.Data.DataTable
+var selectRandom = list.SelectRandom(); // John or Doe
+var shuffle = list.Shuffle(); // List<string>
+var asObjectList = list.ToObjectList(); // List<object>
+
+list.UpdateAll(x => {
+    x += " Doe";
+}); // John Doe, Jane Doe
+
+list.UpdateAllWhere(x => x.EndsWith("n")), x => {
+    x += " Doe";
+}); // John Doe, Jane Doe
+```
+#### Number Extensions
+```csharp
+var dateTime = 1609459200.UnixTimeStampToDateTime(); // 2021-01-01 00:00:00
+var dateTime2 = 1609459200.TicksToDateTime(); // 2021-01-01 00:00:00
+
+var isBetween = 5.IsBetween(1, 10); // true
+var isBetweenOrEqual = 5.IsBetweenOrEqual(1, 10); // true
+var isInRange = 5.IsInRange(1, 10); // true
+
+var nullableInt = (int?)5;
+var notNullableInt = nullableInt.GetValueOrDefault(); // 5
+
+var nullableLong = (long?)5;
+var notNullableLong = nullableLong.GetValueOrDefault(); // 5
+```
+#### Json Extensions
+```csharp
+var user = new User
+{
+    Name = "John",
+    Surname = "Doe"
+};
+var json = user.ToJsonString(); // {"Name":"John","Surname":"Doe"}
+var user2 = json.FromJsonString<User>(); // User object with name and surname properties
+```
+
+#### Xml Extensions
+```csharp
+var xElement = new XElement("User", new XElement("Name", "John"), new XElement("Surname", "Doe"));
+var xElementList = new List<XElement>(){
+    xElement,
+    xElement
+}
+
+ xmlDeserialize = xElement.XmlDeserialize<User>(); // User object with name and surname properties
+
+var xmlDeserializeList = xElementList.XmlDeserialize<List<User>>(); // List<User> object with name and surname properties
+
+var userObject = new User
+{
+    Name = "John",
+    Surname = "Doe"
+};
+var asXml = userObject.ToXmlString(); // <User><Name>John</Name><Surname>Doe</Surname></User>
+var cleanXmlString = asXml.ToCleanXmlString(); // <User><Name>John</Name><Surname>Doe</Surname></User>
+var asXElement = userObject.ToXElement(); // <User><Name>John</Name><Surname>Doe</Surname></User>
+var asXElementPropertiesAsAttributes = userObject.ToXElement(true); // <User Name="John" Surname="Doe" />
+var asXElementPropertiesAsElement = userObject.ToXElement(false); // <User><Name>John</Name><Surname>Doe</Surname></User>
+```
+### EasAPI
+### EasCache
+### EasCheck
+### EasConfig
+### EasDirectory
+### EasEncrypt
+### EasFile
+### EasGenerate
+### EasHash
+### EasHttp
+### EasINI
+### EasJWT
+### EasMail
+### EasMemoryCache
+### EasQL
+### EasReCaptcha
+### EasTask
+### EasValidate
+### EasZip
+### EasScheduler
 
 ## EasMe.Authorization
-* ### Authorization Enums
-* ### HasPermissionAttribute
-* ### HttpMethodAuthorizationMiddleware
+### Authorization Enums
+### HasPermissionAttribute
+### HttpMethodAuthorizationMiddleware
 
 ## EasMe.Box
 
 ## EasMe.EntityFrameworkCore
-* ### Entity abstracts
-* ### Repository abstracts
-* ### Generic repository
+### Entity abstracts
+### Repository abstracts
+### Generic repository
 
 ## EasMe.Logging
-* ### EasLog
-* ### EasLogConsole
-* ### EasLogFactory
-* ### Log Configuration
-* ### EasLogReader
+### EasLog
+### EasLogConsole
+### EasLogFactory
+### Log Configuration
+### EasLogReader
 
 
 ## EasMe.PostSharp
 
 ## EasMe.Result
-* ### Result
-* ### Result with data
-* ### Result Enums
+### Result
+### Result with data
+### Result Enums
 
 ## EasMe.SharpBuilder
-* ### Class builder
-* ### File builder
-* ### Property builder
+### Class builder
+### File builder
+### Property builder
 
 ## EasMe.System
-* ### Getting device information
-* ### Creating unique id
-* ### Adding application to windows startup
+### Getting device information
+### Creating unique id
+### Adding application to windows startup
 
 ## EasMe.Test
 This Console Application project is for testing newly added functionality.

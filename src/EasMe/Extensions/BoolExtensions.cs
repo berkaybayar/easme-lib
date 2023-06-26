@@ -1,9 +1,11 @@
-﻿namespace EasMe.Extensions;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace EasMe.Extensions;
 
 public static class BoolExtensions
 {
-    public static bool ToBoolean(bool? value) {
-        if (value == null) return false;
+    public static bool GetValueOrDefault(bool? value) {
+        if (value == null) return default;
         return (bool)value;
     }
 }

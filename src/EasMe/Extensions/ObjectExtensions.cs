@@ -5,12 +5,11 @@ namespace EasMe.Extensions;
 
 public static class ObjectExtensions
 {
-    public static TDestination
-        SelectAs<TSource, TDestination>(this TSource source, Func<TSource, TDestination> action) {
+    public static TDestination As<TSource, TDestination>(this TSource source, Func<TSource, TDestination> action) {
         return action(source);
     }
 
-    public static bool ValidateModel<T>(this T model) {
+    public static bool IsValidModel<T>(this T model) {
         var validationResults = new List<ValidationResult>();
         var validationContext = new ValidationContext(model, null, null);
         return Validator.TryValidateObject(model, validationContext, validationResults, true);
@@ -28,9 +27,9 @@ public static class ObjectExtensions
         return !target.IsNull();
     }
 
-    public static Dictionary<string, object?> AsDictionary(this object source,
-                                                           BindingFlags bindingAttr = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance) {
-        return source.GetType().GetProperties(bindingAttr).ToDictionary
+    public static Dictionary<string, object?>? AsDictionary<T>(this T source,
+                                                               BindingFlags bindingAttr = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance) {
+        return source?.GetType().GetProperties(bindingAttr).ToDictionary
             (
              propInfo => propInfo.Name,
              propInfo => propInfo.GetValue(source, null)
@@ -46,5 +45,9 @@ public static class ObjectExtensions
 
         var isJson = false;
         return Convert.ChangeType(value, t);
+    }
+
+    public static bool IsDefault<T>(this T value) {
+        return EqualityComparer<T>.Default.Equals(value, default);
     }
 }

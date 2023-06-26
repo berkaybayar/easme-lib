@@ -49,7 +49,7 @@ public static class StringExtensions
                    : value.Substring(startIndex + startString.Length, num - startIndex - startString.Length);
     }
 
-    public static byte[] ConvertToByteArray(this string yourStr) {
+    public static byte[] GetBytes(this string yourStr) {
         return Encoding.UTF8.GetBytes(yourStr);
     }
 
@@ -59,7 +59,7 @@ public static class StringExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="str"></param>
     /// <returns></returns>
-    public static T? StringConversion<T>(this string? str) {
+    public static T? ConvertTo<T>(this string? str) {
         try {
             if (str == null)
                 return default;
@@ -168,25 +168,6 @@ public static class StringExtensions
         return !string.IsNullOrWhiteSpace(target);
     }
 
-    /// <summary>
-    ///     Converts string to Int32, returns parsed value if success.
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static int? ToInt(this string? value) {
-        if (int.TryParse(value, out var i)) return i;
-        return null;
-    }
-
-    /// <summary>
-    ///     Converts string to Int32, returns parsed value if success.
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static long? ToLong(this string? value) {
-        if (long.TryParse(value, out var i)) return i;
-        return null;
-    }
 
     /// <summary>
     ///     Replaces every space char in given string.
@@ -210,44 +191,27 @@ public static class StringExtensions
         return true;
     }
 
-    /// <summary>
-    ///     Returns false if string is equalt to false or null or empty. Returns true otherwise.
-    /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static bool ToBoolean(this string? value, byte val) {
-        switch (val) {
-            case 0:
-                return value.ToBoolean();
-            case 1:
-                if (string.IsNullOrEmpty(value)) return false;
-                return true;
-            default:
-                return value.ToBoolean();
-        }
-    }
-
-    /// <summary>
-    ///     Gets Database name from connection string.
-    /// </summary>
-    /// <param name="response"></param>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    public static string ParseDatabaseName(this string yourConn) {
-        try {
-            if (!yourConn.IsValidConnectionString()) return string.Empty;
-            var start = yourConn.IndexOf("Catalog=");
-            if (start == -1) return string.Empty;
-            var sub = yourConn[(start + 8)..];
-            var end = sub.IndexOf(";");
-            if (end == -1) return string.Empty;
-            var dbName = sub[..end];
-            return dbName;
-        }
-        catch {
-            return string.Empty;
-        }
-    }
+    // /// <summary>
+    // ///     Gets Database name from connection string.
+    // /// </summary>
+    // /// <param name="response"></param>
+    // /// <param name="key"></param>
+    // /// <returns></returns>
+    // public static string ParseDatabaseName(this string yourConn) {
+    //     try {
+    //         if (!yourConn.IsValidConnectionString()) return string.Empty;
+    //         var start = yourConn.IndexOf("Catalog=");
+    //         if (start == -1) return string.Empty;
+    //         var sub = yourConn[(start + 8)..];
+    //         var end = sub.IndexOf(";");
+    //         if (end == -1) return string.Empty;
+    //         var dbName = sub[..end];
+    //         return dbName;
+    //     }
+    //     catch {
+    //         return string.Empty;
+    //     }
+    // }
 
     /// <summary>
     ///     Capitalizes first char in given string and returns new string.
@@ -300,7 +264,7 @@ public static class StringExtensions
     /// <param name="value"></param>
     /// <param name="maxChars"></param>
     /// <returns></returns>
-    public static string TruncateLongString(this string str, int maxLength) {
+    public static string Truncate(this string str, int maxLength) {
         return str[..Math.Min(str.Length, maxLength)] + (str.Length > maxLength ? "..." : null);
     }
 
@@ -334,6 +298,27 @@ public static class StringExtensions
         return value.Replace(oldValue, newValue);
     }
 
+    public static SecureString ToSecureString(this string value) {
+        if (value == null) throw new ArgumentNullException(nameof(value));
+        var secureString = new SecureString();
+        foreach (var c in value) secureString.AppendChar(c);
+        secureString.MakeReadOnly();
+        return secureString;
+    }
+
+    public static SecureString ToInsecureString(this SecureString secureString) {
+        if (secureString == null) throw new ArgumentNullException(nameof(secureString));
+        var unmanagedString = IntPtr.Zero;
+        try {
+            unsafe {
+                unmanagedString = Marshal.SecureStringToGlobalAllocUnicode(secureString);
+                return new SecureString((char*)unmanagedString.ToPointer(), secureString.Length);
+            }
+        }
+        finally {
+            Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
+        }
+    }
     public static bool SecureStringEqual(this SecureString s1, SecureString s2) {
         if (s1 == null) throw new ArgumentNullException(nameof(s1));
         if (s2 == null) throw new ArgumentNullException(nameof(s2));
@@ -341,7 +326,7 @@ public static class StringExtensions
         var bstr1 = IntPtr.Zero;
         var bstr2 = IntPtr.Zero;
         RuntimeHelpers.PrepareConstrainedRegions();
-
+        
         try {
             bstr1 = Marshal.SecureStringToBSTR(s1);
             bstr2 = Marshal.SecureStringToBSTR(s2);
@@ -361,5 +346,8 @@ public static class StringExtensions
 
             if (bstr2 != IntPtr.Zero) Marshal.ZeroFreeBSTR(bstr2);
         }
+    }
+    public static bool IsValidDateTime(this string date) {
+        return DateTime.TryParse(date, out var _);
     }
 }

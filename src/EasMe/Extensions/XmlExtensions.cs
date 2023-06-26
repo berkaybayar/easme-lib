@@ -54,14 +54,14 @@ public static class XmlExtensions
         return list;
     }
 
-    public static string ToXml<T>(this T t) {
+    public static string ToXmlString<T>(this T t) {
         using var stringwriter = new StringWriter();
         var serializer = new XmlSerializer(t.GetType());
         serializer.Serialize(stringwriter, t);
         return stringwriter.ToString();
     }
 
-    public static string ToCleanXml<T>(this T value) {
+    public static string ToCleanXmlString<T>(this T value) {
         var emptyNamespaces = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
         var serializer = new XmlSerializer(value.GetType());
         var settings = new XmlWriterSettings();
@@ -75,24 +75,24 @@ public static class XmlExtensions
     }
 
     public static XElement ToXElement<T>(this T obj) {
-        using (var memoryStream = new MemoryStream()) {
-            using (TextWriter streamWriter = new StreamWriter(memoryStream)) {
-                var xmlSerializer = new XmlSerializer(typeof(T));
-                xmlSerializer.Serialize(streamWriter, obj);
-                return XElement.Parse(Encoding.ASCII.GetString(memoryStream.ToArray()));
-            }
-        }
+        using var memoryStream = new MemoryStream();
+        using TextWriter streamWriter = new StreamWriter(memoryStream);
+        var xmlSerializer = new XmlSerializer(typeof(T));
+        xmlSerializer.Serialize(streamWriter, obj);
+        return XElement.Parse(Encoding.ASCII.GetString(memoryStream.ToArray()));
     }
 
-    public static XElement? ToXml<T>(this T t, string elementName, bool asAttribute = false) {
-        var docElement = new XElement(elementName);
+    public static XElement? ToXElement<T>(this T t, bool propertiesAsAttribute) {
+        var xName = t?.GetType()?.Name;
+        if (xName is null) return null;
+        var docElement = new XElement(xName);
         var type = t?.GetType();
         var properties = type?.GetProperties();
         if (properties == null) return default;
         foreach (var property in properties) {
             var value = property.GetValue(t);
             if (value == null) continue;
-            if (asAttribute) {
+            if (propertiesAsAttribute) {
                 var element = new XAttribute(property.Name, value);
                 docElement.Add(element);
             }

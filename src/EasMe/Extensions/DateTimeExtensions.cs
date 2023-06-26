@@ -6,37 +6,26 @@ public static class DateTimeExtensions
         return date >= start && date <= end;
     }
 
-    public static bool IsPassed(this DateTime date) {
+    public static bool IsPast(this DateTime date) {
         return date <= DateTime.Now;
     }
 
-    public static bool IsInFuture(this DateTime date) {
+    public static bool InFuture(this DateTime date) {
         return date >= DateTime.Now;
     }
 
-    public static bool IsValidDateTime(this string date) {
-        return DateTime.TryParse(date, out var _);
-    }
+   
 
     /// <summary>
     ///     Converts a nullable datetime to datetime. If null, returns DateTime.UnixEpoch
     /// </summary>
     /// <param name="datetime"></param>
     /// <returns></returns>
-    public static DateTime ToDateTime(this DateTime? datetime) {
+    public static DateTime GetValueOrDefault(this DateTime? datetime) {
         if (datetime is null) return DateTime.UnixEpoch;
         return (DateTime)datetime;
     }
 
-    public static DateTime UnixTimeStampToDateTime(this long unixTimeStamp) {
-        DateTime dateTime = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-        return dateTime;
-    }
-
-    public static DateTime TicksToDateTime(long ticks) {
-        return new DateTime(ticks);
-    }
 
     public static long ToUnixTime(this DateTime date) {
         return ((DateTimeOffset)date).ToUnixTimeSeconds();
@@ -50,7 +39,7 @@ public static class DateTimeExtensions
         return date.AddMinutes(mins) < DateTime.Now;
     }
 
-    public static bool IsSecondOlder(this DateTime date, int seconds) {
+    public static bool IsSecondsOlder(this DateTime date, int seconds) {
         return date.AddSeconds(seconds) < DateTime.Now;
     }
 
@@ -58,16 +47,16 @@ public static class DateTimeExtensions
         return date.AddHours(hours) < DateTime.Now;
     }
 
-    public static bool IsMonthOlder(this DateTime date, int months) {
+    public static bool IsMonthsOlder(this DateTime date, int months) {
         return date.AddMonths(months) < DateTime.Now;
     }
 
-    public static bool IsYearOlder(this DateTime date, int years) {
+    public static bool IsYearsOlder(this DateTime date, int years) {
         return date.AddYears(years) < DateTime.Now;
     }
 
     public static string ToReadableDateString(this DateTime dateTime) {
-        var isPassed = dateTime.IsPassed();
+        var isPassed = dateTime.IsPast();
         var timeSpan = isPassed ? DateTime.Now - dateTime : dateTime - DateTime.Now;
         var text = isPassed ? "ago" : "from now";
         if (timeSpan.TotalSeconds < 60) {

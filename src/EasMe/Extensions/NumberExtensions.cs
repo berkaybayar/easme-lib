@@ -2,6 +2,16 @@
 
 public static class NumberExtensions
 {
+    public static DateTime UnixTimeStampToDateTime(this long unixTimeStamp) {
+        DateTime dateTime = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+        return dateTime;
+    }
+
+    public static DateTime TicksToDateTime(this long ticks) {
+        return new DateTime(ticks);
+    }
+
     public static bool IsBetween(this int value, int belowCheck, int aboveCheck) {
         return value > belowCheck && value < aboveCheck;
     }
@@ -50,12 +60,12 @@ public static class NumberExtensions
         return value > checkValue - belowAndAboveCheck && value < checkValue + belowAndAboveCheck;
     }
 
-    public static int ToInt(this int? value) {
+    public static int GetValueOrDefault(this int? value) {
         if (value is null) return default;
         return value.Value;
     }
 
-    public static long ToLong(this long? value) {
+    public static long GetValueOrDefault(this long? value) {
         if (value is null) return default;
         return value.Value;
     }

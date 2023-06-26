@@ -12,7 +12,7 @@ public static class ClaimsExtensions
     /// <param name="Model"></param>
     /// <returns></returns>
     /// <exception cref="FailedToConvertException"></exception>
-    public static Dictionary<string, object> AsDictionary(this IEnumerable<Claim> claims) {
+    public static Dictionary<string, object> ToDictionary(this IEnumerable<Claim> claims) {
         var dictionary = new Dictionary<string, object>();
         foreach (var claim in claims) dictionary.TryAdd(claim.Type, claim.Value);
         return dictionary;

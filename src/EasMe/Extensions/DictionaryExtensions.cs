@@ -1,4 +1,6 @@
-﻿namespace EasMe.Extensions;
+﻿using System.Web;
+
+namespace EasMe.Extensions;
 
 public static class DictionaryExtensions
 {
@@ -13,5 +15,12 @@ public static class DictionaryExtensions
         }
 
         return instance;
+    }
+
+    public static string ToQueryString(this IDictionary<string, string> dictionary) {
+        var array = (dictionary.Keys.Select(key => $"{HttpUtility.UrlEncode(key)}={HttpUtility.UrlEncode(dictionary[key])}"))
+            .ToArray();
+        return "?" + string.Join("&", array);
+        
     }
 }

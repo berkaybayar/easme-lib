@@ -5,6 +5,12 @@ namespace EasMe.Extensions;
 
 public static class ListExtensions
 {
+    public static bool AddIfNotExists<T>(this List<T> list, T value) {
+        var exist = list.Any(x => x.Equals(value));
+        if(exist) return false;
+        list.Add(value);
+        return true;
+    }
     public static void ForEach<T>(this IEnumerable<T> list, Action<T> action) {
         foreach (var item in list)
             action(item);
@@ -71,66 +77,6 @@ public static class ListExtensions
 
     public static List<object?> ToObjectList<T>(this List<T> list) {
         return list.Select(x => x as object).ToList() ?? new List<object>();
-    }
-
-    public static T SingleOrThrow<T>(this IEnumerable<T> list, string message = "Item not found") {
-        var item = list.SingleOrDefault();
-        if (item is null)
-            throw new ArgumentNullException(message);
-        return item;
-    }
-
-    public static T SingleOrThrow<T>(this IEnumerable<T> list, Func<T, bool> predicate,
-                                     string message = "Item not found") {
-        var item = list.SingleOrDefault(predicate);
-        if (item is null)
-            throw new ArgumentNullException(message);
-        return item;
-    }
-
-    public static T SingleOrThrow<T>(this IQueryable<T> list, string message = "Item not found") {
-        var item = list.SingleOrDefault();
-        if (item is null)
-            throw new ArgumentNullException(message);
-        return item;
-    }
-
-    public static T SingleOrThrow<T>(this IQueryable<T> list, Func<T, bool> predicate,
-                                     string message = "Item not found") {
-        var item = list.SingleOrDefault(predicate);
-        if (item is null)
-            throw new ArgumentNullException(message);
-        return item;
-    }
-
-    public static T FirstOrThrow<T>(this IEnumerable<T> list, string message = "Item not found") {
-        var item = list.FirstOrDefault();
-        if (item is null)
-            throw new ArgumentNullException(message);
-        return item;
-    }
-
-    public static T FirstOrThrow<T>(this IEnumerable<T> list, Func<T, bool> predicate,
-                                    string message = "Item not found") {
-        var item = list.FirstOrDefault(predicate);
-        if (item is null)
-            throw new ArgumentNullException(message);
-        return item;
-    }
-
-    public static T FirstOrThrow<T>(this IQueryable<T> list, string message = "Item not found") {
-        var item = list.FirstOrDefault();
-        if (item is null)
-            throw new ArgumentNullException(message);
-        return item;
-    }
-
-    public static T FirstOrThrow<T>(this IQueryable<T> list, Func<T, bool> predicate,
-                                    string message = "Item not found") {
-        var item = list.FirstOrDefault(predicate);
-        if (item is null)
-            throw new ArgumentNullException(message);
-        return item;
     }
 
     public static void UpdateAll<T>(this IQueryable<T> list, Action<T> action) {
