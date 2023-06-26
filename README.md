@@ -376,10 +376,41 @@ public enum KnownFolder
 }
 ```
 ### EasEncrypt
-Simple encryption and decryption with AES
+Encryption and decryption with Aes algorithm
+
+#### Startup.cs configuration
 ```csharp
-var encryptor = new EasEncrypt();
+EasEncrypt.SetKey("SuperSecretEncryptionKey");
+
+//Only if you want to use time seeding, see below
+EasEncrypt.UseTimeSeeding(EasEncrypt.Sensitivity.Minutes); 
+
+//Only if debug build
+EasEncrypt.DontUseEncryption();
 ```
+
+#### Usage
+```csharp
+var encryptor = EasEncrypt.Create();
+var encrypted = encryptor.Encrypt("123123"); // encrypted string
+var decrypted = encryptor.Decrypt(encrypted); // 123123
+```
+
+#### Time seeding
+Time seeding creates a salt key based on the time the instance is created.
+You can set the sensitivity of the time seeding when enabling time seeding with EasEncrypt.UseTimeSeeding method.
+If sensitivity set to seconds, the salt key will change every second. Meaning the encrypted key will also changed.
+Created salt key will be stored inside of the instance. You can use same instance to decrypt the encrypted text,
+even after the time has changed. 
+
+**WARNING:** If you want to store the encrypted text in a database and decrypt it later, be aware that the salt key might change and you may not be able to recover the original text.
+
+#### Static seed
+Static seed is used to alter the time seeded salt key. 
+You can set the static seed with EasEncrypt.UseTimeSeeding method.
+This mostly set to project build number so every build will have a different salt key.
+Default value is set to 0, if you have not set it, it will not be used.
+
 ### EasFile
 ### EasGenerate
 ### EasHash

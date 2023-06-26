@@ -27,7 +27,7 @@ public class EasEncrypt
     private static int _seed = 0;
 
     // private static string _oldSaltTest = ""; 
-    public EasEncrypt() {
+    private EasEncrypt() {
         _salt = CreateSalt();
         
         // var oldSalt = _salt.ToHexString();
@@ -37,7 +37,19 @@ public class EasEncrypt
         // }
     }
 
-    public static void SetStaticKey(string key) {
+    private static EasEncrypt _instance;
+
+    /// <summary>
+    /// Returns an instance of EasEncrypt. If time seeding is set to false, it will return the same instance.
+    /// </summary>
+    /// <returns></returns>
+    public static EasEncrypt Create() {
+        if (_useTimeSeeding) return new EasEncrypt();
+        _instance??= new EasEncrypt();
+        return _instance;
+    }
+
+    public static void SetKey(string key) {
         _keyBytes = key.SHA256Hash();
         _ivBytes = new byte[16];
         Array.Copy(_keyBytes, 0, _ivBytes, 0, 16);
