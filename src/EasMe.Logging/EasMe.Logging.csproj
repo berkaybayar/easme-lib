@@ -19,12 +19,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EasMe.Result\EasMe.Result.csproj"/>
-        <ProjectReference Include="..\EasMe\EasMe.csproj"/>
+        <ProjectReference Include="..\EasMe.Result\EasMe.Result.csproj" />
+        <ProjectReference Include="..\EasMe\EasMe.csproj" />
     </ItemGroup>
 
 </Project>

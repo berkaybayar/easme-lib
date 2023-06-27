@@ -712,7 +712,7 @@ public IActionResult AccountSettings(){ /* Your code */}
 ```
 
 ### Authentication with http methods
-#### Program.cs
+#### Add Middleware to Program.cs
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 //Other configurations
@@ -758,7 +758,28 @@ dictionary.Add(EasMeClaimType.EndPointPermissions, string.Join(",",endpointPermi
 var jwtToken = easJwt.GenerateToken(dic, 60); 
 ```
 ## EasMe.Box
+Provides a simple way to create error, warning, information message boxes in .NET Framework 4.8
 
+### Usage
+```csharp
+//Shows message box 
+EasMe.Box.Show("Message");
+
+//Show error message box
+EasMe.Box.Error("Error message");
+
+//Show warning message box
+EasMe.Box.Warning("Warning message");
+
+//Show information message box
+EasMe.Box.Information("Information message");
+
+//Show message box for confirmation and returns true if user clicks "Yes" button
+var result = EasMe.Box.Confirm("Are you sure you want to continute ?");
+
+//Shows message box with Stop icon
+EasMe.Box.Stop("You are not allowed");
+```
 ## EasMe.EntityFrameworkCore
 ### Entity abstracts
 ### Repository abstracts

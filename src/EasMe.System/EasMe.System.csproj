@@ -19,11 +19,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="System.Management" Version="7.0.1"/>
+        <PackageReference Include="System.Management" Version="7.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\EasMe\EasMe.csproj"/>
+        <ProjectReference Include="..\EasMe\EasMe.csproj" />
     </ItemGroup>
 
 </Project>
