@@ -58,7 +58,10 @@ This is a work in progress and will be updated frequently.
 - [EasMe.Result .NET 6](#easmeresult)
   - [Result](#result)
   - [Result with data](#result-with-data)
-  - [Result Enums](#result-enums)
+  - [Converting ResultData to Result](#converting-resultdata-to-result)
+  - [Converting Result to ActionResult](#converting-result-or-resultdata-to-actionresult)
+  - [Mapping ResultData](#mapping-resultdata)
+  - [Result Enums](#result-severity-enum)
 - [EasMe.SharpBuilder .NET 6](#easmesharpbuilder)
   - [Class builder](#easmesharpbuilder)
   - [File builder](#file-builder)
@@ -1212,6 +1215,16 @@ ResultData<User> resultData = Result.Warn("NotFound"); //ResultData<User>
 var result = resultData.ToResult(); //Result
 ```
 
+
+### Converting Result or ResultData to ActionResult
+If result status is success it will return OkObjectResult.
+If result status is error and FailStatusCode is not set it will return BadRequestObjectResult
+```csharp
+ResultData<User> resultData = Result.Warn("NotFound"); //ResultData<User>
+var result = resultData.ToActionResult(); //ActionResult
+var result2 = resultData.ToActionResult(400); //ActionResult with 400 status code
+var result3 = Result.Warn("NotFound").ToActionResult(): //ActionResult
+```
 #### Mapping ResultData
 ```csharp
 var getUserResult = GetUser(1); //ResultData<User>
@@ -1221,15 +1234,6 @@ var user = getUserResult.Map<UserDto>(x => {
         Username = x.Username
     };
 });
-```
-### Converting Result or ResultData to ActionResult
-If result status is success it will return OkObjectResult.
-If result status is error and FailStatusCode is not set it will return BadRequestObjectResult
-```csharp
-ResultData<User> resultData = Result.Warn("NotFound"); //ResultData<User>
-var result = resultData.ToActionResult(); //ActionResult
-var result2 = resultData.ToActionResult(400); //ActionResult with 400 status code
-var result3 = Result.Warn("NotFound").ToActionResult(): //ActionResult
 ```
 ### Result Severity Enum
 ```csharp
