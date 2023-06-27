@@ -21,17 +21,38 @@ namespace EasMe.Authorization;
 ///         <see cref="HttpContext.User" /> claims.
 ///     </example>
 /// </summary>
-public class HasActionPermissionAttribute : ActionFilterAttribute
+public class RequirePermissionAttribute : ActionFilterAttribute
 {
     private readonly string _actionCode;
 
-    public HasActionPermissionAttribute(object actionCode) {
+    /// <summary>
+    /// Constructor for <see cref="RequirePermissionAttribute"/>. Converts given object to string and use it as ActionCode.
+    /// </summary>
+    /// <param name="actionCode"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    public RequirePermissionAttribute(object actionCode) {
         _actionCode = actionCode.ToString() ?? "";
         if (string.IsNullOrEmpty(_actionCode))
             throw new ArgumentNullException(nameof(_actionCode));
     }
-
-    public HasActionPermissionAttribute(string actionCode) {
+    
+    /// <summary>
+    ///   Constructor for <see cref="RequirePermissionAttribute" />. Converts given enum to string and use it as ActionCode.
+    /// </summary>
+    /// <param name="enumActionCode"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    public RequirePermissionAttribute(Enum enumActionCode) {
+        _actionCode = enumActionCode.ToString() ?? "";
+        if (string.IsNullOrEmpty(_actionCode))
+            throw new ArgumentNullException(nameof(_actionCode));
+    }
+    
+    /// <summary>
+    ///  Constructor for <see cref="RequirePermissionAttribute" />. Use given string as ActionCode.
+    /// </summary>
+    /// <param name="actionCode"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    public RequirePermissionAttribute(string actionCode) {
         _actionCode = actionCode;
         if (string.IsNullOrEmpty(_actionCode))
             throw new ArgumentNullException(nameof(_actionCode));

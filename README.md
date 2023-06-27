@@ -41,8 +41,8 @@ This is a work in progress and will be updated frequently.
   - [EasMe.Scheduler](#easscheduler)
 - [EasMe.Authorization .NET 6](#easmeauthorization)
   - [Enums](#authorization-enums)
-  - [Action permission authorization](#haspermissionattribute)
-  - [Http method permission authorization](#httpmethodauthorizationmiddleware)
+  - [Authentication with permissions](#authentication-with-permission)
+  - [Authentication with http methods](#authentication-with-http-methods)
 - [EasMe.Box .NET Framework 4.8](#easmebox)
 - [EasMe.EntityFrameworkCore .NET 6](#easmeentityframeworkcore)
   - [Entity abstracts](#entity-abstracts)
@@ -453,7 +453,7 @@ var decrypted = encryptor.Decrypt(encrypted); // 123123
 #### Time seeding
 Time seeding creates a salt key based on the time the instance is created.
 You can set the sensitivity of the time seeding when enabling time seeding with EasEncrypt.UseTimeSeeding method.
-If sensitivity set to seconds, the salt key will change every second. Meaning the encrypted key will also changed.
+If sensitivity set to seconds, the salt key will change every second. Meaning the encrypted key will also change.
 Created salt key will be stored inside of the instance. You can use same instance to decrypt the encrypted text,
 even after the time has changed. 
 
@@ -666,10 +666,97 @@ EasZip.UnZip(zipFile, "C:\\Users\\John\\Desktop\\Test"); // Unzips zipFile to de
 ```
 
 ## EasMe.Authorization
-### Authorization Enums
-### HasPermissionAttribute
-### HttpMethodAuthorizationMiddleware
+Enhance your AspNetCore authorization with permission based authorization rather than role based.
+There are 2 options with this library. You can set permissions for specific http methods for each user.
+Or you can set role for each endpoint or controller. It is easy to use and manage.
+It is recommended to use a role group and set permissions for each group then assign the role group to a user.
+In login stage get all the permissions and add it to claims. 
 
+**WARNING:** Both of the authorization methods do not check for user Authentication. 
+Meaning you must use built-in [Authorize] attribute to first check if user authentication is required on desired endpoint or controller.
+If you don't do this RequirePermission ActionFilter or HttpMethodAuthorizationMiddleware will not work.
+### Authorization Enums
+```csharp
+public enum HttpMethod
+{
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    HEAD,
+    OPTIONS,
+    PATCH,
+}
+
+var claimType = EasMeClaimType.HttpMethodPermissions; // Claim type for http method permissions
+var claimType2 = EasMeClaimType.EndPointPermissions; // Claim type for endpoint permissions
+```
+### Authentication with permission
+This attribute is used to check if user has permission to access endpoint. 
+This is different from role based authorization because instead of assigning roles to actions and only allowing specific roles.
+With this you can create a role group and easily get the all the permissions for that group.
+Then add that list of permissions to user claims to pre-defined ClaimType (see above).  
+
+#### Controller action
+```csharp
+public enum Permissions
+{
+    AccountSettings,
+    UpdateUser,
+    UpdateUserPassword,
+    //... etc.
+}
+[RequirePermission(Permissions.AccountSettings)] //Action filter that checks if user has permission to access endpoint
+[HttpGet] // or something else does not matter
+public IActionResult AccountSettings(){ /* Your code */}
+```
+
+### Authentication with http methods
+#### Program.cs
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+//Other configurations
+var app = builder.Build();
+//Other configurations
+app.UseMiddleware<HttpMethodAuthorizationMiddleware>();
+```
+### Creating user claims
+Example of creating JWT token with user claims and permissions.
+Use the example if you are using JWT authentication.
+Otherwise change the code to fit your needs.
+This example uses EasJWT library to create JWT token.
+In the example both EndPointPermissions and HttpMethodPermissions are added to claims.
+You can use both at same time. Or you can use only one of them.
+
+
+If using EndPointPermissions:
+Once user is authenticated and tries to access an endpoint RequirePermission attribute will check if user has permission to access endpoint.
+If user does not have permission then 403 Forbidden will be returned.
+
+
+If using HttpMethodPermissions:
+Once user is authenticated and tries to access an endpoint HttpMethodAuthorizationMiddleware checks has permission for HttpMethod.
+
+```csharp
+
+var easJwt = new EasJwt("SecretToken"); // Create EasJWT instance
+var user = new User(); // Get user from database
+var httpMethodPermissions = new List<string>(){
+    HttpMethod.GET.ToString(),
+    HttpMethod.POST.ToString(),
+    //... etc.
+}; // Get permissions from database
+var endpointPermissions = new List<string>(){
+    Permissions.AccountSettings.ToString(),
+    Permissions.UpdateUser.ToString(),
+    Permissions.UpdateUserPassword.ToString(),
+    //... etc.
+}; // Get permissions from database
+var dictionary = user.AsDictionary(); // Convert user to dictionary
+dictionary.Add(EasMeClaimType.HttpMethodPermissions, string.Join(",",httpMethodPermissions)); // Add permissions to dictionary
+dictionary.Add(EasMeClaimType.EndPointPermissions, string.Join(",",endpointPermissions)); // Add permissions to dictionary
+var jwtToken = easJwt.GenerateToken(dic, 60); 
+```
 ## EasMe.Box
 
 ## EasMe.EntityFrameworkCore

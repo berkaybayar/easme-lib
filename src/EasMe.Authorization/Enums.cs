@@ -6,11 +6,9 @@ public enum HttpMethod
     POST,
     PUT,
     DELETE,
-    CONNECT,
     HEAD,
     OPTIONS,
     PATCH,
-    TRACE
 }
 
 // public enum AuthorizationType
@@ -24,14 +22,16 @@ public static class EasMeClaimType
     /// <summary>
     ///     Claim Type for initializing User authorization in order to use <see cref="HttpMethodAuthorizationMiddleware" />.
     ///     <br />
-    ///     Value must contain <see cref="HttpMethod" /> strings merged with ","
+    ///     <br />
+    ///     Value must contain <see cref="HttpMethod" /> strings separated with ","
     /// </summary>
-    public static string HttpMethodPermissions => "EasMe.Authorization::Permissions";
+    public static string HttpMethodPermissions => "EasMe.Authorization::HttpMethodPermissions";
 
     /// <summary>
-    ///     Claim Type for initializing User authorization in order to use <see cref="HasActionPermissionAttribute" />.
+    ///     Claim Type for initializing User authorization in order to use <see cref="RequirePermissionAttribute" />.
     ///     <br />
-    ///     Value must contain <see cref="HttpMethod" /> strings merged with ","
+    ///     <br />
+    ///     Value must contain <see cref="HttpMethod" /> strings separated with ","
     /// </summary>
     public static string EndPointPermissions => "EasMe.Authorization::EndPointPermissions";
 }

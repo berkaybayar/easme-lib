@@ -48,7 +48,6 @@ public class EasEncrypt
         _instance??= new EasEncrypt();
         return _instance;
     }
-
     public static void SetKey(string key) {
         _keyBytes = key.SHA256Hash();
         _ivBytes = new byte[16];
@@ -211,4 +210,6 @@ public class EasEncrypt
         Buffer.BlockCopy(combined, 0, bytes, 0, bytesLength);
         return bytes;
     }
+
+    
 }
