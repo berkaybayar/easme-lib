@@ -85,11 +85,11 @@ public readonly struct Result
 
     #region CREATE METHODS
 
-    public static Result Create(bool isSuccess, ResultSeverity severity, string errCode, List<string> errors, List<ValidationError> validationErrors) {
+    public static Result Create(bool isSuccess, ResultSeverity severity, string errorCode, List<string> errors, List<ValidationError> validationErrors) {
         return new Result {
                               IsSuccess = isSuccess,
                               Severity = severity,
-                              ErrorCode = errCode,
+                              ErrorCode = errorCode,
                               Errors = errors,
                               ExceptionInfo = null,
                               ValidationErrors = validationErrors
@@ -259,6 +259,7 @@ public readonly struct Result
                           };
     }
 
+    
     public static Result Unauthorized() {
         return new Result {
                               ErrorCode = "Unauthorized"
@@ -280,6 +281,31 @@ public readonly struct Result
                           };
     }
 
+    public static Result ValidationError(params ValidationError[] validationErrors) {
+        return new Result {
+                              ValidationErrors = validationErrors.ToList(),
+                              Severity = ResultSeverity.Validation,
+                              IsSuccess = false,
+                              ErrorCode = "ValidationError"
+                          };
+    }
+    public static Result ValidationError(ValidationError validationError) {
+        return new Result {
+                              ValidationErrors = new List<ValidationError> { validationError },
+                              Severity = ResultSeverity.Validation,
+                              IsSuccess = false,
+                              ErrorCode = "ValidationError"
+                          };
+    }
+    public static Result ValidationError(string message, string? property = null, string? errorCode = null) {
+        return new Result {
+                              ValidationErrors = new List<ValidationError> { new ValidationError(message,property,errorCode) },
+                              Severity = ResultSeverity.Validation,
+                              IsSuccess = false,
+                              ErrorCode = "ValidationError"
+                          };
+    }
+    
     public static Result MultipleErrors(List<string> errors, string errorCode = "MultipleErrors", ResultSeverity severity = ResultSeverity.Error) {
         return new Result {
                               ErrorCode = errorCode,

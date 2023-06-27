@@ -34,7 +34,7 @@ This is a work in progress and will be updated frequently.
   - [EasJWT](#easjwt)
   - [EasMail](#easmail)
   - [EasMemoryCache](#easmemorycache)
-  - [EasQL](#eassql)
+  - [EasQL](#easql)
   - [EasReCaptcha](#easrecaptcha)
   - [EasTask](#eastask)
   - [EasZip](#easzip)
@@ -792,7 +792,7 @@ public interface IBaseEntity : IEquatable<BaseEntity>, IEntity
 BaseEntity is a abstract class that implements IBaseEntity and IEquatable. 
 Also has a RegisterDate property on top of Guid property.
 Since Guid and Register date is almost always required for all entities.
-This class can be used to derive from for database entities.
+This class can be used to create database entities that derive from it.
 ```csharp
 public abstract class BaseEntity : IBaseEntity
 {
@@ -1105,10 +1105,145 @@ public WebInfo? WebInfo { get; set; }
 ## EasMe.PostSharp
 
 ## EasMe.Result
-### Result
-### Result with data
-### Result Enums
+EasMe.Result is a simple library for creating result objects. It is a lightweight library with no dependencies.
+It offers a simple way to create result objects with data, error messages, exceptions, validation errors and severity.
 
+#### Why would you use it?
+Throwing exceptions and handling them later is not a good practice.
+Exceptions are not performance friendly and should be used only when absolutely necessary.
+Result objects are a good way to handle errors without throwing any exceptions.
+### Result
+Creating result
+```csharp
+Result.Create(isSuccess: true, 
+              severity: ResultSeverity.Success
+              errorCode: "UserNotExists", 
+              errors: new List<string>(), 
+              validationErrors: new List<ValidationError>());
+              
+//Using error codes
+Result.Success("UserUpdateSuccess");
+///Using ErrorCode as messages
+Result.Success("User updated successfully");
+
+//Various severities
+Result.Warn("UserUpdateWarning");
+Result.Error("UserUpdateWarning");
+Result.Fatal("UserUpdateWarning");
+
+//Built-in errors
+Result.NotFound();
+Result.Unauthorized();
+Result.Forbidden();
+
+//Creating result with multiple errors
+Result.Error("Error",new List<string> { "Error1", "Error2" });
+Result.Error("Error","NotFound","NotValid");
+
+//Converting exceptions to result
+Result.Exception(new Exception("Error"));
+
+//Creating validation errors
+Result.ValidationError(new ValidationError("Username length must be at least 3 characters"))
+Result.ValidationError(
+new ValidationError("Username length must be at least 3 characters"),
+new ValidationError("Password length must be at least 3 characters","Password"),//Password is property name
+new ValidationError("Password must contain at least one number","Password","PasswordIsShort")); //PasswordIsShort is error code
+);
+```
+
+#### Method example
+```csharp
+public Result UpdateUser(User user){
+    //Validate user
+    var isValid = user.Validate();
+    if(!isValid){
+        return Result.ValidationError(user.ValidationErrors);
+    }
+    var isUserNameShort = user.Username.Length < 3;
+    if(isUserNameShort){
+        return Result.ValidationError(new ValidationError("Username length must be at least 3 characters"));
+    }
+    //or
+    if(isUserNameShort){
+        return Result.Warn("Username length must be at least 3 characters");
+    }
+    
+    var dbRowsAffected = _db.Save();
+    if(dbRowsAffected == 0){
+        return Result.Error("Error saving user");
+    }
+    return Result.Success("User updated successfully");
+}
+```
+### Result with data
+ResultData<{T}> is a result object with data property. 
+If data is null result status will be false.
+There is no create methods for ResultData<{T}>. 
+You can create it by using Result.Warn() method for creating failed results.
+And implicit operators are implemented for ResultData<{T}>. 
+So you can return {T} from methods and it will automatically converted to ResultData<{T}>.
+
+If you try to convert a Result.Success() with implicit operator ResultData<{T}> it will throw an exception.
+#### Using ResultData<{T}>
+```csharp
+public ResultData<User> GetUser(int id){
+var exists = _db.Users.Any(x => x.Id == id);
+if(!exists){
+    return Result.Warn("User not found");
+    //or creating with errorCode and errorMessages
+    //in this example we are using errorMessages as parameters to errorCode
+    //later we can create and show error messages based on errorCode in localization file
+    return Result.NotFound("NotFound", "User");
+    //or creating as validation error
+    return Result.ValidationError("User not found", "User", "NotFound");
+}
+var user = _db.Users.FirstOrDefault(x => x.Id == id);
+//User automatically converted to ResultData<User> with data property
+//If use is not null result status will be success
+//And Severity will be information
+//If user is null result status will be error
+//And error code will automatically will be set to NullValue
+return user;
+```
+#### Converting ResultData to Result
+```csharp
+ResultData<User> resultData = Result.Warn("NotFound"); //ResultData<User>
+var result = resultData.ToResult(); //Result
+```
+
+#### Mapping ResultData
+```csharp
+var getUserResult = GetUser(1); //ResultData<User>
+var user = getUserResult.Map<UserDto>(x => {
+    return new UserDto{
+        Id = x.Id,
+        Username = x.Username
+    };
+});
+```
+### Converting Result or ResultData to ActionResult
+If result status is success it will return OkObjectResult.
+If result status is error and FailStatusCode is not set it will return BadRequestObjectResult
+```csharp
+ResultData<User> resultData = Result.Warn("NotFound"); //ResultData<User>
+var result = resultData.ToActionResult(); //ActionResult
+var result2 = resultData.ToActionResult(400); //ActionResult with 400 status code
+var result3 = Result.Warn("NotFound").ToActionResult(): //ActionResult
+```
+### Result Severity Enum
+```csharp
+public enum ResultSeverity
+{
+    None,
+    Info,
+    Validation,
+    Warn,
+    Error,
+    Exception,
+    Fatal
+}
+```
 ## EasMe.SharpBuilder
 ### Class builder
 ### File builder

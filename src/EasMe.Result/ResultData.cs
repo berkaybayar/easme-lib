@@ -59,7 +59,7 @@ public readonly struct ResultData<T>
     public static implicit operator ResultData<T>(T? value) {
         return value is null
                    ? new ResultData<T> {
-                                           ErrorCode = "UnsetError",
+                                           ErrorCode = "NullValue",
                                            ExceptionInfo = null,
                                            Severity = ResultSeverity.Error,
                                            IsSuccess = false
