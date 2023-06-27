@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EasMe.EntityFrameworkCore;
 
 public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
-    where TEntity : class, IEntity, IBaseEntity
+    where TEntity : class, IEntity
     where TContext : DbContext, new()
 {
     private readonly TContext _dbContext;
@@ -75,18 +75,18 @@ public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity>
         return query.Select(select);
     }
 
-    public TResult? GetFirstOrDefaultSelect<TResult>(Expression<Func<TEntity, TResult>> select,
-                                                     Expression<Func<TEntity, bool>>? filter = null,
-                                                     Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-                                                     params string[] includeExpressions) {
-        var query = Table.AsQueryable();
-        foreach (var includeProperty in includeExpressions) query = query.Include(includeProperty);
-
-        if (filter != null) query = query.Where(filter);
-
-        if (orderBy != null) query = orderBy(query);
-        return query.Select(select).FirstOrDefault();
-    }
+    // public TResult? GetFirstOrDefaultSelect<TResult>(Expression<Func<TEntity, TResult>> select,
+    //                                                  Expression<Func<TEntity, bool>>? filter = null,
+    //                                                  Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+    //                                                  params string[] includeExpressions) {
+    //     var query = Table.AsQueryable();
+    //     foreach (var includeProperty in includeExpressions) query = query.Include(includeProperty);
+    //
+    //     if (filter != null) query = query.Where(filter);
+    //
+    //     if (orderBy != null) query = orderBy(query);
+    //     return query.Select(select).FirstOrDefault();
+    // }
 
     public virtual IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
                                            params string[] includeExpressions) {

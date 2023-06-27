@@ -2,8 +2,7 @@
 
 namespace EasMe.EntityFrameworkCore;
 
-public interface IGenericRepository<TEntity>
-    where TEntity : class, IEntity, IBaseEntity
+public interface IGenericRepository<TEntity> where TEntity : class, IEntity
 {
     TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties);
 
@@ -23,7 +22,7 @@ public interface IGenericRepository<TEntity>
 
     IQueryable<TEntity> GetOrdered(
         Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeExpressions);
 
     IQueryable<TEntity> Get(
@@ -34,20 +33,15 @@ public interface IGenericRepository<TEntity>
         int page,
         int pageSize = 15,
         Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeExpressions);
 
     IQueryable<TResult> GetSelect<TResult>(
         Expression<Func<TEntity, TResult>> select,
         Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>>? orderBy = null,
         params string[] includeExpressions);
 
-    TResult? GetFirstOrDefaultSelect<TResult>(
-        Expression<Func<TEntity, TResult>> select,
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions);
 
     TEntity? GetById(object id);
     TEntity? GetById(params object[] id);

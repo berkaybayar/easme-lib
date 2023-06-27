@@ -22,7 +22,6 @@ public abstract class BaseEntity : IBaseEntity
         return Id == other.Id;
     }
 
-
     public static bool operator ==(BaseEntity? left, BaseEntity? right) {
         return left is not null && right is not null && left.Equals(right);
     }

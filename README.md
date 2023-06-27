@@ -49,10 +49,10 @@ This is a work in progress and will be updated frequently.
   - [Repository abstracts](#repository-abstracts)
   - [Generic repository](#generic-repository)
 - [EasMe.Logging .NET 6](#easmelogging)
-  - [EasLog](#easlog)
-  - [EasLogConsole](#easlogconsole)
   - [EasLogFactory](#easlogfactory)
   - [Configuration](#log-configuration)
+  - [EasLog](#easlog)
+  - [EasLogConsole](#easlogconsole)
   - [EasLogReader](#easlogreader)
 - [EasMe.PostSharp .NET 6](#easmepostsharp)
 - [EasMe.Result .NET 6](#easmeresult)
@@ -782,16 +782,325 @@ EasMe.Box.Stop("You are not allowed");
 ```
 ## EasMe.EntityFrameworkCore
 ### Entity abstracts
+IBase entity requires a Guid property and IEquatable implementation.
+```csharp
+public interface IBaseEntity : IEquatable<BaseEntity>, IEntity
+{
+    Guid Id { get; set; }
+}
+```
+BaseEntity is a abstract class that implements IBaseEntity and IEquatable. 
+Also has a RegisterDate property on top of Guid property.
+Since Guid and Register date is almost always required for all entities.
+This class can be used to derive from for database entities.
+```csharp
+public abstract class BaseEntity : IBaseEntity
+{
+    protected BaseEntity(Guid guid) {
+        Id = guid;
+    }
+
+    protected BaseEntity() {}
+
+    public DateTime RegisterDate { get; set; } = DateTime.Now;
+
+    [Key]
+    public Guid Id { get; set; }
+
+    //Also some IEquatable implementation...
+}
+```
+IEntity is a simple interface with no implementation. 
+Only used to mark entities for generic repositories to verify.
+```csharp
+public interface IEntity{}
+```
+
 ### Repository abstracts
+IGenericRepository is a generic interface that requires a class that implements IEntity.
+```csharp
+public interface IGenericRepository<TEntity> where TEntity : class, IEntity
+{
+    TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties);
+
+    List<TEntity> ToList() {
+        return Get().ToList();
+    }
+
+    TEntity? GetFirstOrDefaultOrdered(
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeProperties);
+
+    TEntity? GetLastOrDefaultOrdered(
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeProperties);
+
+    IQueryable<TEntity> GetOrdered(
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeExpressions);
+
+    IQueryable<TEntity> Get(
+        Expression<Func<TEntity, bool>>? filter = null,
+        params string[] includeExpressions);
+
+    IQueryable<TEntity> GetPaging(
+        int page,
+        int pageSize = 15,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeExpressions);
+
+    IQueryable<TResult> GetSelect<TResult>(
+        Expression<Func<TEntity, TResult>> select,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeExpressions);
+
+    TResult? GetFirstOrDefaultSelect<TResult>(
+        Expression<Func<TEntity, TResult>> select,
+        Expression<Func<TEntity, bool>>? filter = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params string[] includeExpressions);
+
+    TEntity? GetById(object id);
+    TEntity? GetById(params object[] id);
+    void Insert(TEntity entity);
+    void InsertRange(IEnumerable<TEntity> entities);
+    void Delete(object id);
+    void Delete(TEntity entityToDelete);
+    void Update(TEntity entityToUpdate);
+    void UpdateRange(IEnumerable<TEntity> entities);
+    void DeleteRange(IEnumerable<TEntity> entities);
+    bool Any(Expression<Func<TEntity, bool>>? filter = null);
+    int Count(Expression<Func<TEntity, bool>>? filter = null);
+}
+```
 ### Generic repository
+GenericRepository class implements IGenericRepository and provides basic CRUD operations.
 
+### Usage
+Define your repositories by deriving from GenericRepository.
+```csharp
+public class UserRepository : GenericRepository<User, AppDbContext>
+{
+    public UserRepository(DbContext context) : base(context) {}
+    
+    public User? GetUserByUserName(string userName) {
+        return GetFirstOrDefault(x => x.UserName == userName);
+    }
+}
+
+```
+If you wish to use a your own repository class instead of GenericRepository but still want to use GenericRepository's methods.
+You can also create your own repository interfaces to go along with it.
+```csharp
+public class UserRepository : IUserRepository
+{
+    private readonly GenericRepository<User, AppDbContext> _genericUserRepository;
+    
+    //Get GenericRepository from dependency injection
+    public UserRepository(GenericRepository<Use, AppDbContextr> genericUserRepository){
+        _genericUserRepository = genericUserRepository;
+    }
+    
+    public User? GetUserByUserName(string userName) {
+        return GetFirstOrDefault(x => x.UserName == userName);
+    }
+}
+```
+
+Using without Injection
+```csharp
+public class UserRepository : IUserRepository
+{
+    private readonly GenericRepository<User> _genericUserRepository;
+    
+    //Get GenericRepository from dependency injection
+    public UserRepository(DbContext context){
+        _genericUserRepository = new GenericRepository<User>(context);
+    }
+    
+    public User? GetUserByUserName(string userName) {
+        return GetFirstOrDefault(x => x.UserName == userName);
+    }
+}
+```
+
+Using it with Services or Managers
+```csharp
+public class UserService : IUserService
+{
+    private readonly IGenericRepository<User> _userRepository;
+    
+    //Get GenericRepository from dependency injection
+    public UserService(IGenericRepository<User> userRepository){
+        _userRepository = userRepository;
+    }
+    
+    public User? GetUserByUserName(string userName) {
+        return _userRepository.GetFirstOrDefault(x => x.UserName == userName);
+    }
+}
+```
+Or
+```csharp
+public class UserService : IUserService
+{
+    private readonly IUserRepository _userRepository;
+    
+    //Get GenericRepository from dependency injection
+    public UserService(IUserRepository userRepository){
+        _userRepository = userRepository;
+    }
+    
+    public User? GetUserByUserName(string userName) {
+        return _userRepository.GetFirstOrDefault(x => x.UserName == userName);
+    }
+}
+```
+
+
+### Dependency Injection example
+Edit your program.cs
+```csharp
+builder.Services.AddScoped<IGenericRepository<User>,GenericRepository<User>>();
+//or you can just add class type
+builder.Services.AddScoped<GenericRepository<User>>();
+```
+You must also add DbContext to services to use GenericRepository class.
 ## EasMe.Logging
-### EasLog
-### EasLogConsole
-### EasLogFactory
-### Log Configuration
-### EasLogReader
+Simple lightweight JSON logger for .NET 6+ applications.
 
+### EasLogFactory
+Creating logger 
+```csharp
+private static readonly IEasLog _logger = EasLogFactory.CreateLogger();
+```
+
+
+
+### EasLog
+Using logger
+```csharp
+_logger.Trace("Hello World!");
+_logger.Debug("Hello World!");
+_logger.Info("Hello World!");
+_logger.Warn("Hello World!");
+_logger.Error("Hello World!");
+_logger.Fatal("Hello World!");
+_logger.Fatal(new Exception(),"Hello World!");
+_logger.Exception(new Exception(),"Hello World!");
+```
+Accessing static logger
+```csharp
+EasLogFactory.StaticLogger.Trace("Hello World!");
+```
+
+On application exit
+```csharp
+EasLog.Flush();
+```
+### EasLogConsole
+Static class for logging to console with colors
+```csharp
+EasLogConsole.Log("Hello World!",ConsoleColor.White);
+EasLogConsole.Log(EasLogLevel.Warning,"Hello World!");
+EasLogConsole.Trace("Hello World!");
+EasLogConsole.Debug("Hello World!");
+EasLogConsole.Info("Hello World!");
+EasLogConsole.Warn("Hello World!");
+EasLogConsole.Error("Hello World!");
+EasLogConsole.Fatal("Hello World!");
+```
+
+### Log Configuration
+Configure logger in startup
+```csharp
+EasLogFactory.Configure(x =>
+{
+    x.WebInfoLogging = true;
+    x.MinimumLogLevel = EasLogLevel.Information;
+    x.LogFileName = "Log_";
+    x.ExceptionHideSensitiveInfo = false;
+});
+```
+Configuration class properties
+```csharp
+/// <summary>
+///     Gets or sets a value indicating whether to log the request body.
+/// </summary>
+public EasLogLevel MinimumLogLevel { get; set; } = EasLogLevel.Information;
+
+/// <summary>
+///     Set logs folder path to be stored. Defualt is current directory, adds folder named Logs.
+/// </summary>
+public string LogFolderPath { get; set; } = ".\\Logs";
+
+/// <summary>
+///     Formatting DateTime in log file name, default value is "MM.dd.yyyy".
+///     This is added after LogFileName variable.
+/// </summary>
+public string DateFormatString { get; set; } = "MM.dd.yyyy";
+
+/// <summary>
+///     Set log file name, default value is "Log_".
+///     This will what value to write before datetime.
+/// </summary>
+public string LogFileName { get; set; } = "Log_";
+
+/// <summary>
+///     Set log file extension default value is ".json".
+/// </summary>
+public string LogFileExtension { get; set; } = ".json";
+
+/// <summary>
+///     Whether to enable logging to console, writes json logs in console as well as saving logs to a file.
+///     Default value is true.
+/// </summary>
+public bool ConsoleAppender { get; set; } = true;
+
+/// <summary>
+///     Whether to log incoming web request information to log file, default value is false.
+///     If your app running on server this should be set to true.
+///     Also you need to Configure EasMe.HttpContext in order to log request data.
+/// </summary>
+public bool WebInfoLogging { get; set; } = false;
+
+
+/// <summary>
+///     Whether to hide sensitive information from being logged.
+///     Default value is true.
+///     If set to false, it will log sensitive information.
+///     Otherwise it will only print the exception message.
+/// </summary>
+public bool ExceptionHideSensitiveInfo { get; set; } = true;
+
+public bool SeparateLogLevelToFolder { get; set; } = false;
+```
+
+### EasLogReader
+Reading logs from log files
+```csharp
+//Create instance
+var logReader = new EasLogReader();
+//Read all logs
+var logs = logReader.GetLogs(); //IEnumerable<LogModel>
+```
+
+LogModel properties
+```csharp
+public DateTime Date { get; } = DateTime.Now;
+public EasLogLevel Level { get; set; }
+public string? Source { get; set; }
+public object? Log { get; set; }
+[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+public CleanException? Exception { get; set; }
+[JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+public WebInfo? WebInfo { get; set; }
+```
 
 ## EasMe.PostSharp
 
