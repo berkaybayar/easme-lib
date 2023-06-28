@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "EasMe.PostSharp/1.0.0": {
         "dependencies": {
-          "EasMe.Logging": "3.1.0",
+          "EasMe.Logging": "3.2.0",
           "FluentValidation": "11.5.2",
           "PostSharp": "2023.0.5"
         },
@@ -1618,7 +1618,7 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "EasMe/3.5.0": {
+      "EasMe/4.0.0": {
         "dependencies": {
           "FluentValidation": "11.5.2",
           "Microsoft.AspNetCore.Authentication": "2.2.0",
@@ -1638,19 +1638,19 @@
           "EasMe.dll": {}
         }
       },
-      "EasMe.Logging/3.1.0": {
+      "EasMe.Logging/3.2.0": {
         "dependencies": {
-          "EasMe": "3.5.0",
-          "EasMe.Result": "2.0.2",
+          "EasMe": "4.0.0",
+          "EasMe.Result": "2.1.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "EasMe.Logging.dll": {}
         }
       },
-      "EasMe.Result/2.0.2": {
+      "EasMe.Result/2.1.0": {
         "dependencies": {
-          "EasMe": "3.5.0",
+          "EasMe": "4.0.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
@@ -2757,17 +2757,17 @@
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
-    "EasMe/3.5.0": {
+    "EasMe/4.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EasMe.Logging/3.1.0": {
+    "EasMe.Logging/3.2.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "EasMe.Result/2.0.2": {
+    "EasMe.Result/2.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

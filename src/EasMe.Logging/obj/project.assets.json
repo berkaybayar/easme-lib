@@ -2734,7 +2734,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "EasMe/3.5.0": {
+      "EasMe/4.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -2759,11 +2759,11 @@
           "bin/placeholder/EasMe.dll": {}
         }
       },
-      "EasMe.Result/2.0.2": {
+      "EasMe.Result/2.1.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "EasMe": "3.5.0",
+          "EasMe": "4.0.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
@@ -8055,12 +8055,12 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "EasMe/3.5.0": {
+    "EasMe/4.0.0": {
       "type": "project",
       "path": "../EasMe/EasMe.csproj",
       "msbuildProject": "../EasMe/EasMe.csproj"
     },
-    "EasMe.Result/2.0.2": {
+    "EasMe.Result/2.1.0": {
       "type": "project",
       "path": "../EasMe.Result/EasMe.Result.csproj",
       "msbuildProject": "../EasMe.Result/EasMe.Result.csproj"
@@ -8068,8 +8068,8 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "EasMe >= 3.5.0",
-      "EasMe.Result >= 2.0.2",
+      "EasMe >= 4.0.0",
+      "EasMe.Result >= 2.1.0",
       "Newtonsoft.Json >= 13.0.3"
     ]
   },
@@ -8078,7 +8078,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "3.1.0",
+    "version": "3.2.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.Logging\\EasMe.Logging.csproj",
       "projectName": "EasMe.Logging",

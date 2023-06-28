@@ -9,7 +9,7 @@
       "EasMe.Test/3.5": {
         "dependencies": {
           "Ardalis.Result": "7.1.0",
-          "EasMe": "3.5.0",
+          "EasMe": "4.0.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
@@ -1613,7 +1613,7 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "EasMe/3.5.0": {
+      "EasMe/4.0.0": {
         "dependencies": {
           "FluentValidation": "11.5.2",
           "Microsoft.AspNetCore.Authentication": "2.2.0",
@@ -2726,7 +2726,7 @@
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
-    "EasMe/3.5.0": {
+    "EasMe/4.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

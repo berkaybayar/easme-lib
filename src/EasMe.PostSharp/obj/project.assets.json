@@ -2763,7 +2763,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "EasMe/3.5.0": {
+      "EasMe/4.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -2788,12 +2788,12 @@
           "bin/placeholder/EasMe.dll": {}
         }
       },
-      "EasMe.Logging/3.1.0": {
+      "EasMe.Logging/3.2.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "EasMe": "3.5.0",
-          "EasMe.Result": "2.0.2",
+          "EasMe": "4.0.0",
+          "EasMe.Result": "2.1.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
@@ -2803,11 +2803,11 @@
           "bin/placeholder/EasMe.Logging.dll": {}
         }
       },
-      "EasMe.Result/2.0.2": {
+      "EasMe.Result/2.1.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "EasMe": "3.5.0",
+          "EasMe": "4.0.0",
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
@@ -8170,17 +8170,17 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "EasMe/3.5.0": {
+    "EasMe/4.0.0": {
       "type": "project",
       "path": "../EasMe/EasMe.csproj",
       "msbuildProject": "../EasMe/EasMe.csproj"
     },
-    "EasMe.Logging/3.1.0": {
+    "EasMe.Logging/3.2.0": {
       "type": "project",
       "path": "../EasMe.Logging/EasMe.Logging.csproj",
       "msbuildProject": "../EasMe.Logging/EasMe.Logging.csproj"
     },
-    "EasMe.Result/2.0.2": {
+    "EasMe.Result/2.1.0": {
       "type": "project",
       "path": "../EasMe.Result/EasMe.Result.csproj",
       "msbuildProject": "../EasMe.Result/EasMe.Result.csproj"
@@ -8188,7 +8188,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "EasMe.Logging >= 3.1.0",
+      "EasMe.Logging >= 3.2.0",
       "FluentValidation >= 11.5.2",
       "PostSharp >= 2023.0.5"
     ]
@@ -8198,7 +8198,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "3.5.0",
+    "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.PostSharp\\EasMe.PostSharp.csproj",
       "projectName": "EasMe.PostSharp",

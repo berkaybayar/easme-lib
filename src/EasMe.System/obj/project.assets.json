@@ -2775,7 +2775,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "EasMe/3.5.0": {
+      "EasMe/4.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -8137,7 +8137,7 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "EasMe/3.5.0": {
+    "EasMe/4.0.0": {
       "type": "project",
       "path": "../EasMe/EasMe.csproj",
       "msbuildProject": "../EasMe/EasMe.csproj"
@@ -8145,7 +8145,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "EasMe >= 3.5.0",
+      "EasMe >= 4.0.0",
       "System.Management >= 7.0.1"
     ]
   },
@@ -8154,7 +8154,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "2.0.0",
+    "version": "2.1.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\kkass\\source\\repos\\#MyProjects\\easme-lib\\src\\EasMe.System\\EasMe.System.csproj",
       "projectName": "EasMe.System",

@@ -7,6 +7,7 @@ namespace EasMe.Extensions;
 
 public static class XmlExtensions
 {
+    // public static 
     /// <summary>
     ///     Deserializes given XElement to T type object.
     /// </summary>

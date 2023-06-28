@@ -2743,7 +2743,7 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "EasMe/3.5.0": {
+      "EasMe/4.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -8064,7 +8064,7 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "EasMe/3.5.0": {
+    "EasMe/4.0.0": {
       "type": "project",
       "path": "../EasMe/EasMe.csproj",
       "msbuildProject": "../EasMe/EasMe.csproj"
@@ -8073,7 +8073,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Ardalis.Result >= 7.1.0",
-      "EasMe >= 3.5.0",
+      "EasMe >= 4.0.0",
       "Newtonsoft.Json >= 13.0.3"
     ]
   },
