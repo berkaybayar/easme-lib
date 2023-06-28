@@ -1,4 +1,6 @@
-﻿namespace EasMe;
+﻿using System.Runtime.CompilerServices;
+
+namespace EasMe;
 
 /// <summary>
 ///     Simple thread-safe variable cache helper.

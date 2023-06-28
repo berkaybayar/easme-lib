@@ -2,6 +2,16 @@
 
 public static class ExtensionMethods
 {
+    public static MergedResult Merge(this IEnumerable<Result> results,
+                                     ResultSeverity severity = ResultSeverity.Error) {
+        var isAllSuccess = results.All(x => x.IsSuccess);
+        var errors = results.Where(x => x.IsFailure).SelectMany(x => x.Errors).ToList();
+        var errorCodes = results.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToList();
+        var exceptions = results.Where(x => x.IsFailure).Select(x => x.ExceptionInfo).ToList() ?? new();
+        var validationErrors = results.Where(x => x.IsFailure).SelectMany(x => x.ValidationErrors).ToList();
+        return new MergedResult(isAllSuccess, severity, errorCodes, errors, validationErrors, exceptions);
+
+    }
     /// <summary>
     ///     Merges multiple Results into one.
     ///     Result will be Success if all results are Success

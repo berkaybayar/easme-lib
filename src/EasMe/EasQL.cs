@@ -57,27 +57,27 @@ public class EasQL
         return await Task.Run(() => { return ExecScalar(_connection, cmd, timeout); });
     }
 
-    /// <summary>
-    ///     Executes a SQL query to backup database to the given folder path.
-    /// </summary>
-    /// <param name="backupPath"></param>
-    /// <param name="timeout"></param>
-    public void BackupDatabase(string backupPath, string databaseName, int timeout = 0) {
-        BackupDatabase(_connection,databaseName, backupPath, timeout);
-    }
+    // /// <summary>
+    // ///     Executes a SQL query to backup database to the given folder path.
+    // /// </summary>
+    // /// <param name="backupPath"></param>
+    // /// <param name="timeout"></param>
+    // public void BackupDatabase(string backupPath, string databaseName, int timeout = 0) {
+    //     BackupDatabase(_connection,databaseName, backupPath, timeout);
+    // }
 
-    public async Task BackupDatabaseAsync(string backupPath, string databaseName,int timeout = 0) {
-        await Task.Run(() => { BackupDatabase(backupPath, databaseName, timeout); });
-    }
-
-    /// <summary>
-    ///     Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but
-    ///     still you should backup first.
-    /// </summary>
-    /// <param name="databaseLogName"></param>
-    public void ShrinkDatabase(string dbName,string databaseLogName = "_log") {
-        ShrinkDatabase(_connection, dbName, databaseLogName);
-    }
+    // public async Task BackupDatabaseAsync(string backupPath, string databaseName,int timeout = 0) {
+    //     await Task.Run(() => { BackupDatabase(backupPath, databaseName, timeout); });
+    // }
+    //
+    // /// <summary>
+    // ///     Executes a SQL query to shrink your database and SQL log data. This action will not lose you any real data but
+    // ///     still you should backup first.
+    // /// </summary>
+    // /// <param name="databaseLogName"></param>
+    // public void ShrinkDatabase(string dbName,string databaseLogName = "_log") {
+    //     ShrinkDatabase(_connection, dbName, databaseLogName);
+    // }
 
     // public async Task ShrinkDatabaseAsync(string databaseName, string databaseLogName = "_log") {
     //     await Task.Run(() => { ShrinkDatabase(databaseName, databaseLogName); });
@@ -181,37 +181,37 @@ public class EasQL
         return await Task.Run(() => ExecScalar(connection, cmd, timeout));
     }
 
-    public static void BackupDatabase(string connection, string databaseName ,string backupFolderPath, int timeout = 0) {
-        if (!Directory.Exists(backupFolderPath)) Directory.CreateDirectory(backupFolderPath);
-        var bkPath = backupFolderPath + "\\bk_" + databaseName + ".bak";
-        var query = $@"BACKUP DATABASE {databaseName} TO DISK = '{bkPath}'";
-        var cmd = new SqlCommand(query);
-        ExecNonQuery(connection, cmd, timeout);
-    }
+    // public static void BackupDatabase(string connection, string databaseName ,string backupFolderPath, int timeout = 0) {
+    //     if (!Directory.Exists(backupFolderPath)) Directory.CreateDirectory(backupFolderPath);
+    //     var bkPath = backupFolderPath + "\\bk_" + databaseName + ".bak";
+    //     var query = $@"BACKUP DATABASE {databaseName} TO DISK = '{bkPath}'";
+    //     var cmd = new SqlCommand(query);
+    //     ExecNonQuery(connection, cmd, timeout);
+    // }
+    //
+    // public static async Task BackupDatabaseAsync(string connection, string databaseName,string backupFolderPath, int timeout = 0) {
+    //     await Task.Run(() => { BackupDatabase(connection, databaseName, backupFolderPath, timeout); });
+    // }
 
-    public static async Task BackupDatabaseAsync(string connection, string databaseName,string backupFolderPath, int timeout = 0) {
-        await Task.Run(() => { BackupDatabase(connection, databaseName, backupFolderPath, timeout); });
-    }
-
-    public static void ShrinkDatabase(string connection, string databaseName,string databaseLogName = "_log") {
-        if (databaseLogName == "_log") databaseLogName = databaseName + databaseLogName;
-        var query = $@"BEGIN
-                                ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
-                                DBCC SHRINKFILE(N'{databaseLogName}', 1)
-                                ALTER DATABASE [{databaseName}] SET RECOVERY FULL WITH NO_WAIT
-                            END
-                            BEGIN
-                                ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
-                                DBCC SHRINKFILE(N'{databaseName}', 1)
-                                ALTER DATABASE [{databaseName}] SET RECOVERY FULL WITH NO_WAIT
-                            END";
-        var cmd = new SqlCommand(query);
-        ExecNonQuery(connection, cmd);
-    }
-
-    public static async Task ShrinkDatabaseAsync(string connection, string databaseLogName = "_log") {
-        await Task.Run(() => { ShrinkDatabase(connection, databaseLogName); });
-    }
+    // public static void ShrinkDatabase(string connection, string databaseName,string databaseLogName = "_log") {
+    //     if (databaseLogName == "_log") databaseLogName = databaseName + databaseLogName;
+    //     var query = $@"BEGIN
+    //                             ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
+    //                             DBCC SHRINKFILE(N'{databaseLogName}', 1)
+    //                             ALTER DATABASE [{databaseName}] SET RECOVERY FULL WITH NO_WAIT
+    //                         END
+    //                         BEGIN
+    //                             ALTER DATABASE [{databaseName}] SET RECOVERY SIMPLE WITH NO_WAIT
+    //                             DBCC SHRINKFILE(N'{databaseName}', 1)
+    //                             ALTER DATABASE [{databaseName}] SET RECOVERY FULL WITH NO_WAIT
+    //                         END";
+    //     var cmd = new SqlCommand(query);
+    //     ExecNonQuery(connection, cmd);
+    // }
+    //
+    // public static async Task ShrinkDatabaseAsync(string connection, string databaseLogName = "_log") {
+    //     await Task.Run(() => { ShrinkDatabase(connection, databaseLogName); });
+    // }
 
 
     public static void TruncateTable(string connection, string tableName) {

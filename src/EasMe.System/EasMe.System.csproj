@@ -5,8 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
-        <Version>2.0.0</Version>
-        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <Version>2.1.0</Version>
+        <AssemblyVersion>2.1.0</AssemblyVersion>
         <Title>EasMe.System</Title>
         <Authors>bberka</Authors>
         <Description>Windows System information helper for creating device id or retreiving device information. Only windows supported.</Description>

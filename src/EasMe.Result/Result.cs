@@ -127,7 +127,9 @@ public readonly struct Result
         return new Result {
                               ErrorCode = "Exception",
                               IsSuccess = false,
-                              Severity = ResultSeverity.Exception
+                              Severity = ResultSeverity.Exception,
+                              ExceptionInfo = new CleanException(exception)
+
                           };
     }
 
@@ -136,16 +138,19 @@ public readonly struct Result
                               ErrorCode = "Exception",
                               Errors = errors,
                               IsSuccess = false,
-                              Severity = ResultSeverity.Exception
+                              Severity = ResultSeverity.Exception,
+                              ExceptionInfo = new CleanException(exception)
+
                           };
     }
 
-    public static Result Exception(Exception exception, params string[] errors) {
+    public static Result Exception(Exception exception, string errorCode,params string[] errors) {
         return new Result {
-                              ErrorCode = "Exception",
+                              ErrorCode = errorCode,
                               Errors = errors.ToList(),
                               IsSuccess = false,
-                              Severity = ResultSeverity.Exception
+                              Severity = ResultSeverity.Exception,
+                              ExceptionInfo = new CleanException(exception)
                           };
     }
 

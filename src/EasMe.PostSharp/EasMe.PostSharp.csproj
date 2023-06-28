@@ -4,7 +4,16 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Version>3.5</Version>
+        <Version>1.0.0</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>EasMe.PostSharp</Title>
+        <Authors>bberka</Authors>
+        <Copyright>https://raw.githubusercontent.com/bberka/EasMe/master/LICENSE.txt</Copyright>
+        <PackageProjectUrl>https://github.com/bberka/EasMe</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/bberka/EasMe/master/LICENSE.txt</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/bberka/EasMe</RepositoryUrl>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
 
 
     </PropertyGroup>

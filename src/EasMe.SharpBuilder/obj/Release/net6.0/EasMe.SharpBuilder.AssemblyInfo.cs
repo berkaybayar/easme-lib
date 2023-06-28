@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("C# code and class builder, for creating models from various type of files. Excel," +
     " text, json files.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.1.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.1.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("EasMe.SharpBuilder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EasMe.SharpBuilder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.1.0")]

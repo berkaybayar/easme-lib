@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using log4net.Util.TypeConverters;
 
 namespace EasMe.Extensions;
 
@@ -30,7 +29,7 @@ public static class ClaimsExtensions
         var claimsIdentity = new ClaimsIdentity();
         var props = model?.GetType().GetProperties();
         if (props is null || props.Length == 0)
-            throw new ConversionNotSupportedException("Failed to convert model to claims identity. Model has no properties");
+            throw new Exception("Failed to convert model to claims identity. Model has no properties");
         foreach (var property in props) {
             var value = property.GetValue(model);
             if (value is null) continue;
@@ -53,7 +52,7 @@ public static class ClaimsExtensions
         var claimsIdentity = new ClaimsIdentity();
         var props = model?.GetType().GetProperties();
         if (props is null || props.Length == 0)
-            throw new ConversionNotSupportedException("Failed to convert model to claims identity. Model has no properties");
+            throw new Exception("Failed to convert model to claims identity. Model has no properties");
         foreach (var property in props)
             try {
                 var value = property.GetValue(model);

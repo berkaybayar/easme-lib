@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("AspNetCore authorization extender library. Easily manage and apply required roles" +
     " for desired endpoints.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("2.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("EasMe.Authorization")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EasMe.Authorization")]
 [assembly: System.Reflection.AssemblyVersionAttribute("2.0.0")]

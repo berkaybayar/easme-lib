@@ -18,7 +18,6 @@ C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\obj\Release\net
 C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\Azure.Core.dll
 C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\Azure.Identity.dll
 C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\FluentValidation.dll
-C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\log4net.dll
 C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Authentication.dll
 C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Authentication.Abstractions.dll
 C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\Microsoft.AspNetCore.Authentication.Core.dll

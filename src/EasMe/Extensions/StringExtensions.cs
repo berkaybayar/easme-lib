@@ -5,7 +5,7 @@ using System.Security;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using log4net.Util.TypeConverters;
+// using log4net.Util.TypeConverters;
 using Newtonsoft.Json.Linq;
 
 namespace EasMe.Extensions;
@@ -144,7 +144,7 @@ public static class StringExtensions
             return default;
         }
         catch (Exception ex) {
-            throw new ConversionNotSupportedException("StringConversion failed type: " + typeof(T), ex);
+            throw new Exception("StringConversion failed type: " + typeof(T), ex);
         }
     }
 

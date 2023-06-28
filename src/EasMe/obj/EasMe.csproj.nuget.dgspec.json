@@ -76,6 +76,10 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "System.Configuration.ConfigurationManager": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
             "System.Data.HashFunction.xxHash": {
               "target": "Package",
               "version": "[2.0.0, )"
@@ -91,10 +95,6 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.31.0, )"
-            },
-            "log4net": {
-              "target": "Package",
-              "version": "[2.0.15, )"
             }
           },
           "imports": [

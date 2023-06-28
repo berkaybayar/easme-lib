@@ -77,7 +77,6 @@ You can install the package via Nuget:
 ```
 Install-Package EasMe
 Install-Package EasMe.Authorization
-Install-Package EasMe.Box
 Install-Package EasMe.EntityFrameworkCore
 Install-Package EasMe.Logging
 Install-Package EasMe.PostSharp
@@ -456,7 +455,7 @@ var decrypted = encryptor.Decrypt(encrypted); // 123123
 #### Time seeding
 Time seeding creates a salt key based on the time the instance is created.
 You can set the sensitivity of the time seeding when enabling time seeding with EasEncrypt.UseTimeSeeding method.
-If sensitivity set to seconds, the salt key will change every second. Meaning the encrypted key will also change.
+If sensitivity set to seconds, the salt key will change every second. Meaning the encrypted text will also change.
 Created salt key will be stored inside of the instance. You can use same instance to decrypt the encrypted text,
 even after the time has changed. 
 
@@ -1209,7 +1208,7 @@ var user = _db.Users.FirstOrDefault(x => x.Id == id);
 //And error code will automatically will be set to NullValue
 return user;
 ```
-#### Converting ResultData to Result
+### Converting ResultData to Result
 ```csharp
 ResultData<User> resultData = Result.Warn("NotFound"); //ResultData<User>
 var result = resultData.ToResult(); //Result
@@ -1225,7 +1224,7 @@ var result = resultData.ToActionResult(); //ActionResult
 var result2 = resultData.ToActionResult(400); //ActionResult with 400 status code
 var result3 = Result.Warn("NotFound").ToActionResult(): //ActionResult
 ```
-#### Mapping ResultData
+### Mapping ResultData
 ```csharp
 var getUserResult = GetUser(1); //ResultData<User>
 var user = getUserResult.Map<UserDto>(x => {

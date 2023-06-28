@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace EasMe.Models;
 
-public class CleanException
+public sealed class CleanException
 {
     public CleanException() {
     }
@@ -41,4 +41,8 @@ public class CleanException
 
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     public IDictionary? Data { get; set; }
+
+    public Exception ToException() {
+        return new Exception(Message, InnerException?.ToException());
+    }
 }
