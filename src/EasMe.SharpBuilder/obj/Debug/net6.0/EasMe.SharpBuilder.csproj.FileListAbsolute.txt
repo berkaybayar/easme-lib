@@ -1,0 +1,17 @@
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\bin\Debug\net6.0\EasMe.SharpBuilder.deps.json
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\bin\Debug\net6.0\EasMe.SharpBuilder.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\bin\Debug\net6.0\EasMe.SharpBuilder.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\bin\Debug\net6.0\EasMe.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\bin\Debug\net6.0\EasMe.Result.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\bin\Debug\net6.0\EasMe.Result.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\bin\Debug\net6.0\EasMe.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\EasMe.SharpBuilder.csproj.AssemblyReference.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\EasMe.SharpBuilder.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\EasMe.SharpBuilder.AssemblyInfoInputs.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\EasMe.SharpBuilder.AssemblyInfo.cs
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\EasMe.SharpBuilder.csproj.CoreCompileInputs.cache
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\EasMe.SharpBuilder.csproj.CopyComplete
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\EasMe.SharpBuilder.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\refint\EasMe.SharpBuilder.dll
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\EasMe.SharpBuilder.pdb
+C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.SharpBuilder\obj\Debug\net6.0\ref\EasMe.SharpBuilder.dll

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>EasMe.Result</id>
+    <version>2.0.2</version>
+    <title>EasMe.Result</title>
+    <authors>bberka</authors>
+    <projectUrl>https://github.com/bberka/EasMe</projectUrl>
+    <description>Simple Lightweight Result type provider library with various helpul methods.</description>
+    <repository url="https://github.com/bberka/EasMe" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="EasMe" version="3.5.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\kkass\source\build\easme\Release\net6.0\EasMe.Result.dll" target="lib\net6.0\EasMe.Result.dll" />
+  </files>
+</package>

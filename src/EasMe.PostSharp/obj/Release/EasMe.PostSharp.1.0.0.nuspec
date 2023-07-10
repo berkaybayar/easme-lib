@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>EasMe.PostSharp</id>
+    <version>1.0.0</version>
+    <title>EasMe.PostSharp</title>
+    <authors>bberka</authors>
+    <projectUrl>https://github.com/bberka/EasMe</projectUrl>
+    <description>Package Description</description>
+    <copyright>https://raw.githubusercontent.com/bberka/EasMe/master/LICENSE.txt</copyright>
+    <repository url="https://github.com/bberka/EasMe" />
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="EasMe.Logging" version="3.2.0" exclude="Build,Analyzers" />
+        <dependency id="FluentValidation" version="11.5.2" exclude="Build,Analyzers" />
+        <dependency id="PostSharp" version="2023.0.5" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.PostSharp\bin\Release\net6.0\EasMe.PostSharp.dll" target="lib\net6.0\EasMe.PostSharp.dll" />
+  </files>
+</package>
