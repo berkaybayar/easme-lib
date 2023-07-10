@@ -1,4 +1,0 @@
-C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\publish\win-x86\EasMe.Test.pdb
-C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\publish\win-x86\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\publish\win-x86\EasMe.pdb
-C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Test\bin\Release\net6.0\publish\win-x86\EasMe.Test.exe

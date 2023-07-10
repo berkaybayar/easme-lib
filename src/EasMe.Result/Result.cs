@@ -114,6 +114,14 @@ public readonly struct Result
                           };
     }
 
+    public static Result Success(string errorCode, params string[] errors) {
+      return new Result {
+        ErrorCode = errorCode,
+        Errors = errors.ToList(),
+        IsSuccess = true,
+        Severity = ResultSeverity.Info
+      };
+    }
     public static Result Success(List<string> errors) {
         return new Result {
                               ErrorCode = "Success",
