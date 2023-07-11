@@ -17,7 +17,7 @@ public class EasMemoryCache
       return _instance;
     }
   }
-  private readonly Timer Timer ;
+  private readonly Timer Timer;
   private static void ClearLoop(object? sender = null) {
     var items = CacheDictionary.Where(x => x.Value.ExpireDateTime < DateTime.Now)
       .Select(x => x.Key)
