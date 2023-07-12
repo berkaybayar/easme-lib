@@ -5,8 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
-        <Version>3.0.0</Version>
-        <AssemblyVersion>3.0.0</AssemblyVersion>
+        <Version>3.0.1</Version>
+        <AssemblyVersion>3.0.1</AssemblyVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>EasMe.EntityFrameworkCore</Title>
         <Description>EntityFrameworkCore extender library with built in repository pattern interfaces and more.</Description>
@@ -14,12 +14,26 @@
         <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
         <Authors>bberka</Authors>
+        <FileVersion>3.0.1</FileVersion>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
 
 
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+      <None Include="..\..\LICENSE.txt">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+      <None Include="..\..\README.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
     </ItemGroup>
 
 </Project>

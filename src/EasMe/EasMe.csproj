@@ -9,8 +9,8 @@
         <Configurations>Debug;Release</Configurations>
         <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
         <Platforms>AnyCPU</Platforms>
-        <Version>4.0.1</Version>
-        <AssemblyVersion>4.0.1</AssemblyVersion>
+        <Version>4.0.2</Version>
+        <AssemblyVersion>4.0.2</AssemblyVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>EasMe</Title>
         <Authors>bberka</Authors>
@@ -18,7 +18,7 @@
         <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
-        <FileVersion>4.0.1</FileVersion>
+        <FileVersion>4.0.2</FileVersion>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 

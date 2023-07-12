@@ -5,8 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
-        <Version>3.2.0</Version>
-        <AssemblyVersion>3.2.0</AssemblyVersion>
+        <Version>3.3.1</Version>
+        <AssemblyVersion>3.3.1</AssemblyVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>EasMe.Logging</Title>
         <Description>Simple lightweight Json logging library.</Description>
@@ -14,9 +14,23 @@
         <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
         <Authors>bberka</Authors>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <FileVersion>3.2.1</FileVersion>
 
 
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Include="..\..\LICENSE.txt">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+      <None Include="..\..\README.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
