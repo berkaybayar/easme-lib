@@ -1,5 +1,4 @@
 ﻿using EasMe.Extensions;
-using EasMe.Logging;
 using Microsoft.Extensions.Logging;
 using PostSharp.Aspects;
 using PostSharp.Extensibility;

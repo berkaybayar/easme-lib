@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
+﻿
 namespace EasMe.Extensions;
 
 public static class BoolExtensions
