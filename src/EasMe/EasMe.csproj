@@ -9,8 +9,8 @@
         <Configurations>Debug;Release</Configurations>
         <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
         <Platforms>AnyCPU</Platforms>
-        <Version>4.0.2</Version>
-        <AssemblyVersion>4.0.2</AssemblyVersion>
+        <Version>4.0.3</Version>
+        <AssemblyVersion>4.0.3</AssemblyVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>EasMe</Title>
         <Authors>bberka</Authors>
