@@ -10,7 +10,7 @@ namespace EasMe.Result;
 ///     <br />
 ///     In order to avoid using <see cref="Exception" />'s and the performance downside from it.
 /// </summary>
-public class ResultData<T>
+public sealed class ResultData<T>
 {
    internal ResultData()
    {
@@ -41,8 +41,8 @@ public class ResultData<T>
    public ResultLevel Level { get; init; } = ResultLevel.Info;
    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
    public T? Data { get; init; } = default;
-   protected internal CleanException? _exceptionInfo = null;
-   public CleanException? GetException() => _exceptionInfo;
+   internal CleanException? ExceptionInfo = null;
+   public CleanException? GetException() => ExceptionInfo;
 
 
    #region OPERATORS
@@ -52,7 +52,7 @@ public class ResultData<T>
       ErrorCode = res.ErrorCode,
       Level = res.Level,
       IsSuccess = res.IsSuccess,
-      _exceptionInfo = res.GetException(),
+      ExceptionInfo = res.GetException(),
       Data = default,
       Params = res.Params,
       HttpStatusCode = res.HttpStatusCode
@@ -63,7 +63,7 @@ public class ResultData<T>
          ErrorCode = res.ErrorCode,
          Level = res.Level,
          IsSuccess = res.IsSuccess,
-         _exceptionInfo = res._exceptionInfo,
+         ExceptionInfo = res.ExceptionInfo,
          Params = res.Params,
          HttpStatusCode = res.HttpStatusCode
       };
@@ -77,7 +77,7 @@ public class ResultData<T>
             ErrorCode = "NullValue",
             Level = ResultLevel.Error,
             IsSuccess = false,
-            _exceptionInfo = null,
+            ExceptionInfo = null,
             Data = value,
          }
          : new ResultData<T>
@@ -87,7 +87,7 @@ public class ResultData<T>
             Data = value,
             IsSuccess = true,
             HttpStatusCode = 200,
-            _exceptionInfo = null,
+            ExceptionInfo = null,
          };
    }
 
@@ -107,7 +107,7 @@ public class ResultData<T>
       IsSuccess = IsSuccess,
       Params = Params,
       HttpStatusCode = HttpStatusCode,
-      _exceptionInfo = _exceptionInfo
+      ExceptionInfo = ExceptionInfo
    };
 
    /// <summary>
@@ -125,7 +125,7 @@ public class ResultData<T>
          Level = Level,
          Data = res,
          IsSuccess = IsSuccess,
-         _exceptionInfo = _exceptionInfo,
+         ExceptionInfo = ExceptionInfo,
          Params = Params,
          HttpStatusCode = HttpStatusCode
       };

@@ -4,21 +4,16 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
         <Version>2.1.1</Version>
         <AssemblyVersion>2.1.1</AssemblyVersion>
         <Title>EasMe.System</Title>
         <Authors>bberka</Authors>
         <Description>Windows System information helper for creating device id or retreiving device information. Only windows supported.</Description>
         <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-        <FileVersion>2.1.1</FileVersion>
-
-
     </PropertyGroup>
 
     <ItemGroup>

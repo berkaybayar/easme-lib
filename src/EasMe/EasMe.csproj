@@ -4,10 +4,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Configurations>Debug;Release</Configurations>
-        <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
         <Platforms>AnyCPU</Platforms>
         <Version>4.0.3</Version>
         <AssemblyVersion>4.0.3</AssemblyVersion>
@@ -16,21 +14,24 @@
         <Authors>bberka</Authors>
         <Description>CSharp extender library. Contains various extension methods, helper classes.</Description>
         <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
         <FileVersion>4.0.2</FileVersion>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+
     </PropertyGroup>
 
-    <ItemGroup>
-        <EmbeddedResource Remove="Licenses\**" />
-    </ItemGroup>
+
 
     <ItemGroup>
-      <None Include="..\..\README.md">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
+        <None Include="..\..\LICENSE.txt">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="..\..\README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
     </ItemGroup>
 
     <ItemGroup>

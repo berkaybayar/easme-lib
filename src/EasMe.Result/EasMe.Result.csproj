@@ -4,21 +4,16 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <BaseOutputPath>C:\Users\kkass\source\build\easme</BaseOutputPath>
-        <Version>2.1.1</Version>
-        <AssemblyVersion>2.1.1</AssemblyVersion>
-        <FileVersion>2.1.1</FileVersion>
+        <Version>3.0.0</Version>
+        <AssemblyVersion>3.0.0</AssemblyVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>EasMe.Result</Title>
         <Authors>bberka</Authors>
         <Description>Simple Lightweight Result type provider library with various helpul methods.</Description>
         <PackageProjectUrl>https://github.com/bberka/EasMe</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/bberka/EasMe/blob/master/LICENSE.txt</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/bberka/EasMe</RepositoryUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-
-
     </PropertyGroup>
 
     <ItemGroup>

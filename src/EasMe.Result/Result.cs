@@ -40,9 +40,9 @@ public sealed class Result
    public Param[] Params { get; init; } = Array.Empty<Param>();
    public ResultLevel Level { get; init; } = ResultLevel.Info;
 
-   protected internal CleanException? _exceptionInfo = null;
+   internal CleanException? ExceptionInfo = null;
 
-   public CleanException? GetException() => _exceptionInfo;
+   public CleanException? GetException() => ExceptionInfo;
 
 
 
@@ -61,7 +61,7 @@ public sealed class Result
          Level = Level,
          Data = data,
          IsSuccess = IsSuccess,
-         _exceptionInfo = _exceptionInfo
+         ExceptionInfo = ExceptionInfo
       };
 
    /// <summary>
@@ -91,7 +91,7 @@ public sealed class Result
          IsSuccess = true,
          Level = ResultLevel.Success,
          ErrorCode = "None",
-         _exceptionInfo = null
+         ExceptionInfo = null
       };
    public static Result Success(string errorCode) =>
       new()
@@ -99,7 +99,7 @@ public sealed class Result
          ErrorCode = errorCode,
          IsSuccess = true,
          Level = ResultLevel.Success,
-         _exceptionInfo = null,
+         ExceptionInfo = null,
          HttpStatusCode = 200
       };
 
@@ -123,7 +123,7 @@ public sealed class Result
          ErrorCode = errorCode,
          IsSuccess = false,
          Level = ResultLevel.Exception,
-         _exceptionInfo = new CleanException(exception),
+         ExceptionInfo = new CleanException(exception),
          HttpStatusCode = 500,
       };
    public static Result Exception(Exception exception, string errorCode, Param[] @params) =>
@@ -133,7 +133,7 @@ public sealed class Result
          Params = @params,
          IsSuccess = false,
          Level = ResultLevel.Exception,
-         _exceptionInfo = new CleanException(exception),
+         ExceptionInfo = new CleanException(exception),
          HttpStatusCode = 500,
       };
 
@@ -147,7 +147,7 @@ public sealed class Result
          ErrorCode = errorCode,
          IsSuccess = false,
          Level = ResultLevel.Warn,
-         _exceptionInfo = null,
+         ExceptionInfo = null,
          HttpStatusCode = 400,
       };
    public static Result Warn(string errorCode, Param[] @params) =>
@@ -156,7 +156,7 @@ public sealed class Result
          ErrorCode = errorCode,
          IsSuccess = false,
          Level = ResultLevel.Warn,
-         _exceptionInfo = null,
+         ExceptionInfo = null,
          HttpStatusCode = 400,
          Params = @params
       };
@@ -172,7 +172,7 @@ public sealed class Result
          IsSuccess = false,
          Level = ResultLevel.Fatal,
          HttpStatusCode = 500,
-         _exceptionInfo = new CleanException(exception),
+         ExceptionInfo = new CleanException(exception),
       };
    public static Result Fatal(Exception exception, string errorCode, Param[] @params) =>
       new()
@@ -181,7 +181,7 @@ public sealed class Result
          IsSuccess = false,
          Level = ResultLevel.Fatal,
          HttpStatusCode = 500,
-         _exceptionInfo = new CleanException(exception),
+         ExceptionInfo = new CleanException(exception),
          Params = @params
       };
    public static Result Fatal(string errorCode) =>
@@ -191,7 +191,7 @@ public sealed class Result
          IsSuccess = false,
          Level = ResultLevel.Fatal,
          HttpStatusCode = 500,
-         _exceptionInfo = null
+         ExceptionInfo = null
       };
 
    public static Result Fatal(string errorCode, Param[] @params) =>
@@ -201,7 +201,7 @@ public sealed class Result
          IsSuccess = false,
          Level = ResultLevel.Fatal,
          HttpStatusCode = 500,
-         _exceptionInfo = null,
+         ExceptionInfo = null,
          Params = @params
       };
 
@@ -217,7 +217,7 @@ public sealed class Result
          Level = ResultLevel.Error,
          HttpStatusCode = 400,
          Params = @params,
-         _exceptionInfo = null
+         ExceptionInfo = null
       };
    public static Result Error(string errorCode) =>
       new()
@@ -226,7 +226,7 @@ public sealed class Result
          IsSuccess = false,
          Level = ResultLevel.Error,
          HttpStatusCode = 400,
-         _exceptionInfo = null
+         ExceptionInfo = null
       };
 
    #endregion
@@ -241,7 +241,7 @@ public sealed class Result
       new()
       {
          ErrorCode = "NotFound",
-         _exceptionInfo = null,
+         ExceptionInfo = null,
          HttpStatusCode = 404,
          Level = ResultLevel.Error,
          IsSuccess = false,
@@ -255,7 +255,7 @@ public sealed class Result
       new()
       {
          ErrorCode = "Unauthorized",
-         _exceptionInfo = null,
+         ExceptionInfo = null,
          Level = ResultLevel.Error,
          IsSuccess = false,
          HttpStatusCode = 401
@@ -268,7 +268,7 @@ public sealed class Result
       new()
       {
          ErrorCode = "Forbidden",
-         _exceptionInfo = null,
+         ExceptionInfo = null,
          HttpStatusCode = 403,
          Level = ResultLevel.Error,
          IsSuccess = false,
@@ -300,7 +300,7 @@ public sealed class Result
          ErrorCode = errorCode,
          IsSuccess = false,
          Level = level,
-         _exceptionInfo = null,
+         ExceptionInfo = null,
          HttpStatusCode = httpStatusCode,
          Params = locParams
       };
