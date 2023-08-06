@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = EasMe.Logging
-build_property.ProjectDir = C:\Users\kkass\source\repos\#MyProjects\easme-lib\src\EasMe.Logging\
+build_property.ProjectDir = C:\Users\kkass\source\repos\easme-lib\src\EasMe.Logging\

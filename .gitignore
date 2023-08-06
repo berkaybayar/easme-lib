@@ -2,7 +2,11 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/EasMe.Core/bin/Release/net6.0
-/EasMe.Core/obj
-/EasMe/bin/Release/net6.0
-/bin
+/src/EasMe/bin
+/src/EasMe/obj
+/src/EasMe.Box/bin
+/src/EasMe.Box/obj
+bin
+obj
+log
+logs

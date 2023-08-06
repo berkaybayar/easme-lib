@@ -1146,10 +1146,7 @@ public enum ResultSeverity
     Fatal
 }
 ```
-## EasMe.SharpBuilder
-### Class builder
-### File builder
-### Property builder
+
 
 ## EasMe.System
 ### Getting device information
