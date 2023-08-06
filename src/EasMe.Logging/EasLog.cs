@@ -32,53 +32,68 @@ public class EasLog : IEasLog
     public static IReadOnlyCollection<Exception> Exceptions => _exceptions;
 
     public void LogResult(Result.Result result) {
-        var easLogLevel = result.Severity.ToEasLogLevel();
+        var easLogLevel = result.Level.ToEasLogLevel();
         if (!easLogLevel.IsLoggable()) return;
-        if (result.Errors.Count > 0) {
-            WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}",
-                     $"Errors:{string.Join(",", result.Errors)}");
+        var exception = result.GetException()?.ToException();
+        if (result.Params.Length > 0) {
+            var paramString = string.Join(",", result.Params.Select(x => $"{x.Key}:{x.Value}"));
+            WriteLog(_LogSource, easLogLevel, 
+                exception,
+                $"ErrorCode:{result.ErrorCode}",
+                     $"Errors:{paramString}");
             return;
         }
 
-        WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}");
+        WriteLog(_LogSource, easLogLevel, exception, $"ErrorCode:{result.ErrorCode}");
     }
 
     public void LogResult<T>(ResultData<T> result) {
-        var easLogLevel = result.Severity.ToEasLogLevel();
+        var easLogLevel = result.Level.ToEasLogLevel();
         if (!easLogLevel.IsLoggable()) return;
-        if (result.Errors.Count > 0) {
-            WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}",
-                     $"Data:{result.Data.ToJsonString()}",
-                     $"Errors:{string.Join(",", result.Errors)}");
+        var exception = result.GetException()?.ToException();
+        if (result.Params.Length > 0) {
+            var paramString = string.Join(",", result.Params.Select(x => $"{x.Key}:{x.Value}"));
+            WriteLog(_LogSource, easLogLevel, exception, $"ErrorCode:{result.ErrorCode}",
+                     $"Errors:{paramString}",
+                     $"Data:{result.Data?.ToJsonString()}");
             return;
         }
+        
+        WriteLog(_LogSource, easLogLevel, exception, 
+            $"ErrorCode:{result.ErrorCode}",
+            $"Data:{result.Data?.ToJsonString()}");
+      
 
-        WriteLog(_LogSource, easLogLevel, null, $"ErrorCode:{result.ErrorCode}", $"Data:{result.Data.ToJsonString()}");
     }
 
     public void LogResult(Result.Result result, object message) {
-        var easLogLevel = result.Severity.ToEasLogLevel();
+        var easLogLevel = result.Level.ToEasLogLevel();
         if (!easLogLevel.IsLoggable()) return;
-        if (result.Errors?.Count > 0) {
-            WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
-                     $"Errors:{string.Join(",", result.Errors)}");
+        var exception = result.GetException()?.ToException();
+        if (result.Params?.Length > 0) {
+            var paramString = string.Join(",", result.Params.Select(x => $"{x.Key}:{x.Value}"));
+            WriteLog(_LogSource, easLogLevel, exception, 
+                $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
+                     $"Errors:{paramString}");
             return;
         }
 
-        WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}");
+        WriteLog(_LogSource, easLogLevel, exception, $"Message:{message}", $"ErrorCode:{result.ErrorCode}");
     }
 
     public void LogResult<T>(ResultData<T> result, object message) {
-        var easLogLevel = result.Severity.ToEasLogLevel();
+        var easLogLevel = result.Level.ToEasLogLevel();
         if (!easLogLevel.IsLoggable()) return;
-        if (result.Errors.Count > 0) {
-            WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
-                     $"Errors:{string.Join(",", result.Errors)}", $"Data:{result.Data.ToJsonString()}");
+        var exception = result.GetException()?.ToException();
+        if (result.Params.Length > 0) {
+            var paramString = string.Join(",", result.Params.Select(x => $"{x.Key}:{x.Value}"));
+            WriteLog(_LogSource, easLogLevel, exception, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
+                     $"Errors:{paramString}", $"Data:{result.Data?.ToJsonString()}");
             return;
         }
 
-        WriteLog(_LogSource, easLogLevel, null, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
-                 $"Data:{result.Data.ToJsonString()}");
+        WriteLog(_LogSource, easLogLevel, exception, $"Message:{message}", $"ErrorCode:{result.ErrorCode}",
+                 $"Data:{result.Data?.ToJsonString()}");
     }
 
 

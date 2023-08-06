@@ -1,6 +1,6 @@
-﻿using EasMe.Models;
+﻿using System.Text.Json.Serialization;
+using EasMe.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace EasMe.Result;
 
@@ -9,316 +9,334 @@ namespace EasMe.Result;
 ///     <br />
 ///     In order to avoid using <see cref="Exception" />'s and the performance downside from it.
 /// </summary>
-public readonly struct Result
+public sealed class Result
 {
-    public Result() {
-    }
+   internal Result()
+   {
+   }
 
-    /// <summary>
-    ///     Indicates success status of <see cref="Result" />.
-    /// </summary>
-    public bool IsSuccess { get; init; } = false;
+   [Newtonsoft.Json.JsonIgnore]
+   [JsonIgnore]
+   public int HttpStatusCode { get; init; }
+   /// <summary>
+   ///     Indicates success status of <see cref="Result" />.
+   /// </summary>
+   public bool IsSuccess { get; init; } = false;
 
-    /// <summary>
-    ///     Indicates fail status of <see cref="Result" />.
-    /// </summary>
-    public bool IsFailure => !IsSuccess;
+   /// <summary>
+   ///     Indicates fail status of <see cref="Result" />.
+   /// </summary>
+   public bool IsFailure => !IsSuccess;
 
-    public string ErrorCode { get; init; } = "None";
-    public List<string> Errors { get; init; } = new();
-    public List<ValidationError> ValidationErrors { get; init; } = new();
-    public ResultSeverity Severity { get; init; } = ResultSeverity.None;
+   /// <summary>
+   /// Error code that indicates error type. This is used for localization.
+   /// It is not recommended to use this for full messages.
+   /// </summary>
+   public string ErrorCode { get; init; } = "None";
 
-    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public CleanException? ExceptionInfo { get; init; } = null;
+   /// <summary>
+   /// Localization parameter list for localization. 
+   /// </summary>
+   public Param[] Params { get; init; } = Array.Empty<Param>();
+   public ResultLevel Level { get; init; } = ResultLevel.Info;
 
-    #region OPERATORS
+   protected internal CleanException? _exceptionInfo = null;
 
-    public static implicit operator Result(bool value) {
-        return !value ? Error("UnsetError") : Success("Success");
-    }
-
-    public static implicit operator bool(Result value) {
-        return value.IsSuccess;
-    }
-
-
-    public static implicit operator ActionResult(Result result) {
-        return result.ToActionResult();
-    }
-
-    #endregion
-
-    #region CONVERTERS
-
-    public ResultData<T> ToResultData<T>(T? data = default) {
-        return new ResultData<T> {
-                                     ErrorCode = ErrorCode,
-                                     Severity = Severity,
-                                     Data = data,
-                                     IsSuccess = IsSuccess,
-                                     ExceptionInfo = ExceptionInfo
-                                 };
-    }
-
-    /// <summary>
-    ///     Converts <see cref="Result" /> to <see cref="IActionResult" />. If result is failure, returns
-    ///     <see cref="BadRequestObjectResult" />. If result is success, returns <see cref="OkObjectResult" />.
-    /// </summary>
-    /// <returns></returns>
-    public ActionResult ToActionResult() {
-        return IsSuccess ? new OkObjectResult(this) : new BadRequestObjectResult(this);
-    }
-
-    /// <summary>
-    ///     Converts <see cref="Result" /> to <see cref="IActionResult" />. If result is failure, returns
-    ///     <see cref="ObjectResult" /> with <paramref name="failStatusCode" />. If result is success, returns
-    ///     <see cref="OkObjectResult" />.
-    /// </summary>
-    /// <param name="failStatusCode"></param>
-    /// <returns></returns>
-    public ActionResult ToActionResult(int failStatusCode) {
-        return IsSuccess ? new OkObjectResult(this) : new ObjectResult(this) { StatusCode = failStatusCode };
-    }
-
-    #endregion
-
-    #region CREATE METHODS
-
-    public static Result Create(bool isSuccess, ResultSeverity severity, string errorCode, List<string> errors, List<ValidationError> validationErrors) {
-        return new Result {
-                              IsSuccess = isSuccess,
-                              Severity = severity,
-                              ErrorCode = errorCode,
-                              Errors = errors,
-                              ExceptionInfo = null,
-                              ValidationErrors = validationErrors
-                          };
-    }
-
-    public static Result Success(string errorCode) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              IsSuccess = true,
-                              Severity = ResultSeverity.Info,
-                              ExceptionInfo = null
-                          };
-    }
-
-    public static Result Success(string errorCode, List<string> errors) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors,
-                              IsSuccess = true,
-                              Severity = ResultSeverity.Info
-                          };
-    }
-
-    public static Result Success(List<string> errors) {
-        return new Result {
-                              ErrorCode = "Success",
-                              Errors = errors,
-                              IsSuccess = true,
-                              Severity = ResultSeverity.Info
-                          };
-    }
-
-    public static Result Exception(Exception exception) {
-        return new Result {
-                              ErrorCode = "Exception",
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Exception,
-                              ExceptionInfo = new CleanException(exception)
-
-                          };
-    }
-
-    public static Result Exception(Exception exception, List<string> errors) {
-        return new Result {
-                              ErrorCode = "Exception",
-                              Errors = errors,
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Exception,
-                              ExceptionInfo = new CleanException(exception)
-
-                          };
-    }
-
-    public static Result Exception(Exception exception, string errorCode,params string[] errors) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors.ToList(),
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Exception,
-                              ExceptionInfo = new CleanException(exception)
-                          };
-    }
+   public CleanException? GetException() => _exceptionInfo;
 
 
-    public static Result Warn(string errorCode) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Warn
-                          };
-    }
 
-    public static Result Warn<T>(T errorEnum) where T : Enum {
-        return new Result {
-                              ErrorCode = errorEnum.ToString(),
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Warn
-                          };
-    }
+   #region OPERATORS
+   public static implicit operator bool(Result value) => value.IsSuccess;
+   public static implicit operator ActionResult(Result result) => result.ToActionResult();
 
-    public static Result Warn(string errorCode, List<string> errors) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors,
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Warn
-                          };
-    }
+   #endregion
 
-    public static Result Warn(string errorCode, params string[] errors) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors.ToList(),
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Warn
-                          };
-    }
+   #region CONVERTERS
 
-    public static Result Fatal(string errorCode) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Fatal
-                          };
-    }
+   public ResultData<T> ToResultData<T>(T? data = default) =>
+      new()
+      {
+         ErrorCode = ErrorCode,
+         Level = Level,
+         Data = data,
+         IsSuccess = IsSuccess,
+         _exceptionInfo = _exceptionInfo
+      };
 
-    public static Result Fatal<T>(T errorEnum) where T : Enum {
-        return new Result {
-                              ErrorCode = errorEnum.ToString(),
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Fatal
-                          };
-    }
+   /// <summary>
+   ///     Converts <see cref="Result" /> to <see cref="IActionResult" />. If result is failure, returns
+   ///     <see cref="BadRequestObjectResult" />. If result is success, returns <see cref="OkObjectResult" />.
+   /// </summary>
+   /// <returns></returns>
+   public  ActionResult ToActionResult()
+   {
+      var objResult = new ObjectResult(this)
+      {
+         StatusCode = HttpStatusCode
+      };
+      return objResult;
+      // return IsSuccess ? new OkObjectResult(this) : objResult;
+   }
 
-    public static Result Fatal(string errorCode, List<string> errors) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors,
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Fatal
-                          };
-    }
-
-    public static Result Fatal(string errorCode, params string[] errors) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors.ToList(),
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Fatal
-                          };
-    }
+   #endregion
 
 
-    public static Result Error(string errorCode, List<string> errors) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors,
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Error
-                          };
-    }
+   #region CREATE_METHODS:SUCCESS
 
-    public static Result Error(string errorCode) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Error
-                          };
-    }
+   public static ResultData<T> SuccessData<T>(T data) =>
+      new()
+      {
+         Data = data,
+         IsSuccess = true,
+         Level = ResultLevel.Success,
+         ErrorCode = "None",
+         _exceptionInfo = null
+      };
+   public static Result Success(string errorCode) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = true,
+         Level = ResultLevel.Success,
+         _exceptionInfo = null,
+         HttpStatusCode = 200
+      };
 
-    public static Result Error(string errorCode, params string[] errors) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors.ToList(),
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Error
-                          };
-    }
+   public static Result Success(string errorCode, Param[] @params) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         Params = @params,
+         IsSuccess = true,
+         Level = ResultLevel.Info,
+         HttpStatusCode = 200
+      };
 
-    public static Result Error<T>(T errorEnum) where T : Enum {
-        return new Result {
-                              ErrorCode = errorEnum.ToString(),
-                              IsSuccess = false,
-                              Severity = ResultSeverity.Error
-                          };
-    }
+   #endregion
 
-    public static Result NotFound() {
-        return new Result {
-                              ErrorCode = "NotFound"
-                          };
-    }
+   #region CREATE_METHODS:EXCEPTION
 
-    
-    public static Result Unauthorized() {
-        return new Result {
-                              ErrorCode = "Unauthorized"
-                          };
-    }
+   public static Result Exception(Exception exception, string errorCode = "Exception") =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Exception,
+         _exceptionInfo = new CleanException(exception),
+         HttpStatusCode = 500,
+      };
+   public static Result Exception(Exception exception, string errorCode, Param[] @params) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         Params = @params,
+         IsSuccess = false,
+         Level = ResultLevel.Exception,
+         _exceptionInfo = new CleanException(exception),
+         HttpStatusCode = 500,
+      };
 
-    public static Result Forbidden() {
-        return new Result {
-                              ErrorCode = "Forbidden"
-                          };
-    }
+   #endregion
 
-    public static Result ValidationError(List<ValidationError> validationErrors) {
-        return new Result {
-                              ValidationErrors = validationErrors,
-                              Severity = ResultSeverity.Validation,
-                              IsSuccess = false,
-                              ErrorCode = "ValidationError"
-                          };
-    }
+   #region CREATE_METHODS:WARN
 
-    public static Result ValidationError(params ValidationError[] validationErrors) {
-        return new Result {
-                              ValidationErrors = validationErrors.ToList(),
-                              Severity = ResultSeverity.Validation,
-                              IsSuccess = false,
-                              ErrorCode = "ValidationError"
-                          };
-    }
-    public static Result ValidationError(ValidationError validationError) {
-        return new Result {
-                              ValidationErrors = new List<ValidationError> { validationError },
-                              Severity = ResultSeverity.Validation,
-                              IsSuccess = false,
-                              ErrorCode = "ValidationError"
-                          };
-    }
-    public static Result ValidationError(string message, string? property = null, string? errorCode = null) {
-        return new Result {
-                              ValidationErrors = new List<ValidationError> { new ValidationError(message,property,errorCode) },
-                              Severity = ResultSeverity.Validation,
-                              IsSuccess = false,
-                              ErrorCode = "ValidationError"
-                          };
-    }
-    
-    public static Result MultipleErrors(List<string> errors, string errorCode = "MultipleErrors", ResultSeverity severity = ResultSeverity.Error) {
-        return new Result {
-                              ErrorCode = errorCode,
-                              Errors = errors,
-                              IsSuccess = false,
-                              Severity = severity
-                          };
-    }
+   public static Result Warn(string errorCode) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Warn,
+         _exceptionInfo = null,
+         HttpStatusCode = 400,
+      };
+   public static Result Warn(string errorCode, Param[] @params) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Warn,
+         _exceptionInfo = null,
+         HttpStatusCode = 400,
+         Params = @params
+      };
 
-    #endregion
+   #endregion
+
+   #region CREATE_METHODS:FATAL
+
+   public static Result Fatal(Exception exception, string errorCode) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Fatal,
+         HttpStatusCode = 500,
+         _exceptionInfo = new CleanException(exception),
+      };
+   public static Result Fatal(Exception exception, string errorCode, Param[] @params) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Fatal,
+         HttpStatusCode = 500,
+         _exceptionInfo = new CleanException(exception),
+         Params = @params
+      };
+   public static Result Fatal(string errorCode) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Fatal,
+         HttpStatusCode = 500,
+         _exceptionInfo = null
+      };
+
+   public static Result Fatal(string errorCode, Param[] @params) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Fatal,
+         HttpStatusCode = 500,
+         _exceptionInfo = null,
+         Params = @params
+      };
+
+   #endregion
+
+   #region CREATE_METHODS:ERROR
+
+   public static Result Error(string errorCode, Param[] @params) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Error,
+         HttpStatusCode = 400,
+         Params = @params,
+         _exceptionInfo = null
+      };
+   public static Result Error(string errorCode) =>
+      new()
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = ResultLevel.Error,
+         HttpStatusCode = 400,
+         _exceptionInfo = null
+      };
+
+   #endregion
+
+   #region CREATE_METHODS:BUILT_IN
+
+   /// <summary>
+   /// Creates <see cref="Result"/> object with <see cref="ResultLevel.Error"/> level and <see cref="HttpStatusCode"/> 404.
+   /// </summary>
+   /// <returns></returns>
+   public static Result NotFound() =>
+      new()
+      {
+         ErrorCode = "NotFound",
+         _exceptionInfo = null,
+         HttpStatusCode = 404,
+         Level = ResultLevel.Error,
+         IsSuccess = false,
+      };
+
+   /// <summary>
+   /// Creates <see cref="Result"/> object with <see cref="ResultLevel.Error"/> level and <see cref="HttpStatusCode"/> 401.
+   /// </summary>
+   /// <returns></returns>
+   public static Result Unauthorized() =>
+      new()
+      {
+         ErrorCode = "Unauthorized",
+         _exceptionInfo = null,
+         Level = ResultLevel.Error,
+         IsSuccess = false,
+         HttpStatusCode = 401
+      };
+   /// <summary>
+   /// Creates <see cref="Result"/> object with <see cref="ResultLevel.Error"/> level and <see cref="HttpStatusCode"/> 403.      
+   /// </summary>
+   /// <returns></returns>
+   public static Result Forbidden() =>
+      new()
+      {
+         ErrorCode = "Forbidden",
+         _exceptionInfo = null,
+         HttpStatusCode = 403,
+         Level = ResultLevel.Error,
+         IsSuccess = false,
+      };
+
+   #endregion
+
+   #region CREATE_METHODS:VALIDATION
+
+   /// <summary>
+   /// Initializes <see cref="Result"/> object with multiple errors at once.
+   ///
+   /// Multiple errors stored in Param array and user-friendly data can be received through <see cref="GetParamValues"/> method or you can loop through Param array.
+   /// </summary>
+   /// <param name="params"></param>
+   /// <param name="errorCode"></param>
+   /// <param name="level"></param>
+   /// <param name="httpStatusCode"></param>
+   /// <returns></returns>
+   public static Result MultipleErrors(
+      string[] @params,
+      string errorCode = "MultipleErrors",
+      ResultLevel level = ResultLevel.Error,
+      int httpStatusCode = 400)
+   {
+      var locParams = @params.Select(x => new Param("error", x)).ToArray();
+      return new Result
+      {
+         ErrorCode = errorCode,
+         IsSuccess = false,
+         Level = level,
+         _exceptionInfo = null,
+         HttpStatusCode = httpStatusCode,
+         Params = locParams
+      };
+   }
+
+   #endregion
+
+   #region OTHERS
+   /// <summary>
+   /// Gets param values from <see cref="Params"/> property.
+   /// </summary>
+   /// <returns></returns>
+   public List<object> GetParamValues()
+   {
+      return Params?.Select(x => x.Value).ToList() ?? new List<object>();
+   }
+   
+   /// <summary>
+   /// Gets severity ui class text for UI.
+   /// </summary>
+   /// <returns></returns>
+   /// <exception cref="ArgumentOutOfRangeException"></exception>
+   public string GetLevelForUI()
+   {
+      return Level switch
+      {
+         ResultLevel.Info => "info",
+         ResultLevel.Warn => "warn",
+         ResultLevel.Error => "danger",
+         ResultLevel.Fatal => "danger",
+         ResultLevel.Exception => "danger",
+         _ => throw new ArgumentOutOfRangeException()
+      };
+   }
+   
+
+   #endregion
+   
 }

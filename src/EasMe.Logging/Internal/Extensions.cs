@@ -4,12 +4,12 @@ namespace EasMe.Logging.Internal;
 
 public static class Extensions
 {
-    public static EasLogLevel ToEasLogLevel(this ResultSeverity resultSeverity) {
-        return resultSeverity switch {
-                   ResultSeverity.Info => EasLogLevel.Information,
-                   ResultSeverity.Warn => EasLogLevel.Warning,
-                   ResultSeverity.Error => EasLogLevel.Error,
-                   ResultSeverity.Fatal => EasLogLevel.Fatal,
+    public static EasLogLevel ToEasLogLevel(this ResultLevel resultLevel) {
+        return resultLevel switch {
+                   ResultLevel.Info => EasLogLevel.Information,
+                   ResultLevel.Warn => EasLogLevel.Warning,
+                   ResultLevel.Error => EasLogLevel.Error,
+                   ResultLevel.Fatal => EasLogLevel.Fatal,
                    _ => EasLogLevel.Off
                };
     }
