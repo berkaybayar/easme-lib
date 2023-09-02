@@ -1,9 +1,11 @@
 # Result
+
 A readonly struct to implement Result
 
 You can also check [Ardalis.Result](https://github.com/ardalis/Result)
 
 ## Definition
+
 ```c#
 //ReturnValue indicating where exactly method is ended
 //It is used to replace Exception StackTrace 
@@ -31,7 +33,9 @@ public string[] Errors { get; init; }
 //If it is Success this is set to INFO
 public ResultSeverity Severity { get; init; }
 ```
+
 ## Static Methods to create Result
+
 ```c#
 public static Result Success();
 public static Result Success(string operationName);
@@ -41,6 +45,7 @@ public static Result Fatal(ushort rv, object errorCode, params string[] errors);
 ```
 
 ## Usage
+
 ```c#
 var exampleSuccessResult = Result.Success("Auth.Login");
 var exampleWarnResult = Result.Warn(1,"Auth.Login","User is deleted");
@@ -49,15 +54,19 @@ var exampleFatalResult = Result.Fatal(100,"DbInternalError");
 ```
 
 # ResultData<{T}>
+
 A readonly struct to implement IResultData<{T}>
 
 ## Definition
+
 Inherits from IResult and addition to that implements nullable Data property
+
 ```c#
 T? Data { get; init; }
 ```
 
 ## Static Methods to create ResultData<{T}>
+
 ```c#
 public static ResultData<T> Success(T data);
 public static ResultData<T> Success(T data,string operationName);
@@ -65,7 +74,9 @@ public static ResultData<T> Warn(ushort rv, object errorCode, params string[] er
 public static ResultData<T> Error(ushort rv, object errorCode, params string[] errors);
 public static ResultData<T> Fatal(ushort rv, object errorCode, params string[] errors);
 ```
+
 ## Other Methods in ResultData<{T}>
+
 ```c#
 //Rv value sometimes can be a security leak so when returning Result from API its better to send it without Rv (Return Value)
 public ResultData<T> WithoutRv();
@@ -79,6 +90,7 @@ public Result ToResult(byte multiplyRv);
 ```
 
 ## Implicit Operators
+
 ```c#
 public static implicit operator ResultData<T>(T? value);
 
@@ -88,6 +100,7 @@ public static implicit operator ResultData<T>(Result result);
 ```
 
 ## Usage
+
 ```c#
 var exampleSuccessResult = Result.Success("Auth.Login");
 var exampleWarnResult = Result.Warn(1,"Auth.Login","User is deleted");
@@ -95,8 +108,8 @@ var exampleErrorResult = Result.Error(2,"ValidationError","Username is too short
 var exampleFatalResult = Result.Fatal(100,"DbInternalError");
 ```
 
-
 ## Real Usage Examples
+
 ```c#
 public ResultData<User> GetUser(int id)
 {

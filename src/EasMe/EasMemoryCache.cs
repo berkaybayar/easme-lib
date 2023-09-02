@@ -5,9 +5,9 @@ public class EasMemoryCache
   private static EasMemoryCache? _instance;
 
   private static readonly Dictionary<string, CacheData> CacheDictionary = new();
+  private readonly Timer Timer;
 
   private EasMemoryCache() {
-    
     Timer = new Timer(ClearLoop, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(3));
   }
 
@@ -17,21 +17,22 @@ public class EasMemoryCache
       return _instance;
     }
   }
-  private readonly Timer Timer;
+
   private static void ClearLoop(object? sender = null) {
     var items = CacheDictionary.Where(x => x.Value.ExpireDateTime < DateTime.Now)
-      .Select(x => x.Key)
-      .ToList();
+                               .Select(x => x.Key)
+                               .ToList();
     if (items.Count <= 0) return;
     lock (CacheDictionary) {
       foreach (var key in items) CacheDictionary.Remove(key);
     }
-
   }
 
   public T? Get<T>(string key) {
     //return cacheDictionary.ContainsKey(key) ? cacheDictionary[key].Value.ToString().StringConversion<T>() : default;
-    return CacheDictionary.TryGetValue(key, out var value) ? (T?)value.Value : default;
+    return CacheDictionary.TryGetValue(key, out var value)
+             ? (T?)value.Value
+             : default;
   }
 
   public T GetOrSet<T>(string key, Func<T> func, int expireSeconds = 60) {
@@ -43,7 +44,9 @@ public class EasMemoryCache
   }
 
   public object? Get(string key) {
-    return CacheDictionary.TryGetValue(key, out var value) ? value.Value : null;
+    return CacheDictionary.TryGetValue(key, out var value)
+             ? value.Value
+             : null;
   }
 
   public void Set(string key, object value, int expireSeconds = 60) {

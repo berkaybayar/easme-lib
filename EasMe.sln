@@ -21,7 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AEF10A31-FBE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{AC7492E3-F058-4E1D-92CB-8B9C8CA917A5}"
 	ProjectSection(SolutionItems) = preProject
-		doc\EasMe.md = doc\EasMe.md
 		README.md = README.md
 	EndProjectSection
 EndProject

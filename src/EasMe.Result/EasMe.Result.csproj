@@ -1,39 +1,39 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <Version>3.0.0</Version>
-        <AssemblyVersion>3.0.0</AssemblyVersion>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Title>EasMe.Result</Title>
-        <Authors>bberka</Authors>
-        <Description>Simple Lightweight Result type provider library with various helpul methods.</Description>
-        <PackageProjectUrl>https://github.com/bberka/EasMe</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/bberka/EasMe</RepositoryUrl>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>3.0.0</Version>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>EasMe.Result</Title>
+    <Authors>bberka</Authors>
+    <Description>Simple Lightweight Result type provider library with various helpul methods.</Description>
+    <PackageProjectUrl>https://github.com/bberka/EasMe</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bberka/EasMe</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <None Include="..\..\LICENSE.txt">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-      <None Include="..\..\README.md">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5"/>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\EasMe\EasMe.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EasMe\EasMe.csproj"/>
+  </ItemGroup>
 
 </Project>

@@ -2,5 +2,5 @@
 
 internal static class SelfLog
 {
-    internal static IEasLog Logger { get; set; } = EasLogFactory.CreateLogger();
+  internal static IEasLog Logger { get; set; } = EasLogFactory.CreateLogger();
 }

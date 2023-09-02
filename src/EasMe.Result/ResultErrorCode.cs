@@ -1,47 +1,47 @@
 ﻿namespace EasMe.Result;
 
 /// <summary>
-///     Built-in Result Error Codes
+///   Built-in Result Error Codes
 /// </summary>
 public enum ResultErrorCode
 {
-    Ok,
-    Warning,
-    Error,
-    Exception,
-    Fatal,
-    DbInternal,
-    Forbidden,
-    Unauthorized,
-    ValidationError,
-    NullReference,
-    Deleted,
-    Disabled,
-    Required,
-    TooShort,
-    TooLong,
-    Expired,
-    UnderMaintenance,
-    WrongData,
+  Ok,
+  Warning,
+  Error,
+  Exception,
+  Fatal,
+  DbInternal,
+  Forbidden,
+  Unauthorized,
+  ValidationError,
+  NullReference,
+  Deleted,
+  Disabled,
+  Required,
+  TooShort,
+  TooLong,
+  Expired,
+  UnderMaintenance,
+  WrongData,
 
-    AlreadyExists,
-    AlreadyInUse,
-    AlreadyDeleted,
+  AlreadyExists,
+  AlreadyInUse,
+  AlreadyDeleted,
 
-    NotFound,
-    NotVerified,
-    NotValid,
-    NotExist,
-    NotAuthorized,
-    NotMatch,
+  NotFound,
+  NotVerified,
+  NotValid,
+  NotExist,
+  NotAuthorized,
+  NotMatch,
 
-    CanNotBeUsed,
-    CanNotContainSpace,
-    CanNotBeSame, //2 param
+  CanNotBeUsed,
+  CanNotContainSpace,
+  CanNotBeSame, //2 param
 
-    MustContainSpecialCharacter,
-    MustContainDigit,
-    MustContainLowerCase,
-    MustContainUpperCase,
-    MustBeSame //2 param
+  MustContainSpecialCharacter,
+  MustContainDigit,
+  MustContainLowerCase,
+  MustContainUpperCase,
+  MustBeSame //2 param
 }

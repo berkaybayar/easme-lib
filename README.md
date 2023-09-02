@@ -1,93 +1,89 @@
 # EasMe Library
-This library provides various classes and methods that will help you save time and avoid repetitive tasks among different projects.
+
+This library provides various classes and methods that will help you save time and avoid repetitive tasks among
+different projects.
 This is a work in progress and will be updated frequently.
 
 ## Table of Contents
+
 - [Installation](#installation)
 - [License](#license)
 - [EasMe](#easme)
-  - [Extensions](#extensions)
-    - [String Extensions](#string-extensions)
-    - [Byte Extensions](#byte-extensions)
-    - [Claims Extensions](#claims-extensions)
-    - [DateTime Extensions](#datetime-extensions)
-    - [Object Extensions](#object-extensions)
-    - [Bool Extensions](#bool-extensions)
-    - [Dictionary Extensions](#dictionary-extensions)
-    - [HttpContext Extensions](#httpcontext-extensions)
-    - [List Extensions](#list-extensions)
-    - [Number Extensions](#number-extensions)
-    - [Json Extensions](#json-extensions)
-    - [Xml Extensions](#xml-extensions)
-    - [Hash Extensions](#hash-extensions)
-    - [Validation Extensions](#validation-extensions)
-  - [EasAPI](#easapi)
-  - [EasCache](#eascache)
-  - [EasCheck](#eascheck)
-  - [EasConfig](#easconfig)
-  - [EasDirectory](#easdirectory)
-  - [EasEncrypt](#easencrypt)
-  - [EasFile](#easfile)
-  - [EasGenerate](#easgenerate)
-  - [EasHttp](#eashttp)
-  - [EasINI](#easini)
-  - [EasJWT](#easjwt)
-  - [EasMail](#easmail)
-  - [EasMemoryCache](#easmemorycache)
-  - [EasQL](#easql)
-  - [EasReCaptcha](#easrecaptcha)
-  - [EasTask](#eastask)
-  - [EasZip](#easzip)
-  - [EasMe.Scheduler](#easscheduler)
-- [EasMe.Box .NET Framework 4.8](#easmebox)
-- [EasMe.EntityFrameworkCore .NET 6](#easmeentityframeworkcore)
-  - [Entity abstracts](#entity-abstracts)
-  - [Repository abstracts](#repository-abstracts)
-  - [Generic repository](#generic-repository)
+    - [Extensions](#extensions)
+        - [String Extensions](#string-extensions)
+        - [Byte Extensions](#byte-extensions)
+        - [Claims Extensions](#claims-extensions)
+        - [DateTime Extensions](#datetime-extensions)
+        - [Object Extensions](#object-extensions)
+        - [Bool Extensions](#bool-extensions)
+        - [Dictionary Extensions](#dictionary-extensions)
+        - [HttpContext Extensions](#httpcontext-extensions)
+        - [List Extensions](#list-extensions)
+        - [Number Extensions](#number-extensions)
+        - [Json Extensions](#json-extensions)
+        - [Xml Extensions](#xml-extensions)
+        - [Hash Extensions](#hash-extensions)
+        - [Validation Extensions](#validation-extensions)
+    - [EasAPI](#easapi)
+    - [EasCache](#eascache)
+    - [EasCheck](#eascheck)
+    - [EasConfig](#easconfig)
+    - [EasDirectory](#easdirectory)
+    - [EasEncrypt](#easencrypt)
+    - [EasFile](#easfile)
+    - [EasGenerate](#easgenerate)
+    - [EasHttp](#eashttp)
+    - [EasINI](#easini)
+    - [EasJWT](#easjwt)
+    - [EasMail](#easmail)
+    - [EasMemoryCache](#easmemorycache)
+    - [EasQL](#easql)
+    - [EasReCaptcha](#easrecaptcha)
+    - [EasTask](#eastask)
+    - [EasZip](#easzip)
+    - [EasMe.Scheduler](#easscheduler)
 - [EasMe.Logging .NET 6](#easmelogging)
-  - [EasLogFactory](#easlogfactory)
-  - [Configuration](#log-configuration)
-  - [EasLog](#easlog)
-  - [EasLogConsole](#easlogconsole)
-  - [EasLogReader](#easlogreader)
-- [EasMe.PostSharp .NET 6](#easmepostsharp)
+    - [EasLogFactory](#easlogfactory)
+    - [Configuration](#log-configuration)
+    - [EasLog](#easlog)
+    - [EasLogConsole](#easlogconsole)
+    - [EasLogReader](#easlogreader)
 - [EasMe.Result .NET 6](#easmeresult)
-  - [Result](#result)
-  - [Result with data](#result-with-data)
-  - [Converting ResultData to Result](#converting-resultdata-to-result)
-  - [Converting Result to ActionResult](#converting-result-or-resultdata-to-actionresult)
-  - [Mapping ResultData](#mapping-resultdata)
-  - [Result Enums](#result-severity-enum)
-- [EasMe.SharpBuilder .NET 6](#easmesharpbuilder)
-  - [Class builder](#easmesharpbuilder)
-  - [File builder](#file-builder)
-  - [Property builder](#property-builder)
+    - [Result](#result)
+    - [Result with data](#result-with-data)
+    - [Converting ResultData to Result](#converting-resultdata-to-result)
+    - [Converting Result to ActionResult](#converting-result-or-resultdata-to-actionresult)
+    - [Mapping ResultData](#mapping-resultdata)
+    - [Result Enums](#result-severity-enum)
 - [EasMe.System .NET 6 (Windows only)](#easmesystem)
-  - [Getting device information](#getting-device-information)
-  - [Creating unique id](#creating-unique-id)
-  - [Adding application to windows startup](#adding-application-to-windows-startup)
+    - [Getting device information](#getting-device-information)
+    - [Creating unique id](#creating-unique-id)
+    - [Adding application to windows startup](#adding-application-to-windows-startup)
 - [EasMe.Test](#easmetest)
 
 ## Installation
+
 You can install the package via Nuget:
+
 ```
 Install-Package EasMe
-Install-Package EasMe.EntityFrameworkCore
 Install-Package EasMe.Logging
-Install-Package EasMe.PostSharp
 Install-Package EasMe.Result
-Install-Package EasMe.SharpBuilder
 Install-Package EasMe.System
 ```
 
 ## License
+
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 <a name="easme"></a>
+
 ## EasMe
 
 ### Extensions
+
 #### String Extensions
+
 ```csharp
 var str = "Hello World";
 var removedText = str.RemoveText("World"); // Hello
@@ -140,7 +136,9 @@ var secureStringsEqual = secureString1.SecureStringsEqual(secureString1); // tru
 var dateString = "2021-01-01";
 var isValidDateTime = dateString.IsValidDateTime(); // true
 ```
+
 #### Byte Extensions
+
 ```csharp
 var bytes = new byte[] { 1, 2, 3, 4, 5 };
 var hexString = bytes.ToHexString(); // 0102030405
@@ -150,6 +148,7 @@ var compared = bytes.Compare(bytes); // true
 ```
 
 #### Claims Extensions
+
 ```csharp
 var claims = new List<Claim>
 {
@@ -168,6 +167,7 @@ var claimsIdentity2 = user.ToClaimsIdentity(out List<Exception> exceptions); // 
 ```
 
 #### DateTime extensions
+
 ```csharp
 var dateTime = new DateTime(2021, 01, 01);
 var nullableDateTime = (DateTime?)dateTime;
@@ -186,7 +186,9 @@ var isYearsOlder = dateTime.IsYearsOlder(dateTime, 1); // true
 
 var readableDateString = dateTime.ToReadableDateString(); // 2 years and 1 month ago
 ```
+
 #### Object Extensions
+
 ```csharp
 var user = new
 {
@@ -203,12 +205,16 @@ var isNull = user.IsNull(); // false
 var isNotNull = user.IsNotNull(); // true
 var isDefault = user.IsDefault(); // false
 ```
+
 #### Bool Extensions
+
 ```csharp
 var nullableBool = (bool?)true;
 var notNullableBool = nullableBool.GetValueOrDefault(); // true
 ```
+
 #### Dictionary Extensions
+
 ```csharp
 var dictionary = new Dictionary<string, string>
 {
@@ -218,7 +224,9 @@ var dictionary = new Dictionary<string, string>
 var asQueryString = dictionary.ToQueryString(); // ?name=John&surname=Doe
 var asObject = dictionary.ToObject<User>(); // User object with name and surname properties
 ```
+
 #### HttpContext Extensions
+
 ```csharp
 var httpContext = new HttpContextAccessor().HttpContext; // Microsoft.AspNetCore.Http.HttpContext
 var headerValuesAsDictionary = httpContext.Request.GetHeaderValues(); // Dictionary<string, string>
@@ -231,7 +239,9 @@ var query = httpContext.Request.GetQuery(); // Dictionary<string, string>
 var queryValue = httpContext.Request.GetQueryValue("name"); // John
 var queryAsDictionary = httpContext.Request.GetQueryAsDictionary(); // Dictionary<string, string>
 ```
+
 #### List Extensions
+
 ```csharp
 var list = new List<string> { "John", "Jane" };
 list.AddIfNotExists("John"); // false
@@ -256,7 +266,9 @@ list.UpdateAllWhere(x => x.EndsWith("n")), x => {
     x += " Doe";
 }); // John Doe, Jane Doe
 ```
+
 #### Number Extensions
+
 ```csharp
 var dateTime = 1609459200.UnixTimeStampToDateTime(); // 2021-01-01 00:00:00
 var dateTime2 = 1609459200.TicksToDateTime(); // 2021-01-01 00:00:00
@@ -271,7 +283,9 @@ var notNullableInt = nullableInt.GetValueOrDefault(); // 5
 var nullableLong = (long?)5;
 var notNullableLong = nullableLong.GetValueOrDefault(); // 5
 ```
+
 #### Json Extensions
+
 ```csharp
 var user = new User
 {
@@ -283,6 +297,7 @@ var user2 = json.FromJsonString<User>(); // User object with name and surname pr
 ```
 
 #### Xml Extensions
+
 ```csharp
 var xElement = new XElement("User", new XElement("Name", "John"), new XElement("Surname", "Doe"));
 var xElementList = new List<XElement>(){
@@ -307,6 +322,7 @@ var asXElementPropertiesAsElement = userObject.ToXElement(false); // <User><Name
 ```
 
 #### Hash Extensions
+
 ```csharp
 var md5Byte = "text".MD5Hash(); // byte[]
 var md5ByteSalted = "text".MD5Hash("salt"); // byte[]
@@ -322,6 +338,7 @@ var xxFile = filePath.FileXXHash(); // byte[]
 ```
 
 #### Validation Extensions
+
 ```csharp
 var isValidEmail = "mail@mail.com".IsValidEmail(); //true
 var isValidIp = "".IsValidIpAddress(); //false
@@ -347,8 +364,11 @@ var isValidUrl = "https://www.test.com".IsValidUrl(); //true
 var isValidConnectionString = "Server=.;Database=Test;Trusted_Connection=True;".IsValidConnectionString(); //true
 var isValidCreditCard = "1111-1111-1111-1111".IsValidCreditCard("01/01",999); //true         
 ```
+
 ### EasAPI
+
 Every method has a token and timeout parameter as optional. Depending on the http request method a body is required.
+
 ```csharp
 var dummyUrl = "https://127.0.0.1/";
 var dummyAuthorizationToken = "123123213";
@@ -362,8 +382,11 @@ var delete = EasAPI.Delete(dummyUrl); // HttpResponseMessage
 var putAsJson = EasAPI.PutAsJson(dummyUrl, new { Name = "John" }); // HttpResponseMessage
 var send = EasAPI.Send(dummyUrl, new HttpRequestMessage(),dummyAuthorizationToken, 10); // HttpResponseMessage
 ```
+
 ### EasCache
+
 Simple memory caching
+
 ```csharp
 List<User> GetUsersFromDb(){ /* db access */}
 
@@ -372,19 +395,23 @@ var users = easCache.Get(); // List<User>
 ```
 
 Caching with key and value
+
 ```csharp
 User GetUserFromDb(int userId){ /* db access */}
 
 var easCache = new EasCache<int ,List<User> >(GetUserFromDb, 10); // 10 minutes
 var user = easCache.Get(231); // Nullable<User>
 ```
+
 ### EasCheck
+
 ```csharp
 var password = "123123";
 var passwordScore = EasCheck.CheckPasswordStrength(password); // PasswordScore Enum
 ```
 
 PasswordScore enum
+
 ```csharp
 public enum PasswordScore
 {
@@ -396,15 +423,21 @@ public enum PasswordScore
     VeryStrong = 5
 }
 ```
+
 ### EasConfig
+
 Easily access app.config or web.config
+
 ```csharp
 var connString = EasConfig.GetConnectionString("DefaultConnection"); // string
 var someValue = EasConfig.GetValue("someValue"); // string
 var someIntValue = EasConfig.GetValue<int>("someIntValue"); // int
 ```
+
 ### EasDirectory
+
 Get known folder paths
+
 ```csharp
 var downloadsPath = EasDirectory.GetPath(KnownFolder.Downloads); // string
 var contactsPath = EasDirectory.GetPath(KnownFolder.Contacts); // string
@@ -415,6 +448,7 @@ var savedSearchesPath = EasDirectory.GetPath(KnownFolder.SavedSearches); // stri
 ```
 
 KnownFolder enum
+
 ```csharp
 public enum KnownFolder
 {
@@ -426,10 +460,13 @@ public enum KnownFolder
     SavedSearches
 }
 ```
+
 ### EasEncrypt
+
 Encryption and decryption with Aes algorithm
 
 #### Startup.cs configuration
+
 ```csharp
 EasEncrypt.SetKey("SuperSecretEncryptionKey");
 
@@ -441,6 +478,7 @@ EasEncrypt.DontUseEncryption();
 ```
 
 #### Usage
+
 ```csharp
 var encryptor = EasEncrypt.Create();
 var encrypted = encryptor.Encrypt("123123"); // encrypted string
@@ -448,21 +486,25 @@ var decrypted = encryptor.Decrypt(encrypted); // 123123
 ```
 
 #### Time seeding
+
 Time seeding creates a salt key based on the time the instance is created.
 You can set the sensitivity of the time seeding when enabling time seeding with EasEncrypt.UseTimeSeeding method.
 If sensitivity set to seconds, the salt key will change every second. Meaning the encrypted text will also change.
 Created salt key will be stored inside of the instance. You can use same instance to decrypt the encrypted text,
-even after the time has changed. 
+even after the time has changed.
 
-**WARNING:** If you want to store the encrypted text in a database and decrypt it later, be aware that the salt key might change and you may not be able to recover the original text.
+**WARNING:** If you want to store the encrypted text in a database and decrypt it later, be aware that the salt key
+might change and you may not be able to recover the original text.
 
 #### Static seed
-Static seed is used to alter the time seeded salt key. 
+
+Static seed is used to alter the time seeded salt key.
 You can set the static seed with EasEncrypt.UseTimeSeeding method.
 This mostly set to project build number so every build will have a different salt key.
 Default value is set to 0, if you have not set it, it will not be used.
 
 ### EasFile
+
 ```csharp
 var sourcePath = @"C:\Users\John\Desktop\test.txt";
 var destinationPath = @"C:\Users\John\Desktop\test2.txt";
@@ -493,7 +535,9 @@ var filesAreEqualMD5Hash = EasFile.FilesAreEqual_MD5Hash(fileInfo1, fileInfo2); 
 //Reads all bytes at once and hashes them with xxHash to compare
 var filesAreEqualXXHash = EasFile.FilesAreEqual_XXHash(fileInfo1, fileInfo2); // bool
 ```
+
 ### EasGenerate
+
 ```csharp
 
 const string DefaultCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"; //Hardcoded
@@ -505,13 +549,17 @@ var randomString1 = EasGenerate.RandomString(10, true, "'^%!"); // Random string
 ```
 
 ### EasHttp
+
 ```csharp
 var statusCodeShortMessage = EasHttp.GetStatusCodeShortMessage(200); // OK
 var statusCodeLongMessage = EasHttp.GetStatusCodeLongMessage(500); // Internal Server Error
 ```
+
 ### EasINI
-You can read and write to .ini files with EasINI class. 
+
+You can read and write to .ini files with EasINI class.
 Also you can parse the .ini file to IniFile model.
+
 ```csharp
 var iniFile = EasINI.Parse("C:\\Users\\John\\Desktop\\test.ini"); 
 
@@ -524,7 +572,8 @@ var str = iniFile.WriteToString();
 iniFile.WriteToPath(iniFile);
 ```
 
-IniFile models 
+IniFile models
+
 ```csharp
 public class IniSection
 {
@@ -545,7 +594,9 @@ public class IniComment
     public string? Comment { get; set; }
 }
 ```
+
 ### EasJWT
+
 ```csharp
 var easJwt = new EasJWT("Secret","Issuer","Audience");// or new EasJWT("Secret");
 var claimsIdentity = new ClaimsIdentity(new Claim[]
@@ -567,7 +618,9 @@ var token2 = easJwt.GenerateToken(claimsDictionary,60); // Generates token with 
 // Validates token and returns ClaimsPrincipal, if token is expired or is not valid it throws exception.
 var claimsPrincipal = easJwt.ValidateToken(token); 
 ```
+
 ### EasMail
+
 ```csharp
 //Create EasMail instance with smtp server, mail address, password, port and ssl
 var easEmail = new EasMail("smtp.gmail.com", "mailAddress", "password", 57, true);
@@ -575,9 +628,12 @@ var easEmail = new EasMail("smtp.gmail.com", "mailAddress", "password", 57, true
 easEmail.Send("Subject","Body","mailAddress", true); // Sends mail to mailAddress with html body
 easEmail.Send("Subject","Body","mailAddress", false); // Sends mail to mailAddress 
 ```
+
 ### EasMemoryCache
+
 Improved caching from EasCache. Both are viable and working the way how caching and receiving data is different.
 This is a singleton class without any service or injection required.
+
 ```csharp
 EasMemoryCache.This.Set("Key", "Value", 60); // Sets cache for 60 seconds
 var value = EasMemoryCache.This.Get("Key"); // Gets cache value
@@ -592,10 +648,12 @@ var value = EasMemoryCache.This.GetOrSet("Key", () => "Value", 60);
 ```
 
 ### EasQL
+
 Simple and easy to use SQL database access.
 This is not related to EntityFrameworkCore it uses Microsoft.Data.SqlClient.
 You can use static methods or create an instance of EasQL class and pass connection string.
 Here is an example of creating instance. When using static methods connection string must be passes everytime.
+
 ```csharp
 var easQL = new EasQL("Server=.;Database=Test;Trusted_Connection=True;");
 var command = new SqlCommand("SELECT * FROM TestTable");
@@ -617,6 +675,7 @@ var tables = easQL.GetAllTableNames();
 ```
 
 ### EasReCaptcha
+
 ```csharp
 //validates google captcha 
 var secret = "Secret";
@@ -625,6 +684,7 @@ var result = EasReCaptcha.Validate(secret, captchaResponse);
 ```
 
 Captcha validation result model
+
 ```csharp
 public class CaptchaResponseModel
 {
@@ -636,7 +696,9 @@ public class CaptchaResponseModel
 ```
 
 ### EasTask
+
 A task manager that can run tasks in background in a queue.
+
 ```csharp
 var easTask = new EasTask();
 easTask.AddTask(() => Console.WriteLine("Task 1"));
@@ -650,7 +712,9 @@ easTask.Flush();
 //This method will not wait for tasks to be ended 
 easTask.Dispose(); 
 ```
+
 ### EasZip
+
 ```csharp
 var fileList = new List<string>();
 var zipFile = "C:\\Users\\John\\Desktop\\Test.zip";
@@ -658,233 +722,10 @@ EasZip.MakeZip(fileList, zipFile); // Makes zip file from fileList
 EasZip.UnZip(zipFile, "C:\\Users\\John\\Desktop\\Test"); // Unzips zipFile to destination
 ```
 
-## EasMe.Box
-Provides a simple way to create error, warning, information message boxes in .NET Framework 4.8
-
-### Usage
-```csharp
-//Shows message box 
-EasMe.Box.Show("Message");
-
-//Show error message box
-EasMe.Box.Error("Error message");
-
-//Show warning message box
-EasMe.Box.Warning("Warning message");
-
-//Show information message box
-EasMe.Box.Information("Information message");
-
-//Show message box for confirmation and returns true if user clicks "Yes" button
-var result = EasMe.Box.Confirm("Are you sure you want to continute ?");
-
-//Shows message box with Stop icon
-EasMe.Box.Stop("You are not allowed");
-```
-## EasMe.EntityFrameworkCore
-### Entity abstracts
-IBase entity requires a Guid property and IEquatable implementation.
-```csharp
-public interface IBaseEntity : IEquatable<BaseEntity>, IEntity
-{
-    Guid Id { get; set; }
-}
-```
-BaseEntity is a abstract class that implements IBaseEntity and IEquatable. 
-Also has a RegisterDate property on top of Guid property.
-Since Guid and Register date is almost always required for all entities.
-This class can be used to create database entities that derive from it.
-```csharp
-public abstract class BaseEntity : IBaseEntity
-{
-    protected BaseEntity(Guid guid) {
-        Id = guid;
-    }
-
-    protected BaseEntity() {}
-
-    public DateTime RegisterDate { get; set; } = DateTime.Now;
-
-    [Key]
-    public Guid Id { get; set; }
-
-    //Also some IEquatable implementation...
-}
-```
-IEntity is a simple interface with no implementation. 
-Only used to mark entities for generic repositories to verify.
-```csharp
-public interface IEntity{}
-```
-
-### Repository abstracts
-IGenericRepository is a generic interface that requires a class that implements IEntity.
-```csharp
-public interface IGenericRepository<TEntity> where TEntity : class, IEntity
-{
-    TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>>? filter = null, params string[] includeProperties);
-
-    List<TEntity> ToList() {
-        return Get().ToList();
-    }
-
-    TEntity? GetFirstOrDefaultOrdered(
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeProperties);
-
-    TEntity? GetLastOrDefaultOrdered(
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeProperties);
-
-    IQueryable<TEntity> GetOrdered(
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions);
-
-    IQueryable<TEntity> Get(
-        Expression<Func<TEntity, bool>>? filter = null,
-        params string[] includeExpressions);
-
-    IQueryable<TEntity> GetPaging(
-        int page,
-        int pageSize = 15,
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions);
-
-    IQueryable<TResult> GetSelect<TResult>(
-        Expression<Func<TEntity, TResult>> select,
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions);
-
-    TResult? GetFirstOrDefaultSelect<TResult>(
-        Expression<Func<TEntity, TResult>> select,
-        Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        params string[] includeExpressions);
-
-    TEntity? GetById(object id);
-    TEntity? GetById(params object[] id);
-    void Insert(TEntity entity);
-    void InsertRange(IEnumerable<TEntity> entities);
-    void Delete(object id);
-    void Delete(TEntity entityToDelete);
-    void Update(TEntity entityToUpdate);
-    void UpdateRange(IEnumerable<TEntity> entities);
-    void DeleteRange(IEnumerable<TEntity> entities);
-    bool Any(Expression<Func<TEntity, bool>>? filter = null);
-    int Count(Expression<Func<TEntity, bool>>? filter = null);
-}
-```
-### Generic repository
-GenericRepository class implements IGenericRepository and provides basic CRUD operations.
-
-### Usage
-Define your repositories by deriving from GenericRepository.
-```csharp
-public class UserRepository : GenericRepository<User, AppDbContext>
-{
-    public UserRepository(DbContext context) : base(context) {}
-    
-    public User? GetUserByUserName(string userName) {
-        return GetFirstOrDefault(x => x.UserName == userName);
-    }
-}
-
-```
-If you wish to use a your own repository class instead of GenericRepository but still want to use GenericRepository's methods.
-You can also create your own repository interfaces to go along with it.
-```csharp
-public class UserRepository : IUserRepository
-{
-    private readonly GenericRepository<User, AppDbContext> _genericUserRepository;
-    
-    //Get GenericRepository from dependency injection
-    public UserRepository(GenericRepository<Use, AppDbContextr> genericUserRepository){
-        _genericUserRepository = genericUserRepository;
-    }
-    
-    public User? GetUserByUserName(string userName) {
-        return GetFirstOrDefault(x => x.UserName == userName);
-    }
-}
-```
-
-Using without Injection
-```csharp
-public class UserRepository : IUserRepository
-{
-    private readonly GenericRepository<User> _genericUserRepository;
-    
-    //Get GenericRepository from dependency injection
-    public UserRepository(DbContext context){
-        _genericUserRepository = new GenericRepository<User>(context);
-    }
-    
-    public User? GetUserByUserName(string userName) {
-        return GetFirstOrDefault(x => x.UserName == userName);
-    }
-}
-```
-
-Using it with Services or Managers
-```csharp
-public class UserService : IUserService
-{
-    private readonly IGenericRepository<User> _userRepository;
-    
-    //Get GenericRepository from dependency injection
-    public UserService(IGenericRepository<User> userRepository){
-        _userRepository = userRepository;
-    }
-    
-    public User? GetUserByUserName(string userName) {
-        return _userRepository.GetFirstOrDefault(x => x.UserName == userName);
-    }
-}
-```
-Or
-```csharp
-public class UserService : IUserService
-{
-    private readonly IUserRepository _userRepository;
-    
-    //Get GenericRepository from dependency injection
-    public UserService(IUserRepository userRepository){
-        _userRepository = userRepository;
-    }
-    
-    public User? GetUserByUserName(string userName) {
-        return _userRepository.GetFirstOrDefault(x => x.UserName == userName);
-    }
-}
-```
-
-
-### Dependency Injection example
-Edit your program.cs
-```csharp
-builder.Services.AddScoped<IGenericRepository<User>,GenericRepository<User>>();
-//or you can just add class type
-builder.Services.AddScoped<GenericRepository<User>>();
-```
-You must also add DbContext to services to use GenericRepository class.
-## EasMe.Logging
-Simple lightweight JSON logger for .NET 6+ applications.
-
-### EasLogFactory
-Creating logger 
-```csharp
-private static readonly IEasLog _logger = EasLogFactory.CreateLogger();
-```
-
-
-
 ### EasLog
+
 Using logger
+
 ```csharp
 _logger.Trace("Hello World!");
 _logger.Debug("Hello World!");
@@ -895,17 +736,23 @@ _logger.Fatal("Hello World!");
 _logger.Fatal(new Exception(),"Hello World!");
 _logger.Exception(new Exception(),"Hello World!");
 ```
+
 Accessing static logger
+
 ```csharp
 EasLogFactory.StaticLogger.Trace("Hello World!");
 ```
 
 On application exit
+
 ```csharp
 EasLog.Flush();
 ```
+
 ### EasLogConsole
+
 Static class for logging to console with colors
+
 ```csharp
 EasLogConsole.Log("Hello World!",ConsoleColor.White);
 EasLogConsole.Log(EasLogLevel.Warning,"Hello World!");
@@ -918,7 +765,9 @@ EasLogConsole.Fatal("Hello World!");
 ```
 
 ### Log Configuration
+
 Configure logger in startup
+
 ```csharp
 EasLogFactory.Configure(x =>
 {
@@ -928,7 +777,9 @@ EasLogFactory.Configure(x =>
     x.ExceptionHideSensitiveInfo = false;
 });
 ```
+
 Configuration class properties
+
 ```csharp
 /// <summary>
 ///     Gets or sets a value indicating whether to log the request body.
@@ -983,7 +834,9 @@ public bool SeparateLogLevelToFolder { get; set; } = false;
 ```
 
 ### EasLogReader
+
 Reading logs from log files
+
 ```csharp
 //Create instance
 var logReader = new EasLogReader();
@@ -992,6 +845,7 @@ var logs = logReader.GetLogs(); //IEnumerable<LogModel>
 ```
 
 LogModel properties
+
 ```csharp
 public DateTime Date { get; } = DateTime.Now;
 public EasLogLevel Level { get; set; }
@@ -1003,18 +857,21 @@ public CleanException? Exception { get; set; }
 public WebInfo? WebInfo { get; set; }
 ```
 
-## EasMe.PostSharp
-
 ## EasMe.Result
+
 EasMe.Result is a simple library for creating result objects. It is a lightweight library with no dependencies.
 It offers a simple way to create result objects with data, error messages, exceptions, validation errors and severity.
 
 #### Why would you use it?
+
 Throwing exceptions and handling them later is not a good practice.
 Exceptions are not performance friendly and should be used only when absolutely necessary.
 Result objects are a good way to handle errors without throwing any exceptions.
+
 ### Result
+
 Creating result
+
 ```csharp
 Result.Create(isSuccess: true, 
               severity: ResultSeverity.Success
@@ -1054,6 +911,7 @@ new ValidationError("Password must contain at least one number","Password","Pass
 ```
 
 #### Method example
+
 ```csharp
 public Result UpdateUser(User user){
     //Validate user
@@ -1077,16 +935,20 @@ public Result UpdateUser(User user){
     return Result.Success("User updated successfully");
 }
 ```
+
 ### Result with data
-ResultData<{T}> is a result object with data property. 
+
+ResultData<{T}> is a result object with data property.
 If data is null result status will be false.
-There is no create methods for ResultData<{T}>. 
+There is no create methods for ResultData<{T}>.
 You can create it by using Result.Warn() method for creating failed results.
-And implicit operators are implemented for ResultData<{T}>. 
+And implicit operators are implemented for ResultData<{T}>.
 So you can return {T} from methods and it will automatically converted to ResultData<{T}>.
 
 If you try to convert a Result.Success() with implicit operator ResultData<{T}> it will throw an exception.
+
 #### Using ResultData<{T}>
+
 ```csharp
 public ResultData<User> GetUser(int id){
 var exists = _db.Users.Any(x => x.Id == id);
@@ -1107,23 +969,28 @@ var user = _db.Users.FirstOrDefault(x => x.Id == id);
 //And error code will automatically will be set to NullValue
 return user;
 ```
+
 ### Converting ResultData to Result
+
 ```csharp
 ResultData<User> resultData = Result.Warn("NotFound"); //ResultData<User>
 var result = resultData.ToResult(); //Result
 ```
 
-
 ### Converting Result or ResultData to ActionResult
+
 If result status is success it will return OkObjectResult.
 If result status is error and FailStatusCode is not set it will return BadRequestObjectResult
+
 ```csharp
 ResultData<User> resultData = Result.Warn("NotFound"); //ResultData<User>
 var result = resultData.ToActionResult(); //ActionResult
 var result2 = resultData.ToActionResult(400); //ActionResult with 400 status code
 var result3 = Result.Warn("NotFound").ToActionResult(): //ActionResult
 ```
+
 ### Mapping ResultData
+
 ```csharp
 var getUserResult = GetUser(1); //ResultData<User>
 var user = getUserResult.Map<UserDto>(x => {
@@ -1133,7 +1000,9 @@ var user = getUserResult.Map<UserDto>(x => {
     };
 });
 ```
+
 ### Result Severity Enum
+
 ```csharp
 public enum ResultSeverity
 {
@@ -1147,12 +1016,15 @@ public enum ResultSeverity
 }
 ```
 
-
 ## EasMe.System
+
 ### Getting device information
+
 ### Creating unique id
+
 ### Adding application to windows startup
 
 ## EasMe.Test
+
 This Console Application project is for testing newly added functionality.
 Not a unit test project.

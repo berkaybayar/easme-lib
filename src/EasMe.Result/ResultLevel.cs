@@ -2,10 +2,10 @@
 
 public enum ResultLevel
 {
-    Info,//Basically NONE
-    Success,
-    Warn,
-    Error,
-    Fatal,
-    Exception,
+  Info, //Basically NONE
+  Success,
+  Warn,
+  Error,
+  Fatal,
+  Exception
 }
