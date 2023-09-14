@@ -16,7 +16,9 @@ public static class ExtensionMethods
   ) {
     var list = result.ToList();
     var isAllSuccess = list.All(x => x.IsSuccess);
-    var errorArray = list.Where(x => x.IsFailure).Select(x => x.ErrorCode).ToArray();
-    return Result.MultipleErrors(errorArray, errorCode, level);
-  }
+    var errorCodes = list.Select(x => x.ErrorCode);
+    return isAllSuccess
+             ? Result.Success(errorCode,errorCode.Select(x => new Param("error",x)).ToArray())
+             : Result.MultipleErrors(errorCodes.ToArray(), errorCode, level);
+    }
 }

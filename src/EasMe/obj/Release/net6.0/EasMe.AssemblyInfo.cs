@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("CSharp extender library. Contains various extension methods, helper classes.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("4.0.2")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("4.0.3+d9b3a9ff84738efd21afd55451f5982a1dd473ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("4.0.3")]
 [assembly: System.Reflection.AssemblyProductAttribute("EasMe")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EasMe")]
 [assembly: System.Reflection.AssemblyVersionAttribute("4.0.3")]
