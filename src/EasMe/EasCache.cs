@@ -8,19 +8,33 @@ public class EasCache<TData>
 {
   private static readonly object _locker = new();
   private readonly Func<TData> _action;
-  private readonly int _interval;
+  private readonly int _intervalSeconds;
+  private readonly bool _autoRefresh;
   private DateTime _lastUpdate;
   private TData _result;
 
-  public EasCache(Func<TData> action, int intervalMinutes) {
-    _interval = intervalMinutes;
+  private Task _bgTask;
+  public EasCache(Func<TData> action, TimeSpan intervalTimeSpan,bool autoRefresh = false) {
+    var intervalSecondsSeconds = (int)intervalTimeSpan.TotalSeconds;
+    _intervalSeconds = intervalSecondsSeconds;
+    _autoRefresh = autoRefresh;
     _action = action;
     //_result = _action();
     _lastUpdate = DateTime.MinValue;
+    if (_autoRefresh) {
+      //run background task
+      _bgTask = Task.Run(async () => {
+        while (true) {
+          await Task.Delay(_intervalSeconds * 1000);
+          Refresh();
+        }
+      });
+      
+    }
   }
 
   public TData Get() {
-    var isUpdateTime = _lastUpdate.AddMinutes(_interval) < DateTime.Now;
+    var isUpdateTime = _lastUpdate.AddSeconds(_intervalSeconds) < DateTime.Now;
     if (!isUpdateTime) return _result;
     lock (_locker) {
       if (!isUpdateTime) return _result;
@@ -46,18 +60,18 @@ public class EasCache<TIn, TData>
 {
   private static readonly object _locker = new();
   private readonly Func<TIn, TData> _action;
-  private readonly int INTERVAL;
+  private readonly int _intervalSeconds;
   private Dictionary<TIn, TData> _result;
   private DateTime LAST_UPDATE;
 
-  public EasCache(Func<TIn, TData> action, int intervalMinutes) {
-    INTERVAL = intervalMinutes;
+  public EasCache(Func<TIn, TData> action, TimeSpan intervalTimeSpan) {
+    _intervalSeconds = (int)intervalTimeSpan.TotalSeconds;
     _action = action;
     LAST_UPDATE = DateTime.UnixEpoch;
   }
 
   public TData? Get(TIn inVal) {
-    var isUpdateTime = LAST_UPDATE.AddMinutes(INTERVAL) < DateTime.Now;
+    var isUpdateTime = LAST_UPDATE.AddSeconds(_intervalSeconds) < DateTime.Now;
     if (_result is not null && !isUpdateTime) return _result.GetValueOrDefault(inVal);
     lock (_locker) {
       if (_result is not null && !isUpdateTime) return _result.GetValueOrDefault(inVal);
