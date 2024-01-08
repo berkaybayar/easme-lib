@@ -12,7 +12,7 @@ public class EasLog : IEasLog
 {
   private static readonly object _fileLock = new();
 
-  private static readonly EasTask EasTask = new();
+  private static readonly EasQueue EasQueue = new();
   private static readonly List<Exception> _exceptions = new();
   private readonly string _folderName;
 
@@ -538,7 +538,7 @@ public class EasLog : IEasLog
   }
 
   public static void Flush() {
-    EasTask.Flush();
+    EasQueue.Flush();
   }
 
   protected void WriteLog(string source, EasLogLevel severity, Exception? exception = null, params object[] param) {
@@ -565,6 +565,6 @@ public class EasLog : IEasLog
         }
       }
     });
-    EasTask.AddToQueue(loggingAction);
+    EasQueue.AddToQueue(loggingAction);
   }
 }

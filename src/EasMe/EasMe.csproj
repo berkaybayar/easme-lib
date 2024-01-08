@@ -7,15 +7,13 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
-        <Version>4.0.4</Version>
-        <AssemblyVersion>4.0.4</AssemblyVersion>
+        <Version>4.0.5</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>EasMe</Title>
         <Authors>bberka</Authors>
         <Description>CSharp extender library. Contains various extension methods, helper classes.</Description>
         <PackageProjectUrl>https://github.com/bberka/EasMe/tree/master</PackageProjectUrl>
         <RepositoryUrl>https://github.com/bberka/EasMe/tree/master</RepositoryUrl>
-        <FileVersion>4.0.4</FileVersion>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 
@@ -37,6 +35,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
         <PackageReference Include="System.Data.HashFunction.xxHash" Version="2.0.0" />

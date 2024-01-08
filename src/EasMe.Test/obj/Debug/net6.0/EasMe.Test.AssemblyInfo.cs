@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EasMe.Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("3.5.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("3.5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("3.5+9578b2cf60414f539f7f43fc9e086160e178fa71")]
 [assembly: System.Reflection.AssemblyProductAttribute("EasMe.Test")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EasMe.Test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("3.5.0.0")]

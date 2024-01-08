@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Simple lightweight Json logging library.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("3.3.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("3.3.1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("3.3.1+9578b2cf60414f539f7f43fc9e086160e178fa71")]
 [assembly: System.Reflection.AssemblyProductAttribute("EasMe.Logging")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EasMe.Logging")]
 [assembly: System.Reflection.AssemblyVersionAttribute("3.3.1")]

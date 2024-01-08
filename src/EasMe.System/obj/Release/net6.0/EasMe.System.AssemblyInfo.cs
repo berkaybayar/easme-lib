@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Windows System information helper for creating device id or retreiving device inf" +
     "ormation. Only windows supported.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("2.1.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.1.1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.1.1+9578b2cf60414f539f7f43fc9e086160e178fa71")]
 [assembly: System.Reflection.AssemblyProductAttribute("EasMe.System")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EasMe.System")]
 [assembly: System.Reflection.AssemblyVersionAttribute("2.1.1")]

@@ -1,19 +1,27 @@
-﻿namespace EasMe;
+﻿using System.Collections.Concurrent;
+
+namespace EasMe;
 
 public class EasMemoryCache
 {
   private static EasMemoryCache? _instance;
 
-  private static readonly Dictionary<string, CacheData> CacheDictionary = new();
-  private readonly Timer Timer;
+  private static readonly object Lock = new();
+  private static readonly ConcurrentDictionary<string, CacheData> CacheDictionary = new();
+  private readonly Timer _timer;
 
   private EasMemoryCache() {
-    Timer = new Timer(ClearLoop, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(3));
+    _timer = new Timer(ClearLoop, null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(3));
   }
 
   public static EasMemoryCache This {
     get {
-      _instance ??= new EasMemoryCache();
+      if (_instance is not null) return _instance;
+      lock (Lock) {
+        if (_instance is not null) return _instance;
+        _instance = new EasMemoryCache();
+      }
+
       return _instance;
     }
   }
@@ -24,7 +32,7 @@ public class EasMemoryCache
                                .ToList();
     if (items.Count <= 0) return;
     lock (CacheDictionary) {
-      foreach (var key in items) CacheDictionary.Remove(key);
+      foreach (var key in items) CacheDictionary.Remove(key, out _);
     }
   }
 
@@ -50,15 +58,9 @@ public class EasMemoryCache
   }
 
   public void Set(string key, object value, int expireSeconds = 60) {
-    if (CacheDictionary.ContainsKey(key))
-      lock (CacheDictionary) {
-        CacheDictionary.Remove(key);
-      }
-
+    CacheDictionary.TryRemove(key, out _);
     var data = new CacheData(value, DateTime.Now + TimeSpan.FromSeconds(expireSeconds));
-    lock (CacheDictionary) {
-      CacheDictionary.Add(key, data);
-    }
+    CacheDictionary.TryAdd(key, data);
   }
 
   public bool Exists(string key) {
@@ -66,16 +68,11 @@ public class EasMemoryCache
   }
 
   public void Remove(string key) {
-    if (!CacheDictionary.ContainsKey(key)) return;
-    lock (CacheDictionary) {
-      CacheDictionary.Remove(key);
-    }
+    CacheDictionary.TryRemove(key, out _);
   }
 
   public void Clear() {
-    lock (CacheDictionary) {
-      CacheDictionary.Clear();
-    }
+    CacheDictionary.Clear();
   }
 
   private class CacheData
