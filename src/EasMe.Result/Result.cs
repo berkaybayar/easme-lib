@@ -1,5 +1,4 @@
-﻿using EasMe.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace EasMe.Result;

@@ -1,8 +1,4 @@
-﻿using EasMe.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-
-namespace EasMe;
+﻿namespace EasMe;
 
 /// <summary>
 ///   Runs a queue of Tasks in the background with a single thread
@@ -50,7 +46,7 @@ public class EasQueue : IDisposable
 
       foreach (var item in queueCopy) {
         var retry = 0;
-        while (true) {
+        while (true)
           try {
             retry++;
             item.Action();
@@ -61,7 +57,6 @@ public class EasQueue : IDisposable
               throw;
             Thread.Sleep(1000);
           }
-        }
       }
     }
   }

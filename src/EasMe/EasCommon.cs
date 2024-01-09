@@ -3,8 +3,8 @@
 public static class EasCommon
 {
   public static string GetReadableDateTimeCompareToNow(DateTime date,
-                                           TimeZoneInfo? nowTimeZoneInfo,
-                                           out bool isAgo
+                                                       TimeZoneInfo? nowTimeZoneInfo,
+                                                       out bool isAgo
   ) {
     nowTimeZoneInfo ??= TimeZoneInfo.Utc;
     var convertedNow = TimeZoneInfo.ConvertTime(DateTime.Now, nowTimeZoneInfo);

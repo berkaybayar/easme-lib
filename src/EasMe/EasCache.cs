@@ -8,20 +8,21 @@ public class EasCache<TData>
 {
   private static readonly object _locker = new();
   private readonly Func<TData> _action;
-  private readonly int _intervalSeconds;
   private readonly bool _autoRefresh;
+  private readonly int _intervalSeconds;
+
+  private Task _bgTask;
   private DateTime _lastUpdate;
   private TData _result;
 
-  private Task _bgTask;
-  public EasCache(Func<TData> action, TimeSpan intervalTimeSpan,bool autoRefresh = false) {
+  public EasCache(Func<TData> action, TimeSpan intervalTimeSpan, bool autoRefresh = false) {
     var intervalSecondsSeconds = (int)intervalTimeSpan.TotalSeconds;
     _intervalSeconds = intervalSecondsSeconds;
     _autoRefresh = autoRefresh;
     _action = action;
     //_result = _action();
     _lastUpdate = DateTime.MinValue;
-    if (_autoRefresh) {
+    if (_autoRefresh)
       //run background task
       _bgTask = Task.Run(async () => {
         while (true) {
@@ -29,8 +30,6 @@ public class EasCache<TData>
           Refresh();
         }
       });
-      
-    }
   }
 
   public TData Get() {

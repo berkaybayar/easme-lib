@@ -38,7 +38,8 @@ public static class EasGenerate
     var random = new Random();
     string resultToken = new(
                              Enumerable.Repeat(chars, length)
-                                       .Select(token => token[random.Next(token.Length)]).ToArray());
+                                       .Select(token => token[random.Next(token.Length)])
+                                       .ToArray());
     return resultToken;
   }
 
