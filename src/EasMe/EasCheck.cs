@@ -16,12 +16,10 @@ public class EasCheck
 {
   public static PasswordScore CheckPasswordStrength(string password) {
     var score = 0;
-
     if (password.Length < 1)
       return PasswordScore.Blank;
     if (password.Length < 4)
       return PasswordScore.VeryWeak;
-
     if (password.Length >= 8)
       score++;
     if (password.Length >= 12)
