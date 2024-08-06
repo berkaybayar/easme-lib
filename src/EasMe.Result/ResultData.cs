@@ -1,5 +1,4 @@
-﻿using EasMe.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace EasMe.Result;
@@ -53,7 +52,7 @@ public sealed class ResultData<T>
   #region OPERATORS
 
   public static implicit operator ResultData<T>(Result res) {
-    return new ResultData<T>() {
+    return new ResultData<T> {
       ErrorCode = res.ErrorCode,
       Level = res.Level,
       IsSuccess = res.IsSuccess,
@@ -65,7 +64,7 @@ public sealed class ResultData<T>
   }
 
   public static implicit operator Result(ResultData<T> res) {
-    return new Result() {
+    return new Result {
       ErrorCode = res.ErrorCode,
       Level = res.Level,
       IsSuccess = res.IsSuccess,
@@ -112,7 +111,7 @@ public sealed class ResultData<T>
   #region MethodConverters
 
   public Result ToResult() {
-    return new Result() {
+    return new Result {
       ErrorCode = ErrorCode,
       Level = Level,
       IsSuccess = IsSuccess,

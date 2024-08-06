@@ -52,6 +52,7 @@ public static class EasDirectory
 
   [DllImport("shell32", CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = false)]
   private static extern string SHGetKnownFolderPath(
-    [MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags,
+    [MarshalAs(UnmanagedType.LPStruct)] Guid rfid,
+    uint dwFlags,
     nint hToken = 0);
 }

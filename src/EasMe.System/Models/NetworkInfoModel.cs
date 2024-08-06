@@ -1,6 +1,4 @@
-﻿using EasMe.Extensions;
-
-namespace EasMe.System.Models;
+﻿namespace EasMe.System.Models;
 
 public class NetworkInfoModel
 {

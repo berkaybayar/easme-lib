@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
-using EasMe.Extensions;
 using EasMe.Models;
 using Newtonsoft.Json.Linq;
 
@@ -8,13 +7,13 @@ namespace EasMe;
 
 public static class EasReCaptcha
 {
-    /// <summary>
-    ///   Validates given CaptchtaResponse from Google by SecretKey.
-    /// </summary>
-    /// <param name="secret"></param>
-    /// <param name="captchaResponse"></param>
-    /// <returns></returns>
-    public static CaptchaResponseModel Validate(string secret, string? captchaResponse) {
+  /// <summary>
+  ///   Validates given CaptchtaResponse from Google by SecretKey.
+  /// </summary>
+  /// <param name="secret"></param>
+  /// <param name="captchaResponse"></param>
+  /// <returns></returns>
+  public static CaptchaResponseModel Validate(string secret, string? captchaResponse) {
     try {
       if (captchaResponse.IsNullOrEmpty())
         return new CaptchaResponseModel {

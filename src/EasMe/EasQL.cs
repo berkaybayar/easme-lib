@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using EasMe.Extensions;
 using Microsoft.Data.SqlClient;
 
 namespace EasMe;

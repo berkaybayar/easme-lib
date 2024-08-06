@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using EasMe.Extensions;
 
 namespace EasMe;
 
@@ -102,11 +101,26 @@ public class EasEncrypt
 
   private static DateTime GetSeedDateBySensitivity(DateTime now, int sensitivityNum) {
     if (sensitivityNum >= 4)
-      return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+      return new DateTime(now.Year,
+                          now.Month,
+                          now.Day,
+                          now.Hour,
+                          now.Minute,
+                          now.Second);
     if (sensitivityNum >= 3)
-      return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+      return new DateTime(now.Year,
+                          now.Month,
+                          now.Day,
+                          now.Hour,
+                          now.Minute,
+                          0);
     if (sensitivityNum >= 2)
-      return new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
+      return new DateTime(now.Year,
+                          now.Month,
+                          now.Day,
+                          now.Hour,
+                          0,
+                          0);
     if (sensitivityNum >= 1)
       return new DateTime(now.Year, now.Month, now.Day);
     return new DateTime(now.Year, now.Month, now.Day);

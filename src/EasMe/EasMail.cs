@@ -8,19 +8,19 @@ namespace EasMe;
 /// </summary>
 public class EasMail
 {
-    /// <summary>
-    ///   Mail sender class, uses SMTP protocol.
-    /// </summary>
-    /// <param name="host"></param>
-    /// <param name="mailAddress"></param>
-    /// <param name="password"></param>
-    /// <param name="port"></param>
-    /// <param name="enableSsl"></param>
-    public EasMail(string host,
-                   string mailAddress,
-                   string password,
-                   int port,
-                   bool enableSsl = false) {
+  /// <summary>
+  ///   Mail sender class, uses SMTP protocol.
+  /// </summary>
+  /// <param name="host"></param>
+  /// <param name="mailAddress"></param>
+  /// <param name="password"></param>
+  /// <param name="port"></param>
+  /// <param name="enableSsl"></param>
+  public EasMail(string host,
+                 string mailAddress,
+                 string password,
+                 int port,
+                 bool enableSsl = false) {
     Host = host;
     MailAddress = mailAddress;
     Password = password;

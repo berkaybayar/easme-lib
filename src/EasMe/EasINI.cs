@@ -16,12 +16,18 @@ public class EasINI
 
   [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
   [return: MarshalAs(UnmanagedType.Bool)]
-  private static extern bool WritePrivateProfileString(string lpAppName, string lpKeyName, string lpString,
+  private static extern bool WritePrivateProfileString(string lpAppName,
+                                                       string lpKeyName,
+                                                       string lpString,
                                                        string lpFileName);
 
   [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-  private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal,
-                                                    int size, string filePath);
+  private static extern int GetPrivateProfileString(string section,
+                                                    string key,
+                                                    string def,
+                                                    StringBuilder retVal,
+                                                    int size,
+                                                    string filePath);
 
   /// <summary>
   ///   Writes a value to the INI file
@@ -41,7 +47,12 @@ public class EasINI
   /// <returns></returns>
   public string? Read(string section, string key) {
     StringBuilder buffer = new(255);
-    _ = GetPrivateProfileString(section, key, "", buffer, 255, _path);
+    _ = GetPrivateProfileString(section,
+                                key,
+                                "",
+                                buffer,
+                                255,
+                                _path);
     return Convert.ToString(buffer);
   }
 
